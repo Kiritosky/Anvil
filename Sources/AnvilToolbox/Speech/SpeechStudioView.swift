@@ -36,6 +36,10 @@ public struct SpeechStudioView: View {
             headerActions
         }
         .task { await model.prepare() }
+        .onDisappear {
+            model.cancelRefinement()
+            Task { await model.releaseSpeechAssets() }
+        }
         .sheet(isPresented: $isShowingHistory) {
             HistorySheet(entries: model.history) { entry in
                 model.restore(entry)

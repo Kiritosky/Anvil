@@ -28,6 +28,7 @@ public final class AppEnvironment {
 
         let settings = SettingsStore()
         let history = HistoryStore(limit: settings[.historyLimitPerTool])
+
         let registry = ToolRegistry(settings: settings)
         let router = AIRouter(settings: settings)
 

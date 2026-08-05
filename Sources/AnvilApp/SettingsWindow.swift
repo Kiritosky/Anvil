@@ -81,7 +81,7 @@ struct GeneralSettingsView: View {
             SettingsGroup("Bedienung") {
                 SettingsRow(
                     "Ergebnisse automatisch kopieren",
-                    help: "Legt das Ergebnis eines Tools sofort in die Zwischenablage.",
+                    help: "Legt das Ergebnis nach jedem Durchlauf in die Zwischenablage. Live mitlaufende Umwandlungen sind ausgenommen.",
                     systemImage: "doc.on.doc"
                 ) {
                     Toggle("", isOn: binding(.autoCopyResults)).toggleStyle(.switch)
@@ -214,7 +214,7 @@ struct IntelligenceSettingsView: View {
                 }
 
                 if router.remoteConfiguration.requiresAPIKey {
-                    SettingsWideRow("API-Schlüssel", help: .resolved(keyStatus)) {
+                    SettingsWideRow("API-Schlüssel", help: .resolvedIfPresent(keyStatus)) {
                         HStack(spacing: AnvilSpacing.sm) {
                             AnvilTextField(text: $apiKey, placeholder: "sk-…", isSecure: true)
                             AnvilButton("Sichern", role: .secondary) { saveKey() }

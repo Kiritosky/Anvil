@@ -78,5 +78,5 @@ public func localized(_ key: String.LocalizationValue, comment: StaticString? = 
 /// unchanged, which is exactly the desired behaviour.
 public func localized(runtime value: String) -> String {
     guard !value.isEmpty else { return value }
-    return String(localized: String.LocalizationValue(value))
+    return String(localized: String.LocalizationValue(stringLiteral: value))
 }

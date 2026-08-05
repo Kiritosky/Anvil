@@ -48,15 +48,17 @@ public struct HistoryEntry: Codable, Identifiable, Hashable, Sendable {
 @Observable
 public final class HistoryStore {
     @ObservationIgnored private let directory: URL
-    @ObservationIgnored private let limit: Int
+    /// Read on every write so that changing it in Settings takes effect at
+    /// once instead of at the next launch.
+    @ObservationIgnored private let limitProvider: () -> Int
     @ObservationIgnored private let encoder: JSONEncoder
     @ObservationIgnored private let decoder = JSONDecoder()
 
     private var cache: [ToolIdentifier: [HistoryEntry]] = [:]
 
-    public init(directory: URL = AppPaths.history, limit: Int = 50) {
+    public init(directory: URL = AppPaths.history, limit: @escaping @autoclosure () -> Int = 50) {
         self.directory = directory
-        self.limit = limit
+        self.limitProvider = limit
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         encoder.dateEncodingStrategy = .iso8601
@@ -75,6 +77,7 @@ public final class HistoryStore {
     public func record(_ entry: HistoryEntry) -> HistoryEntry {
         var entries = entries(for: entry.toolID)
         entries.insert(entry, at: 0)
+        let limit = max(1, limitProvider())
         if entries.count > limit { entries.removeLast(entries.count - limit) }
         cache[entry.toolID] = entries
         persist(entries, for: entry.toolID)

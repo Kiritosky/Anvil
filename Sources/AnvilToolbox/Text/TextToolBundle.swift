@@ -11,10 +11,45 @@ public enum TextToolBundle: ToolBundle {
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        TextToolCatalog.all.map { tool in
+        let converters = TextToolCatalog.all.map { tool in
             ToolRegistration(metadata: tool.metadata) { context in
                 TextToolView(tool: tool, context: context)
             }
+        }
+        // Two tools do not fit the one-input/one-output shape: a regex needs a
+        // pattern *and* a subject, a comparison needs two texts.
+        return converters + [regexTester, textComparison]
+    }
+
+    @MainActor
+    private static var regexTester: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "text.regex",
+            title: "Regex-Tester",
+            subtitle: "Muster live gegen Text prüfen",
+            systemImage: "asterisk",
+            category: .coding,
+            keywords: ["regex", "regulärer ausdruck", "muster", "pattern", "suchen", "ersetzen"]
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            RegexToolView(context: context, metadata: metadata)
+        }
+    }
+
+    @MainActor
+    private static var textComparison: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "text.compare",
+            title: "Textvergleich",
+            subtitle: "Zwei Fassungen gegenüberstellen",
+            systemImage: "plusminus",
+            category: .text,
+            keywords: ["diff", "vergleich", "unterschied", "compare", "änderungen"]
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            TextCompareView(context: context, metadata: metadata)
         }
     }
 }

@@ -252,6 +252,7 @@ public final class SpeechStudioModel {
                 self.refinedText = result
                 self.lastRunDuration = Date.now.timeIntervalSince(startedAt)
                 self.record(result: result)
+                if self.settings[.autoCopyResults] { self.copyResult() }
             } catch {
                 let wrapped = AnvilError.wrapping(error)
                 if !wrapped.isCancellation { self.error = wrapped }
@@ -328,6 +329,15 @@ public final class SpeechStudioModel {
     public func copyResult() {
         guard hasResult else { return }
         context.pasteboard.copy(resultText)
+    }
+
+    /// Gives back the reserved speech locales.
+    ///
+    /// Reservations are a limited system resource, so the studio hands them
+    /// back when it goes away — but never while a recording is still running.
+    public func releaseSpeechAssets() async {
+        guard !session.isActive else { return }
+        await session.catalog.releaseAll()
     }
 
     // MARK: - History

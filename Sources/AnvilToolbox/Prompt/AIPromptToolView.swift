@@ -240,7 +240,7 @@ public struct AIPromptToolView: View {
 
         switch option.kind {
         case .choice:
-            OptionRow(.resolved(option.label), help: .resolved(option.help)) {
+            OptionRow(.resolved(option.label), help: .resolvedIfPresent(option.help)) {
                 ChipPicker(
                     selection: binding,
                     options: option.choices,
@@ -249,7 +249,7 @@ public struct AIPromptToolView: View {
                 )
             }
         case .text:
-            OptionRow(.resolved(option.label), help: .resolved(option.help)) {
+            OptionRow(.resolved(option.label), help: .resolvedIfPresent(option.help)) {
                 AnvilTextField(text: binding, placeholder: .resolved(option.defaultValue))
             }
         case .toggle:
@@ -292,6 +292,9 @@ public struct AIPromptToolView: View {
                 }
                 lastDuration = Date.now.timeIntervalSince(startedAt)
                 saveToHistory()
+                if context.settings[.autoCopyResults], !output.isEmpty {
+                    context.pasteboard.copy(output)
+                }
             } catch {
                 let wrapped = AnvilError.wrapping(error)
                 if !wrapped.isCancellation { self.error = wrapped }

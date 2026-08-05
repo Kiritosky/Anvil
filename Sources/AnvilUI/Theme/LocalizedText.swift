@@ -17,7 +17,11 @@ extension LocalizedStringKey {
     }
 
     /// Same, for optional values.
-    public static func resolved(_ value: String?) -> LocalizedStringKey? {
+    ///
+    /// A separate name rather than an overload: two `resolved` functions that
+    /// differ only in optionality are exactly the pair Swift reports as an
+    /// ambiguous call at every site that passes a plain `String`.
+    public static func resolvedIfPresent(_ value: String?) -> LocalizedStringKey? {
         value.map { LocalizedStringKey($0) }
     }
 }

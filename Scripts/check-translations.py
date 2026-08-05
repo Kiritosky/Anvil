@@ -59,7 +59,7 @@ PATTERNS = [
 
 # Interpolationen, die eine Zahl einsetzen — Foundation erzeugt dafür %lld.
 INTEGER_EXPRESSION = re.compile(
-    r"\.count\b|^count$|statusCode|Int\(|wordCount\(|recordingCount|WordCount"
+    r"\.count\b|^count$|statusCode|Int\(|wordCount\(|recordingCount|WordCount|\bindex\b|\+ 1\b"
 )
 
 # Was absichtlich unübersetzt bleibt.
@@ -86,7 +86,12 @@ SKIP_PATTERNS = [
 def to_key(text: str) -> str:
     """Macht aus einem Swift-Literal den Schlüssel, den Foundation nachschlägt."""
     def replace(match: re.Match) -> str:
-        return "%lld" if INTEGER_EXPRESSION.search(match.group(1)) else "%@"
+        expression = match.group(1)
+        # Ein Index innerhalb eines Subscripts liefert einen Teilstring, keine
+        # Zahl — "\(text[index..<next])" ist also %@, nicht %lld.
+        if "[" in expression:
+            return "%@"
+        return "%lld" if INTEGER_EXPRESSION.search(expression) else "%@"
 
     return re.sub(r"\\\(([^()]*(?:\([^()]*\)[^()]*)*)\)", replace, text)
 

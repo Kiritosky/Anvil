@@ -14,6 +14,14 @@ struct AnvilApp: App {
     @State private var environment = AppEnvironment()
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
+    /// Backs the "Menüleisten-Symbol" switch in Settings.
+    private var showsMenuBarItem: Binding<Bool> {
+        Binding(
+            get: { environment.settings[.showMenuBarItem] },
+            set: { environment.settings[.showMenuBarItem] = $0 }
+        )
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -31,7 +39,7 @@ struct AnvilApp: App {
                 .environment(environment.router)
         }
 
-        MenuBarExtra("Anvil", systemImage: "hammer") {
+        MenuBarExtra("Anvil", systemImage: "hammer", isInserted: showsMenuBarItem) {
             MenuBarContent()
                 .environment(environment)
                 .environment(environment.router)
