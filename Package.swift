@@ -59,7 +59,7 @@ let package = Package(
         ),
         .testTarget(
             name: "AnvilToolboxTests",
-            dependencies: ["AnvilToolbox"],
+            dependencies: ["AnvilToolbox", "AnvilKit", "AnvilAI"],
             swiftSettings: [.swiftLanguageMode(.v5)]
         )
     ]
