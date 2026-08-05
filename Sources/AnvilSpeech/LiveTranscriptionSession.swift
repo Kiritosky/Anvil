@@ -20,8 +20,14 @@ public final class LiveTranscriptionSession {
 
     /// Asked for the current recording position when a segment is finalised, so
     /// segments carry timings without decoding attributed-string metadata.
+    ///
+    /// Main-actor-isolated on purpose, unlike the audio path below: it is only
+    /// ever read while draining results, which already runs on the main actor.
+    /// Declaring it `@Sendable` would be a lie that costs the caller the ability
+    /// to read main-actor state — which is exactly what a recorder's elapsed
+    /// time is.
     @ObservationIgnored
-    public nonisolated(unsafe) var elapsedTimeProvider: (@Sendable () -> TimeInterval?)?
+    public var elapsedTimeProvider: (() -> TimeInterval?)?
 
     @ObservationIgnored private var transcriber: SpeechTranscriber?
     @ObservationIgnored private var analyzer: SpeechAnalyzer?
