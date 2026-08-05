@@ -1,0 +1,58 @@
+name: Build
+
+# Der einzige Zweck dieses Workflows: echte Compiler-Fehler sichtbar machen.
+# Entwickelt wird hier ohne Swift-Toolchain, also ist der Runner die einzige
+# Stelle, an der der Code tatsächlich übersetzt wird.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Bauen und testen
+    # Anvil setzt macOS 26 voraus (FoundationModels, SpeechAnalyzer). Gibt es
+    # dieses Label noch nicht, schlägt der Job beim Einplanen fehl — dann ist
+    # macos-15 die nächstbeste Wahl, prüft aber nur AnvilKit und AnvilUI.
+    runs-on: macos-26
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain zeigen
+        run: |
+          sw_vers
+          swift --version
+          xcodebuild -version || true
+
+      - name: Bauen
+        run: swift build --product Anvil
+
+      - name: Tests
+        run: swift test
+
+      - name: App-Bundle schnüren
+        run: ./Scripts/build-app.sh
+
+      - name: Bundle prüfen
+        run: |
+          APP="$(swift build --show-bin-path)/Anvil.app"
+          test -x "$APP/Contents/MacOS/Anvil"
+          test -f "$APP/Contents/Info.plist"
+          test -f "$APP/Contents/Resources/en.lproj/Localizable.strings"
+          echo "Bundle vollständig: $APP"
+
+  translations:
+    name: Übersetzungen prüfen
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lücken suchen
+        run: python3 Scripts/check-translations.py
