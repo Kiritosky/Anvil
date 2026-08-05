@@ -18,14 +18,18 @@ public final class ToolContext {
     public let history: HistoryStore
     public let pasteboard: Pasteboard
 
+    /// - Parameter pasteboard: pass a ``RecordingPasteboard`` in tests. The
+    ///   default is built here rather than in the parameter list: a default
+    ///   argument is evaluated in the *caller's* isolation, and `Pasteboard` is
+    ///   main-actor-isolated.
     public init(
         settings: SettingsStore,
         history: HistoryStore,
-        pasteboard: Pasteboard = Pasteboard()
+        pasteboard: Pasteboard? = nil
     ) {
         self.settings = settings
         self.history = history
-        self.pasteboard = pasteboard
+        self.pasteboard = pasteboard ?? Pasteboard()
     }
 
     /// Registers `service` under `type`.

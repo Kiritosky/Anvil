@@ -21,8 +21,8 @@ public final class AudioFileTranscriber {
 
     private static let blockSize: AVAudioFrameCount = 16_384
 
-    public init(catalog: TranscriptionModelCatalog = TranscriptionModelCatalog()) {
-        self.catalog = catalog
+    public init(catalog: TranscriptionModelCatalog? = nil) {
+        self.catalog = catalog ?? TranscriptionModelCatalog()
     }
 
     /// Transcribes `url` and returns the finished transcript.

@@ -32,7 +32,10 @@ public final class DictationSession {
     /// Where the audio of the last (or current) recording lives.
     public private(set) var recordingURL: URL?
 
-    public init(catalog: TranscriptionModelCatalog = TranscriptionModelCatalog()) {
+    /// The catalogue is built in the body for the same reason as elsewhere: a
+    /// default argument would be evaluated outside the main actor.
+    public init(catalog: TranscriptionModelCatalog? = nil) {
+        let catalog = catalog ?? TranscriptionModelCatalog()
         self.catalog = catalog
         self.transcription = LiveTranscriptionSession(catalog: catalog)
     }
