@@ -93,7 +93,7 @@ public struct SpeechStudioView: View {
         .keyboardShortcut("r", modifiers: [.command, .shift])
     }
 
-    private var recordButtonTitle: String {
+    private var recordButtonTitle: LocalizedStringKey {
         switch model.session.state {
         case .recording: "Stoppen"
         case .paused: "Weiter"
