@@ -533,8 +533,18 @@ public enum TextToolCatalog {
     }
 
     private static func makeSlug(_ input: String, separator: String) -> String {
-        let folded = input.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
-            .replacingOccurrences(of: "ß", with: "ss")
+        // Umlauts become two letters rather than one, which is the German
+        // convention and also the only correct one: Foundation's diacritic
+        // folding turns "Größe" into "grosse", colliding with the different
+        // word "Grosse". Transliterate first, then fold whatever is left —
+        // accents from other languages do want the plain letter.
+        var transliterated = input
+        for (umlaut, replacement) in umlautTransliterations {
+            transliterated = transliterated.replacingOccurrences(of: umlaut, with: replacement)
+        }
+
+        let folded = transliterated
+            .folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
         let parts = folded.unicodeScalars.map { scalar -> Character in
             CharacterSet.alphanumerics.contains(scalar) ? Character(scalar) : " "
         }
@@ -543,6 +553,12 @@ public enum TextToolCatalog {
             .joined(separator: separator)
             .lowercased()
     }
+
+    private static let umlautTransliterations: [(String, String)] = [
+        ("ä", "ae"), ("ö", "oe"), ("ü", "ue"),
+        ("Ä", "Ae"), ("Ö", "Oe"), ("Ü", "Ue"),
+        ("ß", "ss")
+    ]
 
     private static func describeDate(_ date: Date) -> String {
         let iso = ISO8601DateFormatter()

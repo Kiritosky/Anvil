@@ -94,6 +94,21 @@ struct TextToolCatalogTests {
     }
 
     @Test
+    func slugsKeepUmlautsApartFromPlainVowels() throws {
+        // The two words differ in German, so their slugs have to differ too.
+        let umlaut = try run(TextToolCatalog.slug, "kebab", "Größe")
+        let plain = try run(TextToolCatalog.slug, "kebab", "Grosse")
+        #expect(umlaut != plain)
+    }
+
+    @Test
+    func slugsFoldAccentsFromOtherLanguages() throws {
+        // Only German umlauts get the two-letter treatment; a French accent
+        // just wants the plain letter.
+        #expect(try run(TextToolCatalog.slug, "kebab", "Café crème") == "cafe-creme")
+    }
+
+    @Test
     func removesDuplicateLines() throws {
         let result = try run(TextToolCatalog.lines, "unique", "a\nb\na\nc")
         #expect(result == "a\nb\nc")
