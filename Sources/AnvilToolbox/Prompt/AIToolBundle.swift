@@ -8,7 +8,9 @@ public enum AIToolBundle: ToolBundle {
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        AIPromptCatalog.all.map(registration(for:))
+        // Als Funktionsreferenz nicht schreibbar: `registration(for:origin:)`
+        // hat einen Parameter mit Vorgabewert.
+        AIPromptCatalog.all.map { registration(for: $0) }
     }
 
     /// Shared with the user-tool loader so built-in and user tools are built by
