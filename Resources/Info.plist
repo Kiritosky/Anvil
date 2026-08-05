@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleName</key>
+	<string>Anvil</string>
+	<key>CFBundleDisplayName</key>
+	<string>Anvil</string>
+	<key>CFBundleIdentifier</key>
+	<string>dev.anvil.Anvil</string>
+	<key>CFBundleExecutable</key>
+	<string>Anvil</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>26.0</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.developer-tools</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>Anvil is free software under the GNU GPL v3.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Anvil records your voice so it can transcribe and clean up what you dictate. Audio stays on this Mac unless you explicitly pick a remote AI provider.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Anvil uses on-device speech recognition to turn your recordings into text.</string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>Anvil uses Apple Events only when a tool you run asks it to talk to another app.</string>
+</dict>
+</plist>
