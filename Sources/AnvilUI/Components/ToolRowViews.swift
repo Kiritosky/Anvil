@@ -44,7 +44,9 @@ public struct ToolListRow: View {
                         .lineLimit(1)
 
                     if let badge = metadata.badge {
-                        StatusPill(badge, tone: .accent)
+                        // Das Abzeichen kommt aus den Metadaten und ist dort
+                        // schon übersetzt worden.
+                        StatusPill(.resolved(badge), tone: .accent)
                     }
                 }
 
