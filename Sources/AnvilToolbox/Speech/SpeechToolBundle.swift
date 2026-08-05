@@ -57,6 +57,8 @@ struct SpeechSettingsView: View {
             "Sprache & Audio",
             description: "Standardwerte für neue Aufnahmen im Speech Studio."
         ) {
+            quickDictationGroup
+
             SettingsGroup("Aufnahme") {
                 SettingsRow(
                     "Aufnahme behalten",
@@ -126,6 +128,123 @@ struct SpeechSettingsView: View {
             }
         }
         .task { measureRecordings() }
+    }
+
+    /// Everything about dictating without opening the app.
+    ///
+    /// Kept in one group because the parts only make sense together: a shortcut
+    /// without the feature switched on does nothing, and auto-paste without the
+    /// Accessibility permission silently would not work.
+    @ViewBuilder
+    private var quickDictationGroup: some View {
+        SettingsGroup(
+            "Schnell-Diktat",
+            footnote: "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der Text wird aufgeräumt und liegt danach in der Zwischenablage — das Hauptfenster bleibt zu."
+        ) {
+            SettingsRow(
+                "Von überall diktieren",
+                help: "Meldet das Tastenkürzel systemweit an.",
+                systemImage: "mic.badge.plus"
+            ) {
+                Toggle("", isOn: quickDictationBinding)
+                    .toggleStyle(.switch)
+            }
+
+            SettingsWideRow(
+                "Tastenkürzel",
+                help: shortcutHelp
+            ) {
+                ShortcutRecorder(shortcut: shortcutBinding)
+                    .disabled(!settings[.quickDictationEnabled])
+            }
+
+            SettingsWideRow(
+                "Stil",
+                help: "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird."
+            ) {
+                Picker("", selection: binding(.quickDictationStyle)) {
+                    ForEach(RefinementStyle.offered) { style in
+                        Text(style.title).tag(style)
+                    }
+                }
+            }
+
+            SettingsRow(
+                "Direkt einfügen",
+                help: pasteHelp,
+                systemImage: "arrow.down.doc"
+            ) {
+                HStack(spacing: AnvilSpacing.sm) {
+                    if settings[.quickDictationPastes], !PasteService.isTrusted {
+                        AnvilButton("Erlauben", role: .secondary) {
+                            PasteService.requestTrust()
+                            PasteService.openAccessibilitySettings()
+                        }
+                    }
+                    Toggle("", isOn: pasteBinding)
+                        .toggleStyle(.switch)
+                }
+            }
+        }
+    }
+
+    // MARK: - Quick dictation plumbing
+
+    private var quickDictation: QuickDictationController? {
+        context.resolve()
+    }
+
+    /// Toggling the feature has to re-register the shortcut, so it does not go
+    /// through the plain settings binding.
+    private var quickDictationBinding: Binding<Bool> {
+        Binding(
+            get: { settings[.quickDictationEnabled] },
+            set: { newValue in
+                settings[.quickDictationEnabled] = newValue
+                quickDictation?.syncShortcut()
+            }
+        )
+    }
+
+    private var shortcutBinding: Binding<GlobalShortcut?> {
+        Binding(
+            get: { settings[.quickDictationShortcut] },
+            set: { newValue in
+                settings[.quickDictationShortcut] = newValue
+                quickDictation?.syncShortcut()
+            }
+        )
+    }
+
+    private var pasteBinding: Binding<Bool> {
+        Binding(
+            get: { settings[.quickDictationPastes] },
+            set: { newValue in
+                settings[.quickDictationPastes] = newValue
+                // Asking at the moment the switch is flipped is the only point
+                // where the request is not a surprise.
+                if newValue, !PasteService.isTrusted { PasteService.requestTrust() }
+            }
+        )
+    }
+
+    private var shortcutHelp: LocalizedStringKey {
+        if let error = quickDictation?.registrationError {
+            return .resolved(error)
+        }
+        if !settings[.quickDictationEnabled] {
+            return "Erst oben einschalten."
+        }
+        return "Funktioniert auch, während eine andere App vorne ist."
+    }
+
+    private var pasteHelp: LocalizedStringKey {
+        guard settings[.quickDictationPastes] else {
+            return "Aus: der Text liegt nur in der Zwischenablage."
+        }
+        return PasteService.isTrusted
+            ? "Anvil tippt ⌘V in die App, in der du gerade warst."
+            : "Dafür fehlt noch die Bedienungshilfen-Berechtigung."
     }
 
     private func binding<Value>(_ key: SettingKey<Value>) -> Binding<Value> {

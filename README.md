@@ -15,6 +15,9 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
   Sprachmodell Füllwörter, Versprecher, Grammatik und Zeichensetzung aufräumen
   — verbatim geglättet oder umgeschrieben zu sauberer Prosa, Bullet-Points,
   Commit-Message oder Zusammenfassung.
+- **Von überall.** Ein globales Tastenkürzel (voreingestellt ⌥⌘D) öffnet ein
+  schwebendes Diktatfeld über jeder App. Sprechen, Kürzel noch einmal drücken —
+  der aufgeräumte Text liegt in der Zwischenablage oder wird direkt eingefügt.
 - **On-Device zuerst.** Standardweg ist das lokale Apple-Intelligence-Modell.
   Externe Anbieter sind möglich, aber nie Voraussetzung.
 - **Erweiterbar von Anfang an.** Tools sind Registrierungen, keine

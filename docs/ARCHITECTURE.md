@@ -35,6 +35,9 @@ Das ist Absicht: der Kern soll austauschbar bleiben.
 | `SettingsStore` | typisierte, beobachtbare Einstellungen über `UserDefaults` |
 | `KeychainStore` | API-Schlüssel — niemals in den Einstellungen |
 | `HistoryStore` | Durchläufe pro Tool, als JSON auf der Platte |
+| `GlobalShortcut` | Tastenkombination für systemweite Kürzel |
+| `HotKeyCenter` | Registrierung über Carbon — ohne Bedienungshilfen-Recht |
+| `PasteService` | ⌘V in die vorherige App; das einzige Stück mit Accessibility |
 
 ### Warum Metadaten und View getrennt sind
 
@@ -98,6 +101,11 @@ in das Format des Analyzers, `LiveTranscriptionSession` betreibt
 um Sprachpakete und Reservierungen, `AudioFileTranscriber` macht dasselbe für
 fertige Dateien. `DictationSession` fasst Aufnahme und Erkennung zu der Einheit
 zusammen, die Tools tatsächlich bedienen.
+
+`QuickDictationController` (in `AnvilToolbox`) setzt darauf das Diktat von
+überall: globales Kürzel über `HotKeyCenter`, ein nicht-aktivierendes `NSPanel`
+über allen Apps, deterministische Bereinigung plus optionaler Modell-Durchlauf,
+danach Zwischenablage und wahlweise ⌘V in die App, die vorher vorne war.
 
 Zwei Fallstricke sind hier bewusst gelöst:
 

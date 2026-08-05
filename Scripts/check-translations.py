@@ -55,6 +55,10 @@ PATTERNS = [
     rf"\bdescription:\s*{STR}",
     rf"\binputPlaceholder:\s*{STR}",
     rf"\bdefaultValue:\s*{STR}",
+    # Enum-artige Rückgaben: case .recording: "Ich höre zu"
+    rf"^\s*case \.\w+: {STR}$",
+    # Rückgaben aus berechneten LocalizedStringKey-Eigenschaften
+    rf"^\s*return {STR}$",
 ]
 
 # Interpolationen, die eine Zahl einsetzen — Foundation erzeugt dafür %lld.
@@ -101,7 +105,7 @@ def collect_keys() -> dict[str, set[str]]:
     for path in sorted((ROOT / "Sources").rglob("*.swift")):
         text = path.read_text()
         for pattern in PATTERNS:
-            for match in re.finditer(pattern, text):
+            for match in re.finditer(pattern, text, re.M):
                 literal = match.group(1)
                 if len(literal) < 2 or not re.search(r"[A-Za-zÄÖÜäöü]", literal):
                     continue

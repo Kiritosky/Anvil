@@ -17,6 +17,8 @@ public final class AppEnvironment {
     public let router: AIRouter
     public let context: ToolContext
     public let customTools: CustomToolStore
+    /// Dictation from anywhere, driven by the global shortcut.
+    public let quickDictation: QuickDictationController
 
     /// The tool currently shown in the detail pane.
     public var selectedToolID: ToolIdentifier?
@@ -46,9 +48,14 @@ public final class AppEnvironment {
         self.customTools = customTools
         context.register(customTools, as: (any ToolLibraryReloading).self)
 
+        let quickDictation = QuickDictationController(context: context)
+        self.quickDictation = quickDictation
+        context.register(quickDictation)
+
         registerBundles()
         customTools.reloadUserTools()
         restoreSelection()
+        quickDictation.syncShortcut()
     }
 
     /// The tool bundles the app ships with, in sidebar order.

@@ -48,6 +48,7 @@
 "Anvil beenden" = "Quit Anvil";
 "Anvil darf das Mikrofon nicht benutzen." = "Anvil is not allowed to use the microphone.";
 "Anvil darf die Spracherkennung nicht benutzen." = "Anvil is not allowed to use speech recognition.";
+"Anvil tippt ⌘V in die App, in der du gerade warst." = "Anvil types ⌘V into the app you were just in.";
 "Anzahl" = "How many";
 "Anzeige" = "Display";
 "API-Schlüssel" = "API key";
@@ -75,6 +76,7 @@
 "Aus Favoriten entfernen" = "Remove from favourites";
 "Aus Stichworten eine Nachricht" = "A message from a few notes";
 "Aus „das das\" wird „das\". Beabsichtigte Doppelungen wie „sehr sehr\" bleiben." = "“the the” becomes “the”. Deliberate doubling like “very very” is kept.";
+"Aus: der Text liegt nur in der Zwischenablage." = "Off: the text only goes to the clipboard.";
 "Ausblenden" = "Dismiss";
 "Ausführen" = "Run";
 "ausführlich" = "detailed";
@@ -107,6 +109,7 @@
 "Coding" = "Coding";
 "Commit-Message" = "Commit message";
 "Da ist noch nichts." = "There is nothing here yet.";
+"Dafür fehlt noch die Bedienungshilfen-Berechtigung." = "The Accessibility permission is still missing for this.";
 "Das Audioformat des Mikrofons lässt sich nicht in das Format der Spracherkennung umwandeln." = "The microphone’s audio format cannot be converted to the format speech recognition needs.";
 "Das ist kein gültiges Base64." = "That is not valid Base64.";
 "Das ist keine gültige prozentkodierte Zeichenkette." = "That is not a valid percent-encoded string.";
@@ -140,6 +143,7 @@
 "Die Datei konnte nicht gelesen werden: %@" = "The file could not be read: %@";
 "Die Sprachdaten konnten nicht geladen werden: %@" = "The language assets could not be loaded: %@";
 "Die Spracherkennung konnte nicht gestartet werden: %@" = "Speech recognition could not be started: %@";
+"Die Tastenkombination %@ ist schon von einer anderen App belegt." = "The shortcut %@ is already taken by another app.";
 "Dieser Anbieter ist noch nicht eingerichtet." = "This provider is not set up yet.";
 "Dieser Mac unterstützt das On-Device-Modell nicht." = "This Mac does not support the on-device model.";
 "Dieses Tool bringt keine eigenen Einstellungen mit." = "This tool has no settings of its own.";
@@ -147,6 +151,7 @@
 "Diktat" = "Dictation";
 "Diktat starten" = "Start dictation";
 "Diktieren, transkribieren, aufräumen" = "Dictate, transcribe, clean up";
+"Direkt einfügen" = "Paste straight in";
 "Doku-Kommentar" = "Doc comment";
 "Dokumentation zu einer Funktion" = "Documentation for a function";
 "Doppelte entfernen" = "Remove duplicates";
@@ -183,11 +188,13 @@
 "ergänzt" = "added";
 "Erkennen" = "Detect";
 "Erlaube den Zugriff unter Systemeinstellungen › Datenschutz & Sicherheit." = "Grant access in System Settings › Privacy & Security.";
+"Erlauben" = "Allow";
 "Ersatztext" = "Replacement";
 "Ersetzen" = "Replace";
 "Ersetzt" = "Replaced";
 "Erst das Apple-Modell. Nur wenn das nicht kann, geht es an den externen Anbieter." = "Apple’s model first. The remote provider is used only when it cannot do the job.";
 "Erst der externe Anbieter, das Apple-Modell als Rückfallebene." = "Remote provider first, Apple’s model as the fallback.";
+"Erst oben einschalten." = "Switch it on above first.";
 "Es gibt noch kein Ergebnis zum Sichern." = "There is no result to save yet.";
 "Es gibt noch keinen Text zum Aufräumen." = "There is no text to clean up yet.";
 "Es ist kein Audioeingang verfügbar. Prüfe unter Systemeinstellungen › Ton, ob ein Mikrofon ausgewählt ist." = "No audio input is available. Check that a microphone is selected in System Settings › Sound.";
@@ -203,6 +210,7 @@
 "Fehler, Risiken, Verbesserungen" = "Bugs, risks, improvements";
 "Fehlermeldung oder Stacktrace …" = "Error message or stack trace…";
 "Fertig" = "Done";
+"fertig" = "done";
 "Fest" = "Fixed";
 "Filter" = "Filter";
 "Form" = "Shape";
@@ -216,6 +224,7 @@
 "Französisch" = "French";
 "freundlich" = "friendly";
 "freundlich-knapp" = "friendly and brief";
+"Funktioniert auch, während eine andere App vorne ist." = "Works while another app is in front, too.";
 "förmlich" = "formal";
 "förmlich (Sie)" = "formal";
 "Füllwörter" = "Filler words";
@@ -231,6 +240,7 @@
 "Gilt für neue Sitzungen. Im Tool selbst lässt sich das jederzeit umstellen." = "Applies to new sessions. You can change it inside the tool at any time.";
 "Gleicher Inhalt, anderer Ton" = "Same content, different tone";
 "Gliedert den Inhalt in Stichpunkte." = "Breaks the content into bullet points.";
+"Globale Tastenkürzel konnten nicht eingerichtet werden." = "Global shortcuts could not be set up.";
 "GROSS" = "UPPERCASE";
 "Groß-/Kleinschreibung egal" = "Ignore case";
 "Gruppe" = "Group";
@@ -242,13 +252,16 @@
 "Gültiges JSON-Array mit %lld Einträgen." = "Valid JSON array with %lld entries.";
 "Gültiges JSON-Objekt mit %lld Schlüsseln." = "Valid JSON object with %lld keys.";
 "Hat eigene Einstellungen" = "Has its own settings";
+"Hat nicht geklappt" = "That didn’t work";
 "Header" = "Header";
 "Hex braucht eine gerade Anzahl Zeichen." = "Hex needs an even number of characters.";
 "Hier erscheint, was erkannt wurde." = "What was recognised appears here.";
 "HTML-Entities" = "HTML entities";
+"Ich höre zu" = "Listening";
 "Ideen sammeln" = "Collect ideas";
 "Im Finder zeigen" = "Show in Finder";
 "Immer aktiv" = "Always on";
+"In der Zwischenablage" = "On the clipboard";
 "In die Zwischenablage kopieren" = "Copy to clipboard";
 "In diesem Repository gibt es keine Änderungen." = "There are no changes in this repository.";
 "installiert" = "installed";
@@ -276,6 +289,7 @@
 "KI-Werkzeuge" = "AI Tools";
 "klein" = "lowercase";
 "Klein geschrieben" = "Lowercased";
+"Klicken und Tasten drücken" = "Click, then press keys";
 "knapp" = "terse";
 "Kodieren" = "Encode";
 "Kodieren und dekodieren" = "Encode and decode";
@@ -287,6 +301,8 @@
 "Kopiervorlage für eigene Prompt-Tools" = "A template to copy for your own prompt tools";
 "Korrektheit" = "correctness";
 "kurz" = "brief";
+"Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der Text wird aufgeräumt und liegt danach in der Zwischenablage — das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The text is cleaned up and ends up on the clipboard — the main window stays closed.";
+"Kürzel entfernen" = "Remove shortcut";
 "kürzer" = "shorter";
 "Kürzt auf das Wesentliche, behält aber alle Aussagen." = "Trims to the essentials while keeping every statement.";
 "Leer lassen, um nur zu suchen. $1, $2 … setzen die Klammergruppen ein." = "Leave empty to search only. $1, $2 … insert the capture groups.";
@@ -306,8 +322,10 @@
 "Macht aus der Beschreibung einen Doku-Kommentar." = "Turns the description into a documentation comment.";
 "MD5, SHA-1, SHA-256, SHA-512" = "MD5, SHA-1, SHA-256, SHA-512";
 "Mehrfache Leerzeichen ignorieren" = "Ignore repeated spaces";
+"Meldet das Tastenkürzel systemweit an." = "Registers the shortcut system-wide.";
 "Menüleisten-Symbol" = "Menu bar item";
 "Mikrofon" = "Microphone";
+"Mikrofon wird geöffnet" = "Opening the microphone";
 "Mindestens eins" = "One or more";
 "Mit dem Modell aufräumen" = "Clean up with the model";
 "Mit KI" = "With AI";
@@ -315,6 +333,7 @@
 "mit_unterstrichen" = "with_underscores";
 "Modell" = "Model";
 "Modell verwenden" = "Use the model";
+"Moment …" = "One moment…";
 "Muster ist ungültig" = "Pattern is invalid";
 "Muster live gegen Text prüfen" = "Test a pattern against real text, live";
 "Muster, z. B. \\b\\w+@\\w+\\.\\w+\\b" = "Pattern, e.g. \\b\\w+@\\w+\\.\\w+\\b";
@@ -332,6 +351,7 @@
 "Nicht verfügbar." = "Not available.";
 "Nichts gefunden" = "Nothing found";
 "Nichts verlässt diesen Mac. Ohne Apple Intelligence bleiben KI-Tools aus." = "Nothing leaves this Mac. Without Apple Intelligence, AI tools stay unavailable.";
+"Nichts verstanden." = "Didn’t catch anything.";
 "Noch kein Ergebnis" = "No result yet";
 "Noch kein Schlüssel hinterlegt." = "No key stored yet.";
 "Noch keine Eingabe" = "No input yet";
@@ -373,6 +393,7 @@
 "Repository wählen" = "Choose repository";
 "Richtlinie" = "Policy";
 "Ränder trimmen" = "Trim edges";
+"Räume auf" = "Cleaning up";
 "sachlich" = "matter-of-fact";
 "Sammlung aktiv" = "Collection on";
 "Sammlungen" = "Collections";
@@ -381,6 +402,8 @@
 "Schließt ab …" = "Finishing…";
 "Schlüssel gelöscht." = "Key deleted.";
 "Schlüssel gesichert." = "Key saved.";
+"Schnell-Diktat" = "Quick dictation";
+"Schnell-Diktat  %@" = "Quick dictation  %@";
 "Schnellzugriff auf Diktat und Suche, ohne das Fenster zu holen." = "Quick access to dictation and search without bringing the window forward.";
 "Schreibt das Diktat in flüssige Sätze und Absätze um, ohne Inhalt zu ergänzen." = "Rewrites the dictation into flowing sentences and paragraphs, adding nothing.";
 "Schreibweise" = "Naming style";
@@ -393,6 +416,7 @@
 "Sortieren, entdoppeln, nummerieren" = "Sort, deduplicate, number";
 "Spanisch" = "Spanish";
 "Speech Studio" = "Speech Studio";
+"Speech Studio öffnen" = "Open Speech Studio";
 "Speicher-Fehler" = "Storage error";
 "Sprache" = "Language";
 "Sprache & Audio" = "Speech & Audio";
@@ -400,6 +424,7 @@
 "Spracherkennung" = "Speech recognition";
 "Sprachmodell" = "Language model";
 "Sprachpaket wird geladen" = "Downloading language assets";
+"Sprich einfach los …" = "Just start talking…";
 "Stacktrace oder Compiler-Meldung deuten" = "Make sense of a stack trace or compiler message";
 "Standardwerte für neue Aufnahmen im Speech Studio." = "Defaults for new recordings in Speech Studio.";
 "Startet den Modell-Durchlauf, sobald die Aufnahme endet." = "Starts the model run as soon as recording ends.";
@@ -413,6 +438,8 @@
 "Stärke" = "Strength";
 "Suchen" = "Search";
 "System" = "System";
+"Tasten drücken …" = "Press keys…";
+"Tastenkürzel" = "Shortcut";
 "Tauschen" = "Swap";
 "Teiler verschieben" = "Move divider";
 "Testfälle zu vorhandenem Code" = "Test cases for existing code";
@@ -456,7 +483,9 @@
 "Verhalten der App insgesamt." = "How the app behaves overall.";
 "Verkleinern" = "Minify";
 "Verlauf" = "History";
+"verwerfen" = "discard";
 "Von Hex" = "From hex";
+"Von überall diktieren" = "Dictate from anywhere";
 "Voreinstellung" = "Preset";
 "Vorher" = "Before";
 "Was benennt werden soll, plus Kontext …" = "What needs a name, plus context…";
@@ -470,8 +499,10 @@
 "Weiter aufnehmen" = "Continue recording";
 "Welches Modell antwortet — und ob dafür etwas diesen Mac verlässt." = "Which model answers — and whether anything leaves this Mac to get there.";
 "Werkzeuge ein- und ausschalten" = "Switch tools on and off";
+"Wie das Modell das Diktat aufbereitet, bevor es kopiert wird." = "How the model shapes the dictation before it is copied.";
 "wie das Original" = "same as the original";
 "wie im Code erkennbar" = "as the code suggests";
+"Wird aufgeräumt" = "Cleaning up";
 "Wird beim ersten Start dieser Sprache heruntergeladen." = "Downloads the first time you use this language.";
 "Wird im Prompt für {{option:level}} eingesetzt." = "Substituted into the prompt for {{option:level}}.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Only used when the policy allows it. The key lives in the keychain, not in the settings file.";

@@ -13,7 +13,19 @@ struct MenuBarContent: View {
     @Environment(AIRouter.self) private var router: AIRouter?
 
     var body: some View {
-        Button("Diktat starten") {
+        // The quick capture comes first: it is the reason the menu-bar item
+        // exists at all, and the one thing you reach for without a window.
+        if let shortcut = environment.quickDictation.registeredShortcut {
+            Button("Schnell-Diktat  \(shortcut.displayString)") {
+                environment.quickDictation.toggle()
+            }
+        } else {
+            Button("Schnell-Diktat") {
+                environment.quickDictation.toggle()
+            }
+        }
+
+        Button("Speech Studio öffnen") {
             open(SpeechToolBundle.studioToolID)
         }
 
