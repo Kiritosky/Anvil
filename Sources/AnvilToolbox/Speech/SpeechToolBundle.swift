@@ -139,7 +139,7 @@ struct SpeechSettingsView: View {
     private var quickDictationGroup: some View {
         SettingsGroup(
             "Schnell-Diktat",
-            footnote: "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der Text wird aufgeräumt und liegt danach in der Zwischenablage — das Hauptfenster bleibt zu."
+            footnote: "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der aufgeräumte Text geht ins Textfeld, in dem der Cursor steht — sonst in die Zwischenablage. ⎋ verwirft. Das Hauptfenster bleibt zu."
         ) {
             SettingsRow(
                 "Von überall diktieren",
@@ -170,7 +170,7 @@ struct SpeechSettingsView: View {
             }
 
             SettingsRow(
-                "Direkt einfügen",
+                "In Textfelder einfügen",
                 help: pasteHelp,
                 systemImage: "arrow.down.doc"
             ) {
@@ -240,11 +240,11 @@ struct SpeechSettingsView: View {
 
     private var pasteHelp: LocalizedStringKey {
         guard settings[.quickDictationPastes] else {
-            return "Aus: der Text liegt nur in der Zwischenablage."
+            return "Aus: der Text liegt immer nur in der Zwischenablage."
         }
         return PasteService.isTrusted
-            ? "Anvil tippt ⌘V in die App, in der du gerade warst."
-            : "Dafür fehlt noch die Bedienungshilfen-Berechtigung."
+            ? "Steht der Cursor in einem Textfeld, tippt Anvil den Text dort hinein. Sonst bleibt er in der Zwischenablage."
+            : "Dafür fehlt noch die Bedienungshilfen-Berechtigung — bis dahin nur Zwischenablage."
     }
 
     private func binding<Value>(_ key: SettingKey<Value>) -> Binding<Value> {

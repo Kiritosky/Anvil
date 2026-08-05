@@ -3,12 +3,17 @@ import AnvilUI
 import AppKit
 import SwiftUI
 
-/// The floating strip that appears when the dictation shortcut is pressed.
+/// The little bubble that appears while dictating.
 ///
-/// An `NSPanel` rather than a SwiftUI `Window` because it has to behave like
-/// Spotlight: appear over full-screen apps, on whichever Space is showing, take
-/// the keyboard so ⎋ works — and all of that *without* activating Anvil, so the
-/// app you were typing in stays where the text should end up.
+/// Two properties matter more than anything about how it looks:
+///
+/// - It **never takes keyboard focus**. The caret has to stay exactly where it
+///   was, in the text field the result is meant to land in. A panel that
+///   becomes key would move focus away and, in some apps, drop the selection —
+///   and then ⌘V goes nowhere useful. Escape is handled by borrowing the key
+///   globally while recording instead (see `QuickDictationController`).
+/// - It floats above everything, including full-screen apps, on whichever
+///   Space is currently showing.
 final class QuickDictationPanel: NSPanel {
     private let controller: QuickDictationController
 
@@ -16,7 +21,7 @@ final class QuickDictationPanel: NSPanel {
         self.controller = controller
 
         super.init(
-            contentRect: NSRect(x: 0, y: 0, width: 460, height: 132),
+            contentRect: NSRect(x: 0, y: 0, width: 300, height: 56),
             styleMask: [.nonactivatingPanel, .fullSizeContentView, .borderless],
             backing: .buffered,
             defer: false
@@ -27,26 +32,26 @@ final class QuickDictationPanel: NSPanel {
         collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
         isMovableByWindowBackground = true
         hidesOnDeactivate = false
+        ignoresMouseEvents = false
         isOpaque = false
         backgroundColor = .clear
         hasShadow = true
-        // Closing the panel must never look like quitting the app.
+        // Closing the bubble must never look like quitting the app.
         isReleasedWhenClosed = false
 
-        contentView = NSHostingView(
-            rootView: QuickDictationView(controller: controller)
-                .frame(width: 460)
-        )
+        let hosting = NSHostingView(rootView: QuickDictationView(controller: controller))
+        hosting.sizingOptions = [.preferredContentSize]
+        contentView = hosting
     }
 
-    /// Panels normally refuse the keyboard; this one needs ⎋ and ⏎.
-    override var canBecomeKey: Bool { true }
+    /// Deliberately false — see the note above.
+    override var canBecomeKey: Bool { false }
     override var canBecomeMain: Bool { false }
 
-    /// Places the panel near the top of the screen the mouse is on.
+    /// Bottom centre of the screen the pointer is on.
     ///
-    /// Top-centre rather than dead centre: it has to stay out of the way of the
-    /// text field you are dictating into.
+    /// Low rather than high: while dictating you are usually looking at the
+    /// text field you are dictating into, and that is rarely at the bottom.
     func present() {
         let screen = NSScreen.screens.first { $0.frame.contains(NSEvent.mouseLocation) }
             ?? NSScreen.main
@@ -55,30 +60,13 @@ final class QuickDictationPanel: NSPanel {
             setFrameOrigin(
                 NSPoint(
                     x: visible.midX - size.width / 2,
-                    y: visible.maxY - size.height - 120
+                    y: visible.minY + 120
                 )
             )
         }
 
+        // Not `makeKeyAndOrderFront`: showing it must not disturb whatever has
+        // the keyboard.
         orderFrontRegardless()
-        makeKey()
-    }
-
-    override func cancelOperation(_ sender: Any?) {
-        Task { await controller.cancel() }
-    }
-
-    override func keyDown(with event: NSEvent) {
-        // ⏎ finishes, ⎋ discards — the two things you reach for without
-        // looking. Everything else is ignored so stray keys cannot disturb a
-        // running dictation.
-        switch event.keyCode {
-        case 36, 76:
-            Task { await controller.finish() }
-        case 53:
-            Task { await controller.cancel() }
-        default:
-            break
-        }
     }
 }

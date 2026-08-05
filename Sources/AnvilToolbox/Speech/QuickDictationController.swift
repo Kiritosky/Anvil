@@ -2,15 +2,16 @@ import AnvilAI
 import AnvilKit
 import AnvilSpeech
 import AppKit
+import Carbon.HIToolbox
 import Foundation
 import Observation
 import SwiftUI
 
 /// Dictation from anywhere, without bringing the app forward.
 ///
-/// Press the shortcut, talk, press it again. The text is cleaned up and lands
-/// on the clipboard — and, if the user allowed it, straight into whatever they
-/// were typing in. The whole point is that the main window never has to open.
+/// Press the shortcut, talk, press it again. The text is cleaned up and — if
+/// the cursor was sitting in a text field — typed straight in. Otherwise it
+/// waits on the clipboard. The main window never opens.
 @MainActor
 @Observable
 public final class QuickDictationController {
@@ -19,8 +20,8 @@ public final class QuickDictationController {
         case starting
         case recording
         case refining
-        /// Finished; the text is on the clipboard.
-        case delivered(String)
+        /// Finished. `didPaste` decides which of the two confirmations shows.
+        case delivered(didPaste: Bool)
         case failed(String)
     }
 
@@ -35,9 +36,13 @@ public final class QuickDictationController {
     @ObservationIgnored private let refiner: TranscriptRefiner
     @ObservationIgnored private var panel: QuickDictationPanel?
     @ObservationIgnored private var previousApplication: NSRunningApplication?
+    /// Where the caret was when the shortcut was pressed. Decided up front,
+    /// because by the time the text is ready the answer would be about Anvil.
+    @ObservationIgnored private var targetAcceptsText = false
     @ObservationIgnored private var dismissTask: Task<Void, Never>?
 
     private static let hotKeyOwner = "speech.quickDictation"
+    private static let cancelHotKeyOwner = "speech.quickDictation.cancel"
 
     public init(context: ToolContext) {
         self.context = context
@@ -46,7 +51,6 @@ public final class QuickDictationController {
 
     // MARK: - Derived state
 
-    public var transcript: String { session.transcript.displayText }
     public var levels: [Float] { session.levels }
     public var duration: TimeInterval { session.duration }
     public var isActive: Bool { phase != .idle }
@@ -56,9 +60,6 @@ public final class QuickDictationController {
     // MARK: - Shortcut
 
     /// Registers or removes the global shortcut to match the current settings.
-    ///
-    /// Called at launch and whenever the settings change, so there is exactly
-    /// one place that decides what is registered.
     public func syncShortcut() {
         registrationError = nil
 
@@ -79,8 +80,6 @@ public final class QuickDictationController {
         }
     }
 
-    // MARK: - Flow
-
     /// What the shortcut does: start if idle, finish if recording.
     public func toggle() {
         switch phase {
@@ -93,14 +92,34 @@ public final class QuickDictationController {
         }
     }
 
+    /// Escape, claimed globally only while a dictation is running.
+    ///
+    /// The bubble deliberately never takes keyboard focus — that is what keeps
+    /// the caret in the target app — so the only way to offer a keyboard cancel
+    /// is to borrow the key for the few seconds it is needed.
+    private func claimCancelKey() {
+        let escape = GlobalShortcut(keyCode: UInt32(kVK_Escape), carbonModifiers: 0, keyLabel: "⎋")
+        try? HotKeyCenter.shared.register(escape, owner: Self.cancelHotKeyOwner) { [weak self] in
+            Task { await self?.cancel() }
+        }
+    }
+
+    private func releaseCancelKey() {
+        HotKeyCenter.shared.unregister(owner: Self.cancelHotKeyOwner)
+    }
+
+    // MARK: - Flow
+
     public func start() async {
         guard phase == .idle || isFinished else { return }
 
         dismissTask?.cancel()
-        // Remembered now, because once the panel is up, Anvil is frontmost.
+        // Both of these have to be read before the bubble exists.
         previousApplication = NSWorkspace.shared.frontmostApplication
+        targetAcceptsText = settings[.quickDictationPastes] && PasteService.focusedElementIsEditable()
+
         phase = .starting
-        showPanel()
+        showBubble()
 
         await session.reset()
         await session.start(locale: locale, keepAudio: settings[.keepAudio])
@@ -110,11 +129,14 @@ public final class QuickDictationController {
             scheduleDismiss(after: 3)
             return
         }
+
         phase = .recording
+        claimCancelKey()
     }
 
     public func finish() async {
         guard phase == .recording else { return }
+        releaseCancelKey()
 
         await session.stop()
         let raw = session.transcript.finalizedText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -129,19 +151,20 @@ public final class QuickDictationController {
         let text = await cleanUp(raw)
 
         context.pasteboard.copy(text)
-        phase = .delivered(text)
 
-        if settings[.quickDictationPastes] {
+        if targetAcceptsText {
             await PasteService.paste(into: previousApplication)
         }
-        scheduleDismiss(after: 1.2)
+        phase = .delivered(didPaste: targetAcceptsText)
+        scheduleDismiss(after: 1.1)
     }
 
     public func cancel() async {
         dismissTask?.cancel()
+        releaseCancelKey()
         await session.discard()
         phase = .idle
-        hidePanel()
+        hideBubble()
     }
 
     // MARK: - Clean-up
@@ -182,16 +205,16 @@ public final class QuickDictationController {
         return false
     }
 
-    // MARK: - Panel
+    // MARK: - Bubble
 
-    private func showPanel() {
+    private func showBubble() {
         if panel == nil {
             panel = QuickDictationPanel(controller: self)
         }
         panel?.present()
     }
 
-    private func hidePanel() {
+    private func hideBubble() {
         panel?.orderOut(nil)
         phase = .idle
     }
@@ -201,7 +224,7 @@ public final class QuickDictationController {
         dismissTask = Task { @MainActor [weak self] in
             try? await Task.sleep(for: .seconds(seconds))
             guard !Task.isCancelled else { return }
-            self?.hidePanel()
+            self?.hideBubble()
         }
     }
 }
@@ -224,8 +247,10 @@ extension SettingKey {
         SettingKey<RefinementStyle>("speech.quickDictation.style", default: .verbatim)
     }
 
-    /// Post ⌘V into the app that was in front. Needs Accessibility.
+    /// Type the result into the focused text field. On by default: it is what
+    /// the feature is for. Falls back to the clipboard whenever the focus is
+    /// not editable, or the Accessibility permission is missing.
     public static var quickDictationPastes: SettingKey<Bool> {
-        SettingKey<Bool>("speech.quickDictation.paste", default: false)
+        SettingKey<Bool>("speech.quickDictation.paste", default: true)
     }
 }

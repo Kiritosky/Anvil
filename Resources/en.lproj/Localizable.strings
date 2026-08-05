@@ -76,6 +76,7 @@
 "Aus Favoriten entfernen" = "Remove from favourites";
 "Aus Stichworten eine Nachricht" = "A message from a few notes";
 "Aus „das das\" wird „das\". Beabsichtigte Doppelungen wie „sehr sehr\" bleiben." = "“the the” becomes “the”. Deliberate doubling like “very very” is kept.";
+"Aus: der Text liegt immer nur in der Zwischenablage." = "Off: the text always goes to the clipboard only.";
 "Aus: der Text liegt nur in der Zwischenablage." = "Off: the text only goes to the clipboard.";
 "Ausblenden" = "Dismiss";
 "Ausführen" = "Run";
@@ -109,6 +110,7 @@
 "Coding" = "Coding";
 "Commit-Message" = "Commit message";
 "Da ist noch nichts." = "There is nothing here yet.";
+"Dafür fehlt noch die Bedienungshilfen-Berechtigung — bis dahin nur Zwischenablage." = "The Accessibility permission is still missing — clipboard only until then.";
 "Dafür fehlt noch die Bedienungshilfen-Berechtigung." = "The Accessibility permission is still missing for this.";
 "Das Audioformat des Mikrofons lässt sich nicht in das Format der Spracherkennung umwandeln." = "The microphone’s audio format cannot be converted to the format speech recognition needs.";
 "Das ist kein gültiges Base64." = "That is not valid Base64.";
@@ -173,6 +175,7 @@
 "Einfügen" = "Paste";
 "Eingabe" = "Input";
 "Eingabe passt nicht" = "Input does not fit";
+"Eingefügt" = "Inserted";
 "Einstellungen" = "Settings";
 "Einträge pro Tool" = "Entries per tool";
 "Englisch" = "English";
@@ -238,6 +241,7 @@
 "Gesichert" = "Saved";
 "Geänderter Text …" = "Changed text…";
 "Gilt für neue Sitzungen. Im Tool selbst lässt sich das jederzeit umstellen." = "Applies to new sessions. You can change it inside the tool at any time.";
+"Ging nicht" = "Didn’t work";
 "Gleicher Inhalt, anderer Ton" = "Same content, different tone";
 "Gliedert den Inhalt in Stichpunkte." = "Breaks the content into bullet points.";
 "Globale Tastenkürzel konnten nicht eingerichtet werden." = "Global shortcuts could not be set up.";
@@ -264,6 +268,7 @@
 "In der Zwischenablage" = "On the clipboard";
 "In die Zwischenablage kopieren" = "Copy to clipboard";
 "In diesem Repository gibt es keine Änderungen." = "There are no changes in this repository.";
+"In Textfelder einfügen" = "Insert into text fields";
 "installiert" = "installed";
 "Italienisch" = "Italian";
 "Jeder abgeschlossene Durchlauf landet hier." = "Every completed run ends up here.";
@@ -301,6 +306,7 @@
 "Kopiervorlage für eigene Prompt-Tools" = "A template to copy for your own prompt tools";
 "Korrektheit" = "correctness";
 "kurz" = "brief";
+"Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der aufgeräumte Text geht ins Textfeld, in dem der Cursor steht — sonst in die Zwischenablage. ⎋ verwirft. Das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The cleaned-up text goes into the text field the caret sits in — otherwise to the clipboard. ⎋ discards. The main window stays closed.";
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der Text wird aufgeräumt und liegt danach in der Zwischenablage — das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The text is cleaned up and ends up on the clipboard — the main window stays closed.";
 "Kürzel entfernen" = "Remove shortcut";
 "kürzer" = "shorter";
@@ -430,6 +436,7 @@
 "Startet den Modell-Durchlauf, sobald die Aufnahme endet." = "Starts the model run as soon as recording ends.";
 "Startet …" = "Starting…";
 "Status" = "Status";
+"Steht der Cursor in einem Textfeld, tippt Anvil den Text dort hinein. Sonst bleibt er in der Zwischenablage." = "If the caret is in a text field, Anvil types the text there. Otherwise it stays on the clipboard.";
 "Stichpunkte" = "Bullet points";
 "Stichpunkte " = "bullet points";
 "Stichworte, worum es geht …" = "Notes on what it is about…";
@@ -484,6 +491,7 @@
 "Verkleinern" = "Minify";
 "Verlauf" = "History";
 "verwerfen" = "discard";
+"Verwerfen (⎋)" = "Discard (⎋)";
 "Von Hex" = "From hex";
 "Von überall diktieren" = "Dictate from anywhere";
 "Voreinstellung" = "Preset";

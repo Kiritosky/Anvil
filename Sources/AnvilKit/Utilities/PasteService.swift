@@ -34,6 +34,55 @@ public enum PasteService {
         NSWorkspace.shared.open(url)
     }
 
+    /// Whether the keyboard focus is currently sitting in something editable.
+    ///
+    /// Asked *before* Anvil shows anything, because the moment a panel appears
+    /// the focused element would be Anvil's own. The answer decides whether the
+    /// finished dictation gets pasted or only copied — pressing ⌘V into a
+    /// Finder window or a game does nothing good.
+    ///
+    /// Returns `false` without the Accessibility permission, which is the safe
+    /// answer: the text still reaches the clipboard.
+    public static func focusedElementIsEditable() -> Bool {
+        guard isTrusted else { return false }
+
+        let systemWide = AXUIElementCreateSystemWide()
+        var focused: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(
+            systemWide,
+            kAXFocusedUIElementAttribute as CFString,
+            &focused
+        ) == .success else { return false }
+
+        guard CFGetTypeID(focused) == AXUIElementGetTypeID() else { return false }
+        // swiftlint:disable:next force_cast
+        let element = focused as! AXUIElement
+
+        // Two questions, either of which is a good enough yes: does it call
+        // itself a text control, and can its value actually be written?
+        var role: CFTypeRef?
+        if AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &role) == .success,
+           let roleName = role as? String,
+           editableRoles.contains(roleName) {
+            return true
+        }
+
+        var isSettable: DarwinBoolean = false
+        guard AXUIElementIsAttributeSettable(
+            element,
+            kAXValueAttribute as CFString,
+            &isSettable
+        ) == .success else { return false }
+        return isSettable.boolValue
+    }
+
+    private static let editableRoles: Set<String> = [
+        kAXTextFieldRole,
+        kAXTextAreaRole,
+        kAXComboBoxRole,
+        "AXSearchField"
+    ]
+
     /// Brings `application` back to the front and posts ⌘V.
     ///
     /// - Parameter application: the app that was frontmost before Anvil's panel

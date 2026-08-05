@@ -103,9 +103,18 @@ fertige Dateien. `DictationSession` fasst Aufnahme und Erkennung zu der Einheit
 zusammen, die Tools tatsächlich bedienen.
 
 `QuickDictationController` (in `AnvilToolbox`) setzt darauf das Diktat von
-überall: globales Kürzel über `HotKeyCenter`, ein nicht-aktivierendes `NSPanel`
-über allen Apps, deterministische Bereinigung plus optionaler Modell-Durchlauf,
-danach Zwischenablage und wahlweise ⌘V in die App, die vorher vorne war.
+überall: globales Kürzel über `HotKeyCenter`, eine kleine Bubble über allen
+Apps, deterministische Bereinigung plus optionaler Modell-Durchlauf, danach
+Zwischenablage und — sofern der Cursor in einem Textfeld stand — ⌘V in die App,
+die vorher vorne war.
+
+Die Bubble nimmt **nie** den Tastaturfokus. Das ist die eine Entscheidung, an
+der das Einfügen hängt: ein Fenster, das Key wird, zieht den Fokus aus dem
+Zieltextfeld, und in manchen Apps geht dabei die Auswahl verloren. Escape wird
+deshalb nicht über das Fenster gelöst, sondern während der Aufnahme kurzzeitig
+als globales Kürzel belegt. Ob überhaupt eingefügt wird, entscheidet
+`PasteService.focusedElementIsEditable()` — abgefragt beim Tastendruck, bevor
+irgendetwas von Anvil sichtbar ist.
 
 Zwei Fallstricke sind hier bewusst gelöst:
 
