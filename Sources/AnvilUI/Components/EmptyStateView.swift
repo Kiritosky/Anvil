@@ -5,15 +5,15 @@ import SwiftUI
 /// Every empty pane in the app uses this, so "nothing here yet" always looks
 /// deliberate rather than broken.
 public struct EmptyStateView<Actions: View>: View {
-    private let title: String
-    private let message: String
+    private let title: LocalizedStringKey
+    private let message: LocalizedStringKey?
     private let systemImage: String
     private let tone: AnvilTone
     private let actions: Actions
 
     public init(
-        title: String,
-        message: String = "",
+        title: LocalizedStringKey,
+        message: LocalizedStringKey? = nil,
         systemImage: String,
         tone: AnvilTone = .neutral,
         @ViewBuilder actions: () -> Actions
@@ -35,7 +35,7 @@ public struct EmptyStateView<Actions: View>: View {
                 Text(title)
                     .font(AnvilFont.body.weight(.medium))
                     .foregroundStyle(AnvilColor.textSecondary)
-                if !message.isEmpty {
+                if let message {
                     Text(message)
                         .font(AnvilFont.caption)
                         .foregroundStyle(AnvilColor.textTertiary)
@@ -54,8 +54,8 @@ public struct EmptyStateView<Actions: View>: View {
 
 extension EmptyStateView where Actions == EmptyView {
     public init(
-        title: String,
-        message: String = "",
+        title: LocalizedStringKey,
+        message: LocalizedStringKey? = nil,
         systemImage: String,
         tone: AnvilTone = .neutral
     ) {

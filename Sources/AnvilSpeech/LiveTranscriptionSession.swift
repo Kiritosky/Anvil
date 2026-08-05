@@ -70,7 +70,7 @@ public final class LiveTranscriptionSession {
         guard let format = await SpeechAnalyzer.bestAvailableAudioFormat(compatibleWith: [transcriber])
         else {
             throw AnvilError.unexpected(
-                "Für \(catalog.displayName(for: locale)) ist kein passendes Audioformat verfügbar."
+                localized("Für \(catalog.displayName(for: locale)) ist kein passendes Audioformat verfügbar.")
             )
         }
         analyzerFormat = format
@@ -91,7 +91,7 @@ public final class LiveTranscriptionSession {
         } catch {
             await teardown()
             throw AnvilError.unexpected(
-                "Die Spracherkennung konnte nicht gestartet werden: \(error.localizedDescription)"
+                localized("Die Spracherkennung konnte nicht gestartet werden: \(error.localizedDescription)")
             )
         }
 

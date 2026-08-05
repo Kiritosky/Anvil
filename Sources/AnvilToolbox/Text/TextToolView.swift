@@ -57,7 +57,7 @@ public struct TextToolView: View {
         AnvilPane("Eingabe", systemImage: "square.and.pencil") {
             AnvilTextEditor(
                 text: $input,
-                placeholder: tool.placeholder,
+                placeholder: .resolved(tool.placeholder),
                 isMonospaced: tool.isMonospaced
             )
             .onChange(of: input) { _, _ in run() }
@@ -88,7 +88,7 @@ public struct TextToolView: View {
             if let failure {
                 EmptyStateView(
                     title: "Geht so nicht",
-                    message: failure,
+                    message: .resolved(failure),
                     systemImage: "exclamationmark.triangle",
                     tone: .warning
                 )
@@ -124,7 +124,11 @@ public struct TextToolView: View {
                 StatusMetric("\(delta) %", label: "Größe", systemImage: "arrow.up.arrow.down")
             }
         } trailing: {
-            StatusPill(activeMode.title, systemImage: activeMode.systemImage, tone: .accent)
+            StatusPill(
+                .resolved(activeMode.title),
+                systemImage: activeMode.systemImage,
+                tone: .accent
+            )
         }
     }
 

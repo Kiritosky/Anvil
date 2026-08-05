@@ -29,15 +29,15 @@ public enum AIUnavailableReason: Sendable, Equatable {
     public var message: String {
         switch self {
         case .appleIntelligenceDisabled:
-            "Apple Intelligence ist auf diesem Mac nicht eingeschaltet."
+            localized("Apple Intelligence ist auf diesem Mac nicht eingeschaltet.")
         case .deviceNotEligible:
-            "Dieser Mac unterstützt das On-Device-Modell nicht."
+            localized("Dieser Mac unterstützt das On-Device-Modell nicht.")
         case .modelNotReady:
-            "Das Modell wird noch geladen. Versuch es gleich noch einmal."
+            localized("Das Modell wird noch geladen. Versuch es gleich noch einmal.")
         case .missingCredentials:
-            "Für diesen Anbieter fehlt der API-Schlüssel."
+            localized("Für diesen Anbieter fehlt der API-Schlüssel.")
         case .notConfigured:
-            "Dieser Anbieter ist noch nicht eingerichtet."
+            localized("Dieser Anbieter ist noch nicht eingerichtet.")
         case let .other(text):
             text
         }

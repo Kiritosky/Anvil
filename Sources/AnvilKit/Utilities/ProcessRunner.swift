@@ -86,7 +86,7 @@ public struct ProcessRunner: Sendable {
             } catch {
                 guard state.finish() else { return }
                 continuation.resume(throwing: AnvilError.unexpected(
-                    "\(executable) konnte nicht gestartet werden: \(error.localizedDescription)"
+                    localized("\(executable) konnte nicht gestartet werden: \(error.localizedDescription)")
                 ))
                 return
             }

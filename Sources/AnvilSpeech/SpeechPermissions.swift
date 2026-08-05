@@ -59,12 +59,12 @@ public enum SpeechPermissions {
     public static func requestAll() async throws {
         guard await requestMicrophone() == .granted else {
             throw AnvilError.permissionDenied(
-                "Anvil darf das Mikrofon nicht benutzen."
+                localized("Anvil darf das Mikrofon nicht benutzen.")
             )
         }
         guard await requestSpeechRecognition() == .granted else {
             throw AnvilError.permissionDenied(
-                "Anvil darf die Spracherkennung nicht benutzen."
+                localized("Anvil darf die Spracherkennung nicht benutzen.")
             )
         }
     }

@@ -73,7 +73,7 @@ public struct Chip: View {
                     Image(systemName: systemImage)
                         .font(.system(size: 9, weight: .semibold))
                 }
-                Text(title)
+                Text(.resolved(title))
                     .font(AnvilFont.caption.weight(isSelected ? .semibold : .regular))
             }
             .foregroundStyle(isSelected ? tone.color : AnvilColor.textSecondary)

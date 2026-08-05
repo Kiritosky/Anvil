@@ -6,7 +6,7 @@ import SwiftUI
 /// the app, and no focus treatment. This adds all three and nothing else.
 public struct AnvilTextEditor: View {
     @Binding private var text: String
-    private let placeholder: String
+    private let placeholder: LocalizedStringKey?
     private let isMonospaced: Bool
     private let isEditable: Bool
 
@@ -14,7 +14,7 @@ public struct AnvilTextEditor: View {
 
     public init(
         text: Binding<String>,
-        placeholder: String = "",
+        placeholder: LocalizedStringKey? = nil,
         isMonospaced: Bool = false,
         isEditable: Bool = true
     ) {
@@ -35,7 +35,7 @@ public struct AnvilTextEditor: View {
             .focused($isFocused)
             .disabled(!isEditable)
             .overlay(alignment: .topLeading) {
-                if text.isEmpty, !placeholder.isEmpty {
+                if text.isEmpty, let placeholder {
                     Text(placeholder)
                         .font(isMonospaced ? AnvilFont.mono : AnvilFont.body)
                         .foregroundStyle(AnvilColor.textTertiary)
@@ -96,13 +96,13 @@ public struct AnvilTextView: View {
 /// A single-line field styled like the rest of the app.
 public struct AnvilTextField: View {
     @Binding private var text: String
-    private let placeholder: String
+    private let placeholder: LocalizedStringKey
     private let isMonospaced: Bool
     private let isSecure: Bool
 
     public init(
         text: Binding<String>,
-        placeholder: String = "",
+        placeholder: LocalizedStringKey = "",
         isMonospaced: Bool = false,
         isSecure: Bool = false
     ) {

@@ -18,7 +18,7 @@ public struct KeychainStore: Sendable {
             return
         }
         guard let data = secret.data(using: .utf8) else {
-            throw AnvilError.storage("Der Schlüssel konnte nicht kodiert werden.")
+            throw AnvilError.storage(localized("Der Schlüssel konnte nicht kodiert werden."))
         }
 
         let query: [String: Any] = [

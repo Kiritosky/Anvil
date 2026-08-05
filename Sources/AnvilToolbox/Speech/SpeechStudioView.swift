@@ -112,7 +112,7 @@ public struct SpeechStudioView: View {
             if let url = exportedURL {
                 AnvilBanner(
                     title: "Gesichert",
-                    message: url.lastPathComponent,
+                    message: .resolved(url.lastPathComponent),
                     tone: .success,
                     actionTitle: "Im Finder zeigen",
                     action: { NSWorkspace.shared.activateFileViewerSelecting([url]) },
@@ -224,7 +224,7 @@ public struct SpeechStudioView: View {
 
     private var resultPane: some View {
         AnvilPane(
-            model.refinedText.isEmpty ? "Bereinigt" : "Ergebnis · \(model.style.title)",
+            model.refinedText.isEmpty ? "Bereinigt" : .resolved("Ergebnis · \(model.style.title)"),
             systemImage: model.refinedText.isEmpty ? "eraser" : model.style.systemImage,
             tone: model.refinedText.isEmpty ? .neutral : .ai
         ) {
@@ -345,7 +345,11 @@ public struct SpeechStudioView: View {
             }
         }
 
-        InspectorSection("Stil", systemImage: "wand.and.stars", footnote: model.style.explanation) {
+        InspectorSection(
+            "Stil",
+            systemImage: "wand.and.stars",
+            footnote: .resolved(model.style.explanation)
+        ) {
             ChipPicker(
                 selection: $model.style,
                 options: RefinementStyle.offered,
@@ -372,7 +376,7 @@ public struct SpeechStudioView: View {
         InspectorSection(
             "Füllwörter",
             systemImage: "eraser",
-            footnote: model.cleanerStrength.explanation
+            footnote: .resolved(model.cleanerStrength.explanation)
         ) {
             ChipPicker(
                 selection: $model.cleanerStrength,
@@ -422,8 +426,8 @@ struct HistorySheet: View {
     var body: some View {
         VStack(spacing: 0) {
             ToolHeaderBar(
-                title: "Verlauf",
-                subtitle: "\(entries.count) gespeicherte Durchläufe",
+                title: localized("Verlauf"),
+                subtitle: localized("\(entries.count) gespeicherte Durchläufe"),
                 systemImage: "clock.arrow.circlepath"
             ) {
                 AnvilButton("Fertig", role: .secondary) { dismiss() }

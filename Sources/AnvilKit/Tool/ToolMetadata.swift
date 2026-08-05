@@ -20,11 +20,11 @@ public enum ToolRequirement: String, Hashable, Sendable, Codable, CaseIterable {
 
     public var localizedDescription: String {
         switch self {
-        case .languageModel: "Sprachmodell"
-        case .onDeviceLanguageModel: "On-Device-Modell"
-        case .microphone: "Mikrofon"
-        case .speechRecognition: "Spracherkennung"
-        case .network: "Netzwerk"
+        case .languageModel: localized("Sprachmodell")
+        case .onDeviceLanguageModel: localized("On-Device-Modell")
+        case .microphone: localized("Mikrofon")
+        case .speechRecognition: localized("Spracherkennung")
+        case .network: localized("Netzwerk")
         case .git: "git"
         }
     }
@@ -56,14 +56,17 @@ public struct ToolMetadata: Hashable, Sendable, Identifiable {
         requirements: Set<ToolRequirement> = [],
         badge: String? = nil
     ) {
+        // Display text is translated here, once, so that every consumer —
+        // sidebar, search, Tool Store, window title — sees the same string and
+        // no call site has to remember to localise.
         self.id = id
-        self.title = title
-        self.subtitle = subtitle
+        self.title = localized(runtime: title)
+        self.subtitle = localized(runtime: subtitle)
         self.systemImage = systemImage
         self.category = category
-        self.keywords = keywords
+        self.keywords = keywords.map { localized(runtime: $0) }
         self.requirements = requirements
-        self.badge = badge
+        self.badge = badge.map { localized(runtime: $0) }
     }
 
     /// The haystack used by the command palette and sidebar filter.

@@ -27,7 +27,7 @@ public final class AudioFileTranscriber {
 
     /// Transcribes `url` and returns the finished transcript.
     public func transcribe(url: URL, locale: Locale) async throws -> Transcript {
-        guard !isTranscribing else { throw AnvilError.invalidInput("Es läuft bereits eine Transkription.") }
+        guard !isTranscribing else { throw AnvilError.invalidInput(localized("Es läuft bereits eine Transkription.")) }
 
         isTranscribing = true
         progress = 0
@@ -39,7 +39,7 @@ public final class AudioFileTranscriber {
             file = try AVAudioFile(forReading: url)
         } catch {
             throw AnvilError.invalidInput(
-                "Die Datei konnte nicht gelesen werden: \(error.localizedDescription)"
+                localized("Die Datei konnte nicht gelesen werden: \(error.localizedDescription)")
             )
         }
 
@@ -54,7 +54,7 @@ public final class AudioFileTranscriber {
         guard let analyzerFormat = await SpeechAnalyzer.bestAvailableAudioFormat(
             compatibleWith: [transcriber]
         ) else {
-            throw AnvilError.unexpected("Kein passendes Audioformat für die Spracherkennung.")
+            throw AnvilError.unexpected(localized("Kein passendes Audioformat für die Spracherkennung."))
         }
         converter.reset()
 
@@ -82,7 +82,7 @@ public final class AudioFileTranscriber {
             continuation.finish()
             collector.cancel()
             throw AnvilError.unexpected(
-                "Die Spracherkennung konnte nicht gestartet werden: \(error.localizedDescription)"
+                localized("Die Spracherkennung konnte nicht gestartet werden: \(error.localizedDescription)")
             )
         }
 

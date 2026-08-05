@@ -65,7 +65,7 @@ public enum TextToolCatalog {
                 },
                 TextToolMode(id: "decode", title: "Dekodieren", systemImage: "lock.open") { input in
                     guard let data = Data(base64Encoded: paddedBase64(input)) else {
-                        throw AnvilError.invalidInput("Das ist kein gültiges Base64.")
+                        throw AnvilError.invalidInput(localized("Das ist kein gültiges Base64."))
                     }
                     return String(decoding: data, as: UTF8.self)
                 },
@@ -94,20 +94,20 @@ public enum TextToolCatalog {
                     guard let encoded = input.addingPercentEncoding(
                         withAllowedCharacters: .alphanumerics.union(CharacterSet(charactersIn: "-._~"))
                     ) else {
-                        throw AnvilError.invalidInput("Der Text lässt sich nicht kodieren.")
+                        throw AnvilError.invalidInput(localized("Der Text lässt sich nicht kodieren."))
                     }
                     return encoded
                 },
                 TextToolMode(id: "decode", title: "Dekodieren", systemImage: "lock.open") { input in
                     guard let decoded = input.removingPercentEncoding else {
-                        throw AnvilError.invalidInput("Das ist keine gültige prozentkodierte Zeichenkette.")
+                        throw AnvilError.invalidInput(localized("Das ist keine gültige prozentkodierte Zeichenkette."))
                     }
                     return decoded
                 },
                 TextToolMode(id: "query", title: "Parameter auflisten", systemImage: "list.bullet") { input in
                     guard let components = URLComponents(string: input.trimmingCharacters(in: .whitespacesAndNewlines))
                     else {
-                        throw AnvilError.invalidInput("Das ist keine gültige URL.")
+                        throw AnvilError.invalidInput(localized("Das ist keine gültige URL."))
                     }
                     let items = components.queryItems ?? []
                     guard !items.isEmpty else { return "Keine Query-Parameter." }
@@ -137,7 +137,7 @@ public enum TextToolCatalog {
                     let parts = input.trimmingCharacters(in: .whitespacesAndNewlines)
                         .split(separator: ".", omittingEmptySubsequences: false)
                     guard parts.count >= 2 else {
-                        throw AnvilError.invalidInput("Ein JWT besteht aus drei mit Punkt getrennten Teilen.")
+                        throw AnvilError.invalidInput(localized("Ein JWT besteht aus drei mit Punkt getrennten Teilen."))
                     }
 
                     let header = try decodeJWTSegment(String(parts[0]), label: "Header")
@@ -239,7 +239,7 @@ public enum TextToolCatalog {
                         return describeDate(date)
                     }
                     guard let date = parseDate(trimmed) else {
-                        throw AnvilError.invalidInput("Weder Unix-Zeit noch ein erkennbares Datum.")
+                        throw AnvilError.invalidInput(localized("Weder Unix-Zeit noch ein erkennbares Datum."))
                     }
                     return describeDate(date)
                 },
@@ -344,14 +344,14 @@ public enum TextToolCatalog {
                         .replacingOccurrences(of: "\n", with: "")
                         .replacingOccurrences(of: "0x", with: "")
                     guard cleaned.count.isMultiple(of: 2) else {
-                        throw AnvilError.invalidInput("Hex braucht eine gerade Anzahl Zeichen.")
+                        throw AnvilError.invalidInput(localized("Hex braucht eine gerade Anzahl Zeichen."))
                     }
                     var bytes = [UInt8]()
                     var index = cleaned.startIndex
                     while index < cleaned.endIndex {
                         let next = cleaned.index(index, offsetBy: 2)
                         guard let byte = UInt8(cleaned[index..<next], radix: 16) else {
-                            throw AnvilError.invalidInput("„\(cleaned[index..<next])\" ist kein Hex-Byte.")
+                            throw AnvilError.invalidInput(localized("„\(cleaned[index..<next])\" ist kein Hex-Byte."))
                         }
                         bytes.append(byte)
                         index = next
@@ -433,7 +433,7 @@ public enum TextToolCatalog {
     private static func parseJSON(_ input: String) throws -> Any {
         let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
-            throw AnvilError.invalidInput("Da ist noch nichts.")
+            throw AnvilError.invalidInput(localized("Da ist noch nichts."))
         }
         do {
             return try JSONSerialization.jsonObject(
@@ -441,7 +441,7 @@ public enum TextToolCatalog {
                 options: [.fragmentsAllowed]
             )
         } catch {
-            throw AnvilError.invalidInput("Kein gültiges JSON: \(error.localizedDescription)")
+            throw AnvilError.invalidInput(localized("Kein gültiges JSON: \(error.localizedDescription)"))
         }
     }
 
@@ -473,7 +473,7 @@ public enum TextToolCatalog {
 
     private static func decodeJWTSegment(_ segment: String, label: String) throws -> String {
         guard let data = Data(base64Encoded: paddedBase64(segment)) else {
-            throw AnvilError.invalidInput("Der \(label) ist kein gültiges Base64.")
+            throw AnvilError.invalidInput(localized("Der \(label) ist kein gültiges Base64."))
         }
         guard let object = try? JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed]),
               let pretty = try? JSONSerialization.data(

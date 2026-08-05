@@ -7,7 +7,7 @@ import SwiftUI
 /// press it twice. The checkmark holds for a beat, then reverts.
 public struct CopyButton: View {
     private let text: () -> String
-    private let label: String?
+    private let label: LocalizedStringKey?
     private let onCopy: ((String) -> Void)?
 
     @State private var didCopy = false
@@ -22,7 +22,7 @@ public struct CopyButton: View {
 
     /// Labelled variant for action rows.
     public init(
-        _ label: String,
+        _ label: LocalizedStringKey,
         text: @autoclosure @escaping () -> String,
         onCopy: ((String) -> Void)? = nil
     ) {

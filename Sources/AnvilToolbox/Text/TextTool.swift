@@ -21,7 +21,7 @@ public struct TextToolMode: Identifiable, Sendable {
         run: @escaping @Sendable (String) throws -> String
     ) {
         self.id = id
-        self.title = title
+        self.title = localized(runtime: title)
         self.systemImage = systemImage
         self.run = run
     }

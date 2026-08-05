@@ -2,13 +2,13 @@ import SwiftUI
 
 /// A small tinted capsule: model status, "on-device", "3 Fehler".
 public struct StatusPill: View {
-    private let text: String
+    private let text: LocalizedStringKey
     private let systemImage: String?
     private let tone: AnvilTone
     private let isProminent: Bool
 
     public init(
-        _ text: String,
+        _ text: LocalizedStringKey,
         systemImage: String? = nil,
         tone: AnvilTone = .neutral,
         isProminent: Bool = false
@@ -73,11 +73,11 @@ public struct ActivityDot: View {
 /// A determinate or indeterminate progress strip used while a model streams
 /// or an asset downloads.
 public struct ProgressStrip: View {
-    private let title: String
+    private let title: LocalizedStringKey
     private let progress: Double?
     private let tone: AnvilTone
 
-    public init(_ title: String, progress: Double? = nil, tone: AnvilTone = .ai) {
+    public init(_ title: LocalizedStringKey, progress: Double? = nil, tone: AnvilTone = .ai) {
         self.title = title
         self.progress = progress
         self.tone = tone

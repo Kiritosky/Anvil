@@ -87,7 +87,7 @@ public struct AIPromptToolView: View {
     }
 
     private var inputPane: some View {
-        AnvilPane(inputPaneTitle, systemImage: tool.inputSource == .gitDiff ? "arrow.triangle.branch" : "square.and.pencil") {
+        AnvilPane(.resolved(inputPaneTitle), systemImage: tool.inputSource == .gitDiff ? "arrow.triangle.branch" : "square.and.pencil") {
             if tool.inputSource == .gitDiff, input.isEmpty {
                 EmptyStateView(
                     title: "Kein Diff geladen",
@@ -101,7 +101,7 @@ public struct AIPromptToolView: View {
             } else {
                 AnvilTextEditor(
                     text: $input,
-                    placeholder: tool.inputPlaceholder,
+                    placeholder: .resolved(tool.inputPlaceholder),
                     isMonospaced: tool.isMonospacedInput
                 )
             }
@@ -146,7 +146,7 @@ public struct AIPromptToolView: View {
             if output.isEmpty, !isRunning {
                 EmptyStateView(
                     title: "Noch nichts erzeugt",
-                    message: tool.subtitle,
+                    message: .resolved(tool.subtitle),
                     systemImage: tool.systemImage,
                     tone: .ai
                 ) {
@@ -194,7 +194,11 @@ public struct AIPromptToolView: View {
             }
         }
 
-        InspectorSection("Was dieses Tool macht", systemImage: "info.circle", footnote: tool.subtitle) {
+        InspectorSection(
+            "Was dieses Tool macht",
+            systemImage: "info.circle",
+            footnote: .resolved(tool.subtitle)
+        ) {
             Text(tool.instructions)
                 .font(AnvilFont.caption)
                 .foregroundStyle(AnvilColor.textTertiary)
@@ -236,7 +240,7 @@ public struct AIPromptToolView: View {
 
         switch option.kind {
         case .choice:
-            OptionRow(option.label, help: option.help) {
+            OptionRow(.resolved(option.label), help: .resolved(option.help)) {
                 ChipPicker(
                     selection: binding,
                     options: option.choices,
@@ -245,8 +249,8 @@ public struct AIPromptToolView: View {
                 )
             }
         case .text:
-            OptionRow(option.label, help: option.help) {
-                AnvilTextField(text: binding, placeholder: option.defaultValue)
+            OptionRow(.resolved(option.label), help: .resolved(option.help)) {
+                AnvilTextField(text: binding, placeholder: .resolved(option.defaultValue))
             }
         case .toggle:
             Toggle(
@@ -334,7 +338,7 @@ public struct AIPromptToolView: View {
                 diff = try await runner.git(["diff"], in: repositoryURL)
             }
             guard !diff.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-                error = .invalidInput("In diesem Repository gibt es keine Änderungen.")
+                error = .invalidInput(localized("In diesem Repository gibt es keine Änderungen."))
                 return
             }
             input = diff

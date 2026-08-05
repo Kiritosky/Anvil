@@ -47,6 +47,17 @@ for bundle in "$BIN_DIR"/*.bundle; do
     cp -R "$bundle" "$APP/Contents/Resources/"
 done
 
+# Translations. German is the source language and needs no .lproj — its strings
+# are the keys — so only the other languages are copied. Without this step the
+# app still runs, just always in German.
+lproj_count=0
+for lproj in "$ROOT"/Resources/*.lproj; do
+    [ -d "$lproj" ] || continue
+    cp -R "$lproj" "$APP/Contents/Resources/"
+    lproj_count=$((lproj_count + 1))
+done
+echo "    $lproj_count Übersetzung(en) kopiert"
+
 if [ -e "$ROOT/Resources/AppIcon.icns" ]; then
     cp "$ROOT/Resources/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
     /usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string AppIcon" "$APP/Contents/Info.plist" 2>/dev/null || true

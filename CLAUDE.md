@@ -53,6 +53,19 @@ noch die App-Shell — dadurch bleibt der Kern austauschbar.
   niemals über Alerts oder `print`.
 - Neue Komponenten kommen nach `AnvilUI`, sobald sie ein zweites Tool braucht.
 
+## Sprache
+
+- **Jeder Anzeigetext ist übersetzbar.** Der deutsche Text ist gleichzeitig der
+  Schlüssel — es gibt keine erfundenen Schlüsselnamen.
+- Literale in Views gehen an Komponenten, die `LocalizedStringKey` nehmen.
+  Text aus Modellen, Katalogen und Fehlern läuft über `localized(…)`.
+  Bereits übersetzte Werte werden mit `.resolved(…)` markiert.
+- Nie übersetzt werden SF-Symbol-Namen, Bezeichner, Modellnamen und Pfade —
+  dafür `Text(verbatim:)` bzw. `Text.raw(_:)`.
+- Nach neuen Texten `./Scripts/check-translations.py` laufen lassen und
+  `Resources/en.lproj/Localizable.strings` ergänzen. Details in
+  `docs/LOCALIZATION.md`.
+
 ## Build
 
 ```sh
@@ -60,6 +73,7 @@ noch die App-Shell — dadurch bleibt der Kern austauschbar.
 ./Scripts/build-app.sh release    # Release-Bundle
 ./Scripts/run.sh                  # bauen + starten
 swift test                        # Unit-Tests
+./Scripts/check-translations.py   # fehlende Übersetzungen
 ```
 
 ## Neue Tools

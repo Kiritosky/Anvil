@@ -30,15 +30,15 @@ public struct InspectorPane<Content: View>: View {
 
 /// A titled group of options inside the inspector.
 public struct InspectorSection<Content: View>: View {
-    private let title: String
+    private let title: LocalizedStringKey
     private let systemImage: String?
-    private let footnote: String?
+    private let footnote: LocalizedStringKey?
     private let content: Content
 
     public init(
-        _ title: String,
+        _ title: LocalizedStringKey,
         systemImage: String? = nil,
-        footnote: String? = nil,
+        footnote: LocalizedStringKey? = nil,
         @ViewBuilder content: () -> Content
     ) {
         self.title = title
@@ -54,7 +54,8 @@ public struct InspectorSection<Content: View>: View {
                     Image(systemName: systemImage)
                         .font(.system(size: 9, weight: .bold))
                 }
-                Text(title.uppercased())
+                Text(title)
+                    .textCase(.uppercase)
                     .font(AnvilFont.label)
                     .tracking(0.6)
             }
@@ -80,11 +81,15 @@ public struct InspectorSection<Content: View>: View {
 /// Vertical rather than side-by-side: the inspector is narrow, and stacked
 /// labels keep long German option names from truncating.
 public struct OptionRow<Control: View>: View {
-    private let label: String
-    private let help: String?
+    private let label: LocalizedStringKey
+    private let help: LocalizedStringKey?
     private let control: Control
 
-    public init(_ label: String, help: String? = nil, @ViewBuilder control: () -> Control) {
+    public init(
+        _ label: LocalizedStringKey,
+        help: LocalizedStringKey? = nil,
+        @ViewBuilder control: () -> Control
+    ) {
         self.label = label
         self.help = help
         self.control = control()

@@ -56,7 +56,7 @@ public final class AudioRecorder {
         let format = input.outputFormat(forBus: 0)
         guard format.sampleRate > 0 else {
             throw AnvilError.unexpected(
-                "Es ist kein Audioeingang verfügbar. Prüfe unter Systemeinstellungen › Ton, ob ein Mikrofon ausgewählt ist."
+                localized("Es ist kein Audioeingang verfügbar. Prüfe unter Systemeinstellungen › Ton, ob ein Mikrofon ausgewählt ist.")
             )
         }
 
@@ -70,7 +70,7 @@ public final class AudioRecorder {
                 fileURL = recordingURL
             } catch {
                 throw AnvilError.storage(
-                    "Die Aufnahmedatei konnte nicht angelegt werden: \(error.localizedDescription)"
+                    localized("Die Aufnahmedatei konnte nicht angelegt werden: \(error.localizedDescription)")
                 )
             }
         }
@@ -88,7 +88,7 @@ public final class AudioRecorder {
             input.removeTap(onBus: 0)
             audioFile = nil
             fileURL = nil
-            throw AnvilError.unexpected("Die Aufnahme konnte nicht gestartet werden: \(error.localizedDescription)")
+            throw AnvilError.unexpected(localized("Die Aufnahme konnte nicht gestartet werden: \(error.localizedDescription)"))
         }
 
         isRecording = true
@@ -114,7 +114,7 @@ public final class AudioRecorder {
         do {
             try engine.start()
         } catch {
-            throw AnvilError.unexpected("Die Aufnahme konnte nicht fortgesetzt werden: \(error.localizedDescription)")
+            throw AnvilError.unexpected(localized("Die Aufnahme konnte nicht fortgesetzt werden: \(error.localizedDescription)"))
         }
         isPaused = false
         startedAt = .now

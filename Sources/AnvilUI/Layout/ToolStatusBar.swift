@@ -46,11 +46,17 @@ extension ToolStatusBar where Trailing == EmptyView {
 /// One labelled reading in a status bar: an icon, a value, a caption.
 public struct StatusMetric: View {
     private let systemImage: String
+    /// The number or measurement itself — never translated.
     private let value: String
-    private let label: String?
+    private let label: LocalizedStringKey?
     private let tone: AnvilTone
 
-    public init(_ value: String, label: String? = nil, systemImage: String, tone: AnvilTone = .neutral) {
+    public init(
+        _ value: String,
+        label: LocalizedStringKey? = nil,
+        systemImage: String,
+        tone: AnvilTone = .neutral
+    ) {
         self.value = value
         self.label = label
         self.systemImage = systemImage
@@ -61,7 +67,7 @@ public struct StatusMetric: View {
         HStack(spacing: AnvilSpacing.xs) {
             Image(systemName: systemImage)
                 .foregroundStyle(tone == .neutral ? AnvilColor.textTertiary : tone.color)
-            Text(value)
+            Text(verbatim: value)
                 .foregroundStyle(AnvilColor.textPrimary)
                 .monospacedDigit()
             if let label {
@@ -70,6 +76,5 @@ public struct StatusMetric: View {
             }
         }
         .font(AnvilFont.caption)
-        .help(label ?? value)
     }
 }

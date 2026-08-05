@@ -53,7 +53,7 @@ public struct OpenAICompatibleProvider: AIProvider {
               let content = payload.choices.first?.message.content
         else {
             throw AnvilError.provider(
-                "Die Antwort von \(configuration.presetName) war nicht lesbar.",
+                localized("Die Antwort von \(configuration.presetName) war nicht lesbar."),
                 underlying: String(decoding: data.prefix(400), as: UTF8.self)
             )
         }
@@ -133,7 +133,7 @@ public struct OpenAICompatibleProvider: AIProvider {
         guard (200..<300).contains(http.statusCode) else {
             let detail = data.map { String(decoding: $0.prefix(400), as: UTF8.self) }
             throw AnvilError.provider(
-                "Der Anbieter hat mit HTTP \(http.statusCode) geantwortet.",
+                localized("Der Anbieter hat mit HTTP \(http.statusCode) geantwortet."),
                 underlying: detail
             )
         }

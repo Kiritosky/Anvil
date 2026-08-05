@@ -23,10 +23,18 @@ struct SidebarView: View {
                 LazyVStack(alignment: .leading, spacing: AnvilSpacing.lg) {
                     if query.isEmpty {
                         if !registry.favouriteTools.isEmpty {
-                            section("Favoriten", systemImage: "star.fill", tools: registry.favouriteTools)
+                            section(
+                                localized("Favoriten"),
+                                systemImage: "star.fill",
+                                tools: registry.favouriteTools
+                            )
                         }
                         if !registry.recentTools.isEmpty {
-                            section("Zuletzt", systemImage: "clock", tools: registry.recentTools)
+                            section(
+                                localized("Zuletzt"),
+                                systemImage: "clock",
+                                tools: registry.recentTools
+                            )
                         }
                         ForEach(registry.categories) { category in
                             section(
@@ -37,7 +45,7 @@ struct SidebarView: View {
                         }
                     } else {
                         section(
-                            "Treffer",
+                            localized("Treffer"),
                             systemImage: "magnifyingglass",
                             tools: registry.search(query)
                         )

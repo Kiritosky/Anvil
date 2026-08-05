@@ -46,7 +46,7 @@ public final class TranscriptRefiner {
     ) async throws -> String {
         let source = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !source.isEmpty else {
-            throw AnvilError.invalidInput("Es gibt noch keinen Text zum Aufräumen.")
+            throw AnvilError.invalidInput(localized("Es gibt noch keinen Text zum Aufräumen."))
         }
 
         let instructions = style.instructions(

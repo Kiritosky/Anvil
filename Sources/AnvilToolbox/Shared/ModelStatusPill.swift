@@ -14,7 +14,7 @@ public struct ModelStatusPill: View {
     public var body: some View {
         if let router {
             StatusPill(
-                label(for: router),
+                .resolved(label(for: router)),
                 systemImage: router.activeRunsOnDevice ? "laptopcomputer" : "cloud",
                 tone: tone(for: router)
             )

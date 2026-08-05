@@ -45,7 +45,14 @@ Voraussetzungen: macOS 26, Xcode 26 bzw. eine passende Swift-Toolchain.
 ./Scripts/run.sh                  # bauen und starten
 ./Scripts/build-app.sh release    # signiertes Release-Bundle
 swift test                        # Tests
+./Scripts/check-translations.py   # fehlende Übersetzungen
 ```
+
+## Sprachen
+
+Deutsch und Englisch. Der deutsche Quelltext ist zugleich der
+Übersetzungsschlüssel, eine neue Sprache ist ein zusätzlicher `.lproj`-Ordner —
+siehe [docs/LOCALIZATION.md](docs/LOCALIZATION.md).
 
 ## Lizenz
 

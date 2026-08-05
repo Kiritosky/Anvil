@@ -7,18 +7,18 @@ import SwiftUI
 /// permissions and model-unavailable states all render through it, which is why
 /// it takes a ``AnvilError`` directly as well as free-form text.
 public struct AnvilBanner: View {
-    private let title: String
-    private let message: String?
+    private let title: LocalizedStringKey
+    private let message: LocalizedStringKey?
     private let tone: AnvilTone
-    private let actionTitle: String?
+    private let actionTitle: LocalizedStringKey?
     private let action: (() -> Void)?
     private let onDismiss: (() -> Void)?
 
     public init(
-        title: String,
-        message: String? = nil,
+        title: LocalizedStringKey,
+        message: LocalizedStringKey? = nil,
         tone: AnvilTone = .info,
-        actionTitle: String? = nil,
+        actionTitle: LocalizedStringKey? = nil,
         action: (() -> Void)? = nil,
         onDismiss: (() -> Void)? = nil
     ) {
@@ -33,14 +33,16 @@ public struct AnvilBanner: View {
     /// Renders a ``AnvilError`` with its title, message and recovery hint.
     public init(
         error: AnvilError,
-        actionTitle: String? = nil,
+        actionTitle: LocalizedStringKey? = nil,
         action: (() -> Void)? = nil,
         onDismiss: (() -> Void)? = nil
     ) {
+        // The error's own text is already localised, so it goes in resolved
+        // rather than being looked up a second time.
         let hint = error.recoverySuggestion
         self.init(
-            title: error.title,
-            message: hint.map { "\(error.message)\n\n\($0)" } ?? error.message,
+            title: .resolved(error.title),
+            message: .resolved(hint.map { "\(error.message)\n\n\($0)" } ?? error.message),
             tone: error.isCancellation ? .neutral : .danger,
             actionTitle: actionTitle,
             action: action,
@@ -59,7 +61,7 @@ public struct AnvilBanner: View {
                 Text(title)
                     .font(AnvilFont.body.weight(.semibold))
                     .foregroundStyle(AnvilColor.textPrimary)
-                if let message, !message.isEmpty {
+                if let message {
                     Text(message)
                         .font(AnvilFont.caption)
                         .foregroundStyle(AnvilColor.textSecondary)
@@ -101,7 +103,7 @@ extension View {
     /// Shows a banner above this view whenever `error` is non-nil.
     public func anvilErrorBanner(
         _ error: Binding<AnvilError?>,
-        actionTitle: String? = nil,
+        actionTitle: LocalizedStringKey? = nil,
         action: (() -> Void)? = nil
     ) -> some View {
         VStack(spacing: AnvilSpacing.md) {

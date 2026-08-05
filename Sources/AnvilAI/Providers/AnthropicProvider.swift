@@ -46,7 +46,7 @@ public struct AnthropicProvider: AIProvider {
 
         guard let payload = try? JSONDecoder().decode(Payload.self, from: data) else {
             throw AnvilError.provider(
-                "Die Antwort von Anthropic war nicht lesbar.",
+                localized("Die Antwort von Anthropic war nicht lesbar."),
                 underlying: String(decoding: data.prefix(400), as: UTF8.self)
             )
         }
@@ -123,7 +123,7 @@ public struct AnthropicProvider: AIProvider {
         guard (200..<300).contains(http.statusCode) else {
             let detail = data.map { String(decoding: $0.prefix(400), as: UTF8.self) }
             throw AnvilError.provider(
-                "Anthropic hat mit HTTP \(http.statusCode) geantwortet.",
+                localized("Anthropic hat mit HTTP \(http.statusCode) geantwortet."),
                 underlying: detail
             )
         }

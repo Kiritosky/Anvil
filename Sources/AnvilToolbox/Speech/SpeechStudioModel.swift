@@ -295,7 +295,7 @@ public final class SpeechStudioModel {
     @discardableResult
     public func export() throws -> URL {
         guard hasResult else {
-            throw AnvilError.invalidInput("Es gibt noch kein Ergebnis zum Sichern.")
+            throw AnvilError.invalidInput(localized("Es gibt noch kein Ergebnis zum Sichern."))
         }
         AppPaths.bootstrap()
 
@@ -320,7 +320,7 @@ public final class SpeechStudioModel {
         do {
             try document.write(to: url, atomically: true, encoding: .utf8)
         } catch {
-            throw AnvilError.storage("Der Export ist fehlgeschlagen: \(error.localizedDescription)")
+            throw AnvilError.storage(localized("Der Export ist fehlgeschlagen: \(error.localizedDescription)"))
         }
         return url
     }

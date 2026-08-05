@@ -112,7 +112,11 @@ struct GeneralSettingsView: View {
                     .pickerStyle(.segmented)
                 }
 
-                SettingsRow("Datenordner", help: AppPaths.support.path(percentEncoded: false), systemImage: "folder") {
+                SettingsRow(
+                    "Datenordner",
+                    help: .resolved(AppPaths.support.path(percentEncoded: false)),
+                    systemImage: "folder"
+                ) {
                     AnvilButton("Öffnen", role: .secondary) {
                         AppPaths.bootstrap()
                         NSWorkspace.shared.open(AppPaths.support)
@@ -169,7 +173,7 @@ struct IntelligenceSettingsView: View {
             SettingsGroup("Status") {
                 SettingsRow(
                     router.availability.isAvailable ? "Bereit" : "Nicht verfügbar",
-                    help: router.statusSummary,
+                    help: .resolved(router.statusSummary),
                     systemImage: router.activeRunsOnDevice ? "laptopcomputer" : "cloud"
                 ) {
                     AnvilButton("Prüfen", systemImage: "arrow.clockwise", role: .secondary, isBusy: router.isRefreshing) {
@@ -178,7 +182,7 @@ struct IntelligenceSettingsView: View {
                 }
             }
 
-            SettingsGroup("Richtlinie", footnote: router.policy.explanation) {
+            SettingsGroup("Richtlinie", footnote: .resolved(router.policy.explanation)) {
                 SettingsWideRow("Wohin gehen Anfragen?") {
                     Picker("", selection: policyBinding) {
                         ForEach(AIPolicy.allCases) { policy in
@@ -210,7 +214,7 @@ struct IntelligenceSettingsView: View {
                 }
 
                 if router.remoteConfiguration.requiresAPIKey {
-                    SettingsWideRow("API-Schlüssel", help: keyStatus) {
+                    SettingsWideRow("API-Schlüssel", help: .resolved(keyStatus)) {
                         HStack(spacing: AnvilSpacing.sm) {
                             AnvilTextField(text: $apiKey, placeholder: "sk-…", isSecure: true)
                             AnvilButton("Sichern", role: .secondary) { saveKey() }

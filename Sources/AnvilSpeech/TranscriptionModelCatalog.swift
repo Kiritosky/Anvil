@@ -73,7 +73,7 @@ public final class TranscriptionModelCatalog {
 
             guard isSupported(locale) else {
                 throw AnvilError.invalidInput(
-                    "\(displayName(for: locale)) wird von der Spracherkennung auf diesem Mac nicht unterstützt."
+                    localized("\(displayName(for: locale)) wird von der Spracherkennung auf diesem Mac nicht unterstützt.")
                 )
             }
 
@@ -96,7 +96,7 @@ public final class TranscriptionModelCatalog {
             throw error
         } catch {
             let wrapped = AnvilError.unexpected(
-                "Die Sprachdaten konnten nicht geladen werden: \(error.localizedDescription)"
+                localized("Die Sprachdaten konnten nicht geladen werden: \(error.localizedDescription)")
             )
             lastError = wrapped
             throw wrapped

@@ -1,3 +1,4 @@
+import AnvilKit
 import Foundation
 
 /// Removes the noise of speaking from a transcript, without a model.
@@ -19,15 +20,15 @@ public struct FillerCleaner: Sendable {
 
         public var title: String {
             switch self {
-            case .gentle: "Nur Verzögerungslaute"
-            case .thorough: "Auch Floskeln"
+            case .gentle: localized("Nur Verzögerungslaute")
+            case .thorough: localized("Auch Floskeln")
             }
         }
 
         public var explanation: String {
             switch self {
-            case .gentle: "Entfernt „äh\", „ähm\", „hm\" und Wortdoppelungen."
-            case .thorough: "Entfernt zusätzlich Floskeln wie „halt\", „quasi\", „sozusagen\"."
+            case .gentle: localized("Entfernt „äh\", „ähm\", „hm\" und Wortdoppelungen.")
+            case .thorough: localized("Entfernt zusätzlich Floskeln wie „halt\", „quasi\", „sozusagen\".")
             }
         }
     }

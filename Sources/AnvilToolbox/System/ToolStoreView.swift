@@ -15,11 +15,11 @@ enum ToolStoreFilter: String, CaseIterable, Identifiable, Sendable {
 
     var title: String {
         switch self {
-        case .all: "Alle"
-        case .active: "Aktiv"
-        case .inactive: "Aus"
-        case .ai: "Mit KI"
-        case .userDefined: "Eigene"
+        case .all: localized("Alle")
+        case .active: localized("Aktiv")
+        case .inactive: localized("Aus")
+        case .ai: localized("Mit KI")
+        case .userDefined: localized("Eigene")
         }
     }
 
@@ -95,7 +95,7 @@ public struct ToolStoreView: View {
         VStack(spacing: AnvilSpacing.md) {
             if let notice {
                 AnvilBanner(
-                    title: notice,
+                    title: .resolved(notice),
                     tone: .success,
                     onDismiss: { self.notice = nil }
                 )
@@ -223,7 +223,7 @@ public struct ToolStoreView: View {
                     HStack(spacing: AnvilSpacing.xs) {
                         ForEach(Array(tool.metadata.requirements).sorted(by: { $0.rawValue < $1.rawValue }), id: \.self) { requirement in
                             StatusPill(
-                                requirement.localizedDescription,
+                                .resolved(requirement.localizedDescription),
                                 tone: requirement == .onDeviceLanguageModel ? .ai : .neutral
                             )
                         }

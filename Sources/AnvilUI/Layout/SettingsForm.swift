@@ -8,11 +8,15 @@ import SwiftUI
 public struct SettingsPage<Content: View>: View {
     @Environment(\.anvilTheme) private var theme
 
-    private let title: String
-    private let description: String?
+    private let title: LocalizedStringKey
+    private let description: LocalizedStringKey?
     private let content: Content
 
-    public init(_ title: String, description: String? = nil, @ViewBuilder content: () -> Content) {
+    public init(
+        _ title: LocalizedStringKey,
+        description: LocalizedStringKey? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
         self.title = title
         self.description = description
         self.content = content()
@@ -45,11 +49,15 @@ public struct SettingsPage<Content: View>: View {
 
 /// A titled group of settings rows, drawn as one card.
 public struct SettingsGroup<Content: View>: View {
-    private let title: String?
-    private let footnote: String?
+    private let title: LocalizedStringKey?
+    private let footnote: LocalizedStringKey?
     private let content: Content
 
-    public init(_ title: String? = nil, footnote: String? = nil, @ViewBuilder content: () -> Content) {
+    public init(
+        _ title: LocalizedStringKey? = nil,
+        footnote: LocalizedStringKey? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
         self.title = title
         self.footnote = footnote
         self.content = content()
@@ -58,7 +66,8 @@ public struct SettingsGroup<Content: View>: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: AnvilSpacing.sm) {
             if let title {
-                Text(title.uppercased())
+                Text(title)
+                    .textCase(.uppercase)
                     .font(AnvilFont.label)
                     .tracking(0.6)
                     .foregroundStyle(AnvilColor.textTertiary)
@@ -92,14 +101,14 @@ public struct SettingsGroup<Content: View>: View {
 /// One row in a ``SettingsGroup``: label and help on the left, control on the
 /// right.
 public struct SettingsRow<Control: View>: View {
-    private let title: String
-    private let help: String?
+    private let title: LocalizedStringKey
+    private let help: LocalizedStringKey?
     private let systemImage: String?
     private let control: Control
 
     public init(
-        _ title: String,
-        help: String? = nil,
+        _ title: LocalizedStringKey,
+        help: LocalizedStringKey? = nil,
         systemImage: String? = nil,
         @ViewBuilder control: () -> Control
     ) {
@@ -147,11 +156,15 @@ public struct SettingsRow<Control: View>: View {
 /// A row whose control spans the full width underneath the label — for text
 /// fields, pickers with long values and anything that would otherwise squeeze.
 public struct SettingsWideRow<Control: View>: View {
-    private let title: String
-    private let help: String?
+    private let title: LocalizedStringKey
+    private let help: LocalizedStringKey?
     private let control: Control
 
-    public init(_ title: String, help: String? = nil, @ViewBuilder control: () -> Control) {
+    public init(
+        _ title: LocalizedStringKey,
+        help: LocalizedStringKey? = nil,
+        @ViewBuilder control: () -> Control
+    ) {
         self.title = title
         self.help = help
         self.control = control()

@@ -22,7 +22,7 @@ public final class BufferConverter {
         if converter == nil || currentInputFormat != inputFormat || currentOutputFormat != format {
             guard let created = AVAudioConverter(from: inputFormat, to: format) else {
                 throw AnvilError.unexpected(
-                    "Das Audioformat des Mikrofons lässt sich nicht in das Format der Spracherkennung umwandeln."
+                    localized("Das Audioformat des Mikrofons lässt sich nicht in das Format der Spracherkennung umwandeln.")
                 )
             }
             created.primeMethod = .none
@@ -32,14 +32,14 @@ public final class BufferConverter {
         }
 
         guard let converter else {
-            throw AnvilError.unexpected("Audio-Konverter fehlt.")
+            throw AnvilError.unexpected(localized("Audio-Konverter fehlt."))
         }
 
         let ratio = format.sampleRate / inputFormat.sampleRate
         let capacity = AVAudioFrameCount((Double(buffer.frameLength) * ratio).rounded(.up)) + 64
 
         guard let output = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: capacity) else {
-            throw AnvilError.unexpected("Zielpuffer für die Audioumwandlung konnte nicht angelegt werden.")
+            throw AnvilError.unexpected(localized("Zielpuffer für die Audioumwandlung konnte nicht angelegt werden."))
         }
 
         var consumed = false
@@ -55,10 +55,10 @@ public final class BufferConverter {
         }
 
         if let conversionError {
-            throw AnvilError.unexpected("Audioumwandlung fehlgeschlagen: \(conversionError.localizedDescription)")
+            throw AnvilError.unexpected(localized("Audioumwandlung fehlgeschlagen: \(conversionError.localizedDescription)"))
         }
         guard status != .error else {
-            throw AnvilError.unexpected("Audioumwandlung fehlgeschlagen.")
+            throw AnvilError.unexpected(localized("Audioumwandlung fehlgeschlagen."))
         }
 
         return output

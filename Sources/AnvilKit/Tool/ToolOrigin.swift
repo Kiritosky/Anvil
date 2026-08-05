@@ -25,7 +25,7 @@ public struct ToolOrigin: Hashable, Sendable, Identifiable {
         fileURL: URL? = nil
     ) {
         self.bundleIdentifier = bundleIdentifier
-        self.displayName = displayName
+        self.displayName = localized(runtime: displayName)
         self.isUserDefined = isUserDefined
         self.isEssential = isEssential
         self.fileURL = fileURL

@@ -158,6 +158,11 @@ struct MeinToolView: View {
   aus `router.inputBudget()`.
 - **Neue Komponente?** Sobald ein zweites Tool sie braucht, gehört sie nach
   `AnvilUI`.
+- **Anzeigetexte sind übersetzbar.** Literale in der View gehen an Komponenten,
+  die `LocalizedStringKey` nehmen; Text aus dem Katalog läuft über `localized(…)`
+  oder wird — bei `ToolMetadata` und `TextToolMode` — automatisch im Initializer
+  übersetzt. Danach `./Scripts/check-translations.py`. Siehe
+  `docs/LOCALIZATION.md`.
 
 ## Requirements deklarieren
 

@@ -13,7 +13,7 @@ public struct ToolCategory: Hashable, Sendable, Identifiable {
 
     public init(id: String, title: String, systemImage: String, sortOrder: Int) {
         self.id = id
-        self.title = title
+        self.title = localized(runtime: title)
         self.systemImage = systemImage
         self.sortOrder = sortOrder
     }

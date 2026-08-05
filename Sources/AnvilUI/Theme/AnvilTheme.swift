@@ -1,3 +1,4 @@
+import AnvilKit
 import SwiftUI
 
 /// How tightly the UI is packed.
@@ -13,8 +14,8 @@ public enum AnvilDensity: String, CaseIterable, Codable, Sendable, Identifiable 
 
     public var title: String {
         switch self {
-        case .comfortable: "Komfortabel"
-        case .compact: "Kompakt"
+        case .comfortable: localized("Komfortabel")
+        case .compact: localized("Kompakt")
         }
     }
 

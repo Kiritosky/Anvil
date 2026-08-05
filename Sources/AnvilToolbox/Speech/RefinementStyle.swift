@@ -1,3 +1,4 @@
+import AnvilKit
 import Foundation
 
 /// What the model should turn a raw transcript into.
@@ -31,16 +32,16 @@ public enum RefinementStyle: String, Codable, CaseIterable, Sendable, Identifiab
 
     public var title: String {
         switch self {
-        case .verbatim: "Wortgetreu säubern"
-        case .polished: "Sauberer Text"
-        case .concise: "Gekürzt"
-        case .bullets: "Stichpunkte"
-        case .summary: "Zusammenfassung"
-        case .actionItems: "To-dos"
-        case .email: "E-Mail"
-        case .commitMessage: "Commit-Message"
-        case .codeComment: "Code-Kommentar"
-        case .custom: "Eigene Anweisung"
+        case .verbatim: localized("Wortgetreu säubern")
+        case .polished: localized("Sauberer Text")
+        case .concise: localized("Gekürzt")
+        case .bullets: localized("Stichpunkte")
+        case .summary: localized("Zusammenfassung")
+        case .actionItems: localized("To-dos")
+        case .email: localized("E-Mail")
+        case .commitMessage: localized("Commit-Message")
+        case .codeComment: localized("Code-Kommentar")
+        case .custom: localized("Eigene Anweisung")
         }
     }
 
@@ -62,25 +63,25 @@ public enum RefinementStyle: String, Codable, CaseIterable, Sendable, Identifiab
     public var explanation: String {
         switch self {
         case .verbatim:
-            "Behält jedes inhaltliche Wort. Nur Verzögerungslaute, Versprecher, Grammatik und Zeichensetzung werden korrigiert."
+            localized("Behält jedes inhaltliche Wort. Nur Verzögerungslaute, Versprecher, Grammatik und Zeichensetzung werden korrigiert.")
         case .polished:
-            "Schreibt das Diktat in flüssige Sätze und Absätze um, ohne Inhalt zu ergänzen."
+            localized("Schreibt das Diktat in flüssige Sätze und Absätze um, ohne Inhalt zu ergänzen.")
         case .concise:
-            "Kürzt auf das Wesentliche, behält aber alle Aussagen."
+            localized("Kürzt auf das Wesentliche, behält aber alle Aussagen.")
         case .bullets:
-            "Gliedert den Inhalt in Stichpunkte."
+            localized("Gliedert den Inhalt in Stichpunkte.")
         case .summary:
-            "Fasst das Gesagte in wenigen Sätzen zusammen."
+            localized("Fasst das Gesagte in wenigen Sätzen zusammen.")
         case .actionItems:
-            "Zieht Aufgaben, Zuständigkeiten und Entscheidungen heraus."
+            localized("Zieht Aufgaben, Zuständigkeiten und Entscheidungen heraus.")
         case .email:
-            "Formuliert eine versandfertige Nachricht mit Anrede und Schluss."
+            localized("Formuliert eine versandfertige Nachricht mit Anrede und Schluss.")
         case .commitMessage:
-            "Formt eine Commit-Message nach Conventional Commits."
+            localized("Formt eine Commit-Message nach Conventional Commits.")
         case .codeComment:
-            "Macht aus der Beschreibung einen Doku-Kommentar."
+            localized("Macht aus der Beschreibung einen Doku-Kommentar.")
         case .custom:
-            "Deine eigene Anweisung an das Modell."
+            localized("Deine eigene Anweisung an das Modell.")
         }
     }
 

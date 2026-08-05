@@ -8,7 +8,7 @@ import SwiftUI
 public struct AnvilPane<Content: View, Accessory: View>: View {
     @Environment(\.anvilTheme) private var theme
 
-    private let title: String
+    private let title: LocalizedStringKey
     private let systemImage: String?
     private let tone: AnvilTone
     /// Drawn flush to the pane edges (text editors), or inset (forms, lists).
@@ -17,7 +17,7 @@ public struct AnvilPane<Content: View, Accessory: View>: View {
     private let accessory: Accessory
 
     public init(
-        _ title: String,
+        _ title: LocalizedStringKey,
         systemImage: String? = nil,
         tone: AnvilTone = .neutral,
         contentInset: Bool = false,
@@ -56,7 +56,8 @@ public struct AnvilPane<Content: View, Accessory: View>: View {
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(tone == .neutral ? AnvilColor.textTertiary : tone.color)
             }
-            Text(title.uppercased())
+            Text(title)
+                .textCase(.uppercase)
                 .font(AnvilFont.label)
                 .tracking(0.6)
                 .foregroundStyle(AnvilColor.textTertiary)
@@ -75,7 +76,7 @@ public struct AnvilPane<Content: View, Accessory: View>: View {
 
 extension AnvilPane where Accessory == EmptyView {
     public init(
-        _ title: String,
+        _ title: LocalizedStringKey,
         systemImage: String? = nil,
         tone: AnvilTone = .neutral,
         contentInset: Bool = false,
@@ -132,11 +133,15 @@ public struct AnvilCard<Content: View>: View {
 public struct AnvilSection<Content: View>: View {
     @Environment(\.anvilTheme) private var theme
 
-    private let title: String
-    private let subtitle: String?
+    private let title: LocalizedStringKey
+    private let subtitle: LocalizedStringKey?
     private let content: Content
 
-    public init(_ title: String, subtitle: String? = nil, @ViewBuilder content: () -> Content) {
+    public init(
+        _ title: LocalizedStringKey,
+        subtitle: LocalizedStringKey? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
         self.title = title
         self.subtitle = subtitle
         self.content = content()

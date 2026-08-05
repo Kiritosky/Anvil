@@ -25,13 +25,13 @@ public enum AnvilError: LocalizedError, Sendable {
 
     public var title: String {
         switch self {
-        case .modelUnavailable: "Kein Modell verfügbar"
-        case .provider: "Anbieter-Fehler"
-        case .permissionDenied: "Berechtigung fehlt"
-        case .storage: "Speicher-Fehler"
-        case .invalidInput: "Eingabe passt nicht"
-        case .cancelled: "Abgebrochen"
-        case .unexpected: "Unerwarteter Fehler"
+        case .modelUnavailable: localized("Kein Modell verfügbar")
+        case .provider: localized("Anbieter-Fehler")
+        case .permissionDenied: localized("Berechtigung fehlt")
+        case .storage: localized("Speicher-Fehler")
+        case .invalidInput: localized("Eingabe passt nicht")
+        case .cancelled: localized("Abgebrochen")
+        case .unexpected: localized("Unerwarteter Fehler")
         }
     }
 
@@ -43,7 +43,7 @@ public enum AnvilError: LocalizedError, Sendable {
         case let .permissionDenied(text): text
         case let .storage(text): text
         case let .invalidInput(text): text
-        case .cancelled: "Der Vorgang wurde abgebrochen."
+        case .cancelled: localized("Der Vorgang wurde abgebrochen.")
         case let .unexpected(text): text
         }
     }
@@ -52,11 +52,11 @@ public enum AnvilError: LocalizedError, Sendable {
     public var recoverySuggestion: String? {
         switch self {
         case .modelUnavailable:
-            "Aktiviere Apple Intelligence in den Systemeinstellungen oder hinterlege in den Anvil-Einstellungen einen externen Anbieter."
+            localized("Aktiviere Apple Intelligence in den Systemeinstellungen oder hinterlege in den Anvil-Einstellungen einen externen Anbieter.")
         case .permissionDenied:
-            "Erlaube den Zugriff unter Systemeinstellungen › Datenschutz & Sicherheit."
+            localized("Erlaube den Zugriff unter Systemeinstellungen › Datenschutz & Sicherheit.")
         case .provider:
-            "Prüfe API-Schlüssel, Modellnamen und Netzwerkverbindung in den Einstellungen."
+            localized("Prüfe API-Schlüssel, Modellnamen und Netzwerkverbindung in den Einstellungen.")
         default:
             nil
         }

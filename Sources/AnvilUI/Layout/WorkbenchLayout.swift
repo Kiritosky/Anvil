@@ -1,3 +1,4 @@
+import AnvilKit
 import AppKit
 import SwiftUI
 
@@ -12,8 +13,8 @@ public enum WorkbenchOrientation: String, Codable, CaseIterable, Sendable, Ident
 
     public var title: String {
         switch self {
-        case .horizontal: "Nebeneinander"
-        case .vertical: "Untereinander"
+        case .horizontal: localized("Nebeneinander")
+        case .vertical: localized("Untereinander")
         }
     }
 
@@ -183,7 +184,7 @@ public struct WorkbenchOrientationPicker: View {
             Image(systemName: orientation.systemImage)
         }
         .buttonStyle(AnvilIconButtonStyle())
-        .help("Anordnung: \(orientation.title)")
+        .help(LocalizedStringKey("Anordnung: \(orientation.title)"))
         .keyboardShortcut("\\", modifiers: [.command, .option])
     }
 }

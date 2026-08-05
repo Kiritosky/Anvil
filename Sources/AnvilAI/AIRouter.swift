@@ -16,20 +16,20 @@ public enum AIPolicy: String, Codable, CaseIterable, Sendable, Identifiable {
 
     public var title: String {
         switch self {
-        case .onDeviceOnly: "Nur on-device"
-        case .preferOnDevice: "On-device bevorzugt"
-        case .preferRemote: "Extern bevorzugt"
+        case .onDeviceOnly: localized("Nur on-device")
+        case .preferOnDevice: localized("On-device bevorzugt")
+        case .preferRemote: localized("Extern bevorzugt")
         }
     }
 
     public var explanation: String {
         switch self {
         case .onDeviceOnly:
-            "Nichts verlässt diesen Mac. Ohne Apple Intelligence bleiben KI-Tools aus."
+            localized("Nichts verlässt diesen Mac. Ohne Apple Intelligence bleiben KI-Tools aus.")
         case .preferOnDevice:
-            "Erst das Apple-Modell. Nur wenn das nicht kann, geht es an den externen Anbieter."
+            localized("Erst das Apple-Modell. Nur wenn das nicht kann, geht es an den externen Anbieter.")
         case .preferRemote:
-            "Erst der externe Anbieter, das Apple-Modell als Rückfallebene."
+            localized("Erst der externe Anbieter, das Apple-Modell als Rückfallebene.")
         }
     }
 
@@ -204,7 +204,7 @@ public final class AIRouter {
     public var statusSummary: String {
         switch availability {
         case .available:
-            activeRunsOnDevice ? "\(activeProviderName) · lokal" : activeProviderName
+            activeRunsOnDevice ? localized("\(activeProviderName) · lokal") : activeProviderName
         case let .unavailable(reason):
             reason.message
         }

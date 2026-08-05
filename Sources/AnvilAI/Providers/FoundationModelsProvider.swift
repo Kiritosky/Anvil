@@ -93,7 +93,7 @@ public struct FoundationModelsProvider: AIProvider {
 
         if description.contains("exceededContextWindowSize") {
             return .invalidInput(
-                "Der Text ist zu lang für das On-Device-Modell. Teile ihn auf oder wähle in den Einstellungen einen externen Anbieter."
+                localized("Der Text ist zu lang für das On-Device-Modell. Teile ihn auf oder wähle in den Einstellungen einen externen Anbieter.")
             )
         }
         if description.contains("guardrailViolation") || description.contains("refusal") {
@@ -104,7 +104,7 @@ public struct FoundationModelsProvider: AIProvider {
         }
         if description.contains("assetsUnavailable") || description.contains("modelNotReady") {
             return .modelUnavailable(
-                "Das On-Device-Modell ist gerade nicht geladen. Versuch es in einem Moment noch einmal."
+                localized("Das On-Device-Modell ist gerade nicht geladen. Versuch es in einem Moment noch einmal.")
             )
         }
         if description.contains("rateLimited") {

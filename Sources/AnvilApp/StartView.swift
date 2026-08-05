@@ -19,7 +19,7 @@ struct StartView: View {
                 if let router, !router.availability.isAvailable {
                     AnvilBanner(
                         title: "Kein Sprachmodell verfügbar",
-                        message: router.statusSummary,
+                        message: .resolved(router.statusSummary),
                         tone: .warning,
                         actionTitle: "Einstellungen",
                         action: openSettings
@@ -27,10 +27,10 @@ struct StartView: View {
                 }
 
                 if !environment.registry.favouriteTools.isEmpty {
-                    grid("Favoriten", tools: environment.registry.favouriteTools)
+                    grid(localized("Favoriten"), tools: environment.registry.favouriteTools)
                 }
                 if !environment.registry.recentTools.isEmpty {
-                    grid("Zuletzt benutzt", tools: environment.registry.recentTools)
+                    grid(localized("Zuletzt benutzt"), tools: environment.registry.recentTools)
                 }
 
                 ForEach(environment.registry.categories) { category in
