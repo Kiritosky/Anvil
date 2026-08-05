@@ -118,7 +118,11 @@ public final class TranscriptRefiner {
     ///
     /// Small models in particular like to answer with a fenced code block or to
     /// repeat the request before the result. Cheap to undo, annoying to leave in.
-    static func stripWrapping(_ text: String) -> String {
+    ///
+    /// Explicitly `nonisolated`: it is a pure function over a string and has no
+    /// business inheriting the class's main-actor isolation — which would stop
+    /// tests from calling it without a hop.
+    nonisolated static func stripWrapping(_ text: String) -> String {
         var result = text.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if result.hasPrefix("```") {
