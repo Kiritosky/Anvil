@@ -4,9 +4,9 @@ Anvil ist eine native macOS-App: eine erweiterbare Werkzeugsammlung für den
 Alltag und fürs Entwickeln, mit KI-Funktionen auf Basis der Apple Foundation
 Models (on-device) und optionalen externen Anbietern.
 
-Das Git-Repository heißt weiterhin `kiritosky/nooktools` — Produkt-, Target- und
-Bundle-Namen sind aber durchgehend **Anvil**. Neue Namen nie wieder auf „Nook"
-zurückdrehen.
+Repository (`Kiritosky/Anvil`), Produkt, Targets und Bundle-Identifier heißen
+durchgehend **Anvil**. Nichts davon je wieder auf „Nook" zurückdrehen; wo noch
+`nooktools` auftaucht, ist es ein Überbleibsel und gehört korrigiert.
 
 ## Commits
 

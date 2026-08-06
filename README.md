@@ -1,6 +1,6 @@
 # Anvil
 
-[![Build](https://github.com/kiritosky/nooktools/actions/workflows/build.yml/badge.svg)](https://github.com/kiritosky/nooktools/actions/workflows/build.yml)
+[![Build](https://github.com/Kiritosky/Anvil/actions/workflows/build.yml/badge.svg)](https://github.com/Kiritosky/Anvil/actions/workflows/build.yml)
 [![macOS 26+](https://img.shields.io/badge/macOS-26%2B-black)](https://www.apple.com/macos/)
 [![Swift 6](https://img.shields.io/badge/Swift-6-orange)](https://swift.org)
 [![GPL v3](https://img.shields.io/badge/Lizenz-GPL--3.0-blue)](LICENSE)
@@ -9,8 +9,7 @@ Eine native macOS-Werkzeugsammlung für den Alltag und fürs Entwickeln — mit
 KI-Funktionen auf Basis der **Apple Foundation Models** (on-device) und
 optionalen externen Anbietern.
 
-> Partner-App zu Nook. Das Repository heißt weiterhin `nooktools`, das Produkt
-> heißt **Anvil**.
+> Partner-App zu Nook.
 
 ## Idee
 
@@ -57,7 +56,7 @@ nutzen das On-Device-Modell, sofern nicht anders eingestellt.
 ## Installieren
 
 Fertige Bundles liegen unter
-[Releases](https://github.com/kiritosky/nooktools/releases). Zip entpacken,
+[Releases](https://github.com/Kiritosky/Anvil/releases). Zip entpacken,
 `Anvil.app` nach `/Programme` ziehen.
 
 Anvil ist **nicht notarisiert** — für dieses Projekt gibt es kein

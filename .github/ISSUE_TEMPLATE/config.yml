@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: Ein eigenes Werkzeug bauen
-    url: https://github.com/kiritosky/nooktools/blob/main/docs/ADDING_A_TOOL.md
+    url: https://github.com/Kiritosky/Anvil/blob/main/docs/ADDING_A_TOOL.md
     about: Reine Prompt-Werkzeuge brauchen nur eine JSON-Datei — kein Neukompilieren.
