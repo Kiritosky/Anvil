@@ -56,15 +56,11 @@ public struct TextRecognizerToolView: View {
     // MARK: - Content
 
     private var content: some View {
-        VStack(spacing: AnvilSpacing.md) {
-            WorkbenchLayout(orientation: .constant(.horizontal), storageKey: metadata.id.rawValue) {
-                imagePane
-                    .padding(.trailing, AnvilSpacing.sm)
-            } secondary: {
-                textPane
-                    .padding(.leading, AnvilSpacing.sm)
-            }
-
+        ToolWorkbench(storageKey: metadata.id.rawValue) {
+            imagePane
+        } secondary: {
+            textPane
+        } status: {
             statusBar
         }
     }

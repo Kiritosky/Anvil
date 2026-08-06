@@ -36,26 +36,22 @@ public struct QRCodeToolView: View {
     // MARK: - Content
 
     private var content: some View {
-        VStack(spacing: AnvilSpacing.md) {
-            WorkbenchLayout(orientation: .constant(.horizontal), storageKey: metadata.id.rawValue) {
-                AnvilPane("Inhalt", systemImage: "text.alignleft") {
-                    AnvilTextEditor(
-                        text: $text,
-                        placeholder: "Adresse, WLAN-Zugang, Telefonnummer, beliebiger Text …"
-                    )
-                } accessory: {
-                    Button { text = context.pasteboard.string() ?? text } label: {
-                        Image(systemName: "doc.on.clipboard")
-                    }
-                    .buttonStyle(AnvilIconButtonStyle())
-                    .anvilHelp("Einfügen")
+        ToolWorkbench(storageKey: metadata.id.rawValue) {
+            AnvilPane("Inhalt", systemImage: "text.alignleft") {
+                AnvilTextEditor(
+                    text: $text,
+                    placeholder: "Adresse, WLAN-Zugang, Telefonnummer, beliebiger Text …"
+                )
+            } accessory: {
+                Button { text = context.pasteboard.string() ?? text } label: {
+                    Image(systemName: "doc.on.clipboard")
                 }
-                .padding(.trailing, AnvilSpacing.sm)
-            } secondary: {
-                codePane
-                    .padding(.leading, AnvilSpacing.sm)
+                .buttonStyle(AnvilIconButtonStyle())
+                .anvilHelp("Einfügen")
             }
-
+        } secondary: {
+            codePane
+        } status: {
             statusBar
         }
     }

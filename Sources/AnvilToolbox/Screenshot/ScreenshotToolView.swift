@@ -51,15 +51,11 @@ public struct ScreenshotToolView: View {
     // MARK: - Content
 
     private var content: some View {
-        VStack(spacing: AnvilSpacing.md) {
-            WorkbenchLayout(orientation: .constant(.horizontal), storageKey: metadata.id.rawValue) {
-                previewPane
-                    .padding(.trailing, AnvilSpacing.sm)
-            } secondary: {
-                sidePane
-                    .padding(.leading, AnvilSpacing.sm)
-            }
-
+        ToolWorkbench(storageKey: metadata.id.rawValue) {
+            previewPane
+        } secondary: {
+            sidePane
+        } status: {
             statusBar
         }
     }
