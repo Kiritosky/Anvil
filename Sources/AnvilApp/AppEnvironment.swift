@@ -1,6 +1,7 @@
 import AnvilAI
 import AnvilKit
 import AnvilToolbox
+import Carbon.HIToolbox
 import Foundation
 import Observation
 
@@ -21,6 +22,10 @@ public final class AppEnvironment {
     public let vocabulary: VocabularyStore
     /// Everything that passed through the clipboard this session.
     public let clipboard: ClipboardHistory
+    /// Every key combination in the app.
+    public let shortcuts: ShortcutRegistry
+    /// Screenshots and what happens to them.
+    public let screenshots: ScreenshotController
     /// Dictation from anywhere, driven by the global shortcut.
     public let quickDictation: QuickDictationController
 
@@ -60,15 +65,30 @@ public final class AppEnvironment {
         self.clipboard = clipboard
         context.register(clipboard)
 
+        let shortcuts = ShortcutRegistry(settings: settings)
+        self.shortcuts = shortcuts
+        context.register(shortcuts)
+
         let quickDictation = QuickDictationController(context: context)
         self.quickDictation = quickDictation
         context.register(quickDictation)
 
+        let screenshots = ScreenshotController(context: context)
+        self.screenshots = screenshots
+        context.register(screenshots)
+
         registerBundles()
+        registerShortcutActions()
         customTools.reloadUserTools()
         restoreSelection()
-        quickDictation.syncShortcut()
         clipboard.syncWatching()
+
+        // A shot taken by shortcut, with the window closed, should be the
+        // thing on screen the next time the window opens.
+        screenshots.onCaptured = { [weak self] _ in
+            guard let self, self.registry.isActive(ScreenshotToolBundle.toolID) else { return }
+            self.selectedToolID = ScreenshotToolBundle.toolID
+        }
     }
 
     /// The tool bundles the app ships with, in sidebar order.
@@ -80,11 +100,39 @@ public final class AppEnvironment {
             DevToolBundle.self,
             EverydayToolBundle.self,
             VisionToolBundle.self,
+            ScreenshotToolBundle.self,
             SystemToolBundle.self
         ]
         for bundle in bundles {
             registry.register(bundle: bundle)
         }
+    }
+
+    /// Everything that can be triggered by a key combination.
+    ///
+    /// Declared here rather than by the tools themselves: a global shortcut has
+    /// to work while its tool is closed, so what it calls has to be owned by
+    /// the app.
+    private func registerShortcutActions() {
+        shortcuts.register([
+            ShortcutAction(
+                id: "app.commandPalette",
+                title: "Alles finden",
+                subtitle: "Öffnet die Suche über alle Werkzeuge",
+                systemImage: "magnifyingglass",
+                defaultShortcut: GlobalShortcut(
+                    keyCode: UInt32(kVK_ANSI_K),
+                    carbonModifiers: UInt32(cmdKey),
+                    keyLabel: "K"
+                ),
+                defaultScope: .app
+            ) { [weak self] in
+                self?.isCommandPaletteOpen = true
+            },
+            quickDictation.makeAction()
+        ])
+        shortcuts.register(ScreenshotToolBundle.makeActions(controller: screenshots))
+        shortcuts.sync()
     }
 
     private func restoreSelection() {

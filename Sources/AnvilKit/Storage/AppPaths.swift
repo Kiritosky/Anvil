@@ -34,10 +34,15 @@ public enum AppPaths {
         support.appending(path: "Exports", directoryHint: .isDirectory)
     }
 
+    /// Screenshots, when they are kept.
+    public static var screenshots: URL {
+        support.appending(path: "Screenshots", directoryHint: .isDirectory)
+    }
+
     /// Creates every directory the app expects. Safe to call repeatedly.
     @discardableResult
     public static func bootstrap() -> Bool {
-        let directories = [support, customTools, recordings, history, exports]
+        let directories = [support, customTools, recordings, history, exports, screenshots]
         do {
             for directory in directories {
                 try FileManager.default.createDirectory(

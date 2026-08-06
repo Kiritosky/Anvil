@@ -162,20 +162,13 @@ struct SpeechSettingsView: View {
             footnote: "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der aufgeräumte Text geht ins Textfeld, in dem der Cursor steht — sonst in die Zwischenablage. ⎋ verwirft. Das Hauptfenster bleibt zu."
         ) {
             SettingsRow(
-                "Von überall diktieren",
-                help: "Meldet das Tastenkürzel systemweit an.",
-                systemImage: "mic.badge.plus"
-            ) {
-                Toggle("", isOn: quickDictationBinding)
-                    .toggleStyle(.switch)
-            }
-
-            SettingsWideRow(
                 "Tastenkürzel",
-                help: shortcutHelp
+                help: shortcutHelp,
+                systemImage: "command"
             ) {
-                ShortcutRecorder(shortcut: shortcutBinding)
-                    .disabled(!settings[.quickDictationEnabled])
+                Text(verbatim: shortcutSummary)
+                    .font(AnvilFont.monoSmall)
+                    .foregroundStyle(AnvilColor.textSecondary)
             }
 
             SettingsWideRow(
@@ -210,30 +203,14 @@ struct SpeechSettingsView: View {
 
     // MARK: - Quick dictation plumbing
 
-    private var quickDictation: QuickDictationController? {
-        context.resolve()
-    }
-
-    /// Toggling the feature has to re-register the shortcut, so it does not go
-    /// through the plain settings binding.
-    private var quickDictationBinding: Binding<Bool> {
-        Binding(
-            get: { settings[.quickDictationEnabled] },
-            set: { newValue in
-                settings[.quickDictationEnabled] = newValue
-                quickDictation?.syncShortcut()
-            }
-        )
-    }
-
-    private var shortcutBinding: Binding<GlobalShortcut?> {
-        Binding(
-            get: { settings[.quickDictationShortcut] },
-            set: { newValue in
-                settings[.quickDictationShortcut] = newValue
-                quickDictation?.syncShortcut()
-            }
-        )
+    /// The shortcut itself lives in the central registry — this only reports
+    /// what it currently is, so the setting cannot drift from the truth.
+    private var shortcutSummary: String {
+        let setting = context.shortcuts.setting(for: QuickDictationController.actionID)
+        guard setting.scope != .off, let shortcut = setting.shortcut else {
+            return localized("aus")
+        }
+        return shortcut.displayString
     }
 
     private var pasteBinding: Binding<Bool> {
@@ -249,13 +226,10 @@ struct SpeechSettingsView: View {
     }
 
     private var shortcutHelp: LocalizedStringKey {
-        if let error = quickDictation?.registrationError {
-            return .resolved(error)
+        if let failure = context.shortcuts.failures[QuickDictationController.actionID] {
+            return .resolved(failure)
         }
-        if !settings[.quickDictationEnabled] {
-            return "Erst oben einschalten."
-        }
-        return "Funktioniert auch, während eine andere App vorne ist."
+        return "Ändern lässt sich das in den Einstellungen unter „Tastenkürzel\"."
     }
 
     private var pasteHelp: LocalizedStringKey {

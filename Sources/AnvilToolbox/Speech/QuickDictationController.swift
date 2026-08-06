@@ -26,10 +26,6 @@ public final class QuickDictationController {
     }
 
     public private(set) var phase: Phase = .idle
-    /// The shortcut currently registered, or `nil` when it is switched off.
-    public private(set) var registeredShortcut: GlobalShortcut?
-    /// Set when registration failed, e.g. because another app holds the keys.
-    public private(set) var registrationError: String?
 
     @ObservationIgnored private let context: ToolContext
     @ObservationIgnored private let session = DictationSession()
@@ -41,7 +37,8 @@ public final class QuickDictationController {
     @ObservationIgnored private var targetAcceptsText = false
     @ObservationIgnored private var dismissTask: Task<Void, Never>?
 
-    private static let hotKeyOwner = "speech.quickDictation"
+    /// The action the shortcut registry triggers.
+    public static let actionID: ShortcutActionID = "speech.quickDictation"
     private static let cancelHotKeyOwner = "speech.quickDictation.cancel"
 
     public init(context: ToolContext) {
@@ -59,24 +56,22 @@ public final class QuickDictationController {
 
     // MARK: - Shortcut
 
-    /// Registers or removes the global shortcut to match the current settings.
-    public func syncShortcut() {
-        registrationError = nil
-
-        guard settings[.quickDictationEnabled], let shortcut = settings[.quickDictationShortcut] else {
-            HotKeyCenter.shared.unregister(owner: Self.hotKeyOwner)
-            registeredShortcut = nil
-            return
-        }
-
-        do {
-            try HotKeyCenter.shared.register(shortcut, owner: Self.hotKeyOwner) { [weak self] in
-                self?.toggle()
-            }
-            registeredShortcut = shortcut
-        } catch {
-            registeredShortcut = nil
-            registrationError = AnvilError.wrapping(error).message
+    /// The dictation action, for the app to register.
+    ///
+    /// The controller no longer claims a hot key itself: every shortcut in the
+    /// app goes through one registry, so that a single screen can show them
+    /// all and none of them can quietly collide.
+    public func makeAction() -> ShortcutAction {
+        ShortcutAction(
+            id: Self.actionID,
+            title: "Diktat starten und beenden",
+            subtitle: "Kürzel drücken, sprechen, noch einmal drücken",
+            systemImage: "mic",
+            toolID: SpeechToolBundle.studioToolID,
+            defaultShortcut: .defaultDictation,
+            defaultScope: .global
+        ) { [weak self] in
+            self?.toggle()
         }
     }
 
@@ -234,17 +229,6 @@ public final class QuickDictationController {
 // MARK: - Settings keys
 
 extension SettingKey {
-    public static var quickDictationEnabled: SettingKey<Bool> {
-        SettingKey<Bool>("speech.quickDictation.enabled", default: false)
-    }
-
-    public static var quickDictationShortcut: SettingKey<GlobalShortcut?> {
-        SettingKey<GlobalShortcut?>(
-            "speech.quickDictation.shortcut",
-            default: GlobalShortcut.defaultDictation
-        )
-    }
-
     public static var quickDictationStyle: SettingKey<RefinementStyle> {
         SettingKey<RefinementStyle>("speech.quickDictation.style", default: .verbatim)
     }

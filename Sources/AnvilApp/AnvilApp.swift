@@ -66,15 +66,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 struct AnvilCommands: Commands {
     let environment: AppEnvironment
 
+    /// Translates a recorded combination into the one SwiftUI understands.
+    ///
+    /// Only in-app scope gets a key here. A globally registered hot key never
+    /// reaches the menu — the system swallows it first — and giving it to both
+    /// would show a shortcut that then fires twice.
+    private func menuShortcut(for setting: ShortcutSetting) -> KeyboardShortcut? {
+        guard setting.scope == .app,
+              let shortcut = setting.shortcut,
+              let key = shortcut.keyEquivalent
+        else { return nil }
+        return KeyboardShortcut(key, modifiers: shortcut.eventModifiers)
+    }
+
     var body: some Commands {
-        CommandGroup(after: .newItem) {
-            Button("Alles finden …") {
-                environment.isCommandPaletteOpen = true
+        // Every action the user set to "only in Anvil" becomes a menu item —
+        // which is also how SwiftUI is told about the key combination, since a
+        // shortcut without a menu entry is not a thing macOS has.
+        CommandMenu("Aktionen") {
+            ForEach(environment.shortcuts.all) { action in
+                let setting = environment.shortcuts.setting(for: action.id)
+                Button(action.title) {
+                    environment.shortcuts.perform(action.id)
+                }
+                .keyboardShortcut(menuShortcut(for: setting))
             }
-            .keyboardShortcut("k", modifiers: .command)
+        }
 
-            Divider()
-
+        CommandGroup(after: .newItem) {
             Button("Eigene Tools neu laden") {
                 environment.customTools.reloadUserTools()
             }

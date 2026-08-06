@@ -15,13 +15,33 @@ struct MenuBarContent: View {
     var body: some View {
         // The quick capture comes first: it is the reason the menu-bar item
         // exists at all, and the one thing you reach for without a window.
-        if let shortcut = environment.quickDictation.registeredShortcut {
-            Button("Schnell-Diktat  \(shortcut.displayString)") {
+        if let keys = shortcutLabel(QuickDictationController.actionID) {
+            Button("Schnell-Diktat  \(keys)") {
                 environment.quickDictation.toggle()
             }
         } else {
             Button("Schnell-Diktat") {
                 environment.quickDictation.toggle()
+            }
+        }
+
+        if let keys = shortcutLabel(ScreenshotToolBundle.regionActionID) {
+            Button("Ausschnitt aufnehmen  \(keys)") {
+                Task { await environment.screenshots.capture(.region) }
+            }
+        } else {
+            Button("Ausschnitt aufnehmen") {
+                Task { await environment.screenshots.capture(.region) }
+            }
+        }
+
+        if let keys = shortcutLabel(ScreenshotToolBundle.textActionID) {
+            Button("Text vom Bildschirm kopieren  \(keys)") {
+                Task { await environment.screenshots.captureText() }
+            }
+        } else {
+            Button("Text vom Bildschirm kopieren") {
+                Task { await environment.screenshots.captureText() }
             }
         }
 
@@ -57,6 +77,14 @@ struct MenuBarContent: View {
             NSApplication.shared.terminate(nil)
         }
         .keyboardShortcut("q")
+    }
+
+    /// The key combination to print next to a menu entry, when the action has
+    /// one that actually fires.
+    private func shortcutLabel(_ id: ShortcutActionID) -> String? {
+        let setting = environment.shortcuts.setting(for: id)
+        guard setting.scope != .off, let shortcut = setting.shortcut else { return nil }
+        return shortcut.displayString
     }
 
     private func open(_ id: ToolIdentifier) {

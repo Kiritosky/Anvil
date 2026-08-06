@@ -15,6 +15,7 @@ struct SettingsWindow: View {
 
     enum SettingsSection: Hashable {
         case general
+        case shortcuts
         case intelligence
         case tool(ToolIdentifier)
     }
@@ -25,6 +26,8 @@ struct SettingsWindow: View {
                 Section("Anvil") {
                     Label("Allgemein", systemImage: "gearshape")
                         .tag(SettingsSection.general)
+                    Label("Tastenkürzel", systemImage: "command")
+                        .tag(SettingsSection.shortcuts)
                     Label("Sprachmodell", systemImage: "sparkles")
                         .tag(SettingsSection.intelligence)
                 }
@@ -52,6 +55,8 @@ struct SettingsWindow: View {
         switch selection {
         case .general:
             GeneralSettingsView()
+        case .shortcuts:
+            ShortcutSettingsView()
         case .intelligence:
             IntelligenceSettingsView()
         case let .tool(id):
