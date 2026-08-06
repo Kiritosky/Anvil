@@ -296,6 +296,15 @@ public struct SpeechStudioView: View {
                 }
             }
 
+            if model.vocabularyCorrectionCount > 0 {
+                StatusMetric(
+                    "\(model.vocabularyCorrectionCount)",
+                    label: "Vokabular",
+                    systemImage: "character.book.closed",
+                    tone: .success
+                )
+            }
+
             if model.hasResult {
                 StatusMetric("\(model.wordCount)", label: "Wörter", systemImage: "text.word.spacing")
             }
@@ -391,6 +400,19 @@ public struct SpeechStudioView: View {
                 .font(AnvilFont.body)
         }
 
+        InspectorSection(
+            "Vokabular",
+            systemImage: "character.book.closed",
+            footnote: vocabularyFootnote
+        ) {
+            ChipPicker(
+                selection: $model.vocabularySensitivity,
+                options: VocabularyCorrector.Sensitivity.allCases,
+                title: \.title
+            )
+            .disabled(model.vocabularyTermCount == 0)
+        }
+
         InspectorSection("Ablauf", systemImage: "slider.horizontal.3") {
             Toggle("Modell verwenden", isOn: $model.usesAI)
                 .font(AnvilFont.body)
@@ -403,6 +425,15 @@ public struct SpeechStudioView: View {
     }
 
     // MARK: - Helpers
+
+    /// Points at the vocabulary tool while the list is still empty — the
+    /// sensitivity chips mean nothing until there is something to enforce.
+    private var vocabularyFootnote: LocalizedStringKey {
+        guard model.vocabularyTermCount > 0 else {
+            return "Noch keine Begriffe — anzulegen im Werkzeug „Diktat-Vokabular\"."
+        }
+        return .resolved(model.vocabularySensitivity.explanation)
+    }
 
     private func openAudioFile() {
         let panel = NSOpenPanel()

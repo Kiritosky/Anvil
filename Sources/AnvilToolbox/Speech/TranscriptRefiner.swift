@@ -41,6 +41,7 @@ public final class TranscriptRefiner {
         style: RefinementStyle,
         languageName: String,
         customInstruction: String = "",
+        vocabulary: [String] = [],
         onProgress: (@MainActor (Progress) -> Void)? = nil,
         onPartial: (@MainActor (String) -> Void)? = nil
     ) async throws -> String {
@@ -51,11 +52,15 @@ public final class TranscriptRefiner {
 
         let instructions = style.instructions(
             languageName: languageName,
-            customInstruction: customInstruction
+            customInstruction: customInstruction,
+            vocabulary: vocabulary
         )
         let options = AIOptions(temperature: style.temperature)
 
-        let budget = max(1_000, await router.inputBudget() - Self.instructionAllowance)
+        // The word list rides along in the instructions, so it eats into the
+        // same budget the transcript is chunked against.
+        let allowance = Self.instructionAllowance + vocabulary.reduce(0) { $0 + $1.count + 3 }
+        let budget = max(1_000, await router.inputBudget() - allowance)
         let chunks = TextChunker.split(source, budget: budget)
         guard !chunks.isEmpty else { return "" }
 

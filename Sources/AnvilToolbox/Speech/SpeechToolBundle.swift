@@ -9,10 +9,11 @@ public enum SpeechToolBundle: ToolBundle {
     public static let displayName = "Sprache & Audio"
 
     public static let studioToolID: ToolIdentifier = "speech.studio"
+    public static let vocabularyToolID: ToolIdentifier = "speech.vocabulary"
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        [speechStudio]
+        [speechStudio, vocabulary]
     }
 
     @MainActor
@@ -36,6 +37,25 @@ public enum SpeechToolBundle: ToolBundle {
             SpeechStudioView(context: context, metadata: metadata)
         } settings: { context in
             SpeechSettingsView(context: context)
+        }
+    }
+
+    @MainActor
+    private static var vocabulary: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: vocabularyToolID,
+            title: "Diktat-Vokabular",
+            subtitle: "Eigene Begriffe, die richtig geschrieben werden",
+            systemImage: "character.book.closed",
+            category: .speech,
+            keywords: [
+                "vokabular", "wörterbuch", "begriffe", "fachbegriffe", "namen",
+                "eigennamen", "schreibweise", "vocabulary", "dictionary", "diktat"
+            ]
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            VocabularyToolView(context: context, metadata: metadata)
         }
     }
 }

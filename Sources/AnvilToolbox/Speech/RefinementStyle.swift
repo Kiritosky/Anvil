@@ -118,7 +118,13 @@ public enum RefinementStyle: String, Codable, CaseIterable, Sendable, Identifiab
     ///     not quietly translate to English — the single most common failure
     ///     mode when cleaning up German dictation.
     ///   - customInstruction: used by ``custom``.
-    public func instructions(languageName: String, customInstruction: String = "") -> String {
+    ///   - vocabulary: the user's own terms. Listing them stops the model from
+    ///     "correcting" a name it has never seen into a word it knows.
+    public func instructions(
+        languageName: String,
+        customInstruction: String = "",
+        vocabulary: [String] = []
+    ) -> String {
         let shared = """
         Du bearbeitest Text, der per Spracherkennung aus einem Diktat entstanden ist.
 
@@ -200,6 +206,28 @@ public enum RefinementStyle: String, Codable, CaseIterable, Sendable, Identifiab
                 : "Aufgabe: \(customInstruction)"
         }
 
-        return shared + "\n\n" + specific
+        return [shared, Self.vocabularySection(vocabulary), specific]
+            .filter { !$0.isEmpty }
+            .joined(separator: "\n\n")
+    }
+
+    /// The word list, as a rule rather than as a suggestion.
+    ///
+    /// The deterministic pass has already put these terms into the text; this
+    /// section only has to stop the model from taking them back out again —
+    /// which small models otherwise do reliably, because an unknown name looks
+    /// to them exactly like a recognition error.
+    private static func vocabularySection(_ terms: [String]) -> String {
+        let cleaned = terms
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        guard !cleaned.isEmpty else { return "" }
+
+        return """
+        Eigene Schreibweisen (Produkte, Namen, Fachbegriffe). Diese Begriffe stehen \
+        bereits richtig im Text und bleiben Zeichen für Zeichen so stehen — auch wenn \
+        du sie nicht kennst. Beuge sie grammatisch, aber schreibe sie niemals um:
+        \(cleaned.map { "- \($0)" }.joined(separator: "\n"))
+        """
     }
 }

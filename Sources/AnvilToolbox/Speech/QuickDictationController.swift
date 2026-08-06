@@ -177,7 +177,8 @@ public final class QuickDictationController {
             strength: settings[.fillerStrength],
             collapsesRepeats: settings[.collapseRepeats]
         )
-        let cleaned = cleaner.clean(raw).text
+        let vocabulary = context.vocabulary
+        let cleaned = vocabulary.corrector().corrected(cleaner.clean(raw).text)
 
         guard settings[.useAIRefinement] else { return cleaned }
 
@@ -186,7 +187,8 @@ public final class QuickDictationController {
                 cleaned,
                 style: settings[.quickDictationStyle],
                 languageName: session.catalog.displayName(for: locale),
-                customInstruction: settings[.customRefinementInstruction]
+                customInstruction: settings[.customRefinementInstruction],
+                vocabulary: settings[.vocabularyInPrompt] ? vocabulary.promptTerms() : []
             )
         } catch {
             // A model that cannot answer is not a reason to lose the dictation.

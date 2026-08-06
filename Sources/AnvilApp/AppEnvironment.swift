@@ -17,6 +17,8 @@ public final class AppEnvironment {
     public let router: AIRouter
     public let context: ToolContext
     public let customTools: CustomToolStore
+    /// The user's own spellings, enforced on every transcript.
+    public let vocabulary: VocabularyStore
     /// Dictation from anywhere, driven by the global shortcut.
     public let quickDictation: QuickDictationController
 
@@ -47,6 +49,10 @@ public final class AppEnvironment {
         let customTools = CustomToolStore(registry: registry)
         self.customTools = customTools
         context.register(customTools, as: (any ToolLibraryReloading).self)
+
+        let vocabulary = VocabularyStore(settings: settings)
+        self.vocabulary = vocabulary
+        context.register(vocabulary)
 
         let quickDictation = QuickDictationController(context: context)
         self.quickDictation = quickDictation

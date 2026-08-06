@@ -22,6 +22,7 @@ public final class SpeechStudioModel {
     public private(set) var refinedText: String = ""
 
     public private(set) var cleanerResult = FillerCleaner.Result(text: "")
+    public private(set) var vocabularyResult = VocabularyCorrector.Result(text: "")
     public private(set) var isRefining = false
     public private(set) var refinementProgress: TranscriptRefiner.Progress?
     public var error: AnvilError?
@@ -36,10 +37,12 @@ public final class SpeechStudioModel {
     @ObservationIgnored private let toolID: ToolIdentifier
     @ObservationIgnored private var refinementTask: Task<Void, Never>?
     @ObservationIgnored private let fileTranscriber: AudioFileTranscriber
+    @ObservationIgnored private let vocabulary: VocabularyStore
 
     public init(context: ToolContext, toolID: ToolIdentifier) {
         self.context = context
         self.toolID = toolID
+        self.vocabulary = context.vocabulary
         let session = DictationSession()
         self.session = session
         self.fileTranscriber = AudioFileTranscriber(catalog: session.catalog)
@@ -95,6 +98,14 @@ public final class SpeechStudioModel {
         set { settings[.keepAudio] = newValue }
     }
 
+    public var vocabularySensitivity: VocabularyCorrector.Sensitivity {
+        get { settings[.vocabularySensitivity] }
+        set {
+            settings[.vocabularySensitivity] = newValue
+            recompute()
+        }
+    }
+
     public var customInstruction: String {
         get { settings[.customRefinementInstruction] }
         set { settings[.customRefinementInstruction] = newValue }
@@ -123,6 +134,17 @@ public final class SpeechStudioModel {
 
     public var rawWordCount: Int {
         rawText.split(whereSeparator: \.isWhitespace).count
+    }
+
+    /// How many words the word list put right in the current transcript.
+    public var vocabularyCorrectionCount: Int { vocabularyResult.count }
+
+    /// How many terms the list currently enforces.
+    public var vocabularyTermCount: Int { vocabulary.activeEntries.count }
+
+    /// The terms handed to the model, empty when that is switched off.
+    private var promptVocabulary: [String] {
+        settings[.vocabularyInPrompt] ? vocabulary.promptTerms() : []
     }
 
     // MARK: - Recording
@@ -207,7 +229,11 @@ public final class SpeechStudioModel {
 
     // MARK: - Cleaning
 
-    /// Re-runs the deterministic pass. Cheap, so it runs on every edit.
+    /// Re-runs the deterministic passes. Cheap, so they run on every edit.
+    ///
+    /// Order matters: fillers go first so the vocabulary is not matched against
+    /// "äh Anvil", and the vocabulary runs before the model so the model sees
+    /// the terms already spelled correctly instead of being asked to guess.
     public func recompute() {
         let cleaner = FillerCleaner(
             languageCode: locale.language.languageCode?.identifier ?? "de",
@@ -215,7 +241,8 @@ public final class SpeechStudioModel {
             collapsesRepeats: collapsesRepeats
         )
         cleanerResult = cleaner.clean(rawText)
-        cleanedText = cleanerResult.text
+        vocabularyResult = vocabulary.corrector().correct(cleanerResult.text)
+        cleanedText = vocabularyResult.text
     }
 
     // MARK: - Refining
@@ -242,6 +269,7 @@ public final class SpeechStudioModel {
                     style: self.style,
                     languageName: self.languageName,
                     customInstruction: self.customInstruction,
+                    vocabulary: self.promptVocabulary,
                     onProgress: { [weak self] progress in
                         self?.refinementProgress = progress
                     },

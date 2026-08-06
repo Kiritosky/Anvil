@@ -75,6 +75,7 @@
 "Aus der Zwischenablage einfügen" = "Paste from clipboard";
 "Aus Favoriten entfernen" = "Remove from favourites";
 "Aus Stichworten eine Nachricht" = "A message from a few notes";
+"Aus Zwischenablage laden" = "Load from clipboard";
 "Aus „das das\" wird „das\". Beabsichtigte Doppelungen wie „sehr sehr\" bleiben." = "“the the” becomes “the”. Deliberate doubling like “very very” is kept.";
 "Aus: der Text liegt immer nur in der Zwischenablage." = "Off: the text always goes to the clipboard only.";
 "Aus: der Text liegt nur in der Zwischenablage." = "Off: the text only goes to the clipboard.";
@@ -83,11 +84,16 @@
 "ausführlich" = "detailed";
 "ausführlicher" = "more detailed";
 "Ausführlichkeit" = "Verbosity";
+"Ausgewogen" = "Balanced";
 "Auswahl" = "Either";
 "Auswerten" = "Analyse";
 "Basis-URL der API, z. B. http://localhost:11434/v1" = "Base URL of the API, e.g. http://localhost:11434/v1";
 "Bausteine" = "Building blocks";
 "Bedienung" = "Behaviour";
+"Begriff" = "Term";
+"Begriff berücksichtigen" = "Apply this term";
+"Begriffe" = "Terms";
+"Begriffe an das Modell geben" = "Pass the terms to the model";
 "Behält jedes inhaltliche Wort. Nur Verzögerungslaute, Versprecher, Grammatik und Zeichensetzung werden korrigiert." = "Keeps every word of substance. Only hesitation sounds, slips, grammar and punctuation are corrected.";
 "Beide Fassungen sind Wort für Wort gleich." = "Both versions are identical, word for word.";
 "Beispiel-Tool" = "Example tool";
@@ -112,6 +118,7 @@
 "Da ist noch nichts." = "There is nothing here yet.";
 "Dafür fehlt noch die Bedienungshilfen-Berechtigung — bis dahin nur Zwischenablage." = "The Accessibility permission is still missing — clipboard only until then.";
 "Dafür fehlt noch die Bedienungshilfen-Berechtigung." = "The Accessibility permission is still missing for this.";
+"Danach" = "After";
 "Das Audioformat des Mikrofons lässt sich nicht in das Format der Spracherkennung umwandeln." = "The microphone’s audio format cannot be converted to the format speech recognition needs.";
 "Das ist kein gültiges Base64." = "That is not valid Base64.";
 "Das ist keine gültige prozentkodierte Zeichenkette." = "That is not a valid percent-encoded string.";
@@ -152,6 +159,7 @@
 "Diff neu laden" = "Reload diff";
 "Diktat" = "Dictation";
 "Diktat starten" = "Start dictation";
+"Diktat-Vokabular" = "Dictation Vocabulary";
 "Diktieren, transkribieren, aufräumen" = "Dictate, transcribe, clean up";
 "Direkt einfügen" = "Paste straight in";
 "Doku-Kommentar" = "Doc comment";
@@ -163,6 +171,7 @@
 "E-Mail" = "Email";
 "Eigene" = "Mine";
 "Eigene Anweisung" = "Custom instruction";
+"Eigene Begriffe, die richtig geschrieben werden" = "Your own terms, spelled the way you write them";
 "Eigene Tools" = "My Tools";
 "Eigene Tools neu laden" = "Reload my tools";
 "Eigene Tools neu laden " = "Reload my tools";
@@ -172,10 +181,12 @@
 "Ein Schlüssel ist hinterlegt." = "A key is stored.";
 "Eine" = "One";
 "eine Zeile" = "one line";
+"Eine Zeile je Begriff. Verhörer stehen nach einem Doppelpunkt, mit Komma getrennt." = "One term per line. Misrecognitions follow a colon, separated by commas.";
 "Einfügen" = "Paste";
 "Eingabe" = "Input";
 "Eingabe passt nicht" = "Input does not fit";
 "Eingefügt" = "Inserted";
+"Eingetragen" = "Listed";
 "Einstellungen" = "Settings";
 "Einträge pro Tool" = "Entries per tool";
 "Englisch" = "English";
@@ -190,11 +201,15 @@
 "Ergebnisse automatisch kopieren" = "Copy results automatically";
 "ergänzt" = "added";
 "Erkennen" = "Detect";
+"Erkennt auch kurze Begriffe und stärkere Abweichungen — mit mehr Fehlgriffen." = "Also catches short terms and bigger differences — and gets it wrong more often.";
+"Erkennt zusätzlich leichte Verhörer bei Begriffen ab fünf Zeichen." = "Also catches slight misrecognitions of terms from five characters up.";
+"Erkennung" = "Matching";
 "Erlaube den Zugriff unter Systemeinstellungen › Datenschutz & Sicherheit." = "Grant access in System Settings › Privacy & Security.";
 "Erlauben" = "Allow";
 "Ersatztext" = "Replacement";
 "Ersetzen" = "Replace";
 "Ersetzt" = "Replaced";
+"Ersetzt nur eingetragene Schreibweisen sowie Groß- und Kleinschreibung." = "Only replaces listed spellings and fixes upper and lower case.";
 "Erst das Apple-Modell. Nur wenn das nicht kann, geht es an den externen Anbieter." = "Apple’s model first. The remote provider is used only when it cannot do the job.";
 "Erst der externe Anbieter, das Apple-Modell als Rückfallebene." = "Remote provider first, Apple’s model as the fallback.";
 "Erst oben einschalten." = "Switch it on above first.";
@@ -247,6 +262,7 @@
 "Globale Tastenkürzel konnten nicht eingerichtet werden." = "Global shortcuts could not be set up.";
 "GROSS" = "UPPERCASE";
 "Groß-/Kleinschreibung egal" = "Ignore case";
+"Großzügig" = "Generous";
 "Gruppe" = "Group";
 "Gruppe %lld" = "Group %lld";
 "Gruppen" = "groups";
@@ -260,6 +276,7 @@
 "Header" = "Header";
 "Hex braucht eine gerade Anzahl Zeichen." = "Hex needs an even number of characters.";
 "Hier erscheint, was erkannt wurde." = "What was recognised appears here.";
+"Hinzufügen" = "Add";
 "HTML-Entities" = "HTML entities";
 "Ich höre zu" = "Listening";
 "Ideen sammeln" = "Collect ideas";
@@ -269,6 +286,7 @@
 "In die Zwischenablage kopieren" = "Copy to clipboard";
 "In diesem Repository gibt es keine Änderungen." = "There are no changes in this repository.";
 "In Textfelder einfügen" = "Insert into text fields";
+"In Zwischenablage kopieren" = "Copy to clipboard";
 "installiert" = "installed";
 "Italienisch" = "Italian";
 "Jeder abgeschlossene Durchlauf landet hier." = "Every completed run ends up here.";
@@ -305,6 +323,7 @@
 "Kopiert" = "Copied";
 "Kopiervorlage für eigene Prompt-Tools" = "A template to copy for your own prompt tools";
 "Korrektheit" = "correctness";
+"Korrekturen" = "corrections";
 "kurz" = "brief";
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der aufgeräumte Text geht ins Textfeld, in dem der Cursor steht — sonst in die Zwischenablage. ⎋ verwirft. Das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The cleaned-up text goes into the text field the caret sits in — otherwise to the clipboard. ⎋ discards. The main window stays closed.";
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der Text wird aufgeräumt und liegt danach in der Zwischenablage — das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The text is cleaned up and ends up on the clipboard — the main window stays closed.";
@@ -320,6 +339,7 @@
 "Legt das Ergebnis nach jedem Durchlauf in die Zwischenablage. Live mitlaufende Umwandlungen sind ausgenommen." = "Puts the result on the clipboard after every run. Live conversions are excluded.";
 "Lesbarkeit" = "readability";
 "Links etwas einfügen — das Ergebnis erscheint sofort." = "Paste something on the left — the result appears instantly.";
+"Liste" = "List";
 "LM Studio (lokal)" = "LM Studio (local)";
 "locker" = "casual";
 "locker (du)" = "casual";
@@ -352,14 +372,18 @@
 "Neu" = "New";
 "Neu erzeugen" = "Generate again";
 "Neu laden" = "Reload";
+"Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
 "neutral" = "neutral";
 "Nicht verfügbar" = "Not available";
 "Nicht verfügbar." = "Not available.";
 "Nichts gefunden" = "Nothing found";
 "Nichts verlässt diesen Mac. Ohne Apple Intelligence bleiben KI-Tools aus." = "Nothing leaves this Mac. Without Apple Intelligence, AI tools stay unavailable.";
 "Nichts verstanden." = "Didn’t catch anything.";
+"Nichts zu prüfen" = "Nothing to check";
 "Noch kein Ergebnis" = "No result yet";
 "Noch kein Schlüssel hinterlegt." = "No key stored yet.";
+"Noch keine Begriffe" = "No terms yet";
+"Noch keine Begriffe — anzulegen im Werkzeug „Diktat-Vokabular\"." = "No terms yet — add them in the Dictation Vocabulary tool.";
 "Noch keine Eingabe" = "No input yet";
 "Noch nichts aufgenommen" = "Nothing recorded yet";
 "Noch nichts erzeugt" = "Nothing generated yet";
@@ -369,11 +393,13 @@
 "normal" = "normal";
 "Nummerieren" = "Number";
 "nur Betreffzeile" = "subject line only";
+"Nur exakte Treffer" = "Exact matches only";
 "Nur on-device" = "On-device only";
 "Nur prüfen" = "Validate only";
 "Nur Verzögerungslaute" = "Hesitation sounds only";
 "Oben zwei Fassungen einfügen — der Vergleich läuft mit." = "Paste two versions above — the comparison keeps up.";
 "Ohne Bindestriche" = "Without hyphens";
+"Ohne das schreibt das Modell unbekannte Namen gern wieder in ein Wort um, das es kennt." = "Without this the model likes to turn a name it does not know back into a word it does.";
 "Ohne Zuordnung" = "Unassigned";
 "Ollama (lokal)" = "Ollama (local)";
 "On-Device" = "On-device";
@@ -388,6 +414,7 @@
 "Pause" = "Pause";
 "Payload" = "Payload";
 "Performance" = "performance";
+"Probetext" = "Sample text";
 "Prüfe API-Schlüssel, Modellnamen und Netzwerkverbindung in den Einstellungen." = "Check the API key, model name and network connection in Settings.";
 "Prüfen" = "Check";
 "Prüfsummen" = "Checksums";
@@ -411,6 +438,7 @@
 "Schnell-Diktat" = "Quick dictation";
 "Schnell-Diktat  %@" = "Quick dictation  %@";
 "Schnellzugriff auf Diktat und Suche, ohne das Fenster zu holen." = "Quick access to dictation and search without bringing the window forward.";
+"Schreib links oben etwas hinein — die Korrektur läuft sofort mit." = "Type something above — the correction runs as you go.";
 "Schreibt das Diktat in flüssige Sätze und Absätze um, ohne Inhalt zu ergänzen." = "Rewrites the dictation into flowing sentences and paragraphs, adding nothing.";
 "Schreibweise" = "Naming style";
 "Schwerpunkt" = "Focus";
@@ -470,6 +498,7 @@
 "Tool-Store öffnen" = "Open Tool Store";
 "Tools" = "Tools";
 "Tools durchsuchen" = "Search tools";
+"Trag ein, was die Spracherkennung bei dir immer wieder falsch schreibt: Produktnamen, Namen von Leuten, Fachbegriffe, Code-Bezeichner." = "Add whatever speech recognition keeps getting wrong for you: product names, people, technical terms, code identifiers.";
 "Trag oben einen regulären Ausdruck ein — Treffer erscheinen sofort." = "Type a regular expression above — matches appear instantly.";
 "Treffer" = "Matches";
 "Umdrehen" = "Reverse";
@@ -488,10 +517,13 @@
 "Vergleich" = "Comparison";
 "Verglichen wird Wort für Wort, nicht Zeile für Zeile — bei umformuliertem Text ist das deutlich lesbarer." = "Compared word by word rather than line by line — far more readable for rewritten text.";
 "Verhalten der App insgesamt." = "How the app behaves overall.";
+"Verhörer" = "misheard";
+"Verhörer, mit Komma getrennt" = "Misrecognitions, comma separated";
 "Verkleinern" = "Minify";
 "Verlauf" = "History";
 "verwerfen" = "discard";
 "Verwerfen (⎋)" = "Discard (⎋)";
+"Vokabular" = "vocabulary";
 "Von Hex" = "From hex";
 "Von überall diktieren" = "Dictate from anywhere";
 "Voreinstellung" = "Preset";
@@ -543,6 +575,7 @@
 "Zusammenfassung" = "Summary";
 "Zwei Fassungen gegenüberstellen" = "Put two versions side by side";
 "Zwischenablage einfügen" = "Paste clipboard";
+"Ähnlich" = "Similar";
 "Ältere Durchläufe werden verworfen, sobald die Grenze erreicht ist." = "Older runs are dropped once the limit is reached.";
 "Änderungen hervorheben" = "Highlight changes";
 "Öffnen" = "Open";
