@@ -9,11 +9,15 @@ public enum DroppedFile: Sendable {
     /// Die URL fehlt, wenn nie eine Datei im Spiel war.
     case text(String, url: URL?)
     case image(NSImage, url: URL?)
+    /// Die Datei selbst, ununtersucht — für Werkzeuge, die über die Bytes
+    /// arbeiten statt über deren Bedeutung.
+    case file(URL)
 
     public var url: URL? {
         switch self {
         case let .text(_, url): url
         case let .image(_, url): url
+        case let .file(url): url
         }
     }
 }
@@ -25,6 +29,9 @@ public struct FileDropKind: OptionSet, Sendable {
 
     public static let text = FileDropKind(rawValue: 1 << 0)
     public static let image = FileDropKind(rawValue: 1 << 1)
+    /// Jede Datei, unabhängig vom Inhalt. Wer das verlangt, will die Bytes —
+    /// eine Prüfsumme etwa — und nicht den entzifferten Text.
+    public static let file = FileDropKind(rawValue: 1 << 2)
     public static let any: FileDropKind = [.text, .image]
 
     var typeIdentifiers: [UTType] {
@@ -156,6 +163,13 @@ enum FileDropReader {
     static func load(_ url: URL, kinds: FileDropKind) -> Result<DroppedFile, AnvilError> {
         let type = UTType(filenameExtension: url.pathExtension)
 
+        // Wer nur `.file` verlangt, bekommt die Datei so, wie sie ist. Sie hier
+        // erst zu entziffern wäre falsch: eine Prüfsumme über entzifferten Text
+        // ist nicht die Prüfsumme der Datei.
+        if kinds == .file {
+            return .success(.file(url))
+        }
+
         if kinds.contains(.image), type?.conforms(to: .image) == true {
             guard let image = NSImage(contentsOf: url) else {
                 return .failure(.invalidInput(
@@ -173,11 +187,18 @@ enum FileDropReader {
             }
         }
 
+        if kinds.contains(.file) {
+            return .success(.file(url))
+        }
+
         return .failure(.invalidInput(rejection(for: kinds)))
     }
 
     /// Was das Ziel überhaupt genommen hätte.
     private static func rejection(for kinds: FileDropKind) -> String {
+        if kinds == .file {
+            return localized("Hier geht eine Datei hinein — gezogener Text ist keine.")
+        }
         if kinds == .any {
             return localized("Damit kann dieses Werkzeug nichts anfangen — Textdateien und Bilder gehen.")
         }

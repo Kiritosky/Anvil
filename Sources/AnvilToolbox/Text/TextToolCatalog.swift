@@ -159,24 +159,52 @@ public enum TextToolCatalog {
         TextTool(
             id: "text.hash",
             title: "Prüfsummen",
-            subtitle: "MD5, SHA-1, SHA-256, SHA-512",
+            subtitle: "MD5, SHA-1, SHA-256, SHA-512 — auch von Dateien",
             systemImage: "number",
             category: .coding,
-            keywords: ["hash", "md5", "sha", "checksum", "prüfsumme", "digest"],
+            keywords: [
+                "hash", "md5", "sha", "checksum", "prüfsumme", "digest",
+                "datei", "download", "verifizieren", "integrität"
+            ],
             modes: [
-                TextToolMode(id: "sha256", title: "SHA-256") { input in
+                TextToolMode(
+                    id: "sha256",
+                    title: "SHA-256",
+                    runOnFile: { try FileDigest.hex(SHA256.self, of: $0) }
+                ) { input in
                     hexString(SHA256.hash(data: Data(input.utf8)))
                 },
-                TextToolMode(id: "sha512", title: "SHA-512") { input in
+                TextToolMode(
+                    id: "sha512",
+                    title: "SHA-512",
+                    runOnFile: { try FileDigest.hex(SHA512.self, of: $0) }
+                ) { input in
                     hexString(SHA512.hash(data: Data(input.utf8)))
                 },
-                TextToolMode(id: "sha1", title: "SHA-1") { input in
+                TextToolMode(
+                    id: "sha1",
+                    title: "SHA-1",
+                    runOnFile: { try FileDigest.hex(Insecure.SHA1.self, of: $0) }
+                ) { input in
                     hexString(Insecure.SHA1.hash(data: Data(input.utf8)))
                 },
-                TextToolMode(id: "md5", title: "MD5") { input in
+                TextToolMode(
+                    id: "md5",
+                    title: "MD5",
+                    runOnFile: { try FileDigest.hex(Insecure.MD5.self, of: $0) }
+                ) { input in
                     hexString(Insecure.MD5.hash(data: Data(input.utf8)))
                 },
-                TextToolMode(id: "all", title: "Alle", systemImage: "list.bullet") { input in
+                TextToolMode(
+                    id: "all",
+                    title: "Alle",
+                    systemImage: "list.bullet",
+                    runOnFile: { url in
+                        try FileDigest.all(of: url)
+                            .map { "\($0.name.padding(toLength: 9, withPad: " ", startingAt: 0))\($0.value)" }
+                            .joined(separator: "\n")
+                    }
+                ) { input in
                     let data = Data(input.utf8)
                     return """
                     MD5      \(hexString(Insecure.MD5.hash(data: data)))
