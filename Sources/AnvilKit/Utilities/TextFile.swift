@@ -14,17 +14,30 @@ public enum TextFile {
     /// nicht den ganzen Arbeitsspeicher belegt.
     public static let sizeLimit = 16 * 1024 * 1024
 
-    /// Die Kodierungen in der Reihenfolge, in der sie realistisch vorkommen.
+    /// Die Kodierungen in der Reihenfolge, in der sie probiert werden.
     ///
-    /// UTF-8 zuerst, dann die beiden, die auf einem Mac aus alten Dateien
-    /// kommen. `isoLatin1` steht bewusst am Ende: es akzeptiert jedes
-    /// Byte-Muster und würde alles davor unbrauchbar machen.
+    /// Wichtig zu wissen: nur UTF-8 kann überhaupt scheitern. Jede
+    /// Ein-Byte-Kodierung nimmt jedes Byte an — „gelingt" heißt dort also
+    /// nicht „ist richtig", sondern nur „hat etwas geliefert". Die Reihenfolge
+    /// ist damit keine Erkennung, sondern eine Wette, und die erste
+    /// Ein-Byte-Kodierung gewinnt sie immer.
     ///
-    /// UTF-16 fehlt hier mit Absicht. Ohne Byte Order Mark nimmt es jede Datei
-    /// mit gerader Länge an und liefert Unsinn — und mit Mark ist es ohnehin
-    /// schon vorher erkannt.
+    /// Deshalb steht `windowsCP1252` an zweiter Stelle: Es stimmt im Bereich
+    /// der Umlaute und Akzente mit Latin-1 überein — beide lesen `0xE9` als
+    /// „é" — deckt zusätzlich aber die Anführungszeichen und Gedankenstriche
+    /// ab, die Windows-Editoren zwischen `0x80` und `0x9F` ablegen. MacRoman
+    /// wäre die falsche Wette: es liest dasselbe `0xE9` als „Ê" und ist auf
+    /// heutigen Rechnern kaum noch anzutreffen.
+    ///
+    /// `isoLatin1` bleibt als letzte Instanz stehen, weil CP1252 fünf
+    /// undefinierte Bytes hat und daran scheitern kann; Latin-1 ist für alle
+    /// 256 definiert und liefert immer etwas.
+    ///
+    /// UTF-16 fehlt mit Absicht: ohne Byte Order Mark nimmt es jede Datei mit
+    /// gerader Länge an und liefert Unsinn — und mit Mark ist es ohnehin schon
+    /// vorher erkannt.
     private static let encodings: [String.Encoding] = [
-        .utf8, .macOSRoman, .windowsCP1252, .isoLatin1
+        .utf8, .windowsCP1252, .isoLatin1
     ]
 
     /// Liest die Datei als Text.

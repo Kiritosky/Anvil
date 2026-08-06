@@ -68,6 +68,26 @@ struct TextFileTests {
         #expect(TextFile.decode(data) == text)
     }
 
+    /// Der Grund, warum die Reihenfolge der Kodierungen kein Detail ist: jede
+    /// Ein-Byte-Kodierung nimmt jedes Byte an, die erste in der Liste gewinnt
+    /// also immer. Stünde MacRoman vorn, käme aus demselben `0xE9` ein „Ê"
+    /// statt eines „é" — kein Fehler, nur ein falsches Wort.
+    @Test
+    func picksTheEncodingThatMatchesLatin1() throws {
+        let data = Data([0x43, 0x61, 0x66, 0xE9])
+        #expect(String(data: data, encoding: .macOSRoman) != "Café")
+        #expect(TextFile.decode(data) == "Café")
+    }
+
+    /// Was CP1252 zusätzlich kann: die typografischen Zeichen, die
+    /// Windows-Editoren zwischen 0x80 und 0x9F ablegen.
+    @Test
+    func readsWindowsPunctuation() {
+        // 0x93 und 0x94 sind dort die englischen Anführungszeichen.
+        let data = Data([0x93, 0x48, 0x69, 0x94])
+        #expect(TextFile.decode(data) == "“Hi”")
+    }
+
     // MARK: - Was kein Text ist
 
     /// Der Grund für die Nullbyte-Prüfung: isoLatin1 nimmt jedes Byte an und
