@@ -39,6 +39,7 @@ public enum ScreenshotToolBundle: ToolBundle {
                 "screenshot", "bildschirmfoto", "aufnahme", "bildschirm", "ausschnitt",
                 "fenster", "abfotografieren", "capture", "ocr", "text"
             ],
+            requirements: [.screenRecording],
             badge: "Neu"
         )
 

@@ -17,6 +17,8 @@ public enum ToolRequirement: String, Hashable, Sendable, Codable, CaseIterable {
     case network
     /// Needs a `git` binary on `PATH`.
     case git
+    /// Needs permission to record the screen.
+    case screenRecording
 
     public var localizedDescription: String {
         switch self {
@@ -26,6 +28,7 @@ public enum ToolRequirement: String, Hashable, Sendable, Codable, CaseIterable {
         case .speechRecognition: localized("Spracherkennung")
         case .network: localized("Netzwerk")
         case .git: "git"
+        case .screenRecording: localized("Bildschirmaufnahme")
         }
     }
 }

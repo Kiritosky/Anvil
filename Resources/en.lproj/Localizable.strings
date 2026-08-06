@@ -55,6 +55,7 @@
 "Alle verwerfen" = "Discard all";
 "alles" = "everything";
 "Alles aktivieren" = "Enable everything";
+"Alles da." = "All set.";
 "Alles finden" = "Find anything";
 "Alles finden (⌘K)" = "Find anything (⌘K)";
 "Alles finden …" = "Find anything…";
@@ -80,6 +81,7 @@
 "Anvil beenden" = "Quit Anvil";
 "Anvil darf das Mikrofon nicht benutzen." = "Anvil is not allowed to use the microphone.";
 "Anvil darf die Spracherkennung nicht benutzen." = "Anvil is not allowed to use speech recognition.";
+"Anvil fragt jede Berechtigung erst, wenn sie gebraucht wird. Hier steht, was davon erteilt ist." = "Anvil asks for each permission the first time it needs it. Here is what has been granted.";
 "Anvil tippt ⌘V in die App, in der du gerade warst." = "Anvil types ⌘V into the app you were just in.";
 "Anzahl" = "How many";
 "Anzeige" = "Display";
@@ -142,6 +144,7 @@
 "Basis-URL der API, z. B. http://localhost:11434/v1" = "Base URL of the API, e.g. http://localhost:11434/v1";
 "Bausteine" = "Building blocks";
 "Bedienung" = "Behaviour";
+"Bedienungshilfen" = "Accessibility";
 "Begriff" = "Term";
 "Begriff berücksichtigen" = "Apply this term";
 "Begriffe" = "Terms";
@@ -153,6 +156,7 @@
 "Beliebig oft" = "Any number";
 "Benennung" = "Naming";
 "Berechtigung fehlt" = "Permission missing";
+"Berechtigungen" = "Permissions";
 "Bereinigt" = "Cleaned";
 "Bereit" = "Ready";
 "Beschreib, was gefunden werden soll …" = "Describe what should be matched…";
@@ -165,6 +169,9 @@
 "Bild kopieren" = "Copy image";
 "Bildschirm" = "Display";
 "Bildschirm & Bilder" = "Screen & Images";
+"Bildschirm und Tastatur" = "Screen and keyboard";
+"Bildschirmaufnahme" = "Screen recording";
+"Bildschirmaufnahme braucht das Bildschirmfoto-Werkzeug. Die Bedienungshilfen braucht nur das Einfügen in fremde Textfelder — ohne sie landet Diktiertes in der Zwischenablage." = "Screen recording is what the screenshot tool needs. Accessibility is only needed to type into other apps' text fields — without it, dictation goes to the clipboard.";
 "Bildschirmausschnitt, Screenshot oder Datei" = "A screen region, a screenshot, or a file";
 "Bildschirmfoto" = "Screenshot";
 "Blindtext" = "Placeholder text";
@@ -301,6 +308,7 @@
 "Eingetragen" = "Listed";
 "Einheiten" = "Units";
 "Einstellungen" = "Settings";
+"Einstellungen öffnen" = "Open Settings";
 "Einträge" = "entries";
 "Einträge pro Tool" = "Entries per tool";
 "Ellipse" = "Ellipse";
@@ -323,6 +331,7 @@
 "Erklären" = "Explain";
 "Erlaube den Zugriff unter Systemeinstellungen › Datenschutz & Sicherheit." = "Grant access in System Settings › Privacy & Security.";
 "Erlauben" = "Allow";
+"Erneut prüfen" = "Check again";
 "Ersatztext" = "Replacement";
 "Ersetzen" = "Replace";
 "Ersetzt" = "Replaced";
@@ -330,6 +339,7 @@
 "Erst das Apple-Modell. Nur wenn das nicht kann, geht es an den externen Anbieter." = "Apple’s model first. The remote provider is used only when it cannot do the job.";
 "Erst der externe Anbieter, das Apple-Modell als Rückfallebene." = "Remote provider first, Apple’s model as the fallback.";
 "Erst oben einschalten." = "Switch it on above first.";
+"Erteilt" = "Granted";
 "Erzeugen und aus Bildern lesen" = "Create them, and read them from images";
 "Es gibt noch kein Ergebnis zum Sichern." = "There is no result to save yet.";
 "Es gibt noch keinen Text zum Aufräumen." = "There is no text to clean up yet.";
@@ -369,6 +379,7 @@
 "Formatiert + sortiert" = "Formatted + sorted";
 "Formt eine Commit-Message nach Conventional Commits." = "Shapes a commit message following Conventional Commits.";
 "Formuliert eine versandfertige Nachricht mit Anrede und Schluss." = "Writes a ready-to-send message with a greeting and a sign-off.";
+"Fragen" = "Ask";
 "Framework" = "Framework";
 "Französisch" = "French";
 "freundlich" = "friendly";
@@ -520,6 +531,7 @@
 "Legt das Ergebnis nach jedem Durchlauf in die Zwischenablage. Live mitlaufende Umwandlungen sind ausgenommen." = "Puts the result on the clipboard after every run. Live conversions are excluded.";
 "Lesbarkeit" = "readability";
 "Letzte Markierung zurücknehmen" = "Undo the last mark";
+"Liest den Stand noch einmal aus." = "Reads the current state again.";
 "Linie" = "Line";
 "Links etwas einfügen — das Ergebnis erscheint sofort." = "Paste something on the left — the result appears instantly.";
 "Liste" = "List";
@@ -528,10 +540,12 @@
 "locker (du)" = "casual";
 "Länge" = "Length";
 "Länge, Gewicht, Temperatur, Tempo, Daten" = "Length, weight, temperature, speed, data";
+"Lässt sich nur noch in den Systemeinstellungen ändern." = "Can only be changed in System Settings now.";
 "Läuft %@ %@" = "Runs %@ %@";
 "Löschen" = "Delete";
 "Macht aus der Beschreibung einen Doku-Kommentar." = "Turns the description into a documentation comment.";
 "Mai" = "May";
+"Manche Berechtigungen melden ihren neuen Zustand erst nach einem Neustart von Anvil." = "Some permissions only report their new state after Anvil restarts.";
 "Markieren" = "Mark up";
 "Mauszeiger mit aufnehmen" = "Include the pointer";
 "MD5, SHA-1, SHA-256, SHA-512" = "MD5, SHA-1, SHA-256, SHA-512";
@@ -564,6 +578,7 @@
 "Nach Oktal" = "To octal";
 "Nachher" = "After";
 "Nachschlagen" = "Look up";
+"Nachsehen" = "Checking";
 "Natürlich, nicht wörtlich" = "Natural, not literal";
 "Nebeneinander" = "Side by side";
 "Netzwerk" = "Network";
@@ -589,6 +604,7 @@
 "Noch keine Begriffe" = "No terms yet";
 "Noch keine Begriffe — anzulegen im Werkzeug „Diktat-Vokabular\"." = "No terms yet — add them in the Dictation Vocabulary tool.";
 "Noch keine Eingabe" = "No input yet";
+"Noch nicht gefragt" = "Not asked yet";
 "Noch nicht gelesen" = "Not read yet";
 "Noch nichts aufgenommen" = "Nothing recorded yet";
 "Noch nichts erzeugt" = "Nothing generated yet";
@@ -613,6 +629,7 @@
 "Oben zwei Fassungen einfügen — der Vergleich läuft mit." = "Paste two versions above — the comparison keeps up.";
 "Ohne Bindestriche" = "Without hyphens";
 "Ohne das schreibt das Modell unbekannte Namen gern wieder in ein Wort um, das es kennt." = "Without this the model likes to turn a name it does not know back into a word it does.";
+"Ohne Mikrofon kein Diktat; ohne Spracherkennung keine Umsetzung in Text." = "No microphone, no dictation; no speech recognition, no text.";
 "ohne Namen" = "unnamed";
 "Ohne Sonderzeichen" = "Without symbols";
 "Ohne Text gibt es nichts zu kodieren." = "Without text there is nothing to encode.";
@@ -695,7 +712,7 @@
 "Speech Studio" = "Speech Studio";
 "Speech Studio öffnen" = "Open Speech Studio";
 "Speicher-Fehler" = "Storage error";
-"Sprache" = "Language";
+"Sprache" = "Speech";
 "Sprache & Audio" = "Speech & Audio";
 "Sprache der Namen" = "Language of the names";
 "Spracherkennung" = "Speech recognition";
@@ -785,6 +802,7 @@
 "Verkleinern" = "Minify";
 "Verlauf" = "History";
 "Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
+"Verweigert" = "Denied";
 "verwerfen" = "discard";
 "Verwerfen" = "Discard";
 "Verwerfen (⎋)" = "Discard (⎋)";
@@ -819,6 +837,7 @@
 "wie im Code erkennbar" = "as the code suggests";
 "Wie spät ist es wo" = "What time it is where";
 "Wird aufgeräumt" = "Cleaning up";
+"Wird beim ersten Mal automatisch gefragt." = "Asked automatically the first time.";
 "Wird beim ersten Start dieser Sprache heruntergeladen." = "Downloads the first time you use this language.";
 "Wird gelesen" = "Understood input";
 "Wird im Prompt für {{option:level}} eingesetzt." = "Substituted into the prompt for {{option:level}}.";
