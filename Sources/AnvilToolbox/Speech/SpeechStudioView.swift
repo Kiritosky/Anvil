@@ -65,7 +65,7 @@ public struct SpeechStudioView: View {
                 Task { await model.refine() }
             }
             .disabled(!model.canRefine || !model.usesAI)
-            .help(model.usesAI ? "Mit dem Modell aufräumen" : "KI-Aufbereitung ist in den Optionen aus")
+            .anvilHelp(model.usesAI ? "Mit dem Modell aufräumen" : "KI-Aufbereitung ist in den Optionen aus")
         }
 
         recordButton
@@ -78,7 +78,7 @@ public struct SpeechStudioView: View {
             Image(systemName: "clock.arrow.circlepath")
         }
         .buttonStyle(AnvilIconButtonStyle())
-        .help("Verlauf")
+        .anvilHelp("Verlauf")
     }
 
     private var recordButton: some View {
@@ -162,13 +162,13 @@ public struct SpeechStudioView: View {
                 Image(systemName: model.isPaused ? "play.fill" : "pause.fill")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help(model.isPaused ? "Weiter aufnehmen" : "Pause")
+            .anvilHelp(model.isPaused ? "Weiter aufnehmen" : "Pause")
 
             Button { Task { await model.discardRecording() } } label: {
                 Image(systemName: "trash")
             }
             .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-            .help("Aufnahme verwerfen")
+            .anvilHelp("Aufnahme verwerfen")
         }
         .padding(.horizontal, AnvilSpacing.md)
         .padding(.vertical, AnvilSpacing.sm)
@@ -220,7 +220,7 @@ public struct SpeechStudioView: View {
                 Image(systemName: "folder")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Audiodatei transkribieren")
+            .anvilHelp("Audiodatei transkribieren")
 
             CopyButton(text: model.rawText)
         }
@@ -242,7 +242,7 @@ public struct SpeechStudioView: View {
                 Image(systemName: "plusminus")
             }
             .buttonStyle(AnvilIconButtonStyle(isActive: model.showsDiff))
-            .help("Änderungen hervorheben")
+            .anvilHelp("Änderungen hervorheben")
             .disabled(!model.hasResult)
 
             Button {
@@ -251,7 +251,7 @@ public struct SpeechStudioView: View {
                 Image(systemName: "square.and.arrow.down")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Als Markdown sichern")
+            .anvilHelp("Als Markdown sichern")
             .disabled(!model.hasResult)
 
             CopyButton(text: model.resultText)

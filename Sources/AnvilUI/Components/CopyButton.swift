@@ -45,7 +45,7 @@ public struct CopyButton: View {
                     Image(systemName: didCopy ? "checkmark" : "doc.on.doc")
                 }
                 .buttonStyle(AnvilIconButtonStyle(tone: didCopy ? .success : .neutral))
-                .help("In die Zwischenablage kopieren")
+                .anvilHelp("In die Zwischenablage kopieren")
             }
         }
         .disabled(text().isEmpty)

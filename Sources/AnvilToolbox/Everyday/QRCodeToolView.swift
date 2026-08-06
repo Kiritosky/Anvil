@@ -48,7 +48,7 @@ public struct QRCodeToolView: View {
                         Image(systemName: "doc.on.clipboard")
                     }
                     .buttonStyle(AnvilIconButtonStyle())
-                    .help("Einfügen")
+                    .anvilHelp("Einfügen")
                 }
                 .padding(.trailing, AnvilSpacing.sm)
             } secondary: {
@@ -89,13 +89,13 @@ public struct QRCodeToolView: View {
                     Image(systemName: "doc.on.doc")
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Bild kopieren")
+                .anvilHelp("Bild kopieren")
 
                 Button(action: exportImage) {
                     Image(systemName: "square.and.arrow.down")
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Als PNG sichern")
+                .anvilHelp("Als PNG sichern")
             }
         }
     }

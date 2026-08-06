@@ -104,7 +104,7 @@ public struct VocabularyToolView: View {
             Toggle("", isOn: entry.isEnabled)
                 .toggleStyle(.checkbox)
                 .labelsHidden()
-                .help("Begriff berücksichtigen")
+                .anvilHelp("Begriff berücksichtigen")
 
             AnvilTextField(text: entry.term, placeholder: "Begriff")
                 .frame(width: AnvilSize.listFieldWidth)
@@ -115,7 +115,7 @@ public struct VocabularyToolView: View {
                 Image(systemName: "trash")
             }
             .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-            .help("Löschen")
+            .anvilHelp("Löschen")
         }
         .opacity(entry.wrappedValue.isEnabled ? 1 : 0.5)
         .padding(.horizontal, AnvilSpacing.xs)
@@ -140,7 +140,7 @@ public struct VocabularyToolView: View {
                     Image(systemName: "doc.on.clipboard")
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Einfügen")
+                .anvilHelp("Einfügen")
             }
 
             AnvilPane(

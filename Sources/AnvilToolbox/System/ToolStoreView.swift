@@ -71,7 +71,7 @@ public struct ToolStoreView: View {
                     Image(systemName: "arrow.clockwise")
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Eigene Tools neu laden")
+                .anvilHelp("Eigene Tools neu laden")
             }
         }
         .confirmationDialog(
@@ -178,7 +178,7 @@ public struct ToolStoreView: View {
                     .toggleStyle(.switch)
                     .controlSize(.mini)
                     .labelsHidden()
-                    .help("Ganze Sammlung ein- oder ausschalten")
+                    .anvilHelp("Ganze Sammlung ein- oder ausschalten")
                 }
             }
 
@@ -210,7 +210,7 @@ public struct ToolStoreView: View {
                         Image(systemName: "gearshape")
                             .font(.system(size: 9))
                             .foregroundStyle(AnvilColor.textTertiary)
-                            .help("Hat eigene Einstellungen")
+                            .anvilHelp("Hat eigene Einstellungen")
                     }
                 }
 
@@ -239,13 +239,13 @@ public struct ToolStoreView: View {
                     Image(systemName: "folder")
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Im Finder zeigen")
+                .anvilHelp("Im Finder zeigen")
 
                 Button { pendingDeletion = tool } label: {
                     Image(systemName: "trash")
                 }
                 .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-                .help("Tool löschen")
+                .anvilHelp("Tool löschen")
             }
 
             Button {
@@ -254,7 +254,7 @@ public struct ToolStoreView: View {
                 Image(systemName: registry.isFavourite(tool.id) ? "star.fill" : "star")
             }
             .buttonStyle(AnvilIconButtonStyle(tone: registry.isFavourite(tool.id) ? .warning : .neutral))
-            .help("Favorit")
+            .anvilHelp("Favorit")
 
             if tool.origin.isEssential {
                 StatusPill("Fest", systemImage: "lock.fill", tone: .neutral)

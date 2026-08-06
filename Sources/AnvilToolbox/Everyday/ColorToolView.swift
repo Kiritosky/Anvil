@@ -63,7 +63,7 @@ public struct ColorToolView: View {
                 Image(systemName: "doc.on.clipboard")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Einfügen")
+            .anvilHelp("Einfügen")
         }
     }
 
@@ -177,7 +177,7 @@ public struct ColorToolView: View {
                             swatch(for: step, size: AnvilSize.toolIcon)
                         }
                         .buttonStyle(.plain)
-                        .help(.resolved(step.hex))
+                        .anvilHelp(.resolved(step.hex))
                     }
                 }
             }

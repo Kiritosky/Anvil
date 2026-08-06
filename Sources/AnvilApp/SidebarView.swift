@@ -139,7 +139,7 @@ struct SidebarView: View {
                 Image(systemName: "command")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Alles finden (⌘K)")
+            .anvilHelp("Alles finden (⌘K)")
         }
         .padding(.horizontal, AnvilSpacing.sm)
         .frame(height: 34)

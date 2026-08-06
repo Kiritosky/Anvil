@@ -93,7 +93,7 @@ public struct TextRecognizerToolView: View {
                     Image(systemName: "xmark")
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Verwerfen")
+                .anvilHelp("Verwerfen")
             }
         }
     }

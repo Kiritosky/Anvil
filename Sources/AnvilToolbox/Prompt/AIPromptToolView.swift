@@ -111,13 +111,13 @@ public struct AIPromptToolView: View {
                     Image(systemName: "folder")
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Anderes Repository wählen")
+                .anvilHelp("Anderes Repository wählen")
 
                 Button { Task { await loadDiff() } } label: {
                     Image(systemName: "arrow.clockwise")
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Diff neu laden")
+                .anvilHelp("Diff neu laden")
                 .disabled(repositoryURL == nil)
             }
 
@@ -125,13 +125,13 @@ public struct AIPromptToolView: View {
                 Image(systemName: "doc.on.clipboard")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Einfügen")
+            .anvilHelp("Einfügen")
 
             Button { input = "" } label: {
                 Image(systemName: "xmark.circle")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Leeren")
+            .anvilHelp("Leeren")
             .disabled(input.isEmpty)
         }
     }

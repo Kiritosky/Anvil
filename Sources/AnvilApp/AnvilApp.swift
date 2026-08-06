@@ -66,6 +66,29 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 struct AnvilCommands: Commands {
     let environment: AppEnvironment
 
+    /// Fills in the standard About panel.
+    private func showAboutPanel() {
+        let bundle = Bundle.main
+        let version = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
+        let build = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "—"
+
+        let credits = NSMutableAttributedString(
+            string: localized("Werkzeugkasten für den Alltag und fürs Entwickeln.\n\nSprache, Text und Bild laufen auf diesem Mac. Externe Anbieter sind möglich, aber nie Voraussetzung.\n\nGNU GPL v3"),
+            attributes: [
+                .font: NSFont.systemFont(ofSize: 11),
+                .foregroundColor: NSColor.secondaryLabelColor
+            ]
+        )
+
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.orderFrontStandardAboutPanel(options: [
+            .applicationName: "Anvil",
+            .applicationVersion: version,
+            .version: build,
+            .credits: credits
+        ])
+    }
+
     /// Translates a recorded combination into the one SwiftUI understands.
     ///
     /// Only in-app scope gets a key here. A globally registered hot key never
@@ -98,6 +121,13 @@ struct AnvilCommands: Commands {
                 environment.customTools.reloadUserTools()
             }
             .keyboardShortcut("r", modifiers: [.command, .option])
+        }
+
+        // The standard About panel, filled in rather than replaced: it is the
+        // one window every Mac app has, and rebuilding it would only make it
+        // less familiar.
+        CommandGroup(replacing: .appInfo) {
+            Button("Über Anvil") { showAboutPanel() }
         }
 
         CommandGroup(replacing: .help) {

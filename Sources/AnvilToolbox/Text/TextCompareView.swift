@@ -84,13 +84,13 @@ public struct TextCompareView: View {
                 Image(systemName: "doc.on.clipboard")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Einfügen")
+            .anvilHelp("Einfügen")
 
             Button { text.wrappedValue = "" } label: {
                 Image(systemName: "xmark.circle")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Leeren")
+            .anvilHelp("Leeren")
             .disabled(text.wrappedValue.isEmpty)
         }
     }

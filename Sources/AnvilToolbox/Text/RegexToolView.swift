@@ -96,7 +96,7 @@ public struct RegexToolView: View {
                 Image(systemName: "doc.on.clipboard")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Einfügen")
+            .anvilHelp("Einfügen")
         }
     }
 

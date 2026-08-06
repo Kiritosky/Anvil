@@ -872,6 +872,7 @@
 "Werkzeug" = "Tool";
 "Werkzeuge ein- und ausschalten" = "Switch tools on and off";
 "Werkzeuge für den Rest" = "Tools for everything else";
+"Werkzeugkasten für den Alltag und fürs Entwickeln.\n\nSprache, Text und Bild laufen auf diesem Mac. Externe Anbieter sind möglich, aber nie Voraussetzung.\n\nGNU GPL v3" = "A toolbox for everyday work and for building things.\n\nSpeech, text and images run on this Mac. External providers are possible, but never required.\n\nGNU GPL v3";
 "Wie 301, aber die Methode bleibt erhalten." = "Like 301, but the method is kept.";
 "Wie 302, aber die Methode bleibt erhalten." = "Like 302, but the method is kept.";
 "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird." = "How the model shapes the dictation before it is copied.";
@@ -944,6 +945,7 @@
 "Änderungen hervorheben" = "Highlight changes";
 "Öffnen" = "Open";
 "Öffnet die Suche über alle Werkzeuge" = "Opens the search across every tool";
+"Über Anvil" = "About Anvil";
 "Über ein Kommandozeilen-Werkzeug" = "Via a command-line tool";
 "Überall" = "Everywhere";
 "Übereinstimmung" = "match";

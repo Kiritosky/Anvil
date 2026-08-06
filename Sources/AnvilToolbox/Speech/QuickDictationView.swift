@@ -33,7 +33,7 @@ struct QuickDictationView: View {
                         .font(.system(size: 9, weight: .bold))
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Verwerfen (⎋)")
+                .anvilHelp("Verwerfen (⎋)")
             }
         }
         .padding(.horizontal, AnvilSpacing.md)

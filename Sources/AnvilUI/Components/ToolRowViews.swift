@@ -65,7 +65,7 @@ public struct ToolListRow: View {
                     Image(systemName: isFavourite ? "star.fill" : "star")
                 }
                 .buttonStyle(AnvilIconButtonStyle(tone: isFavourite ? .warning : .neutral))
-                .help(isFavourite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen")
+                .anvilHelp(isFavourite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen")
             }
         }
         .padding(.horizontal, AnvilSpacing.sm)

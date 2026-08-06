@@ -91,38 +91,38 @@ public struct ScreenshotToolView: View {
                         Image(systemName: "arrow.uturn.backward")
                     }
                     .buttonStyle(AnvilIconButtonStyle())
-                    .help("Letzte Markierung zurücknehmen")
+                    .anvilHelp("Letzte Markierung zurücknehmen")
 
                     Button { controller.clearAnnotations(on: shot) } label: {
                         Image(systemName: "eraser")
                     }
                     .buttonStyle(AnvilIconButtonStyle())
-                    .help("Alle Markierungen entfernen")
+                    .anvilHelp("Alle Markierungen entfernen")
                 }
 
                 Button { controller.copyImage(shot) } label: {
                     Image(systemName: "doc.on.doc")
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Bild kopieren")
+                .anvilHelp("Bild kopieren")
 
                 Button { controller.keep(shot) } label: {
                     Image(systemName: shot.fileURL == nil ? "square.and.arrow.down" : "checkmark.circle")
                 }
                 .buttonStyle(AnvilIconButtonStyle(isActive: shot.fileURL != nil, tone: .success))
-                .help(shot.fileURL == nil ? "Als PNG sichern" : "Ist gesichert")
+                .anvilHelp(shot.fileURL == nil ? "Als PNG sichern" : "Ist gesichert")
 
                 Button { controller.reveal(shot) } label: {
                     Image(systemName: "folder")
                 }
                 .buttonStyle(AnvilIconButtonStyle())
-                .help("Im Finder zeigen")
+                .anvilHelp("Im Finder zeigen")
 
                 Button { controller.remove(shot) } label: {
                     Image(systemName: "trash")
                 }
                 .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-                .help("Verwerfen")
+                .anvilHelp("Verwerfen")
             }
         }
     }
@@ -247,7 +247,7 @@ public struct ScreenshotToolView: View {
                     Image(systemName: "trash")
                 }
                 .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-                .help("Alle verwerfen")
+                .anvilHelp("Alle verwerfen")
             }
         }
         .frame(height: AnvilSize.secondaryListHeight)
@@ -273,7 +273,7 @@ public struct ScreenshotToolView: View {
             }
         }
         .buttonStyle(.plain)
-        .help(.resolved(shot.target.title))
+        .anvilHelp(.resolved(shot.target.title))
     }
 
     private var statusBar: some View {
@@ -337,7 +337,7 @@ public struct ScreenshotToolView: View {
                                 }
                         }
                         .buttonStyle(.plain)
-                        .help(.resolved(hex))
+                        .anvilHelp(.resolved(hex))
                     }
                 }
             }

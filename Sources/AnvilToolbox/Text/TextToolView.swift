@@ -68,13 +68,13 @@ public struct TextToolView: View {
                 Image(systemName: "doc.on.clipboard")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Aus der Zwischenablage einfügen")
+            .anvilHelp("Aus der Zwischenablage einfügen")
 
             Button { input = ""; run() } label: {
                 Image(systemName: "xmark.circle")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Leeren")
+            .anvilHelp("Leeren")
             .disabled(input.isEmpty)
         }
     }
@@ -108,7 +108,7 @@ public struct TextToolView: View {
                 Image(systemName: "arrow.left.arrow.right")
             }
             .buttonStyle(AnvilIconButtonStyle())
-            .help("Ergebnis als neue Eingabe verwenden")
+            .anvilHelp("Ergebnis als neue Eingabe verwenden")
             .disabled(output.isEmpty)
 
             CopyButton(text: output)

@@ -81,7 +81,7 @@ public struct AnvilBanner: View {
                         Image(systemName: "xmark")
                     }
                     .buttonStyle(AnvilIconButtonStyle())
-                    .help("Ausblenden")
+                    .anvilHelp("Ausblenden")
                 }
             }
         }

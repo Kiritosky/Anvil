@@ -184,7 +184,7 @@ public struct WorkbenchOrientationPicker: View {
             Image(systemName: orientation.systemImage)
         }
         .buttonStyle(AnvilIconButtonStyle())
-        .help(localized("Anordnung: \(orientation.title)"))
+        .anvilHelp(localized("Anordnung: \(orientation.title)"))
         .keyboardShortcut("\\", modifiers: [.command, .option])
     }
 }

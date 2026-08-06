@@ -125,13 +125,13 @@ public struct ClipboardToolView: View {
                     Image(systemName: entry.isPinned ? "pin.fill" : "pin")
                 }
                 .buttonStyle(AnvilIconButtonStyle(isActive: entry.isPinned, tone: .accent))
-                .help(entry.isPinned ? "Lösen" : "Anheften")
+                .anvilHelp(entry.isPinned ? "Lösen" : "Anheften")
 
                 Button { history.remove(entry) } label: {
                     Image(systemName: "xmark")
                 }
                 .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-                .help("Entfernen")
+                .anvilHelp("Entfernen")
             }
             .padding(AnvilSpacing.sm)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -141,7 +141,7 @@ public struct ClipboardToolView: View {
             }
         }
         .buttonStyle(.plain)
-        .help("Zurück in die Zwischenablage")
+        .anvilHelp("Zurück in die Zwischenablage")
     }
 
     private var statusBar: some View {

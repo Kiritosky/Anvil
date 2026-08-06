@@ -71,7 +71,7 @@ struct ShortcutSettingsView: View {
                         Image(systemName: "arrow.uturn.backward")
                     }
                     .buttonStyle(AnvilIconButtonStyle())
-                    .help("Auf Vorgabe zurücksetzen")
+                    .anvilHelp("Auf Vorgabe zurücksetzen")
                 }
 
                 Spacer(minLength: 0)

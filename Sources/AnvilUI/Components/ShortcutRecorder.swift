@@ -36,7 +36,7 @@ public struct ShortcutRecorder: View {
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(AnvilColor.textTertiary)
-                .help("Kürzel entfernen")
+                .anvilHelp("Kürzel entfernen")
             }
         }
         .background {

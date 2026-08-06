@@ -104,7 +104,7 @@ public struct ToolScaffold<Content: View, Inspector: View, Actions: View>: View 
                 .labelStyle(.iconOnly)
         }
         .buttonStyle(AnvilIconButtonStyle(isActive: isInspectorVisible))
-        .help(isInspectorVisible ? "Optionen ausblenden" : "Optionen einblenden")
+        .anvilHelp(isInspectorVisible ? "Optionen ausblenden" : "Optionen einblenden")
         .keyboardShortcut("0", modifiers: [.command, .option])
     }
 }
