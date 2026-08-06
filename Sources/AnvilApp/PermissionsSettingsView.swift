@@ -16,6 +16,11 @@ struct PermissionsSettingsView: View {
     @State private var revision = 0
 
     var body: some View {
+        // The two system calls answer on their own queue, and a closure that
+        // escaped this view cannot write to its state directly — the binding
+        // can, because its setter does not mutate the view.
+        let refresh = $revision
+
         SettingsPage(
             "Berechtigungen",
             description: "Anvil fragt jede Berechtigung erst, wenn sie gebraucht wird. Hier steht, was davon erteilt ist."
@@ -31,7 +36,7 @@ struct PermissionsSettingsView: View {
                     settingsPane: "Privacy_Microphone"
                 ) {
                     AVCaptureDevice.requestAccess(for: .audio) { _ in
-                        Task { @MainActor in revision += 1 }
+                        Task { @MainActor in refresh.wrappedValue += 1 }
                     }
                 }
 
@@ -42,7 +47,7 @@ struct PermissionsSettingsView: View {
                     settingsPane: "Privacy_SpeechRecognition"
                 ) {
                     SFSpeechRecognizer.requestAuthorization { _ in
-                        Task { @MainActor in revision += 1 }
+                        Task { @MainActor in refresh.wrappedValue += 1 }
                     }
                 }
             }
@@ -94,7 +99,11 @@ struct PermissionsSettingsView: View {
     /// What a permission can be. Deliberately three states, not two: "not asked
     /// yet" is not the same problem as "denied", and only one of them can be
     /// fixed from inside the app.
-    private enum State {
+    ///
+    /// Not called `State`: that name is taken by the property wrapper this very
+    /// view uses, and shadowing it inside the type is a trap for the next
+    /// person.
+    private enum Permission {
         case granted
         case denied
         case notAsked
@@ -128,7 +137,7 @@ struct PermissionsSettingsView: View {
     private func row(
         _ title: LocalizedStringKey,
         systemImage: String,
-        state: State,
+        state: Permission,
         settingsPane: String,
         request: @escaping () -> Void
     ) -> some View {
@@ -152,7 +161,7 @@ struct PermissionsSettingsView: View {
         }
     }
 
-    private func help(for state: State) -> LocalizedStringKey {
+    private func help(for state: Permission) -> LocalizedStringKey {
         switch state {
         case .granted: "Alles da."
         case .denied: "Lässt sich nur noch in den Systemeinstellungen ändern."
@@ -169,7 +178,7 @@ struct PermissionsSettingsView: View {
 
     // MARK: - Statuses
 
-    private var microphoneState: State {
+    private var microphoneState: Permission {
         _ = revision
         switch AVCaptureDevice.authorizationStatus(for: .audio) {
         case .authorized: return .granted
@@ -178,7 +187,7 @@ struct PermissionsSettingsView: View {
         }
     }
 
-    private var speechState: State {
+    private var speechState: Permission {
         _ = revision
         switch SFSpeechRecognizer.authorizationStatus() {
         case .authorized: return .granted
@@ -187,13 +196,13 @@ struct PermissionsSettingsView: View {
         }
     }
 
-    private var screenRecordingState: State {
+    private var screenRecordingState: Permission {
         _ = revision
         // There is no "not asked" here — the system only ever answers yes or no.
         return CGPreflightScreenCaptureAccess() ? .granted : .denied
     }
 
-    private var accessibilityState: State {
+    private var accessibilityState: Permission {
         _ = revision
         return PasteService.isTrusted ? .granted : .denied
     }
