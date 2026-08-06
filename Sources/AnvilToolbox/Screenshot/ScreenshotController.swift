@@ -74,7 +74,8 @@ public final class ScreenshotController {
             delay: settings[.screenshotDelay],
             includesCursor: settings[.screenshotIncludesCursor],
             includesShadow: settings[.screenshotIncludesShadow],
-            playsSound: settings[.screenshotPlaysSound]
+            playsSound: settings[.screenshotPlaysSound],
+            displayIndex: settings[.screenshotDisplay]
         )
 
         do {
@@ -143,7 +144,9 @@ public final class ScreenshotController {
         }
     }
 
-    private func add(_ shot: Screenshot) {
+    /// Internal rather than private so the session behaviour — newest first,
+    /// selection, the limit — can be tested without a screen to photograph.
+    func add(_ shot: Screenshot) {
         shots.insert(shot, at: 0)
         selectedID = shot.id
 
@@ -265,6 +268,11 @@ extension SettingKey {
 
     public static var screenshotSessionLimit: SettingKey<Int> {
         SettingKey<Int>("screenshot.sessionLimit", default: 20)
+    }
+
+    /// Which display a full-screen shot takes, 1-based.
+    public static var screenshotDisplay: SettingKey<Int> {
+        SettingKey<Int>("screenshot.display", default: 1)
     }
 }
 

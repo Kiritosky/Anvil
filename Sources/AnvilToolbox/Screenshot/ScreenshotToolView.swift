@@ -183,7 +183,7 @@ public struct ScreenshotToolView: View {
                 Image(nsImage: shot.image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 96, height: 60)
+                    .frame(width: AnvilSize.thumbnailWidth, height: AnvilSize.thumbnailHeight)
                     .clipShape(RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous))
 
                 Text(verbatim: shot.takenAt.formatted(date: .omitted, time: .standard))
@@ -260,6 +260,21 @@ public struct ScreenshotToolView: View {
                 }
                 .pickerStyle(.segmented)
                 .labelsHidden()
+            }
+
+            if ScreenCapture.displayCount > 1 {
+                OptionRow(
+                    "Bildschirm",
+                    help: "Gilt für die Vollbildaufnahme — mit einem Dateinamen kann immer nur ein Bildschirm gemeint sein."
+                ) {
+                    Picker("", selection: binding(.screenshotDisplay)) {
+                        ForEach(1...ScreenCapture.displayCount, id: \.self) { index in
+                            Text(verbatim: "\(index)").tag(index)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                }
             }
 
             Toggle("Mauszeiger mit aufnehmen", isOn: binding(.screenshotIncludesCursor))

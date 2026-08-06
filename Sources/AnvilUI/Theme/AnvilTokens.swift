@@ -58,6 +58,9 @@ public enum AnvilSize {
     /// Height a secondary list inside a pane is capped at, so the main content
     /// above it keeps the room.
     public static let secondaryListHeight: CGFloat = 140
+    /// A thumbnail in a filmstrip: 16:10, the shape most screens are.
+    public static let thumbnailWidth: CGFloat = 96
+    public static let thumbnailHeight: CGFloat = 60
     /// Square size of a tool icon in the sidebar.
     public static let toolIcon: CGFloat = 22
 }

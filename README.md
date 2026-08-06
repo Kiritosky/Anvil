@@ -19,6 +19,10 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
   kleine Bubble über jeder App ein. Sprechen, Kürzel noch einmal drücken — der
   aufgeräumte Text landet im Textfeld, in dem der Cursor steht, sonst in der
   Zwischenablage. Das Hauptfenster bleibt zu.
+- **Tastenkürzel, die dir gehören.** Jede Aktion — Diktat, Ausschnitt,
+  Vollbild, Fenster, Text vom Bildschirm — hat ein Kürzel, das sich ändern,
+  abschalten und zwischen „nur in Anvil" und „überall" umstellen lässt.
+  Kollisionen werden erkannt, statt still zu gewinnen.
 - **Eigene Wörter.** Eine persönliche Wortliste wird im Diktat deterministisch
   durchgesetzt — Produktnamen, Kollegen, Code-Bezeichner stehen richtig da,
   bevor das Modell den Text überhaupt sieht.
@@ -53,7 +57,7 @@ Design-System, dann Dienste, dann Tools.
 | KI-Werkzeuge | 15 Prompt-Tools: Commit-Message, Code-Review, Tests, Regex, Shell, Übersetzen, E-Mail … |
 | Text & Daten | JSON, Base64, URL, JWT, Prüfsummen, UUID, Zeitstempel, Schreibweise, Zeilen, Slug, Hex, HTML, Statistik, Regex-Tester, Textvergleich |
 | Coding | Zahlensysteme, Zeichen (Unicode), Dateirechte, HTTP-Codes, Cron |
-| Alltag | Zwischenablage-Verlauf, Farben, QR-Code, Text aus Bild, Passwörter, Einheiten, Prozent, Zeitzonen, Blindtext |
+| Alltag | Bildschirmfoto, Zwischenablage-Verlauf, Farben, QR-Code, Text aus Bild, Passwörter, Einheiten, Prozent, Zeitzonen, Blindtext |
 | System | Tool-Store |
 
 Alles ohne KI-Bedarf läuft deterministisch und ohne Netz; die KI-Werkzeuge

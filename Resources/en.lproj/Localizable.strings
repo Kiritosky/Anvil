@@ -162,6 +162,7 @@
 "Bild" = "Image";
 "Bild in die Zwischenablage" = "Image to the clipboard";
 "Bild kopieren" = "Copy image";
+"Bildschirm" = "Display";
 "Bildschirmausschnitt, Screenshot oder Datei" = "A screen region, a screenshot, or a file";
 "Bildschirmfoto" = "Screenshot";
 "Blindtext" = "Placeholder text";
@@ -281,6 +282,7 @@
 "ein Absatz" = "one paragraph";
 "Ein Absatz" = "One paragraph";
 "Ein Cron-Ausdruck hat fünf Felder: Minute, Stunde, Tag, Monat, Wochentag." = "A cron expression has five fields: minute, hour, day, month, weekday.";
+"Ein ganzer Bildschirm, sofort." = "One whole display, at once.";
 "Ein JWT besteht aus drei mit Punkt getrennten Teilen." = "A JWT has three parts separated by dots.";
 "Ein Satz" = "One sentence";
 "Ein Schlüssel ist hinterlegt." = "A key is stored.";
@@ -385,6 +387,7 @@
 "Gesicherte Aufnahmen liegen unter Anvil › Screenshots." = "Saved shots live under Anvil › Screenshots.";
 "Geänderter Text …" = "Changed text…";
 "Gibt es nicht — oder du darfst nicht wissen, dass es das gibt." = "Does not exist — or you are not allowed to know it does.";
+"Gilt für die Vollbildaufnahme — mit einem Dateinamen kann immer nur ein Bildschirm gemeint sein." = "Applies to the full-screen shot — one file name can only ever mean one display.";
 "Gilt für jede Aufnahme, auch die per Tastenkürzel." = "Applies to every shot, including the ones taken by shortcut.";
 "Gilt für neue Sitzungen. Im Tool selbst lässt sich das jederzeit umstellen." = "Applies to new sessions. You can change it inside the tool at any time.";
 "Gilt in jeder App. Kann mit anderen Programmen kollidieren." = "Works in every app. May collide with other programs.";

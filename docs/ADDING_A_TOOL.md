@@ -169,3 +169,42 @@ struct MeinToolView: View {
 `ToolMetadata.requirements` sagt der Shell, warum ein Tool gerade nicht kann:
 `.languageModel`, `.onDeviceLanguageModel`, `.microphone`, `.speechRecognition`,
 `.network`, `.git`. Der Tool-Store zeigt sie als Merkmale an.
+
+## Tastenkürzel
+
+Ein Tool meldet **kein** Tastenkürzel selbst an. Es beschreibt eine
+`ShortcutAction`, und `ShortcutRegistry` entscheidet, worauf gehört wird:
+
+```swift
+ShortcutAction(
+    id: "meintool.los",
+    title: "Loslegen",
+    subtitle: "Was das Kürzel auslöst",
+    systemImage: "play",
+    toolID: MeinToolBundle.toolID,     // gruppiert es in den Einstellungen
+    defaultShortcut: GlobalShortcut(
+        keyCode: UInt32(kVK_ANSI_L),
+        carbonModifiers: UInt32(optionKey | cmdKey),
+        keyLabel: "L"
+    ),
+    defaultScope: .global               // .off, .app oder .global
+) { controller.los() }
+```
+
+Drei Punkte, die daran hängen:
+
+- **Registriert wird beim Start**, in `AppEnvironment`, nicht in der View. Ein
+  globales Kürzel muss funktionieren, während das Tool zu ist — was es auslöst,
+  muss also länger leben als jede View. Deshalb sitzt die Logik in einem
+  Controller, den die App besitzt und über `ToolContext` bereitstellt.
+- **`.app` heißt Menüeintrag.** Anders kennt macOS kein App-Kürzel; die App-Shell
+  baut aus jeder Aktion mit dieser Reichweite automatisch einen Eintrag im
+  Menü „Aktionen". Tasten der Funktionsreihe können nur `.global` sein —
+  `KeyEquivalent` kann F5 nicht ausdrücken.
+- **Kollisionen** erkennt die Registry selbst, auch die zwischen einem App- und
+  einem globalen Kürzel: das globale schluckt die Taste, bevor das Menü sie
+  sieht.
+
+Der Nutzer kann jedes Kürzel unter Einstellungen › Tastenkürzel ändern,
+abschalten oder in seiner Reichweite umstellen. Die Vorgabe ist eine Vorgabe,
+keine Festlegung.

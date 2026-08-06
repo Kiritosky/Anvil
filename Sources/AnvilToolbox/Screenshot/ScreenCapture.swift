@@ -17,7 +17,7 @@ public enum ScreenCapture {
         case region
         /// Click a window; it is captured without its background.
         case window
-        /// Everything on every display.
+        /// One whole display, all of it.
         case fullScreen
 
         public var id: String { rawValue }
@@ -45,16 +45,19 @@ public enum ScreenCapture {
             case .window:
                 localized("Fenster anklicken. Wird ohne Hintergrund aufgenommen.")
             case .fullScreen:
-                localized("Alle Bildschirme, sofort.")
+                localized("Ein ganzer Bildschirm, sofort.")
             }
         }
 
         /// The flags `screencapture` needs for this target.
-        var arguments: [String] {
+        func arguments(displayIndex: Int) -> [String] {
             switch self {
             case .region: ["-i"]
             case .window: ["-w"]
-            case .fullScreen: []
+            // Always a specific display, never "all of them": given one file
+            // name and two screens, screencapture writes two files and only
+            // the first one is the one we asked for.
+            case .fullScreen: ["-D", String(max(1, displayIndex))]
             }
         }
 
@@ -76,19 +79,24 @@ public enum ScreenCapture {
         /// is dead space in a bug report.
         public var includesShadow: Bool
         public var playsSound: Bool
+        /// Which screen a full-screen shot takes, counted the way
+        /// `screencapture` counts: 1 is the main display.
+        public var displayIndex: Int
 
         public init(
             target: Target = .region,
             delay: Int = 0,
             includesCursor: Bool = false,
             includesShadow: Bool = false,
-            playsSound: Bool = true
+            playsSound: Bool = true,
+            displayIndex: Int = 1
         ) {
             self.target = target
             self.delay = delay
             self.includesCursor = includesCursor
             self.includesShadow = includesShadow
             self.playsSound = playsSound
+            self.displayIndex = displayIndex
         }
     }
 
@@ -102,21 +110,12 @@ public enum ScreenCapture {
         let destination = FileManager.default.temporaryDirectory
             .appending(path: "anvil-\(UUID().uuidString).png")
 
-        var arguments = options.target.arguments + ["-t", "png"]
-        if !options.playsSound { arguments.append("-x") }
-        if options.includesCursor { arguments.append("-C") }
-        if !options.includesShadow { arguments.append("-o") }
-        if options.delay > 0, !options.target.isInteractive {
-            arguments.append(contentsOf: ["-T", String(options.delay)])
-        }
-        arguments.append(destination.path(percentEncoded: false))
-
         let runner = ProcessRunner()
         // Ten minutes: the user decides how long they take to aim, and a
         // timeout that fires mid-selection would be worse than no timeout.
         let result = try await runner.run(
             "/usr/sbin/screencapture",
-            arguments: arguments,
+            arguments: arguments(for: options, destination: destination),
             timeout: 600
         )
 
@@ -131,6 +130,33 @@ public enum ScreenCapture {
         }
 
         return destination
+    }
+
+    /// The command line for a set of options.
+    ///
+    /// Split out from ``capture(_:)`` because it is the part with the rules in
+    /// it — and the part that can be checked without photographing anything.
+    static func arguments(for options: Options, destination: URL) -> [String] {
+        var arguments = options.target.arguments(displayIndex: options.displayIndex)
+        arguments += ["-t", "png"]
+
+        if !options.playsSound { arguments.append("-x") }
+        if options.includesCursor { arguments.append("-C") }
+        if !options.includesShadow { arguments.append("-o") }
+        // A delay before an interactive shot would run before the crosshair
+        // appears, which is a delay nobody asked for.
+        if options.delay > 0, !options.target.isInteractive {
+            arguments += ["-T", String(options.delay)]
+        }
+
+        arguments.append(destination.path(percentEncoded: false))
+        return arguments
+    }
+
+    /// How many screens are attached. Drives the display picker.
+    @MainActor
+    public static var displayCount: Int {
+        max(1, NSScreen.screens.count)
     }
 
     /// Moves a temporary shot into the folder screenshots are kept in.
