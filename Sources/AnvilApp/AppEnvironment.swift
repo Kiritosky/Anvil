@@ -19,6 +19,8 @@ public final class AppEnvironment {
     public let customTools: CustomToolStore
     /// The user's own spellings, enforced on every transcript.
     public let vocabulary: VocabularyStore
+    /// Everything that passed through the clipboard this session.
+    public let clipboard: ClipboardHistory
     /// Dictation from anywhere, driven by the global shortcut.
     public let quickDictation: QuickDictationController
 
@@ -54,6 +56,10 @@ public final class AppEnvironment {
         self.vocabulary = vocabulary
         context.register(vocabulary)
 
+        let clipboard = ClipboardHistory(pasteboard: context.pasteboard, settings: settings)
+        self.clipboard = clipboard
+        context.register(clipboard)
+
         let quickDictation = QuickDictationController(context: context)
         self.quickDictation = quickDictation
         context.register(quickDictation)
@@ -62,6 +68,7 @@ public final class AppEnvironment {
         customTools.reloadUserTools()
         restoreSelection()
         quickDictation.syncShortcut()
+        clipboard.syncWatching()
     }
 
     /// The tool bundles the app ships with, in sidebar order.

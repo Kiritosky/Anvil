@@ -37,12 +37,16 @@
 "Alles aktivieren" = "Enable everything";
 "Alles finden (⌘K)" = "Find anything (⌘K)";
 "Alles finden …" = "Find anything…";
+"Alles, was du ab jetzt kopierst, sammelt sich hier — bis du Anvil beendest." = "Everything you copy from now on collects here — until you quit Anvil.";
+"Alles, was du kopiert hast" = "Everything you have copied";
 "Allgemein" = "General";
 "Alltag" = "Everyday";
 "Als Markdown sichern" = "Save as Markdown";
 "Als String escapen" = "Escape as string";
 "Anbieter-Fehler" = "Provider error";
 "Anderes Repository wählen" = "Choose a different repository";
+"Angeheftet" = "Pinned";
+"Angeheftete Einträge zählen nicht mit und fallen nie heraus." = "Pinned entries do not count towards the limit and never drop out.";
 "Anordnung: %@" = "Layout: %@";
 "Anteil, Aufschlag, Veränderung" = "Share, surcharge, change";
 "Anthropic hat mit HTTP %lld geantwortet." = "Anthropic responded with HTTP %lld.";
@@ -143,6 +147,7 @@
 "Der Schlüssel konnte nicht kodiert werden." = "The key could not be encoded.";
 "Der Text ist zu lang für das On-Device-Modell. Teile ihn auf oder wähle in den Einstellungen einen externen Anbieter." = "The text is too long for the on-device model. Split it up, or pick a remote provider in Settings.";
 "Der Text lässt sich nicht kodieren." = "The text cannot be encoded.";
+"Der Verlauf liegt nur im Arbeitsspeicher und ist beim nächsten Start wieder leer." = "The history lives in memory only and is empty again after a restart.";
 "Der Verlauf liegt unverschlüsselt in ~/Library/Application Support/Anvil." = "The history is stored unencrypted in ~/Library/Application Support/Anvil.";
 "Der Vorgang wurde abgebrochen." = "The operation was cancelled.";
 "Detailgrad" = "Level of detail";
@@ -199,8 +204,10 @@
 "Eingetragen" = "Listed";
 "Einheiten" = "Units";
 "Einstellungen" = "Settings";
+"Einträge" = "entries";
 "Einträge pro Tool" = "Entries per tool";
 "Englisch" = "English";
+"Entfernen" = "Remove";
 "entfernt" = "removed";
 "Entfernt zusätzlich Floskeln wie „halt\", „quasi\", „sozusagen\"." = "Also removes tics like “like”, “basically”, “sort of”.";
 "Entfernt „äh\", „ähm\", „hm\" und Wortdoppelungen." = "Removes “uh”, “um”, “hm” and repeated words.";
@@ -301,12 +308,14 @@
 "In diesem Repository gibt es keine Änderungen." = "There are no changes in this repository.";
 "In Textfelder einfügen" = "Insert into text fields";
 "In Zwischenablage kopieren" = "Copy to clipboard";
+"Inhalte, die eine App als vertraulich kennzeichnet — etwa aus einem Passwortmanager — werden nie mitgeschnitten." = "Content an app marks as confidential — from a password manager, say — is never recorded.";
 "installiert" = "installed";
 "Italienisch" = "Italian";
 "Jeder abgeschlossene Durchlauf landet hier." = "Every completed run ends up here.";
 "Jetzt" = "Now";
 "JSON-Dateien in ~/Library/Application Support/Anvil/Tools." = "JSON files in ~/Library/Application Support/Anvil/Tools.";
 "Kein Diff geladen" = "No diff loaded";
+"Kein Eintrag enthält diesen Text." = "No entry contains that text.";
 "Kein gültiges JSON: %@" = "Not valid JSON: %@";
 "Kein Modell" = "No model";
 "Kein Modell verfügbar" = "No model available";
@@ -314,6 +323,7 @@
 "Kein passendes Audioformat für die Spracherkennung." = "No suitable audio format for speech recognition.";
 "Kein Sprachmodell verfügbar" = "No language model available";
 "Kein Tool passt zu „%@\"." = "No tool matches “%@”.";
+"Kein Treffer" = "No match";
 "Kein Unterschied" = "No difference";
 "Keine Einstellungen" = "No settings";
 "Keine Query-Parameter." = "No query parameters.";
@@ -335,6 +345,7 @@
 "Kompakt" = "Compact";
 "Konvention" = "Convention";
 "Kopiert" = "Copied";
+"Kopiert: %@" = "Copied: %@";
 "Kopiervorlage für eigene Prompt-Tools" = "A template to copy for your own prompt tools";
 "Korrektheit" = "correctness";
 "Korrekturen" = "corrections";
@@ -374,6 +385,7 @@
 "Mit KI" = "With AI";
 "mit-bindestrichen" = "with-hyphens";
 "mit_unterstrichen" = "with_underscores";
+"Mitschneiden" = "Recording";
 "Modell" = "Model";
 "Modell verwenden" = "Use the model";
 "Moment …" = "One moment…";
@@ -391,6 +403,7 @@
 "Neu laden" = "Reload";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
 "neutral" = "neutral";
+"Nicht angeheftete löschen" = "Clear unpinned";
 "Nicht verfügbar" = "Not available";
 "Nicht verfügbar." = "Not available.";
 "Nichts gefunden" = "Nothing found";
@@ -406,6 +419,7 @@
 "Noch nichts erzeugt" = "Nothing generated yet";
 "Noch nichts gespeichert." = "Nothing saved yet.";
 "Noch nichts im Verlauf" = "Nothing in the history yet";
+"Noch nichts kopiert" = "Nothing copied yet";
 "Noch nichts zu vergleichen" = "Nothing to compare yet";
 "normal" = "normal";
 "Nummerieren" = "Number";
@@ -431,6 +445,7 @@
 "Parameter auflisten" = "List parameters";
 "Passwörter" = "Passwords";
 "Pause" = "Pause";
+"Pausiert" = "Paused";
 "Payload" = "Payload";
 "Performance" = "performance";
 "PIN" = "PIN";
@@ -600,11 +615,14 @@
 "Zufällig, ohne Verwechslungsgefahr" = "Random, with no look-alike characters";
 "Zuletzt" = "Recent";
 "Zuletzt benutzt" = "Recently used";
+"Zurück in die Zwischenablage" = "Back to the clipboard";
 "Zurückwandeln" = "Unescape";
 "Zusammenfassen" = "Summarise";
 "Zusammenfassung" = "Summary";
 "Zwei Fassungen gegenüberstellen" = "Put two versions side by side";
 "Zwei Zahlen bitte, zum Beispiel „19% von 250\"." = "Two numbers please, for example “19% von 250”.";
+"Zwischenablage" = "Clipboard";
+"Zwischenablage beobachten" = "Watch the clipboard";
 "Zwischenablage einfügen" = "Paste clipboard";
 "Ähnlich" = "Similar";
 "Ältere Durchläufe werden verworfen, sobald die Grenze erreicht ist." = "Older runs are dropped once the limit is reached.";

@@ -64,8 +64,11 @@ struct EverydayToolCatalogTests {
     @Test
     func pinsAreSixDigits() throws {
         let pin = try run(EverydayToolCatalog.passwords, "pin")
+        // Pulled out of the macro: `#expect` cannot prove a key-path argument
+        // to a rethrowing function does not throw.
+        let onlyDigits = pin.allSatisfy(\.isNumber)
         #expect(pin.count == 6)
-        #expect(pin.allSatisfy(\.isNumber))
+        #expect(onlyDigits)
     }
 
     // MARK: - Units
