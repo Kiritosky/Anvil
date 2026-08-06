@@ -1,11 +1,11 @@
-import AnvilKit
 import Foundation
 
 /// A colour, parsed from whatever notation it was written in.
 ///
-/// Deliberately free of SwiftUI: parsing, converting and judging contrast are
-/// arithmetic, and arithmetic is worth testing without a window. The view turns
-/// this into a swatch, nothing more.
+/// Lives in the core rather than with the colour tool: three tools already read
+/// colours, and none of what happens here — parsing, converting, judging
+/// contrast — is anything but arithmetic. `AnvilUI` adds the one line that
+/// turns it into something a view can fill with.
 public struct ColorValue: Hashable, Sendable, Codable {
     /// Components in 0…1.
     public var red: Double
