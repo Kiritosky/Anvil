@@ -70,6 +70,7 @@ public final class AppEnvironment {
             SpeechToolBundle.self,
             AIToolBundle.self,
             TextToolBundle.self,
+            EverydayToolBundle.self,
             SystemToolBundle.self
         ]
         for bundle in bundles {
