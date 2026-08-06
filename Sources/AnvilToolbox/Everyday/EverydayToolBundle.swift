@@ -15,9 +15,9 @@ public enum EverydayToolBundle: ToolBundle {
                 TextToolView(tool: tool, context: context)
             }
         }
-        // The clipboard history has no input pane — it is a live list, not a
-        // function over a string.
-        return [clipboard] + converters
+        // Three do not fit the one-input/one-output shape: a live list, a
+        // colour with a swatch, and an image.
+        return [clipboard, color, qrCode] + converters
     }
 
     @MainActor
@@ -36,6 +36,41 @@ public enum EverydayToolBundle: ToolBundle {
 
         return ToolRegistration(metadata: metadata) { context in
             ClipboardToolView(context: context, metadata: metadata)
+        }
+    }
+
+    @MainActor
+    private static var color: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "everyday.color",
+            title: "Farben",
+            subtitle: "Umrechnen und Kontrast prüfen",
+            systemImage: "paintpalette",
+            category: .everyday,
+            keywords: [
+                "farbe", "farben", "color", "hex", "rgb", "hsl", "kontrast",
+                "wcag", "barrierefrei", "palette", "abstufung"
+            ]
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            ColorToolView(context: context, metadata: metadata)
+        }
+    }
+
+    @MainActor
+    private static var qrCode: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "everyday.qr",
+            title: "QR-Code",
+            subtitle: "Erzeugen und aus Bildern lesen",
+            systemImage: "qrcode",
+            category: .everyday,
+            keywords: ["qr", "qr-code", "barcode", "scannen", "wlan", "vcard", "visitenkarte"]
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            QRCodeToolView(context: context, metadata: metadata)
         }
     }
 }

@@ -56,7 +56,7 @@ public final class ClipboardHistory {
     public private(set) var entries: [ClipboardEntry] = []
     public private(set) var isWatching = false
 
-    @ObservationIgnored private let pasteboard: Pasteboard
+    @ObservationIgnored private let pasteboard: AnvilKit.Pasteboard
     @ObservationIgnored private let settings: SettingsStore
     @ObservationIgnored private var lastChangeCount: Int
     @ObservationIgnored private var pollTask: Task<Void, Never>?
@@ -64,7 +64,7 @@ public final class ClipboardHistory {
     /// Fast enough that copy-copy-paste is caught, slow enough to be free.
     private static let interval = Duration.milliseconds(700)
 
-    public init(pasteboard: Pasteboard, settings: SettingsStore) {
+    public init(pasteboard: AnvilKit.Pasteboard, settings: SettingsStore) {
         self.pasteboard = pasteboard
         self.settings = settings
         // Whatever is on the clipboard at launch was not copied by this

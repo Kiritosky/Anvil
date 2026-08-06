@@ -6,6 +6,8 @@
    to a key. Add another language by copying this file into <code>.lproj.
 */
 
+"#3A7BD5" = "#3A7BD5";
+"#FFFFFF" = "#FFFFFF";
 "%@ konnte nicht gestartet werden: %@" = "%@ could not be started: %@";
 "%@ wird von der Spracherkennung auf diesem Mac nicht unterstützt." = "%@ is not supported by speech recognition on this Mac.";
 "%@ · lokal" = "%@ · local";
@@ -20,6 +22,11 @@
 "%lld Wörter" = "%lld words";
 ". trifft auch Zeilenumbrüche" = ". matches newlines too";
 "^ und $ je Zeile" = "^ and $ per line";
+"AA" = "AA";
+"AAA" = "AAA";
+"Ab 3:1 — reicht für Überschriften ab 24 px oder 19 px fett." = "From 3:1 — enough for headings at 24 px, or 19 px bold.";
+"Ab 4,5:1 — der Normalfall für Fließtext." = "From 4.5:1 — the normal case for body text.";
+"Ab 7:1 — auch für kleine Schrift und schlechte Bildschirme." = "From 7:1 — holds up at small sizes and on bad screens.";
 "Abbrechen" = "Cancel";
 "Abfrage aus einer Beschreibung" = "A query from a description";
 "Abgebrochen" = "Cancelled";
@@ -27,6 +34,7 @@
 "Ablage" = "Storage";
 "Ablauf" = "Workflow";
 "Abschnitte" = "chunks";
+"Abstufungen" = "Shades";
 "Adresse" = "Address";
 "Aktionen" = "Actions";
 "Aktiv" = "On";
@@ -42,11 +50,13 @@
 "Allgemein" = "General";
 "Alltag" = "Everyday";
 "Als Markdown sichern" = "Save as Markdown";
+"Als PNG sichern" = "Save as PNG";
 "Als String escapen" = "Escape as string";
 "Anbieter-Fehler" = "Provider error";
 "Anderes Repository wählen" = "Choose a different repository";
 "Angeheftet" = "Pinned";
 "Angeheftete Einträge zählen nicht mit und fallen nie heraus." = "Pinned entries do not count towards the limit and never drop out.";
+"Anklicken übernimmt die Abstufung als Farbe." = "Click a shade to make it the colour.";
 "Anordnung: %@" = "Layout: %@";
 "Anteil, Aufschlag, Veränderung" = "Share, surcharge, change";
 "Anthropic hat mit HTTP %lld geantwortet." = "Anthropic responded with HTTP %lld.";
@@ -78,6 +88,7 @@
 "Aus bedeutet: nur die deterministische Füllwort-Bereinigung, kein Sprachmodell." = "Off means: deterministic filler-word cleanup only, no language model.";
 "Aus dem Diff eine saubere Message" = "A clean message from the diff";
 "Aus der Zwischenablage einfügen" = "Paste from clipboard";
+"Aus der Zwischenablage lesen" = "Read from the clipboard";
 "Aus Favoriten entfernen" = "Remove from favourites";
 "Aus Stichworten eine Nachricht" = "A message from a few notes";
 "Aus Zwischenablage laden" = "Load from clipboard";
@@ -112,11 +123,14 @@
 "Beschreibung rein, Ausdruck raus" = "Description in, expression out";
 "Bessere Namen für Dinge im Code" = "Better names for things in code";
 "Betreff + kurzer Text" = "subject + short body";
+"Bild kopieren" = "Copy image";
 "Blindtext" = "Placeholder text";
 "Braucht keine Eingabe — Länge rechts wählen." = "Needs no input — pick a length on the right.";
 "Braucht keine Eingabe — Variante rechts wählen." = "Needs no input — pick a variant on the right.";
 "Braucht keine Eingabe." = "Needs no input.";
+"Bytes" = "bytes";
 "camelCase, snake_case, kebab-case …" = "camelCase, snake_case, kebab-case…";
+"Code" = "Code";
 "Code erklären" = "Explain code";
 "Code hier einfügen …" = "Paste code here…";
 "Code-Kommentar" = "Code comment";
@@ -128,6 +142,8 @@
 "Dafür fehlt noch die Bedienungshilfen-Berechtigung." = "The Accessibility permission is still missing for this.";
 "Danach" = "After";
 "Das Audioformat des Mikrofons lässt sich nicht in das Format der Spracherkennung umwandeln." = "The microphone’s audio format cannot be converted to the format speech recognition needs.";
+"Das Bild konnte nicht als PNG gesichert werden." = "The image could not be saved as a PNG.";
+"Das Bild konnte nicht erzeugt werden." = "The image could not be created.";
 "Das ist kein gültiges Base64." = "That is not valid Base64.";
 "Das ist keine gültige prozentkodierte Zeichenkette." = "That is not a valid percent-encoded string.";
 "Das ist keine gültige URL." = "That is not a valid URL.";
@@ -145,11 +161,14 @@
 "Der Anbieter hat mit HTTP %lld geantwortet." = "The provider responded with HTTP %lld.";
 "Der Export ist fehlgeschlagen: %@" = "The export failed: %@";
 "Der Schlüssel konnte nicht kodiert werden." = "The key could not be encoded.";
+"Der schnelle braune Fuchs springt über den faulen Hund." = "The quick brown fox jumps over the lazy dog.";
 "Der Text ist zu lang für das On-Device-Modell. Teile ihn auf oder wähle in den Einstellungen einen externen Anbieter." = "The text is too long for the on-device model. Split it up, or pick a remote provider in Settings.";
 "Der Text lässt sich nicht kodieren." = "The text cannot be encoded.";
+"Der Text passt nicht in einen QR-Code — er ist zu lang." = "The text does not fit into a QR code — it is too long.";
 "Der Verlauf liegt nur im Arbeitsspeicher und ist beim nächsten Start wieder leer." = "The history lives in memory only and is empty again after a restart.";
 "Der Verlauf liegt unverschlüsselt in ~/Library/Application Support/Anvil." = "The history is stored unencrypted in ~/Library/Application Support/Anvil.";
 "Der Vorgang wurde abgebrochen." = "The operation was cancelled.";
+"Der übliche Kompromiss." = "The usual compromise.";
 "Detailgrad" = "Level of detail";
 "Deutsch" = "German";
 "Dialekt" = "Flavour";
@@ -181,6 +200,7 @@
 "drei Sätze" = "three sentences";
 "Drück auf Aufnehmen und sprich einfach los — ⌘⇧R geht auch. Alternativ eine vorhandene Audiodatei öffnen." = "Hit Record and just start talking — ⌘⇧R works too. Or open an audio file you already have.";
 "Durch null lässt sich nicht teilen." = "Cannot divide by zero.";
+"Durchgefallen" = "Failed";
 "E-Mail" = "Email";
 "Eigene" = "Mine";
 "Eigene Anweisung" = "Custom instruction";
@@ -231,6 +251,7 @@
 "Erst das Apple-Modell. Nur wenn das nicht kann, geht es an den externen Anbieter." = "Apple’s model first. The remote provider is used only when it cannot do the job.";
 "Erst der externe Anbieter, das Apple-Modell als Rückfallebene." = "Remote provider first, Apple’s model as the fallback.";
 "Erst oben einschalten." = "Switch it on above first.";
+"Erzeugen und aus Bildern lesen" = "Create them, and read them from images";
 "Es gibt noch kein Ergebnis zum Sichern." = "There is no result to save yet.";
 "Es gibt noch keinen Text zum Aufräumen." = "There is no text to clean up yet.";
 "Es ist kein Audioeingang verfügbar. Prüfe unter Systemeinstellungen › Ton, ob ein Mikrofon ausgewählt ist." = "No audio input is available. Check that a microphone is selected in System Settings › Sound.";
@@ -240,11 +261,13 @@
 "Extern bevorzugt" = "Prefer remote";
 "Externer Anbieter" = "Remote provider";
 "Fang mit einer Zahl an, zum Beispiel „5 km in mi\"." = "Start with a number, for example “5 km in mi”.";
+"Farben" = "Colours";
 "Fasst das Gesagte in wenigen Sätzen zusammen." = "Sums up what was said in a few sentences.";
 "Favorit" = "Favourite";
 "Favoriten" = "Favourites";
 "Fehler verstehen" = "Understand an error";
 "Fehler, Risiken, Verbesserungen" = "Bugs, risks, improvements";
+"Fehlerkorrektur" = "Error correction";
 "Fehlermeldung oder Stacktrace …" = "Error message or stack trace…";
 "Fertig" = "Done";
 "fertig" = "done";
@@ -267,6 +290,7 @@
 "Füllwörter" = "Filler words";
 "Fünf Stichpunkte" = "Five bullet points";
 "Für %@ ist kein passendes Audioformat verfügbar." = "No suitable audio format is available for %@.";
+"Für Aufkleber und Ausdrucke, die etwas abbekommen." = "For stickers and printouts that take a beating.";
 "Für diesen Anbieter fehlt der API-Schlüssel." = "This provider is missing its API key.";
 "Für „%@\" gibt es in dieser Ansicht nichts. Setze den Filter zurück oder such nach etwas anderem." = "Nothing matches “%@” in this view. Reset the filter or search for something else.";
 "Ganze Sammlung ein- oder ausschalten" = "Switch the whole collection on or off";
@@ -281,6 +305,7 @@
 "Gliedert den Inhalt in Stichpunkte." = "Breaks the content into bullet points.";
 "Globale Tastenkürzel konnten nicht eingerichtet werden." = "Global shortcuts could not be set up.";
 "GROSS" = "UPPERCASE";
+"Groß (25 %)" = "Large (25%)";
 "Groß-/Kleinschreibung egal" = "Ignore case";
 "Großzügig" = "Generous";
 "Gruppe" = "Group";
@@ -294,7 +319,9 @@
 "Hat eigene Einstellungen" = "Has its own settings";
 "Hat nicht geklappt" = "That didn’t work";
 "Header" = "Header";
+"Helligkeit" = "Brightness";
 "Hex braucht eine gerade Anzahl Zeichen." = "Hex needs an even number of characters.";
+"Hex mit und ohne Raute, rgb(), rgba(), hsl(), hsla() und gängige Farbnamen auf Deutsch und Englisch." = "Hex with and without the hash, rgb(), rgba(), hsl(), hsla() and common colour names in German and English.";
 "Hier erscheint, was erkannt wurde." = "What was recognised appears here.";
 "Hinzufügen" = "Add";
 "HTML-Entities" = "HTML entities";
@@ -303,11 +330,14 @@
 "Im Finder zeigen" = "Show in Finder";
 "Immer aktiv" = "Always on";
 "In alle passenden" = "Into every matching unit";
+"In dem Bild ist kein QR-Code zu finden." = "There is no QR code in that image.";
 "In der Zwischenablage" = "On the clipboard";
+"In der Zwischenablage liegt kein Bild." = "There is no image on the clipboard.";
 "In die Zwischenablage kopieren" = "Copy to clipboard";
 "In diesem Repository gibt es keine Änderungen." = "There are no changes in this repository.";
 "In Textfelder einfügen" = "Insert into text fields";
 "In Zwischenablage kopieren" = "Copy to clipboard";
+"Inhalt" = "Content";
 "Inhalte, die eine App als vertraulich kennzeichnet — etwa aus einem Passwortmanager — werden nie mitgeschnitten." = "Content an app marks as confidential — from a password manager, say — is never recorded.";
 "installiert" = "installed";
 "Italienisch" = "Italian";
@@ -326,6 +356,7 @@
 "Kein Treffer" = "No match";
 "Kein Unterschied" = "No difference";
 "Keine Einstellungen" = "No settings";
+"Keine Farbe erkannt" = "Not a colour";
 "Keine Query-Parameter." = "No query parameters.";
 "keine Schalter" = "no flags";
 "Keine Tools gefunden" = "No tools found";
@@ -335,7 +366,9 @@
 "KI-Aufbereitung ist in den Optionen aus" = "AI clean-up is switched off in the options";
 "KI-Werkzeuge" = "AI Tools";
 "klein" = "lowercase";
+"Klein (7 %)" = "Small (7%)";
 "Klein geschrieben" = "Lowercased";
+"Kleinstes Muster. Für Bildschirme, wo nichts verkratzt." = "Smallest pattern. For screens, where nothing gets scratched.";
 "Klicken und Tasten drücken" = "Click, then press keys";
 "knapp" = "terse";
 "Kodieren" = "Encode";
@@ -343,6 +376,7 @@
 "kollegial (du)" = "collegial";
 "Komfortabel" = "Comfortable";
 "Kompakt" = "Compact";
+"Kontrast" = "Contrast";
 "Konvention" = "Convention";
 "Kopiert" = "Copied";
 "Kopiert: %@" = "Copied: %@";
@@ -386,6 +420,7 @@
 "mit-bindestrichen" = "with-hyphens";
 "mit_unterstrichen" = "with_underscores";
 "Mitschneiden" = "Recording";
+"Mittel (15 %)" = "Medium (15%)";
 "Modell" = "Model";
 "Modell verwenden" = "Use the model";
 "Moment …" = "One moment…";
@@ -410,6 +445,7 @@
 "Nichts verlässt diesen Mac. Ohne Apple Intelligence bleiben KI-Tools aus." = "Nothing leaves this Mac. Without Apple Intelligence, AI tools stay unavailable.";
 "Nichts verstanden." = "Didn’t catch anything.";
 "Nichts zu prüfen" = "Nothing to check";
+"Noch kein Code" = "No code yet";
 "Noch kein Ergebnis" = "No result yet";
 "Noch kein Schlüssel hinterlegt." = "No key stored yet.";
 "Noch keine Begriffe" = "No terms yet";
@@ -425,6 +461,7 @@
 "Nummerieren" = "Number";
 "nur Betreffzeile" = "subject line only";
 "Nur exakte Treffer" = "Exact matches only";
+"Nur große Schrift" = "Large text only";
 "Nur on-device" = "On-device only";
 "Nur prüfen" = "Validate only";
 "Nur Verzögerungslaute" = "Hesitation sounds only";
@@ -432,6 +469,7 @@
 "Ohne Bindestriche" = "Without hyphens";
 "Ohne das schreibt das Modell unbekannte Namen gern wieder in ein Wort um, das es kennt." = "Without this the model likes to turn a name it does not know back into a word it does.";
 "Ohne Sonderzeichen" = "Without symbols";
+"Ohne Text gibt es nichts zu kodieren." = "Without text there is nothing to encode.";
 "Ohne Zuordnung" = "Unassigned";
 "Ollama (lokal)" = "Ollama (local)";
 "On-Device" = "On-device";
@@ -443,6 +481,7 @@
 "Optionen einblenden" = "Show options";
 "Ordner öffnen" = "Open folder";
 "Parameter auflisten" = "List parameters";
+"Passt nicht in einen Code" = "Does not fit into a code";
 "Passwörter" = "Passwords";
 "Pause" = "Pause";
 "Pausiert" = "Paused";
@@ -455,6 +494,7 @@
 "Prüfe API-Schlüssel, Modellnamen und Netzwerkverbindung in den Einstellungen." = "Check the API key, model name and network connection in Settings.";
 "Prüfen" = "Check";
 "Prüfsummen" = "Checksums";
+"QR-Code" = "QR code";
 "raus" = "out";
 "Rechnen" = "Calculate";
 "Regex bauen" = "Build a regex";
@@ -476,10 +516,15 @@
 "Schnell-Diktat" = "Quick dictation";
 "Schnell-Diktat  %@" = "Quick dictation  %@";
 "Schnellzugriff auf Diktat und Suche, ohne das Fenster zu holen." = "Quick access to dictation and search without bringing the window forward.";
+"Schreib links etwas hinein — der Code entsteht sofort." = "Type something on the left — the code appears at once.";
 "Schreib links oben etwas hinein — die Korrektur läuft sofort mit." = "Type something above — the correction runs as you go.";
 "Schreibt das Diktat in flüssige Sätze und Absätze um, ohne Inhalt zu ergänzen." = "Rewrites the dictation into flowing sentences and paragraphs, adding nothing.";
 "Schreibweise" = "Naming style";
+"Schreibweisen" = "Notations";
+"Schwarz" = "Black";
 "Schwerpunkt" = "Focus";
+"Sehr groß (30 %)" = "Very large (30%)";
+"Setzt den Inhalt auf ein Format, das Telefone erkennen." = "Sets the content to a format phones recognise.";
 "Shell-Befehl" = "Shell command";
 "Sicherheit" = "security";
 "Sichern" = "Save";
@@ -515,6 +560,7 @@
 "Tastenkürzel" = "Shortcut";
 "Tauschen" = "Swap";
 "Teiler verschieben" = "Move divider";
+"Termin" = "Event";
 "Testfälle zu vorhandenem Code" = "Test cases for existing code";
 "Tests schreiben" = "Write tests";
 "Testtext" = "Test text";
@@ -543,9 +589,11 @@
 "Umdrehen" = "Reverse";
 "Umfang" = "Scope";
 "Umrechnen" = "Convert";
+"Umrechnen und Kontrast prüfen" = "Convert them, and check the contrast";
 "Umschreiben" = "Rewrite";
 "Unerwarteter Fehler" = "Unexpected error";
 "Unix-Zeit und ISO 8601 umrechnen" = "Convert Unix time and ISO 8601";
+"Unter 3:1 — für Text nicht zu gebrauchen." = "Below 3:1 — no use for text.";
 "Untereinander" = "Stacked";
 "Unterschiede" = "Differences";
 "unverändert" = "unchanged";
@@ -561,14 +609,17 @@
 "Verhörer, mit Komma getrennt" = "Misrecognitions, comma separated";
 "Verkleinern" = "Minify";
 "Verlauf" = "History";
+"Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
 "verwerfen" = "discard";
 "Verwerfen (⎋)" = "Discard (⎋)";
+"Visitenkarte" = "Contact card";
 "Vokabular" = "vocabulary";
 "Von Hex" = "From hex";
 "Von null aus lässt sich keine Änderung berechnen." = "There is no change to calculate from zero.";
 "Von überall diktieren" = "Dictate from anywhere";
 "Voreinstellung" = "Preset";
 "Vorher" = "Before";
+"Vorlagen" = "Templates";
 "Was benennt werden soll, plus Kontext …" = "What needs a name, plus context…";
 "Was dieses Tool macht" = "What this tool does";
 "Was macht dieser Code — und warum" = "What this code does — and why";
@@ -578,6 +629,7 @@
 "Weder Unix-Zeit noch ein erkennbares Datum." = "Neither Unix time nor a recognisable date.";
 "Weiter" = "Resume";
 "Weiter aufnehmen" = "Continue recording";
+"Weiß" = "White";
 "Welches Modell antwortet — und ob dafür etwas diesen Mac verlässt." = "Which model answers — and whether anything leaves this Mac to get there.";
 "Werkzeuge ein- und ausschalten" = "Switch tools on and off";
 "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird." = "How the model shapes the dictation before it is copied.";
@@ -586,8 +638,10 @@
 "Wie spät ist es wo" = "What time it is where";
 "Wird aufgeräumt" = "Cleaning up";
 "Wird beim ersten Start dieser Sprache heruntergeladen." = "Downloads the first time you use this language.";
+"Wird gelesen" = "Understood input";
 "Wird im Prompt für {{option:level}} eingesetzt." = "Substituted into the prompt for {{option:level}}.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Only used when the policy allows it. The key lives in the keychain, not in the settings file.";
+"WLAN-Zugang" = "Wi-Fi access";
 "Wohin gehen Anfragen?" = "Where do requests go?";
 "Wortdoppelungen zusammenfassen" = "Collapse repeated words";
 "Wortgetreu säubern" = "Clean up verbatim";
@@ -615,6 +669,7 @@
 "Zufällig, ohne Verwechslungsgefahr" = "Random, with no look-alike characters";
 "Zuletzt" = "Recent";
 "Zuletzt benutzt" = "Recently used";
+"Zum Beispiel #3A7BD5, rgb(58, 123, 213), hsl(214, 63%, 53%) oder „blau\"." = "For example #3A7BD5, rgb(58, 123, 213), hsl(214, 63%, 53%) or “blue”.";
 "Zurück in die Zwischenablage" = "Back to the clipboard";
 "Zurückwandeln" = "Unescape";
 "Zusammenfassen" = "Summarise";
