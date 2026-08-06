@@ -130,7 +130,9 @@ struct OnboardingView: View {
 
     private var welcomeStep: some View {
         VStack(alignment: .leading, spacing: AnvilSpacing.lg) {
-            ForEach(Self.highlights, id: \.title) { highlight in
+            // Keyed by position: a LocalizedStringKey is not Hashable, and
+            // the list is fixed anyway.
+            ForEach(Array(Self.highlights.enumerated()), id: \.offset) { _, highlight in
                 HStack(alignment: .top, spacing: AnvilSpacing.md) {
                     Image(systemName: highlight.systemImage)
                         .font(.system(size: 18))
