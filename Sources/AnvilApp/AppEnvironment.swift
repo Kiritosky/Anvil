@@ -99,7 +99,6 @@ public final class AppEnvironment {
             TextToolBundle.self,
             DevToolBundle.self,
             EverydayToolBundle.self,
-            VisionToolBundle.self,
             ScreenshotToolBundle.self,
             SystemToolBundle.self
         ]
