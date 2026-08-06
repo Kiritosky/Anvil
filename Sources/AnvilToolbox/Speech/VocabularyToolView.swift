@@ -230,7 +230,7 @@ public struct VocabularyToolView: View {
             systemImage: "sparkles",
             footnote: "Ohne das schreibt das Modell unbekannte Namen gern wieder in ein Wort um, das es kennt."
         ) {
-            Toggle("Begriffe an das Modell geben", isOn: binding(.vocabularyInPrompt))
+            Toggle("Begriffe an das Modell geben", isOn: settings.bind(.vocabularyInPrompt))
                 .font(AnvilFont.body)
         }
 
@@ -337,15 +337,9 @@ public struct VocabularyToolView: View {
     }
 
     private var sensitivityBinding: Binding<VocabularyCorrector.Sensitivity> {
-        binding(.vocabularySensitivity)
+        settings.bind(.vocabularySensitivity)
     }
 
-    private func binding<Value>(_ key: SettingKey<Value>) -> Binding<Value> {
-        Binding(
-            get: { settings[key] },
-            set: { settings[key] = $0 }
-        )
-    }
 
     static func splitVariants(_ text: String) -> [String] {
         text.split(separator: ",")

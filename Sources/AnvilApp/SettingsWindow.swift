@@ -94,7 +94,7 @@ struct GeneralSettingsView: View {
                     help: "Legt das Ergebnis nach jedem Durchlauf in die Zwischenablage. Live mitlaufende Umwandlungen sind ausgenommen.",
                     systemImage: "doc.on.doc"
                 ) {
-                    Toggle("", isOn: binding(.autoCopyResults)).toggleStyle(.switch)
+                    Toggle("", isOn: settings.bind(.autoCopyResults)).toggleStyle(.switch)
                 }
 
                 SettingsRow(
@@ -102,7 +102,7 @@ struct GeneralSettingsView: View {
                     help: "Schnellzugriff auf Diktat und Suche, ohne das Fenster zu holen.",
                     systemImage: "menubar.arrow.up.rectangle"
                 ) {
-                    Toggle("", isOn: binding(.showMenuBarItem)).toggleStyle(.switch)
+                    Toggle("", isOn: settings.bind(.showMenuBarItem)).toggleStyle(.switch)
                 }
             }
 
@@ -114,7 +114,7 @@ struct GeneralSettingsView: View {
                     "Einträge pro Tool",
                     help: "Ältere Durchläufe werden verworfen, sobald die Grenze erreicht ist."
                 ) {
-                    Picker("", selection: binding(.historyLimitPerTool)) {
+                    Picker("", selection: settings.bind(.historyLimitPerTool)) {
                         ForEach([10, 25, 50, 100, 250], id: \.self) { count in
                             Text("\(count)").tag(count)
                         }
@@ -159,9 +159,6 @@ struct GeneralSettingsView: View {
         }
     }
 
-    private func binding<Value>(_ key: SettingKey<Value>) -> Binding<Value> {
-        Binding(get: { settings[key] }, set: { settings[key] = $0 })
-    }
 }
 
 // MARK: - Intelligence
@@ -183,14 +180,12 @@ struct IntelligenceSettingsView: View {
             : "Erst oben einschalten."
     }
 
+    /// Anything on this page changes what the router will do next, so every
+    /// write is followed by a fresh look at whether the model is reachable.
     private func binding<Value>(_ key: SettingKey<Value>) -> Binding<Value> {
-        Binding(
-            get: { environment.settings[key] },
-            set: { newValue in
-                environment.settings[key] = newValue
-                Task { await router.refreshAvailability() }
-            }
-        )
+        environment.settings.bind(key) { _ in
+            Task { await router.refreshAvailability() }
+        }
     }
 
     var body: some View {

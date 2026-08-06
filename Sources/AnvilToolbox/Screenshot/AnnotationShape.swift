@@ -13,13 +13,9 @@ struct AnnotationShape: View {
     let frame: CGRect
 
     var body: some View {
-        let color = Color(
-            .sRGB,
-            red: annotation.color.red,
-            green: annotation.color.green,
-            blue: annotation.color.blue,
-            opacity: annotation.kind == .highlight ? 0.35 : 1
-        )
+        // Highlighting is the one kind that lets what is under it show through.
+        let color = annotation.color.color
+            .opacity(annotation.kind == .highlight ? 0.35 : 1)
         let rect = viewRect
         let width = annotation.lineWidth
 

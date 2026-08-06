@@ -85,7 +85,7 @@ struct SpeechSettingsView: View {
                     help: "Legt das Audio unter Anvil › Recordings ab, damit du es später erneut transkribieren kannst.",
                     systemImage: "waveform.circle"
                 ) {
-                    Toggle("", isOn: binding(.keepAudio))
+                    Toggle("", isOn: settings.bind(.keepAudio))
                         .toggleStyle(.switch)
                 }
 
@@ -94,7 +94,7 @@ struct SpeechSettingsView: View {
                     help: "Startet den Modell-Durchlauf, sobald die Aufnahme endet.",
                     systemImage: "wand.and.stars"
                 ) {
-                    Toggle("", isOn: binding(.autoRefineOnStop))
+                    Toggle("", isOn: settings.bind(.autoRefineOnStop))
                         .toggleStyle(.switch)
                 }
 
@@ -103,7 +103,7 @@ struct SpeechSettingsView: View {
                     help: "Aus bedeutet: nur die deterministische Füllwort-Bereinigung, kein Sprachmodell.",
                     systemImage: "sparkles"
                 ) {
-                    Toggle("", isOn: binding(.useAIRefinement))
+                    Toggle("", isOn: settings.bind(.useAIRefinement))
                         .toggleStyle(.switch)
                 }
             }
@@ -113,7 +113,7 @@ struct SpeechSettingsView: View {
                     "Stärke",
                     help: "Gilt für neue Sitzungen. Im Tool selbst lässt sich das jederzeit umstellen."
                 ) {
-                    Picker("", selection: binding(.fillerStrength)) {
+                    Picker("", selection: settings.bind(.fillerStrength)) {
                         ForEach(FillerCleaner.Strength.allCases) { strength in
                             Text(strength.title).tag(strength)
                         }
@@ -126,7 +126,7 @@ struct SpeechSettingsView: View {
                     help: "Aus „das das\" wird „das\". Beabsichtigte Doppelungen wie „sehr sehr\" bleiben.",
                     systemImage: "repeat"
                 ) {
-                    Toggle("", isOn: binding(.collapseRepeats))
+                    Toggle("", isOn: settings.bind(.collapseRepeats))
                         .toggleStyle(.switch)
                 }
             }
@@ -175,7 +175,7 @@ struct SpeechSettingsView: View {
                 "Stil",
                 help: "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird."
             ) {
-                Picker("", selection: binding(.quickDictationStyle)) {
+                Picker("", selection: settings.bind(.quickDictationStyle)) {
                     ForEach(RefinementStyle.offered) { style in
                         Text(style.title).tag(style)
                     }
@@ -241,12 +241,6 @@ struct SpeechSettingsView: View {
             : "Dafür fehlt noch die Bedienungshilfen-Berechtigung — bis dahin nur Zwischenablage."
     }
 
-    private func binding<Value>(_ key: SettingKey<Value>) -> Binding<Value> {
-        Binding(
-            get: { settings[key] },
-            set: { settings[key] = $0 }
-        )
-    }
 
     private var formattedSize: String {
         ByteCountFormatter.string(fromByteCount: recordingBytes, countStyle: .file)

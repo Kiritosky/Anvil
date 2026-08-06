@@ -313,7 +313,7 @@ public struct ScreenshotToolView: View {
             footnote: .resolved(settings[.annotationKind].explanation)
         ) {
             ChipPicker(
-                selection: binding(.annotationKind),
+                selection: settings.bind(.annotationKind),
                 options: Annotation.Kind.allCases,
                 title: \.title,
                 systemImage: { $0.systemImage }
@@ -324,7 +324,7 @@ public struct ScreenshotToolView: View {
                     ForEach(Self.markerColors, id: \.self) { hex in
                         Button { settings[.annotationColor] = hex } label: {
                             RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                                .fill(swiftUIColor(hex))
+                                .fill(Color(parsing: hex))
                                 .frame(width: AnvilSize.toolIcon, height: AnvilSize.toolIcon)
                                 .overlay {
                                     RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
@@ -343,7 +343,7 @@ public struct ScreenshotToolView: View {
             }
 
             OptionRow("Strichstärke") {
-                Picker("", selection: binding(.annotationWidth)) {
+                Picker("", selection: settings.bind(.annotationWidth)) {
                     ForEach([2, 4, 8], id: \.self) { width in
                         Text(verbatim: "\(width)").tag(width)
                     }
@@ -358,13 +358,13 @@ public struct ScreenshotToolView: View {
             systemImage: "arrow.right.circle",
             footnote: "Gilt für jede Aufnahme, auch die per Tastenkürzel."
         ) {
-            Toggle("Bild in die Zwischenablage", isOn: binding(.screenshotCopiesImage))
+            Toggle("Bild in die Zwischenablage", isOn: settings.bind(.screenshotCopiesImage))
                 .font(AnvilFont.body)
-            Toggle("Als PNG behalten", isOn: binding(.screenshotKeepsFile))
+            Toggle("Als PNG behalten", isOn: settings.bind(.screenshotKeepsFile))
                 .font(AnvilFont.body)
-            Toggle("Text gleich mitlesen", isOn: binding(.screenshotReadsText))
+            Toggle("Text gleich mitlesen", isOn: settings.bind(.screenshotReadsText))
                 .font(AnvilFont.body)
-            Toggle("Text statt Bild kopieren", isOn: binding(.screenshotCopiesText))
+            Toggle("Text statt Bild kopieren", isOn: settings.bind(.screenshotCopiesText))
                 .font(AnvilFont.body)
                 .disabled(!settings[.screenshotReadsText])
         }
@@ -375,7 +375,7 @@ public struct ScreenshotToolView: View {
             footnote: "Die Verzögerung gilt nur für den ganzen Bildschirm — beim Ausschnitt wartest du ohnehin selbst."
         ) {
             OptionRow("Verzögerung") {
-                Picker("", selection: binding(.screenshotDelay)) {
+                Picker("", selection: settings.bind(.screenshotDelay)) {
                     ForEach([0, 3, 5, 10], id: \.self) { seconds in
                         Text(verbatim: seconds == 0 ? "—" : "\(seconds) s").tag(seconds)
                     }
@@ -389,7 +389,7 @@ public struct ScreenshotToolView: View {
                     "Bildschirm",
                     help: "Gilt für die Vollbildaufnahme — mit einem Dateinamen kann immer nur ein Bildschirm gemeint sein."
                 ) {
-                    Picker("", selection: binding(.screenshotDisplay)) {
+                    Picker("", selection: settings.bind(.screenshotDisplay)) {
                         ForEach(1...ScreenCapture.displayCount, id: \.self) { index in
                             Text(verbatim: "\(index)").tag(index)
                         }
@@ -399,11 +399,11 @@ public struct ScreenshotToolView: View {
                 }
             }
 
-            Toggle("Mauszeiger mit aufnehmen", isOn: binding(.screenshotIncludesCursor))
+            Toggle("Mauszeiger mit aufnehmen", isOn: settings.bind(.screenshotIncludesCursor))
                 .font(AnvilFont.body)
-            Toggle("Fensterschatten behalten", isOn: binding(.screenshotIncludesShadow))
+            Toggle("Fensterschatten behalten", isOn: settings.bind(.screenshotIncludesShadow))
                 .font(AnvilFont.body)
-            Toggle("Auslöseton", isOn: binding(.screenshotPlaysSound))
+            Toggle("Auslöseton", isOn: settings.bind(.screenshotPlaysSound))
                 .font(AnvilFont.body)
         }
 
@@ -454,15 +454,5 @@ public struct ScreenshotToolView: View {
     /// something an interface is likely to already be full of.
     private static let markerColors = ["#FF3B30", "#FF9500", "#FFCC00", "#34C759", "#007AFF", "#000000"]
 
-    private func swiftUIColor(_ hex: String) -> Color {
-        guard let value = ColorValue(parsing: hex) else { return .gray }
-        return Color(.sRGB, red: value.red, green: value.green, blue: value.blue, opacity: 1)
-    }
 
-    private func binding<Value>(_ key: SettingKey<Value>) -> Binding<Value> {
-        Binding(
-            get: { settings[key] },
-            set: { settings[key] = $0 }
-        )
-    }
 }

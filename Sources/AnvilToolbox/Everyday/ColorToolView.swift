@@ -137,12 +137,12 @@ public struct ColorToolView: View {
     private func sample(background: ColorValue, foreground: ColorValue) -> some View {
         Text("Der schnelle braune Fuchs springt über den faulen Hund.")
             .font(AnvilFont.body)
-            .foregroundStyle(swiftUIColor(foreground))
+            .foregroundStyle(foreground.color)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(AnvilSpacing.md)
             .background {
                 RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                    .fill(swiftUIColor(background))
+                    .fill(background.color)
             }
     }
 
@@ -196,7 +196,7 @@ public struct ColorToolView: View {
 
     private func swatch(for color: ColorValue?, size: CGFloat) -> some View {
         RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-            .fill(color.map(swiftUIColor) ?? AnvilColor.field)
+            .fill(color?.color ?? AnvilColor.field)
             .frame(width: size, height: size)
             .overlay {
                 RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
@@ -204,9 +204,6 @@ public struct ColorToolView: View {
             }
     }
 
-    private func swiftUIColor(_ value: ColorValue) -> Color {
-        Color(.sRGB, red: value.red, green: value.green, blue: value.blue, opacity: value.alpha)
-    }
 
     /// Nine steps from nearly black to nearly white, through the colour itself.
     private func steps(of color: ColorValue) -> [ColorValue] {
