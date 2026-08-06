@@ -77,6 +77,7 @@ public final class AppEnvironment {
             SpeechToolBundle.self,
             AIToolBundle.self,
             TextToolBundle.self,
+            DevToolBundle.self,
             EverydayToolBundle.self,
             SystemToolBundle.self
         ]

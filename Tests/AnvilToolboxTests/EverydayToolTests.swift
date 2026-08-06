@@ -224,7 +224,9 @@ struct EverydayToolCatalogTests {
     @Test
     func formatsNumbersWithoutTrailingNoise() {
         #expect(EverydayToolCatalog.formatNumber(100) == "100")
-        #expect(EverydayToolCatalog.formatNumber(3.106855) == "3.10686")
+        // Not a value sitting exactly on the rounding boundary: whether
+        // 3.106855 goes up or down is a property of binary floats, not of this.
+        #expect(EverydayToolCatalog.formatNumber(3.1068559611866697) == "3.10686")
         #expect(EverydayToolCatalog.formatNumber(0.5) == "0.5")
         #expect(EverydayToolCatalog.formatNumber(-16.666666) == "-16.6667")
     }
