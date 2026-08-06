@@ -46,7 +46,10 @@ public enum ScreenshotToolBundle: ToolBundle {
     /// The shortcut actions, built against a controller the app owns.
     ///
     /// Defaults deliberately shifted one modifier away from the system's own
-    /// ⇧⌘3/4/5: close enough to remember, far enough not to fight over.
+    /// ⇧⌘3/4/5: close enough that the muscle memory carries over, far enough
+    /// that nothing is fought over. All four are on out of the box — a
+    /// screenshot tool whose shortcuts have to be switched on first is a
+    /// screenshot tool nobody uses.
     @MainActor
     public static func makeActions(controller: ScreenshotController) -> [ShortcutAction] {
         [
@@ -76,7 +79,7 @@ public enum ScreenshotToolBundle: ToolBundle {
                     carbonModifiers: UInt32(optionKey | cmdKey),
                     keyLabel: "5"
                 ),
-                defaultScope: .off
+                defaultScope: .global
             ) {
                 Task { await controller.capture(.window) }
             },
@@ -91,7 +94,7 @@ public enum ScreenshotToolBundle: ToolBundle {
                     carbonModifiers: UInt32(optionKey | cmdKey),
                     keyLabel: "3"
                 ),
-                defaultScope: .off
+                defaultScope: .global
             ) {
                 Task { await controller.capture(.fullScreen) }
             },
