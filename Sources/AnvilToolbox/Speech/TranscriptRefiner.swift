@@ -124,7 +124,8 @@ public final class TranscriptRefiner {
         und wiederhole nichts aus anderen Teilen.
         """
 
-        if let tail = previous.map(Self.tail(of:)), !tail.isEmpty {
+        let tail = previous.map { Self.tail(of: $0) } ?? ""
+        if !tail.isEmpty {
             prompt += """
 
 
