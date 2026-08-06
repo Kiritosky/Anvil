@@ -8,6 +8,8 @@
 
 "#3A7BD5" = "#3A7BD5";
 "#FFFFFF" = "#FFFFFF";
+"%@ hat abgebrochen." = "%@ stopped.";
+"%@ hat nichts zurückgegeben." = "%@ returned nothing.";
 "%@ konnte nicht gestartet werden: %@" = "%@ could not be started: %@";
 "%@ wird von der Spracherkennung auf diesem Mac nicht unterstützt." = "%@ is not supported by speech recognition on this Mac.";
 "%@ · lokal" = "%@ · local";
@@ -91,6 +93,7 @@
 "Apple Intelligence ist auf diesem Mac nicht eingeschaltet." = "Apple Intelligence is not turned on for this Mac.";
 "April" = "April";
 "Aprilscherz von 1998, steht bis heute in der Spezifikation." = "An April Fools' joke from 1998, still in the specification.";
+"Argumente" = "Arguments";
 "Auch Floskeln" = "Verbal tics too";
 "Audio-Konverter fehlt." = "Audio converter is missing.";
 "Audiodatei transkribieren" = "Transcribe an audio file";
@@ -148,6 +151,7 @@
 "Bausteine" = "Building blocks";
 "Bedienung" = "Behaviour";
 "Bedienungshilfen" = "Accessibility";
+"Befehl" = "Command";
 "Begriff" = "Term";
 "Begriff berücksichtigen" = "Apply this term";
 "Begriffe" = "Terms";
@@ -297,11 +301,13 @@
 "Eigene Tools" = "My Tools";
 "Eigene Tools neu laden" = "Reload my tools";
 "Eigene Tools neu laden " = "Reload my tools";
+"Eigener Befehl" = "Custom command";
 "Eigener Endpunkt" = "Custom endpoint";
 "Eigentümer" = "Owner";
 "ein Absatz" = "one paragraph";
 "Ein Absatz" = "One paragraph";
 "Ein Cron-Ausdruck hat fünf Felder: Minute, Stunde, Tag, Monat, Wochentag." = "A cron expression has five fields: minute, hour, day, month, weekday.";
+"Ein eigener Befehl, der den Prompt als letztes Argument bekommt und die Antwort ausgibt." = "Your own command; it receives the prompt as the last argument and prints the answer.";
 "Ein Fenster, viele Werkzeuge." = "One window, many tools.";
 "Ein ganzer Bildschirm, sofort." = "One whole display, at once.";
 "Ein JWT besteht aus drei mit Punkt getrennten Teilen." = "A JWT has three parts separated by dots.";
@@ -343,6 +349,7 @@
 "Erlaube den Zugriff unter Systemeinstellungen › Datenschutz & Sicherheit." = "Grant access in System Settings › Privacy & Security.";
 "Erlauben" = "Allow";
 "Erneut prüfen" = "Check again";
+"Erneut suchen" = "Search again";
 "Erneut zeigen" = "Show again";
 "Ersatztext" = "Replacement";
 "Ersetzen" = "Replace";
@@ -468,6 +475,7 @@
 "Inhalt" = "Content";
 "Inhalte, die eine App als vertraulich kennzeichnet — etwa aus einem Passwortmanager — werden nie mitgeschnitten." = "Content an app marks as confidential — from a password manager, say — is never recorded.";
 "installiert" = "installed";
+"Installiertes Werkzeug" = "Installed tool";
 "Italienisch" = "Italian";
 "Januar" = "January";
 "Jede Aufnahmeart hat ihr eigenes Kürzel — in den Einstellungen unter „Tastenkürzel\"." = "Each kind of capture has its own shortcut — in Settings under “Shortcuts”.";
@@ -483,6 +491,7 @@
 "Kein Bild" = "No image";
 "Kein Diff geladen" = "No diff loaded";
 "Kein Eintrag enthält diesen Text." = "No entry contains that text.";
+"kein Fehlertext" = "no error text";
 "Kein gültiges JSON: %@" = "Not valid JSON: %@";
 "Kein Kürzel vergeben." = "No shortcut assigned.";
 "Kein Modell" = "No model";
@@ -642,6 +651,10 @@
 "Nur on-device" = "On-device only";
 "Nur prüfen" = "Validate only";
 "Nur Verzögerungslaute" = "Hesitation sounds only";
+"Nutzt deine Claude-Code-Anmeldung. Kein Schlüssel nötig." = "Uses your Claude Code sign-in. No key needed.";
+"Nutzt deine Codex-Anmeldung. Kein Schlüssel nötig." = "Uses your Codex sign-in. No key needed.";
+"Nutzt deine Gemini-CLI-Anmeldung. Kein Schlüssel nötig." = "Uses your Gemini CLI sign-in. No key needed.";
+"Nutzt die Anmeldung, die auf diesem Mac schon eingerichtet ist — kein Schlüssel, kein Konto mehr. Antworten kommen am Stück, nicht Wort für Wort." = "Uses the sign-in already set up on this Mac — no key, no second account. Answers arrive in one piece, not word by word.";
 "Nächste Termine:" = "Next dates:";
 "Oben auswählen, was aufgenommen werden soll — oder das Tastenkürzel benutzen, dann bleibt dieses Fenster zu." = "Pick what to capture above — or use the shortcut, and this window stays closed.";
 "Oben zwei Fassungen einfügen — der Vergleich läuft mit." = "Paste two versions above — the comparison keeps up.";
@@ -743,6 +756,7 @@
 "Startet den Modell-Durchlauf, sobald die Aufnahme endet." = "Starts the model run as soon as recording ends.";
 "Startet …" = "Starting…";
 "Status" = "Status";
+"Stehen vor dem Prompt. Leer lassen für die Vorgabe des Werkzeugs." = "Placed before the prompt. Leave empty for the tool's own default.";
 "Steht der Cursor in einem Textfeld, tippt Anvil den Text dort hinein. Sonst bleibt er in der Zwischenablage." = "If the caret is in a text field, Anvil types the text there. Otherwise it stays on the clipboard.";
 "Stichpunkte" = "Bullet points";
 "Stichpunkte " = "bullet points";
@@ -813,6 +827,7 @@
 "UTF-8-Bytes" = "UTF-8 bytes";
 "Variante" = "Variant";
 "Varianten zu einer Frage" = "Options for a question";
+"Vergisst den gemerkten Pfad — nötig, wenn du das Werkzeug gerade erst installiert hast." = "Forgets the remembered path — needed if you have only just installed the tool.";
 "Vergleich" = "Comparison";
 "Verglichen wird Wort für Wort, nicht Zeile für Zeile — bei umformuliertem Text ist das deutlich lesbarer." = "Compared word by word rather than line by line — far more readable for rewritten text.";
 "Verhalten der App insgesamt." = "How the app behaves overall.";
@@ -828,6 +843,7 @@
 "Verzögerung" = "Delay";
 "Visitenkarte" = "Contact card";
 "Vokabular" = "vocabulary";
+"Voller Pfad oder Name im Pfad. Der Prompt wird als letztes Argument angehängt." = "Full path, or a name on the PATH. The prompt is appended as the last argument.";
 "Von Hex" = "From hex";
 "Von null aus lässt sich keine Änderung berechnen." = "There is no change to calculate from zero.";
 "Von überall diktieren" = "Dictate from anywhere";
@@ -853,6 +869,7 @@
 "Weiß" = "White";
 "Welches Modell antwortet — und ob dafür etwas diesen Mac verlässt." = "Which model answers — and whether anything leaves this Mac to get there.";
 "Wer will, kann in den Einstellungen einen externen Anbieter hinterlegen — nötig ist das nie. Werkzeuge ohne KI arbeiten ohnehin vollständig lokal." = "You can add an external provider in Settings if you want — it is never required. Tools without AI work entirely locally anyway.";
+"Werkzeug" = "Tool";
 "Werkzeuge ein- und ausschalten" = "Switch tools on and off";
 "Werkzeuge für den Rest" = "Tools for everything else";
 "Wie 301, aber die Methode bleibt erhalten." = "Like 301, but the method is kept.";
@@ -868,6 +885,7 @@
 "Wird fürs Bildschirmfoto und für Text vom Bildschirm gebraucht." = "Needed for screenshots and for reading text off the screen.";
 "Wird gelesen" = "Understood input";
 "Wird im Prompt für {{option:level}} eingesetzt." = "Substituted into the prompt for {{option:level}}.";
+"Wird nur benutzt, wenn die Richtlinie es zulässt und oben kein Werkzeug eingeschaltet ist. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Used only when the policy allows it and no tool is switched on above. The key lives in the keychain, not in the settings.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Only used when the policy allows it. The key lives in the keychain, not in the settings file.";
 "WLAN-Zugang" = "Wi-Fi access";
 "Wochentag" = "weekday";
@@ -926,13 +944,16 @@
 "Änderungen hervorheben" = "Highlight changes";
 "Öffnen" = "Open";
 "Öffnet die Suche über alle Werkzeuge" = "Opens the search across every tool";
+"Über ein Kommandozeilen-Werkzeug" = "Via a command-line tool";
 "Überall" = "Everywhere";
 "Übereinstimmung" = "match";
 "Überlastet oder in Wartung." = "Overloaded or in maintenance.";
 "Übersetzen" = "Translate";
 "Überspringen" = "Skip";
 "„%@\" ergibt im Feld %@ keinen Sinn." = "“%@” makes no sense in the %@ field.";
+"„%@\" ist auf diesem Mac nicht installiert — oder liegt nicht im Pfad." = "“%@” is not installed on this Mac — or is not on the PATH.";
 "„%@\" ist kein gültiger Bereich für %@." = "“%@” is not a valid range for %@.";
 "„%@\" ist kein Hex-Byte." = "“%@” is not a hex byte.";
 "„%@\" liegt außerhalb von %@." = "“%@” is outside %@.";
 "„%@\" wird von der Festplatte entfernt. Das lässt sich nicht rückgängig machen." = "“%@” will be removed from disk. This cannot be undone.";
+"„%@\" wurde nicht gefunden. Installiert? Danach in den Einstellungen erneut suchen lassen." = "“%@” was not found. Installed? Then let Settings search again.";

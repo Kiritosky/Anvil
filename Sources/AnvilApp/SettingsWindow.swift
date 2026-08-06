@@ -175,6 +175,24 @@ struct IntelligenceSettingsView: View {
 
     private var router: AIRouter { injectedRouter ?? environment.router }
 
+    private var agent: CLIAgentProvider.Agent { environment.settings[.cliAgent] }
+
+    private var agentHelp: LocalizedStringKey {
+        environment.settings[.usesCLIAgent]
+            ? .resolved(agent.explanation)
+            : "Erst oben einschalten."
+    }
+
+    private func binding<Value>(_ key: SettingKey<Value>) -> Binding<Value> {
+        Binding(
+            get: { environment.settings[key] },
+            set: { newValue in
+                environment.settings[key] = newValue
+                Task { await router.refreshAvailability() }
+            }
+        )
+    }
+
     var body: some View {
         SettingsPage(
             "Sprachmodell",
@@ -204,8 +222,69 @@ struct IntelligenceSettingsView: View {
             }
 
             SettingsGroup(
+                "Installiertes Werkzeug",
+                footnote: "Nutzt die Anmeldung, die auf diesem Mac schon eingerichtet ist — kein Schlüssel, kein Konto mehr. Antworten kommen am Stück, nicht Wort für Wort."
+            ) {
+                SettingsRow(
+                    "Über ein Kommandozeilen-Werkzeug",
+                    help: .resolved(agent.explanation),
+                    systemImage: "terminal"
+                ) {
+                    Toggle("", isOn: binding(.usesCLIAgent))
+                        .toggleStyle(.switch)
+                }
+
+                SettingsWideRow("Werkzeug", help: agentHelp) {
+                    Picker("", selection: binding(.cliAgent)) {
+                        ForEach(CLIAgentProvider.Agent.allCases) { agent in
+                            Text(agent.title).tag(agent)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .disabled(!environment.settings[.usesCLIAgent])
+                }
+
+                if agent == .custom || !environment.settings[.cliAgentExecutable].isEmpty {
+                    SettingsWideRow(
+                        "Befehl",
+                        help: "Voller Pfad oder Name im Pfad. Der Prompt wird als letztes Argument angehängt."
+                    ) {
+                        AnvilTextField(
+                            text: binding(.cliAgentExecutable),
+                            placeholder: "claude",
+                            isMonospaced: true
+                        )
+                    }
+
+                    SettingsWideRow(
+                        "Argumente",
+                        help: "Stehen vor dem Prompt. Leer lassen für die Vorgabe des Werkzeugs."
+                    ) {
+                        AnvilTextField(
+                            text: binding(.cliAgentArguments),
+                            placeholder: "-p",
+                            isMonospaced: true
+                        )
+                    }
+                }
+
+                SettingsRow(
+                    "Erneut suchen",
+                    help: "Vergisst den gemerkten Pfad — nötig, wenn du das Werkzeug gerade erst installiert hast.",
+                    systemImage: "magnifyingglass"
+                ) {
+                    AnvilButton("Suchen", role: .secondary) {
+                        Task {
+                            await CLIAgentLocator.shared.forget()
+                            await router.refreshAvailability()
+                        }
+                    }
+                }
+            }
+
+            SettingsGroup(
                 "Externer Anbieter",
-                footnote: "Wird nur benutzt, wenn die Richtlinie es zulässt. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen."
+                footnote: "Wird nur benutzt, wenn die Richtlinie es zulässt und oben kein Werkzeug eingeschaltet ist. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen."
             ) {
                 SettingsWideRow("Voreinstellung") {
                     Picker("", selection: presetBinding) {

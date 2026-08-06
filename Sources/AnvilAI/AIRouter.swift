@@ -99,6 +99,16 @@ public final class AIRouter {
     public var onDeviceProvider: any AIProvider { FoundationModelsProvider() }
 
     public var remoteProvider: (any AIProvider)? {
+        // An installed agent takes precedence over an endpoint: it is the one
+        // the user had to configure least, and the one with no key to leak.
+        if settings[.usesCLIAgent] {
+            return CLIAgentProvider(
+                agent: settings[.cliAgent],
+                customExecutable: settings[.cliAgentExecutable],
+                customArguments: Self.splitArguments(settings[.cliAgentArguments])
+            )
+        }
+
         let configuration = remoteConfiguration
         guard !configuration.baseURL.isEmpty else { return nil }
         let key = apiKey(for: configuration)
@@ -106,6 +116,27 @@ public final class AIRouter {
         return configuration.usesAnthropicProtocol
             ? AnthropicProvider(configuration: configuration, apiKey: key)
             : OpenAICompatibleProvider(configuration: configuration, apiKey: key)
+    }
+
+    /// Splits a typed argument line on spaces, keeping quoted runs together.
+    static func splitArguments(_ line: String) -> [String] {
+        var arguments: [String] = []
+        var current = ""
+        var quote: Character?
+
+        for character in line {
+            if let open = quote {
+                if character == open { quote = nil } else { current.append(character) }
+            } else if character == "\"" || character == "'" {
+                quote = character
+            } else if character.isWhitespace {
+                if !current.isEmpty { arguments.append(current); current = "" }
+            } else {
+                current.append(character)
+            }
+        }
+        if !current.isEmpty { arguments.append(current) }
+        return arguments
     }
 
     /// Resolves the provider to use for the next call.
@@ -216,6 +247,23 @@ public final class AIRouter {
 extension SettingKey {
     public static var aiPolicy: SettingKey<AIPolicy> {
         SettingKey<AIPolicy>("aiPolicy", default: .preferOnDevice)
+    }
+
+    /// Talk to an installed coding agent instead of an HTTP endpoint.
+    public static var usesCLIAgent: SettingKey<Bool> {
+        SettingKey<Bool>("ai.usesCLIAgent", default: false)
+    }
+
+    public static var cliAgent: SettingKey<CLIAgentProvider.Agent> {
+        SettingKey<CLIAgentProvider.Agent>("ai.cliAgent", default: .claudeCode)
+    }
+
+    public static var cliAgentExecutable: SettingKey<String> {
+        SettingKey<String>("ai.cliAgentExecutable", default: "")
+    }
+
+    public static var cliAgentArguments: SettingKey<String> {
+        SettingKey<String>("ai.cliAgentArguments", default: "")
     }
 
     public static var remoteConfiguration: SettingKey<RemoteConfiguration> {

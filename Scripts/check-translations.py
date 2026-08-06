@@ -76,6 +76,8 @@ SKIP = {
     "ICU (Swift/NSRegularExpression)", "Swift DocC (///)",
     "A → Z", "Z → A", "Slug", "Speech Studio",
     "Apple Foundation Models",
+    "Claude Code", "Codex", "Gemini CLI",   # Produktnamen
+    "-p",                                    # Beispielargument
 }
 SKIP_PATTERNS = [
     re.compile(r"^[a-z0-9.]+$"),          # SF-Symbol-Namen
