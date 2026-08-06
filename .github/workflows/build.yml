@@ -46,6 +46,7 @@ jobs:
           test -x "$APP/Contents/MacOS/Anvil"
           test -f "$APP/Contents/Info.plist"
           test -f "$APP/Contents/Resources/en.lproj/Localizable.strings"
+          test -f "$APP/Contents/Resources/AppIcon.icns"
           echo "Bundle vollständig: $APP"
 
   translations:

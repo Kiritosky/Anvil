@@ -58,9 +58,19 @@ for lproj in "$ROOT"/Resources/*.lproj; do
 done
 echo "    $lproj_count Übersetzung(en) kopiert"
 
-if [ -e "$ROOT/Resources/AppIcon.icns" ]; then
-    cp "$ROOT/Resources/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
+# Das Icon wird gezeichnet, nicht mitgeliefert: sieben Größen, ein paar
+# Formen, und eine eingecheckte Binärdatei, die niemand vergleichen kann, ist
+# genau der Weg, auf dem Icons still veralten.
+ICON="$ROOT/.build/AppIcon.icns"
+if [ ! -e "$ICON" ] || [ "$ROOT/Scripts/make-icon.swift" -nt "$ICON" ]; then
+    echo "==> Icon zeichnen"
+    swift "$ROOT/Scripts/make-icon.swift" "$ICON" || echo "    Icon konnte nicht erzeugt werden"
+fi
+
+if [ -e "$ICON" ]; then
+    cp "$ICON" "$APP/Contents/Resources/AppIcon.icns"
     /usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string AppIcon" "$APP/Contents/Info.plist" 2>/dev/null || true
+    echo "    Icon eingebettet"
 fi
 
 echo "==> codesign ($SIGN_IDENTITY)"
