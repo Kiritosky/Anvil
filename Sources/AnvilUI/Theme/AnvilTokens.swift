@@ -53,6 +53,11 @@ public enum AnvilSize {
     public static let sidebarWidth: CGFloat = 248
     /// Minimum comfortable height for a text pane.
     public static let paneMinHeight: CGFloat = 160
+    /// Width of the leading field in a two-field list row.
+    public static let listFieldWidth: CGFloat = 170
+    /// Height a secondary list inside a pane is capped at, so the main content
+    /// above it keeps the room.
+    public static let secondaryListHeight: CGFloat = 140
     /// Square size of a tool icon in the sidebar.
     public static let toolIcon: CGFloat = 22
 }

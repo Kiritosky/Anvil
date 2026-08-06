@@ -107,7 +107,7 @@ public struct VocabularyToolView: View {
                 .help("Begriff berücksichtigen")
 
             AnvilTextField(text: entry.term, placeholder: "Begriff")
-                .frame(width: 170)
+                .frame(width: AnvilSize.listFieldWidth)
 
             AnvilTextField(text: variantsBinding(for: entry), placeholder: "Verhörer, mit Komma getrennt")
 
@@ -196,7 +196,7 @@ public struct VocabularyToolView: View {
             }
             .padding(AnvilSpacing.md)
         }
-        .frame(maxHeight: 140)
+        .frame(maxHeight: AnvilSize.secondaryListHeight)
     }
 
     private var statusBar: some View {
