@@ -11,4 +11,11 @@ extension View {
         help(text)
             .accessibilityLabel(text)
     }
+
+    /// The same, for text that has already been translated — a title out of a
+    /// model, or a sentence assembled at runtime.
+    public func anvilHelp(_ text: String) -> some View {
+        help(text)
+            .accessibilityLabel(Text(verbatim: text))
+    }
 }
