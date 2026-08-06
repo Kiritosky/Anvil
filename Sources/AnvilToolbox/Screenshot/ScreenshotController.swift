@@ -3,46 +3,6 @@ import AppKit
 import Foundation
 import Observation
 
-/// One shot taken in this session.
-public struct Screenshot: Identifiable, Sendable {
-    public let id: UUID
-    public let image: NSImage
-    /// Where it was kept, when it was kept.
-    public var fileURL: URL?
-    public let target: ScreenCapture.Target
-    public let takenAt: Date
-    /// Filled in when the text has been read out of it.
-    public var text: String?
-    /// Marks drawn on top. The picture itself is never touched — flattening
-    /// happens on the way out, so an undo has something to go back to.
-    public var annotations: [Annotation] = []
-
-    public init(
-        id: UUID = UUID(),
-        image: NSImage,
-        fileURL: URL? = nil,
-        target: ScreenCapture.Target,
-        takenAt: Date = .now,
-        text: String? = nil,
-        annotations: [Annotation] = []
-    ) {
-        self.id = id
-        self.image = image
-        self.fileURL = fileURL
-        self.target = target
-        self.takenAt = takenAt
-        self.text = text
-        self.annotations = annotations
-    }
-
-    public var isAnnotated: Bool { !annotations.isEmpty }
-
-    public var pixelSize: NSSize {
-        guard let representation = image.representations.first else { return image.size }
-        return NSSize(width: representation.pixelsWide, height: representation.pixelsHigh)
-    }
-}
-
 /// Taking screenshots, and what happens to them afterwards.
 ///
 /// An app-level service rather than view state, for the same reason quick
@@ -222,19 +182,12 @@ public final class ScreenshotController {
         if let existing = shots[index].fileURL { return existing }
 
         do {
-            let data = flattened(shot).tiffRepresentation
-            guard let data, let bitmap = NSBitmapImageRep(data: data),
-                  let png = bitmap.representation(using: .png, properties: [:])
-            else {
-                error = .storage(localized("Das Bild konnte nicht als PNG gesichert werden."))
-                return nil
-            }
-
             AppPaths.bootstrap()
             let stamp = ISO8601DateFormatter().string(from: shot.takenAt)
                 .replacingOccurrences(of: ":", with: "-")
-            let url = AppPaths.screenshots.appending(path: "Bildschirmfoto \(stamp).png")
-            try png.write(to: url)
+            let url = try flattened(shot).writePNG(
+                to: AppPaths.screenshots.appending(path: "Bildschirmfoto \(stamp).png")
+            )
 
             shots[index].fileURL = url
             return url

@@ -105,21 +105,7 @@ public enum QRCode {
     @discardableResult
     public static func export(_ image: NSImage, named name: String) throws -> URL {
         AppPaths.bootstrap()
-
-        guard let tiff = image.tiffRepresentation,
-              let bitmap = NSBitmapImageRep(data: tiff),
-              let png = bitmap.representation(using: .png, properties: [:])
-        else {
-            throw AnvilError.storage(localized("Das Bild konnte nicht als PNG gesichert werden."))
-        }
-
-        let url = AppPaths.exports.appending(path: "\(name).png")
-        do {
-            try png.write(to: url)
-        } catch {
-            throw AnvilError.storage(localized("Der Export ist fehlgeschlagen: \(error.localizedDescription)"))
-        }
-        return url
+        return try image.writePNG(to: AppPaths.exports.appending(path: "\(name).png"))
     }
 }
 
