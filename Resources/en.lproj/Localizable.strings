@@ -18,6 +18,7 @@
 "%lld Treffer" = "%lld matches";
 "%lld unverändert" = "%lld unchanged";
 "%lld von %lld Tools aktiv." = "%lld of %lld tools active.";
+"%lld Werkzeuge sind eingeschaltet. Im Tool-Store lässt sich jedes einzeln abschalten." = "%lld tools are switched on. Each can be switched off in the Tool Store.";
 "%lld Werkzeuge · ⌘K öffnet die Suche" = "%lld tools · press ⌘K to search";
 "%lld Wörter" = "%lld words";
 ", %@" = ", %@";
@@ -56,6 +57,7 @@
 "alles" = "everything";
 "Alles aktivieren" = "Enable everything";
 "Alles da." = "All set.";
+"Alles davon lässt sich später ändern." = "All of it can be changed later.";
 "Alles finden" = "Find anything";
 "Alles finden (⌘K)" = "Find anything (⌘K)";
 "Alles finden …" = "Find anything…";
@@ -138,6 +140,7 @@
 "Ausschnitt aufnehmen  %@" = "Capture a region  %@";
 "Ausschnitt wählen" = "Select a region";
 "Ausschnitt wählen, Text landet in der Zwischenablage" = "Pick a region; the text lands on the clipboard";
+"Ausschnitt, Fenster oder ganzer Bildschirm — mit Markierungen, und auf Wunsch gleich als Text." = "A region, a window or the whole screen — with marks, and as text if you like.";
 "Auswahl" = "Either";
 "Auswerten" = "Analyse";
 "Automatisch kopieren" = "Copy automatically";
@@ -169,6 +172,7 @@
 "Bild kopieren" = "Copy image";
 "Bildschirm" = "Display";
 "Bildschirm & Bilder" = "Screen & Images";
+"Bildschirm aufnehmen und auslesen" = "Capture and read the screen";
 "Bildschirm und Tastatur" = "Screen and keyboard";
 "Bildschirmaufnahme" = "Screen recording";
 "Bildschirmaufnahme braucht das Bildschirmfoto-Werkzeug. Die Bedienungshilfen braucht nur das Einfügen in fremde Textfelder — ohne sie landet Diktiertes in der Zwischenablage." = "Screen recording is what the screenshot tool needs. Accessibility is only needed to type into other apps' text fields — without it, dictation goes to the clipboard.";
@@ -207,6 +211,7 @@
 "Das ist keine Zahl, die ich lesen kann: „%@\"." = "That is not a number I can read: “%@”.";
 "Das Kürzel ist eingetragen, aber nichts hört darauf." = "The shortcut is set, but nothing listens for it.";
 "Das läuft auf diesem Mac, nichts geht ins Netz." = "This runs on this Mac; nothing goes online.";
+"Das Modell" = "The model";
 "Das Modell wird noch geladen. Versuch es gleich noch einmal." = "The model is still loading. Try again in a moment.";
 "Das Muster passt auf keine Stelle im Testtext." = "The pattern matches nothing in the test text.";
 "Das On-Device-Modell hat die Antwort abgelehnt." = "The on-device model declined to answer.";
@@ -219,6 +224,7 @@
 "Datenordner" = "Data folder";
 "Deckt endgültig ab. Kein Weichzeichner — der lässt sich zurückrechnen, eine Fläche nicht." = "Covers it for good. Not a blur — a blur can be undone, a solid block cannot.";
 "Deine eigene Anweisung an das Modell." = "Your own instruction to the model.";
+"Deine Tastenkürzel" = "Your shortcuts";
 "Dekodieren" = "Decode";
 "Den Code %@ kenne ich nicht." = "I do not know the code %@.";
 "Der %@ ist kein gültiges Base64." = "The %@ is not valid Base64.";
@@ -226,9 +232,11 @@
 "Der Bildschirm konnte nicht aufgenommen werden: %@" = "The screen could not be captured: %@";
 "Der Export ist fehlgeschlagen: %@" = "The export failed: %@";
 "Der gelesene Text landet dann sofort in der Zwischenablage." = "The text goes straight to the clipboard.";
+"Der Schalter entscheidet, ob das Kürzel überall gilt. Feiner einstellen lässt sich das in den Einstellungen unter „Tastenkürzel\"." = "The switch decides whether the shortcut works everywhere. Finer control is in Settings under “Shortcuts”.";
 "Der Schlüssel konnte nicht kodiert werden." = "The key could not be encoded.";
 "Der schnelle braune Fuchs springt über den faulen Hund." = "The quick brown fox jumps over the lazy dog.";
 "Der Server hat weiter hinten eine kaputte Antwort bekommen." = "The server got a broken answer from further back.";
+"Der Standardweg. Läuft auf diesem Mac, ohne Netz und ohne Konto." = "The default. Runs on this Mac, with no network and no account.";
 "Der Text ist zu lang für das On-Device-Modell. Teile ihn auf oder wähle in den Einstellungen einen externen Anbieter." = "The text is too long for the on-device model. Split it up, or pick a remote provider in Settings.";
 "Der Text lässt sich nicht kodieren." = "The text cannot be encoded.";
 "Der Text passt nicht in einen QR-Code — er ist zu lang." = "The text does not fit into a QR code — it is too long.";
@@ -269,6 +277,7 @@
 "Diktat starten und beenden" = "Start and stop dictation";
 "Diktat-Vokabular" = "Dictation Vocabulary";
 "Diktieren, transkribieren, aufräumen" = "Dictate, transcribe, clean up";
+"Diktieren, überall" = "Dictate anywhere";
 "Direkt einfügen" = "Paste straight in";
 "Doku-Kommentar" = "Doc comment";
 "Dokumentation zu einer Funktion" = "Documentation for a function";
@@ -293,6 +302,7 @@
 "ein Absatz" = "one paragraph";
 "Ein Absatz" = "One paragraph";
 "Ein Cron-Ausdruck hat fünf Felder: Minute, Stunde, Tag, Monat, Wochentag." = "A cron expression has five fields: minute, hour, day, month, weekday.";
+"Ein Fenster, viele Werkzeuge." = "One window, many tools.";
 "Ein ganzer Bildschirm, sofort." = "One whole display, at once.";
 "Ein JWT besteht aus drei mit Punkt getrennten Teilen." = "A JWT has three parts separated by dots.";
 "Ein Satz" = "One sentence";
@@ -302,6 +312,7 @@
 "eine Zeile" = "one line";
 "Eine Zeile je Begriff. Verhörer stehen nach einem Doppelpunkt, mit Komma getrennt." = "One term per line. Misrecognitions follow a colon, separated by commas.";
 "Einfügen" = "Paste";
+"Einführung" = "Introduction";
 "Eingabe" = "Input";
 "Eingabe passt nicht" = "Input does not fit";
 "Eingefügt" = "Inserted";
@@ -332,6 +343,7 @@
 "Erlaube den Zugriff unter Systemeinstellungen › Datenschutz & Sicherheit." = "Grant access in System Settings › Privacy & Security.";
 "Erlauben" = "Allow";
 "Erneut prüfen" = "Check again";
+"Erneut zeigen" = "Show again";
 "Ersatztext" = "Replacement";
 "Ersetzen" = "Replace";
 "Ersetzt" = "Replaced";
@@ -340,6 +352,7 @@
 "Erst der externe Anbieter, das Apple-Modell als Rückfallebene." = "Remote provider first, Apple’s model as the fallback.";
 "Erst oben einschalten." = "Switch it on above first.";
 "Erteilt" = "Granted";
+"Erteilt oder nicht" = "Granted or not";
 "Erzeugen und aus Bildern lesen" = "Create them, and read them from images";
 "Es gibt noch kein Ergebnis zum Sichern." = "There is no result to save yet.";
 "Es gibt noch keinen Text zum Aufräumen." = "There is no text to clean up yet.";
@@ -458,6 +471,7 @@
 "Italienisch" = "Italian";
 "Januar" = "January";
 "Jede Aufnahmeart hat ihr eigenes Kürzel — in den Einstellungen unter „Tastenkürzel\"." = "Each kind of capture has its own shortcut — in Settings under “Shortcuts”.";
+"Jede davon lässt sich später in den Einstellungen nachholen oder zurücknehmen." = "Each of these can be granted or withdrawn later in Settings.";
 "jede Minute" = "every minute";
 "jede Stunde" = "every hour";
 "Jeder abgeschlossene Durchlauf landet hier." = "Every completed run ends up here.";
@@ -517,6 +531,7 @@
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der aufgeräumte Text geht ins Textfeld, in dem der Cursor steht — sonst in die Zwischenablage. ⎋ verwirft. Das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The cleaned-up text goes into the text field the caret sits in — otherwise to the clipboard. ⎋ discards. The main window stays closed.";
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der Text wird aufgeräumt und liegt danach in der Zwischenablage — das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The text is cleaned up and ends up on the clipboard — the main window stays closed.";
 "Kürzel drücken, sprechen, noch einmal drücken" = "Press the shortcut, speak, press it again";
+"Kürzel drücken, sprechen, noch einmal drücken. Der aufgeräumte Text landet dort, wo der Cursor steht." = "Press the shortcut, speak, press it again. The cleaned-up text lands where the cursor is.";
 "Kürzel entfernen" = "Remove shortcut";
 "kürzer" = "shorter";
 "Kürzt auf das Wesentliche, behält aber alle Aussagen." = "Trims to the essentials while keeping every statement.";
@@ -538,6 +553,7 @@
 "LM Studio (lokal)" = "LM Studio (local)";
 "locker" = "casual";
 "locker (du)" = "casual";
+"Los geht's" = "Let's go";
 "Länge" = "Length";
 "Länge, Gewicht, Temperatur, Tempo, Daten" = "Length, weight, temperature, speed, data";
 "Lässt sich nur noch in den Systemeinstellungen ändern." = "Can only be changed in System Settings now.";
@@ -592,6 +608,7 @@
 "Nicht verfügbar" = "Not available";
 "Nicht verfügbar." = "Not available.";
 "Nichts Auffälliges — nur gewöhnliche Zeichen." = "Nothing unusual — ordinary characters only.";
+"Nichts davon ist Pflicht — ohne das eine oder andere kann nur weniger." = "None of this is required — without one or the other, Anvil can simply do less.";
 "Nichts gefunden" = "Nothing found";
 "Nichts verlässt diesen Mac. Ohne Apple Intelligence bleiben KI-Tools aus." = "Nothing leaves this Mac. Without Apple Intelligence, AI tools stay unavailable.";
 "Nichts verstanden." = "Didn’t catch anything.";
@@ -619,6 +636,7 @@
 "Nur Auffälliges" = "Unusual only";
 "nur Betreffzeile" = "subject line only";
 "Nur exakte Treffer" = "Exact matches only";
+"Nur fürs Einfügen in fremde Textfelder. Ohne sie geht Diktiertes in die Zwischenablage." = "Only for typing into other apps' text fields. Without it, dictation goes to the clipboard.";
 "Nur große Schrift" = "Large text only";
 "Nur in Anvil" = "Anvil only";
 "Nur on-device" = "On-device only";
@@ -630,6 +648,7 @@
 "Ohne Bindestriche" = "Without hyphens";
 "Ohne das schreibt das Modell unbekannte Namen gern wieder in ein Wort um, das es kennt." = "Without this the model likes to turn a name it does not know back into a word it does.";
 "Ohne Mikrofon kein Diktat; ohne Spracherkennung keine Umsetzung in Text." = "No microphone, no dictation; no speech recognition, no text.";
+"Ohne Mikrofon lässt sich nichts diktieren." = "No microphone, no dictation.";
 "ohne Namen" = "unnamed";
 "Ohne Sonderzeichen" = "Without symbols";
 "Ohne Text gibt es nichts zu kodieren." = "Without text there is nothing to encode.";
@@ -816,10 +835,14 @@
 "Vorher" = "Before";
 "Vorlagen" = "Templates";
 "Vorübergehend woanders." = "Somewhere else for now.";
+"Wandelt die Aufnahme in Text um. Läuft auf diesem Mac." = "Turns the recording into text. Runs on this Mac.";
 "Was 418 eigentlich heißt" = "What 418 actually means";
+"Was Anvil braucht" = "What Anvil needs";
+"Was auf diesem Mac läuft, bleibt auf diesem Mac." = "What runs on this Mac stays on this Mac.";
 "Was benennt werden soll, plus Kontext …" = "What needs a name, plus context…";
 "Was dieses Tool macht" = "What this tool does";
 "Was macht dieser Code — und warum" = "What this code does — and why";
+"Was optional ist, macht Anvil nur bequemer — der Rest schaltet ein Werkzeug ganz ab." = "What is optional only makes Anvil more convenient — the rest switches a tool off entirely.";
 "Was soll das Modell mit dem Text machen?" = "What should the model do with the text?";
 "Was soll der Befehl tun?" = "What should the command do?";
 "Was soll die Abfrage liefern?" = "What should the query return?";
@@ -829,16 +852,20 @@
 "Weiter hinten hat niemand rechtzeitig geantwortet." = "Nobody further back answered in time.";
 "Weiß" = "White";
 "Welches Modell antwortet — und ob dafür etwas diesen Mac verlässt." = "Which model answers — and whether anything leaves this Mac to get there.";
+"Wer will, kann in den Einstellungen einen externen Anbieter hinterlegen — nötig ist das nie. Werkzeuge ohne KI arbeiten ohnehin vollständig lokal." = "You can add an external provider in Settings if you want — it is never required. Tools without AI work entirely locally anyway.";
 "Werkzeuge ein- und ausschalten" = "Switch tools on and off";
+"Werkzeuge für den Rest" = "Tools for everything else";
 "Wie 301, aber die Methode bleibt erhalten." = "Like 301, but the method is kept.";
 "Wie 302, aber die Methode bleibt erhalten." = "Like 302, but the method is kept.";
 "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird." = "How the model shapes the dictation before it is copied.";
 "wie das Original" = "same as the original";
 "wie im Code erkennbar" = "as the code suggests";
 "Wie spät ist es wo" = "What time it is where";
+"Willkommen bei Anvil" = "Welcome to Anvil";
 "Wird aufgeräumt" = "Cleaning up";
 "Wird beim ersten Mal automatisch gefragt." = "Asked automatically the first time.";
 "Wird beim ersten Start dieser Sprache heruntergeladen." = "Downloads the first time you use this language.";
+"Wird fürs Bildschirmfoto und für Text vom Bildschirm gebraucht." = "Needed for screenshots and for reading text off the screen.";
 "Wird gelesen" = "Understood input";
 "Wird im Prompt für {{option:level}} eingesetzt." = "Substituted into the prompt for {{option:level}}.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Only used when the policy allows it. The key lives in the keychain, not in the settings file.";
@@ -860,6 +887,7 @@
 "Zeichen rein" = "characters in";
 "Zeichengenau" = "Character exact";
 "Zeigt auf die Stelle, um die es geht." = "Points at the thing you mean.";
+"Zeigt die Schritte vom ersten Start noch einmal." = "Shows the first-run steps again.";
 "Zeilen" = "Lines";
 "Zeilen kommen von oben nach unten, gleich hohe von links nach rechts — zwei Spalten bleiben zwei Spalten." = "Lines come top to bottom, and left to right within a band — two columns stay two columns.";
 "zeilenweise" = "line by line";
@@ -880,6 +908,7 @@
 "Zuletzt benutzt" = "Recently used";
 "Zum Beispiel #3A7BD5, rgb(58, 123, 213), hsl(214, 63%, 53%) oder „blau\"." = "For example #3A7BD5, rgb(58, 123, 213), hsl(214, 63%, 53%) or “blue”.";
 "zur Minute %@" = "at minute %@";
+"Zurück" = "Back";
 "Zurück in die Zwischenablage" = "Back to the clipboard";
 "Zurücksetzen" = "Reset";
 "Zurückwandeln" = "Unescape";
@@ -890,6 +919,7 @@
 "Zwischenablage" = "Clipboard";
 "Zwischenablage beobachten" = "Watch the clipboard";
 "Zwischenablage einfügen" = "Paste clipboard";
+"Zwischenablage-Verlauf, Farben, Einheiten, JSON, Cron, QR-Codes — und KI-Werkzeuge fürs Schreiben und für Code." = "Clipboard history, colours, units, JSON, cron, QR codes — and AI tools for writing and for code.";
 "Ähnlich" = "Similar";
 "Ältere Durchläufe werden verworfen, sobald die Grenze erreicht ist." = "Older runs are dropped once the limit is reached.";
 "Ändern lässt sich das in den Einstellungen unter „Tastenkürzel\"." = "Change it in Settings under “Shortcuts”.";
@@ -900,6 +930,7 @@
 "Übereinstimmung" = "match";
 "Überlastet oder in Wartung." = "Overloaded or in maintenance.";
 "Übersetzen" = "Translate";
+"Überspringen" = "Skip";
 "„%@\" ergibt im Feld %@ keinen Sinn." = "“%@” makes no sense in the %@ field.";
 "„%@\" ist kein gültiger Bereich für %@." = "“%@” is not a valid range for %@.";
 "„%@\" ist kein Hex-Byte." = "“%@” is not a hex byte.";

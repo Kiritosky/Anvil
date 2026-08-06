@@ -33,6 +33,8 @@ public final class AppEnvironment {
     public var selectedToolID: ToolIdentifier?
     /// Whether the command palette is open.
     public var isCommandPaletteOpen = false
+    /// Whether the introduction is showing. Opens itself once, on first run.
+    public var isOnboardingOpen = false
 
     public init() {
         AppPaths.bootstrap()
@@ -82,6 +84,7 @@ public final class AppEnvironment {
         customTools.reloadUserTools()
         restoreSelection()
         clipboard.syncWatching()
+        isOnboardingOpen = !settings[.hasSeenOnboarding]
 
         // A shot taken by shortcut, with the window closed, should be the
         // thing on screen the next time the window opens.

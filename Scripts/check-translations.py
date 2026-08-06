@@ -75,9 +75,11 @@ SKIP = {
     "camelCase", "PascalCase", "snake_case", "kebab-case", "CONSTANT_CASE",
     "ICU (Swift/NSRegularExpression)", "Swift DocC (///)",
     "A → Z", "Z → A", "Slug", "Speech Studio",
+    "Apple Foundation Models",
 }
 SKIP_PATTERNS = [
     re.compile(r"^[a-z0-9.]+$"),          # SF-Symbol-Namen
+    re.compile(r"^Privacy_"),             # Kennungen von Systemeinstellungs-Seiten
     re.compile(r"^https?://"),            # Beispiel-URLs
     re.compile(r"…$"),                    # Platzhalter wie "sk-…", "git diff …"
     re.compile(r"^%[@l]"),                # reine Formatstrings

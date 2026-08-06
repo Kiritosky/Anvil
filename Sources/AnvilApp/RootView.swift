@@ -22,6 +22,9 @@ struct RootView: View {
         .sheet(isPresented: $environment.isCommandPaletteOpen) {
             CommandPalette()
         }
+        .sheet(isPresented: $environment.isOnboardingOpen) {
+            OnboardingView()
+        }
     }
 
     @ViewBuilder
