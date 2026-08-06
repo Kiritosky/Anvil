@@ -38,6 +38,11 @@ Das ist Absicht: der Kern soll austauschbar bleiben.
 | `GlobalShortcut` | Tastenkombination für systemweite Kürzel |
 | `HotKeyCenter` | Registrierung über Carbon — ohne Bedienungshilfen-Recht |
 | `PasteService` | ⌘V in die vorherige App; das einzige Stück mit Accessibility |
+| `ShortcutRegistry` | alle Kürzel der App: ändern, abschalten, app-weit oder global |
+| `ProcessRunner` | externe Befehle mit Zeitlimit, auch als Strom |
+| `ColorValue` | Farben parsen, umrechnen, Kontrast bewerten |
+| `TextDiff`, `FuzzyMatch` | Vergleich und Ähnlichkeit, für Textvergleich und Vokabular |
+| `NSImage.writePNG(to:)` | Bilder als PNG sichern — eine Fassung für alle Tools |
 
 ### Warum Metadaten und View getrennt sind
 
@@ -67,11 +72,18 @@ Regel: **kein Tool baut eigenes Chrome.** Jede Tool-View sitzt in
 Header-Aktionen. Abstände, Radien, Farben, Schriften und Animationen kommen aus
 `AnvilSpacing`, `AnvilRadius`, `AnvilColor`, `AnvilFont`, `AnvilMotion`.
 
-Wichtigste Bausteine: `ToolScaffold`, `WorkbenchLayout` (zwei verschiebbare
-Bereiche), `InspectorPane` + `InspectorSection` + `OptionRow`, `AnvilPane`,
-`ToolStatusBar`, `SettingsPage`/`SettingsGroup`/`SettingsRow`, dazu
-`AnvilButton`, `AnvilBanner`, `ChipPicker`, `StatusPill`, `EmptyStateView`,
-`DiffTextView`, `LevelMeter`.
+Wichtigste Bausteine: `ToolScaffold`, `ToolWorkbench` (zwei Bereiche plus
+Statusleiste — die Form, die praktisch jedes Tool hat), darunter
+`WorkbenchLayout` für die verschiebbare Teilung selbst, `InspectorPane` +
+`InspectorSection` + `OptionRow`, `AnvilPane`, `ToolStatusBar`,
+`SettingsPage`/`SettingsGroup`/`SettingsRow`, dazu `AnvilButton`,
+`AnvilBanner`, `ChipPicker`, `StatusPill`, `EmptyStateView`, `DiffTextView`,
+`LevelMeter`.
+
+Ein Tool greift auf `WorkbenchLayout` nur zu, wenn es etwas anderes als „zwei
+Bereiche, Statusleiste" braucht — bisher tut das keines. Sobald ein zweites
+Tool etwas Eigenes zweimal baut, gehört es hierher: das ist die Regel, an der
+sich entscheidet, was `AnvilUI` kennt.
 
 ## AnvilAI — Modelle
 
@@ -80,8 +92,14 @@ Streaming liefert immer den **kumulierten** Text, nicht Deltas — so kann eine
 View direkt daran hängen.
 
 Implementierungen: `FoundationModelsProvider` (on-device),
-`OpenAICompatibleProvider` (OpenAI, Ollama, LM Studio, OpenRouter, Gateways),
-`AnthropicProvider`.
+`CLIAgentProvider` (Claude Code, Codex, Gemini CLI — über die vorhandene
+Anmeldung, ohne API-Schlüssel), `OpenAICompatibleProvider` (OpenAI, Ollama,
+LM Studio, OpenRouter, Gateways), `AnthropicProvider`.
+
+`CLIAgentLocator` findet die Befehle. Eine GUI-App erbt den `PATH` von
+`launchd`, und der kennt keines der Verzeichnisse, in die npm, Homebrew oder
+pipx installieren — deshalb erst die bekannten Orte, dann einmal die
+Login-Shell fragen, und das Ergebnis merken.
 
 `AIRouter` wählt aus. Die Richtlinie (`AIPolicy`) ist eine einzige Einstellung
 statt eines Versprechens, das über zwanzig Tools verteilt ist:

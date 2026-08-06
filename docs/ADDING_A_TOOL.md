@@ -123,13 +123,17 @@ struct MeinToolView: View {
 
     var body: some View {
         ToolScaffold(metadata: metadata) {
-            WorkbenchLayout(orientation: $orientation, storageKey: metadata.id.rawValue) {
+            ToolWorkbench(orientation: $orientation, storageKey: metadata.id.rawValue) {
                 AnvilPane("Eingabe", systemImage: "square.and.pencil") {
                     AnvilTextEditor(text: $input, placeholder: "…")
                 }
             } secondary: {
                 AnvilPane("Ergebnis", systemImage: "sparkles") {
                     EmptyStateView(title: "Noch nichts", systemImage: "sparkles")
+                }
+            } status: {
+                ToolStatusBar {
+                    StatusMetric("\(input.count)", label: "Zeichen", systemImage: "textformat")
                 }
             }
         } inspector: {
