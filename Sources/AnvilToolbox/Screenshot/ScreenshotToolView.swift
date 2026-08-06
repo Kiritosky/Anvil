@@ -19,6 +19,9 @@ public struct ScreenshotToolView: View {
         self.metadata = metadata
     }
 
+    /// The mark being dragged right now. Committed on release.
+    @State private var draft: Annotation?
+
     private var controller: ScreenshotController { context.screenshots }
     private var settings: SettingsStore { context.settings }
 
@@ -68,9 +71,7 @@ public struct ScreenshotToolView: View {
             tone: controller.selected == nil ? .neutral : .accent
         ) {
             if let shot = controller.selected {
-                Image(nsImage: shot.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                annotatableImage(shot)
                     .padding(AnvilSpacing.md)
             } else {
                 EmptyStateView(
@@ -85,6 +86,20 @@ public struct ScreenshotToolView: View {
             }
         } accessory: {
             if let shot = controller.selected {
+                if shot.isAnnotated {
+                    Button { controller.undoAnnotation(on: shot) } label: {
+                        Image(systemName: "arrow.uturn.backward")
+                    }
+                    .buttonStyle(AnvilIconButtonStyle())
+                    .help("Letzte Markierung zurücknehmen")
+
+                    Button { controller.clearAnnotations(on: shot) } label: {
+                        Image(systemName: "eraser")
+                    }
+                    .buttonStyle(AnvilIconButtonStyle())
+                    .help("Alle Markierungen entfernen")
+                }
+
                 Button { controller.copyImage(shot) } label: {
                     Image(systemName: "doc.on.doc")
                 }
@@ -110,6 +125,67 @@ public struct ScreenshotToolView: View {
                 .help("Verwerfen")
             }
         }
+    }
+
+    /// The picture with a drawing surface over it.
+    ///
+    /// The drag is translated into image coordinates rather than view ones, so
+    /// a mark stays where it was put when the window is resized — and lands in
+    /// the right place when the export is rendered at full resolution.
+    private func annotatableImage(_ shot: Screenshot) -> some View {
+        GeometryReader { proxy in
+            let imageSize = shot.pixelSize
+            let frame = AnnotationRenderer.fittedRect(
+                for: imageSize,
+                in: proxy.size
+            )
+
+            ZStack(alignment: .topLeading) {
+                Image(nsImage: shot.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+
+                ForEach(shot.annotations) { annotation in
+                    AnnotationShape(annotation: annotation, frame: frame)
+                }
+
+                if let draft {
+                    AnnotationShape(annotation: draft, frame: frame)
+                }
+            }
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture(minimumDistance: 2)
+                    .onChanged { value in
+                        guard let start = AnnotationRenderer.normalize(
+                            value.startLocation,
+                            imageSize: imageSize,
+                            containerSize: proxy.size
+                        ),
+                        let end = AnnotationRenderer.normalize(
+                            value.location,
+                            imageSize: imageSize,
+                            containerSize: proxy.size
+                        ) else { return }
+
+                        draft = Annotation(
+                            kind: settings[.annotationKind],
+                            start: start,
+                            end: end,
+                            color: annotationColor,
+                            lineWidth: CGFloat(settings[.annotationWidth])
+                        )
+                    }
+                    .onEnded { _ in
+                        if let draft { controller.add(draft, to: shot) }
+                        draft = nil
+                    }
+            )
+        }
+    }
+
+    private var annotationColor: ColorValue {
+        ColorValue(parsing: settings[.annotationColor]) ?? ColorValue(red255: 255, green255: 59, blue255: 48)
     }
 
     private var sidePane: some View {
@@ -232,6 +308,52 @@ public struct ScreenshotToolView: View {
     @ViewBuilder
     private var inspector: some View {
         InspectorSection(
+            "Markieren",
+            systemImage: "pencil.tip",
+            footnote: .resolved(settings[.annotationKind].explanation)
+        ) {
+            ChipPicker(
+                selection: binding(.annotationKind),
+                options: Annotation.Kind.allCases,
+                title: \.title,
+                systemImage: { $0.systemImage }
+            )
+
+            OptionRow("Farbe") {
+                HStack(spacing: AnvilSpacing.xs) {
+                    ForEach(Self.markerColors, id: \.self) { hex in
+                        Button { settings[.annotationColor] = hex } label: {
+                            RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
+                                .fill(swiftUIColor(hex))
+                                .frame(width: AnvilSize.toolIcon, height: AnvilSize.toolIcon)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
+                                        .strokeBorder(
+                                            settings[.annotationColor] == hex
+                                                ? AnvilColor.textPrimary
+                                                : AnvilColor.border,
+                                            lineWidth: settings[.annotationColor] == hex ? 2 : 1
+                                        )
+                                }
+                        }
+                        .buttonStyle(.plain)
+                        .help(.resolved(hex))
+                    }
+                }
+            }
+
+            OptionRow("Strichstärke") {
+                Picker("", selection: binding(.annotationWidth)) {
+                    ForEach([2, 4, 8], id: \.self) { width in
+                        Text(verbatim: "\(width)").tag(width)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+            }
+        }
+
+        InspectorSection(
             "Danach",
             systemImage: "arrow.right.circle",
             footnote: "Gilt für jede Aufnahme, auch die per Tastenkürzel."
@@ -326,6 +448,15 @@ public struct ScreenshotToolView: View {
             }
             return (action.title, shortcut.displayString)
         }
+    }
+
+    /// Colours that stay visible on a screenshot: strong, saturated, and not
+    /// something an interface is likely to already be full of.
+    private static let markerColors = ["#FF3B30", "#FF9500", "#FFCC00", "#34C759", "#007AFF", "#000000"]
+
+    private func swiftUIColor(_ hex: String) -> Color {
+        guard let value = ColorValue(parsing: hex) else { return .gray }
+        return Color(.sRGB, red: value.red, green: value.green, blue: value.blue, opacity: 1)
     }
 
     private func binding<Value>(_ key: SettingKey<Value>) -> Binding<Value> {

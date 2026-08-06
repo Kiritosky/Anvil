@@ -6,7 +6,7 @@ import Foundation
 /// Deliberately free of SwiftUI: parsing, converting and judging contrast are
 /// arithmetic, and arithmetic is worth testing without a window. The view turns
 /// this into a swatch, nothing more.
-public struct ColorValue: Hashable, Sendable {
+public struct ColorValue: Hashable, Sendable, Codable {
     /// Components in 0…1.
     public var red: Double
     public var green: Double

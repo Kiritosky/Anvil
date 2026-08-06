@@ -50,6 +50,7 @@
 "Alle Bildschirme, sofort" = "Every display, at once";
 "Alle Bildschirme, sofort." = "Every display, at once.";
 "Alle Kürzel" = "All shortcuts";
+"Alle Markierungen entfernen" = "Remove every mark";
 "Alle Systeme" = "All bases";
 "Alle verwerfen" = "Discard all";
 "alles" = "everything";
@@ -208,6 +209,7 @@
 "Datei wird transkribiert" = "Transcribing file";
 "Dateirechte" = "File permissions";
 "Datenordner" = "Data folder";
+"Deckt endgültig ab. Kein Weichzeichner — der lässt sich zurückrechnen, eine Fläche nicht." = "Covers it for good. Not a blur — a blur can be undone, a solid block cannot.";
 "Deine eigene Anweisung an das Modell." = "Your own instruction to the model.";
 "Dekodieren" = "Decode";
 "Den Code %@ kenne ich nicht." = "I do not know the code %@.";
@@ -270,6 +272,7 @@
 "Drück auf Aufnehmen und sprich einfach los — ⌘⇧R geht auch. Alternativ eine vorhandene Audiodatei öffnen." = "Hit Record and just start talking — ⌘⇧R works too. Or open an audio file you already have.";
 "Durch null lässt sich nicht teilen." = "Cannot divide by zero.";
 "Durchgefallen" = "Failed";
+"Durchscheinende Fläche, wie ein Textmarker." = "A translucent area, like a highlighter.";
 "E-Mail" = "Email";
 "Eigene" = "Mine";
 "Eigene Anweisung" = "Custom instruction";
@@ -287,6 +290,7 @@
 "Ein Satz" = "One sentence";
 "Ein Schlüssel ist hinterlegt." = "A key is stored.";
 "Eine" = "One";
+"Eine gerade Linie." = "A straight line.";
 "eine Zeile" = "one line";
 "Eine Zeile je Begriff. Verhörer stehen nach einem Doppelpunkt, mit Komma getrennt." = "One term per line. Misrecognitions follow a colon, separated by commas.";
 "Einfügen" = "Paste";
@@ -298,6 +302,7 @@
 "Einstellungen" = "Settings";
 "Einträge" = "entries";
 "Einträge pro Tool" = "Entries per tool";
+"Ellipse" = "Ellipse";
 "Englisch" = "English";
 "Entfernen" = "Remove";
 "entfernt" = "removed";
@@ -336,6 +341,7 @@
 "Externer Anbieter" = "Remote provider";
 "Falscher Content-Type." = "Wrong content type.";
 "Fang mit einer Zahl an, zum Beispiel „5 km in mi\"." = "Start with a number, for example “5 km in mi”.";
+"Farbe" = "Colour";
 "Farben" = "Colours";
 "Fasst das Gesagte in wenigen Sätzen zusammen." = "Sums up what was said in a few sentences.";
 "Favorit" = "Favourite";
@@ -494,6 +500,7 @@
 "Korrektheit" = "correctness";
 "Korrekturen" = "corrections";
 "Korrigiert anhand des Wortschatzes — richtig für Sätze." = "Corrects against a vocabulary — right for sentences.";
+"Kreist etwas ein." = "Circles something.";
 "kurz" = "brief";
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der aufgeräumte Text geht ins Textfeld, in dem der Cursor steht — sonst in die Zwischenablage. ⎋ verwirft. Das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The cleaned-up text goes into the text field the caret sits in — otherwise to the clipboard. ⎋ discards. The main window stays closed.";
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der Text wird aufgeräumt und liegt danach in der Zwischenablage — das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The text is cleaned up and ends up on the clipboard — the main window stays closed.";
@@ -511,6 +518,8 @@
 "Legt das Ergebnis eines Tools sofort in die Zwischenablage." = "Puts a tool’s result straight on the clipboard.";
 "Legt das Ergebnis nach jedem Durchlauf in die Zwischenablage. Live mitlaufende Umwandlungen sind ausgenommen." = "Puts the result on the clipboard after every run. Live conversions are excluded.";
 "Lesbarkeit" = "readability";
+"Letzte Markierung zurücknehmen" = "Undo the last mark";
+"Linie" = "Line";
 "Links etwas einfügen — das Ergebnis erscheint sofort." = "Paste something on the left — the result appears instantly.";
 "Liste" = "List";
 "LM Studio (lokal)" = "LM Studio (local)";
@@ -522,6 +531,7 @@
 "Löschen" = "Delete";
 "Macht aus der Beschreibung einen Doku-Kommentar." = "Turns the description into a documentation comment.";
 "Mai" = "May";
+"Markieren" = "Mark up";
 "Mauszeiger mit aufnehmen" = "Include the pointer";
 "MD5, SHA-1, SHA-256, SHA-512" = "MD5, SHA-1, SHA-256, SHA-512";
 "Mehrfache Leerzeichen ignorieren" = "Ignore repeated spaces";
@@ -623,6 +633,7 @@
 "Pausiert" = "Paused";
 "Payload" = "Payload";
 "Performance" = "performance";
+"Pfeil" = "Arrow";
 "PIN" = "PIN";
 "Pixel" = "pixels";
 "Platzhalter in der richtigen Länge" = "Placeholder text at the right length";
@@ -633,6 +644,8 @@
 "Prüfen" = "Check";
 "Prüfsummen" = "Checksums";
 "QR-Code" = "QR code";
+"Rahmen" = "Box";
+"Rahmt einen Bereich ein." = "Frames an area.";
 "raus" = "out";
 "Rechnen" = "Calculate";
 "Rechteck aufziehen, Leertaste wechselt zum Fenster" = "Drag a rectangle; space switches to window mode";
@@ -664,6 +677,7 @@
 "Schreibweisen" = "Notations";
 "Schwarz" = "Black";
 "Schwerpunkt" = "Focus";
+"Schwärzen" = "Redact";
 "Sehr groß (30 %)" = "Very large (30%)";
 "September" = "September";
 "Setzt den Inhalt auf ein Format, das Telefone erkennen." = "Sets the content to a format phones recognise.";
@@ -698,6 +712,7 @@
 "Stichworte, worum es geht …" = "Notes on what it is about…";
 "Stil" = "Style";
 "Stoppen" = "Stop";
+"Strichstärke" = "Line width";
 "Stunde" = "hour";
 "Stärke" = "Strength";
 "Suchen" = "Search";
@@ -824,6 +839,7 @@
 "Zeichen" = "characters";
 "Zeichen rein" = "characters in";
 "Zeichengenau" = "Character exact";
+"Zeigt auf die Stelle, um die es geht." = "Points at the thing you mean.";
 "Zeilen" = "Lines";
 "Zeilen kommen von oben nach unten, gleich hohe von links nach rechts — zwei Spalten bleiben zwei Spalten." = "Lines come top to bottom, and left to right within a band — two columns stay two columns.";
 "zeilenweise" = "line by line";

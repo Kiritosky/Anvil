@@ -13,6 +13,9 @@ public struct Screenshot: Identifiable, Sendable {
     public let takenAt: Date
     /// Filled in when the text has been read out of it.
     public var text: String?
+    /// Marks drawn on top. The picture itself is never touched — flattening
+    /// happens on the way out, so an undo has something to go back to.
+    public var annotations: [Annotation] = []
 
     public init(
         id: UUID = UUID(),
@@ -20,7 +23,8 @@ public struct Screenshot: Identifiable, Sendable {
         fileURL: URL? = nil,
         target: ScreenCapture.Target,
         takenAt: Date = .now,
-        text: String? = nil
+        text: String? = nil,
+        annotations: [Annotation] = []
     ) {
         self.id = id
         self.image = image
@@ -28,7 +32,10 @@ public struct Screenshot: Identifiable, Sendable {
         self.target = target
         self.takenAt = takenAt
         self.text = text
+        self.annotations = annotations
     }
+
+    public var isAnnotated: Bool { !annotations.isEmpty }
 
     public var pixelSize: NSSize {
         guard let representation = image.representations.first else { return image.size }
@@ -156,6 +163,41 @@ public final class ScreenshotController {
         if shots.count > limit { shots.removeLast(shots.count - limit) }
     }
 
+    // MARK: - Annotating
+
+    /// Adds a mark, unless the drag was too short to have meant anything.
+    public func add(_ annotation: Annotation, to shot: Screenshot) {
+        guard !annotation.isDegenerate,
+              let index = shots.firstIndex(where: { $0.id == shot.id })
+        else { return }
+        shots[index].annotations.append(annotation)
+        // The kept file is now out of date with what is on screen.
+        shots[index].fileURL = nil
+    }
+
+    /// Takes back the last mark.
+    ///
+    /// Marks are only ever appended, so undo is exactly this — no stack to
+    /// keep in step with anything.
+    public func undoAnnotation(on shot: Screenshot) {
+        guard let index = shots.firstIndex(where: { $0.id == shot.id }),
+              !shots[index].annotations.isEmpty
+        else { return }
+        shots[index].annotations.removeLast()
+        shots[index].fileURL = nil
+    }
+
+    public func clearAnnotations(on shot: Screenshot) {
+        guard let index = shots.firstIndex(where: { $0.id == shot.id }) else { return }
+        shots[index].annotations = []
+        shots[index].fileURL = nil
+    }
+
+    /// The shot as everyone else will see it: marks burned in.
+    public func flattened(_ shot: Screenshot) -> NSImage {
+        AnnotationRenderer.render(shot.image, annotations: shot.annotations)
+    }
+
     // MARK: - Working with a shot
 
     public var selected: Screenshot? {
@@ -166,7 +208,7 @@ public final class ScreenshotController {
     public func copyImage(_ shot: Screenshot) {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
-        pasteboard.writeObjects([shot.image])
+        pasteboard.writeObjects([flattened(shot)])
     }
 
     public func copyText(_ shot: Screenshot) {
@@ -180,7 +222,7 @@ public final class ScreenshotController {
         if let existing = shots[index].fileURL { return existing }
 
         do {
-            let data = shot.image.tiffRepresentation
+            let data = flattened(shot).tiffRepresentation
             guard let data, let bitmap = NSBitmapImageRep(data: data),
                   let png = bitmap.representation(using: .png, properties: [:])
             else {
