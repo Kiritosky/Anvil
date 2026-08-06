@@ -44,6 +44,10 @@ public struct AIPromptToolView: View {
             actions
         }
         .onDisappear { runTask?.cancel() }
+        .anvilFileDrop(.text, error: $error) { dropped in
+            guard case let .text(text, _) = dropped else { return }
+            input = text
+        }
     }
 
     // MARK: - Header

@@ -19,6 +19,7 @@ public struct RegexToolView: View {
     @State private var isCaseInsensitive = false
     @State private var spansLines = false
     @State private var dotMatchesNewlines = false
+    @State private var dropError: AnvilError?
     @State private var orientation: WorkbenchOrientation = .vertical
 
     public init(context: ToolContext, metadata: ToolMetadata) {
@@ -33,6 +34,11 @@ public struct RegexToolView: View {
             inspector
         } actions: {
             WorkbenchOrientationPicker(orientation: $orientation)
+        }
+        .anvilErrorBanner($dropError)
+        .anvilFileDrop(.text, error: $dropError) { dropped in
+            guard case let .text(text, _) = dropped else { return }
+            subject = text
         }
     }
 

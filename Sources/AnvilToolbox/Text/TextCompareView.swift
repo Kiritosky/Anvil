@@ -16,6 +16,7 @@ public struct TextCompareView: View {
     @State private var showsRemovals = true
     @State private var ignoresCase = false
     @State private var ignoresWhitespace = true
+    @State private var dropError: AnvilError?
     @State private var orientation: WorkbenchOrientation = .horizontal
 
     public init(context: ToolContext, metadata: ToolMetadata) {
@@ -38,6 +39,7 @@ public struct TextCompareView: View {
 
             WorkbenchOrientationPicker(orientation: $orientation)
         }
+        .anvilErrorBanner($dropError)
     }
 
     // MARK: - Content
@@ -91,6 +93,12 @@ public struct TextCompareView: View {
             .buttonStyle(AnvilIconButtonStyle())
             .anvilHelp("Leeren")
             .disabled(text.wrappedValue.isEmpty)
+        }
+        // Pro Bereich statt für das ganze Werkzeug: bei einem Vergleich ist die
+        // Seite, auf der man loslässt, die Antwort auf „welche der beiden?".
+        .anvilFileDrop(.text, error: $dropError) { dropped in
+            guard case let .text(loaded, _) = dropped else { return }
+            text.wrappedValue = loaded
         }
     }
 

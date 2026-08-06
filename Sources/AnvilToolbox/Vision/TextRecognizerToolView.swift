@@ -47,9 +47,10 @@ public struct TextRecognizerToolView: View {
             }
         }
         .anvilErrorBanner($error)
-        .onDrop(of: [.fileURL, .image], isTargeted: nil) { providers in
-            load(from: providers)
-            return true
+        .anvilFileDrop(.image, error: $error) { dropped in
+            guard case let .image(dropped, _) = dropped else { return }
+            image = dropped
+            Task { await recognize() }
         }
     }
 
@@ -198,17 +199,6 @@ public struct TextRecognizerToolView: View {
         }
         image = pasted
         Task { await recognize() }
-    }
-
-    private func load(from providers: [NSItemProvider]) {
-        guard let provider = providers.first else { return }
-        _ = provider.loadObject(ofClass: NSImage.self) { object, _ in
-            guard let dropped = object as? NSImage else { return }
-            Task { @MainActor in
-                image = dropped
-                await recognize()
-            }
-        }
     }
 
     private func recognize() async {

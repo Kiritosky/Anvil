@@ -15,6 +15,7 @@ public struct TextToolView: View {
     @State private var input = ""
     @State private var output = ""
     @State private var failure: String?
+    @State private var dropError: AnvilError?
     @State private var modeID: String
     @State private var orientation: WorkbenchOrientation = .horizontal
 
@@ -33,6 +34,12 @@ public struct TextToolView: View {
             actions
         }
         .onAppear(perform: run)
+        .anvilErrorBanner($dropError)
+        .anvilFileDrop(.text, error: $dropError) { dropped in
+            guard case let .text(text, _) = dropped else { return }
+            input = text
+            run()
+        }
     }
 
     // MARK: - Content

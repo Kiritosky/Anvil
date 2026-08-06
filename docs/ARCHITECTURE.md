@@ -85,6 +85,11 @@ Bereiche, Statusleiste" braucht — bisher tut das keines. Sobald ein zweites
 Tool etwas Eigenes zweimal baut, gehört es hierher: das ist die Regel, an der
 sich entscheidet, was `AnvilUI` kennt.
 
+`.anvilFileDrop(_:error:perform:)` nimmt gezogene Dateien an: Rahmen während
+des Ziehens, Textdatei oder Bild als Ergebnis, und für alles andere eine
+Fehlermeldung statt Schweigen. Das Lesen selbst macht `TextFile` im Kern —
+Kodierung raten, Byte Order Marks auswerten, Binärdateien erkennen.
+
 ## AnvilAI — Modelle
 
 `AIProvider` ist die Abstraktion: Verfügbarkeit, einmalige Antwort, Streaming.

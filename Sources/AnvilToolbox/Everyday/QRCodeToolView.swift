@@ -31,6 +31,10 @@ public struct QRCodeToolView: View {
             }
         }
         .anvilErrorBanner($error)
+        .anvilFileDrop(.image, error: $error) { dropped in
+            guard case let .image(image, _) = dropped else { return }
+            read(image)
+        }
     }
 
     // MARK: - Content
@@ -213,7 +217,12 @@ public struct QRCodeToolView: View {
             error = .invalidInput(localized("In der Zwischenablage liegt kein Bild."))
             return
         }
+        read(image)
+    }
 
+    /// Holt den Inhalt aus einem Bild — egal, ob es aus der Zwischenablage kam
+    /// oder ins Fenster gezogen wurde.
+    private func read(_ image: NSImage) {
         let found = QRCode.read(image)
         guard let first = found.first else {
             error = .invalidInput(localized("In dem Bild ist kein QR-Code zu finden."))

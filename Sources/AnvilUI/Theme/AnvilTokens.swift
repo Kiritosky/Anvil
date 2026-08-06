@@ -63,6 +63,11 @@ public enum AnvilSize {
     public static let thumbnailHeight: CGFloat = 60
     /// Square size of a tool icon in the sidebar.
     public static let toolIcon: CGFloat = 22
+    /// A plain border: the line between a surface and what is next to it.
+    public static let hairline: CGFloat = 1
+    /// A border that means something — focus, or a drop target waiting for the
+    /// mouse to let go. Thick enough to read as deliberate at a glance.
+    public static let focusRing: CGFloat = 2
 }
 
 // MARK: - Typography
