@@ -9,7 +9,7 @@ import SwiftUI
 ///
 /// ```swift
 /// ToolScaffold(metadata: metadata) {
-///     WorkbenchLayout(orientation: $orientation) { input } secondary: { output }
+///     ToolWorkbench(orientation: $orientation) { input } secondary: { output } status: { … }
 /// } inspector: {
 ///     InspectorSection("Stil") { … }
 /// } actions: {

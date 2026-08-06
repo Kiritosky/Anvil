@@ -72,17 +72,13 @@ public struct AIPromptToolView: View {
                 AnvilBanner(error: error, onDismiss: { self.error = nil })
             }
 
-            WorkbenchLayout(orientation: $orientation, storageKey: metadata.id.rawValue) {
+            ToolWorkbench(orientation: $orientation, storageKey: metadata.id.rawValue) {
                 inputPane
-                    .padding(.trailing, orientation == .horizontal ? AnvilSpacing.sm : 0)
-                    .padding(.bottom, orientation == .vertical ? AnvilSpacing.sm : 0)
             } secondary: {
                 outputPane
-                    .padding(.leading, orientation == .horizontal ? AnvilSpacing.sm : 0)
-                    .padding(.top, orientation == .vertical ? AnvilSpacing.sm : 0)
+            } status: {
+                statusBar
             }
-
-            statusBar
         }
     }
 

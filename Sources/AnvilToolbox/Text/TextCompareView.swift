@@ -44,15 +44,16 @@ public struct TextCompareView: View {
 
     private var content: some View {
         VStack(spacing: AnvilSpacing.md) {
-            WorkbenchLayout(orientation: $orientation, storageKey: metadata.id.rawValue) {
+            // Hier trägt die Werkbank nur die beiden Eingaben; das Ergebnis
+            // steht darunter über der ganzen Breite, weil ein Vergleich sonst
+            // in einer halben Spalte landet.
+            ToolWorkbench(orientation: $orientation, storageKey: metadata.id.rawValue) {
                 inputPane(
                     title: "Vorher",
                     systemImage: "doc",
                     text: $left,
                     placeholder: "Ursprünglicher Text …"
                 )
-                .padding(.trailing, orientation == .horizontal ? AnvilSpacing.sm : 0)
-                .padding(.bottom, orientation == .vertical ? AnvilSpacing.sm : 0)
             } secondary: {
                 inputPane(
                     title: "Nachher",
@@ -60,8 +61,6 @@ public struct TextCompareView: View {
                     text: $right,
                     placeholder: "Geänderter Text …"
                 )
-                .padding(.leading, orientation == .horizontal ? AnvilSpacing.sm : 0)
-                .padding(.top, orientation == .vertical ? AnvilSpacing.sm : 0)
             }
 
             resultPane

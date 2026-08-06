@@ -38,17 +38,11 @@ public struct TextToolView: View {
     // MARK: - Content
 
     private var content: some View {
-        VStack(spacing: AnvilSpacing.md) {
-            WorkbenchLayout(orientation: $orientation, storageKey: tool.id.rawValue) {
-                inputPane
-                    .padding(.trailing, orientation == .horizontal ? AnvilSpacing.sm : 0)
-                    .padding(.bottom, orientation == .vertical ? AnvilSpacing.sm : 0)
-            } secondary: {
-                outputPane
-                    .padding(.leading, orientation == .horizontal ? AnvilSpacing.sm : 0)
-                    .padding(.top, orientation == .vertical ? AnvilSpacing.sm : 0)
-            }
-
+        ToolWorkbench(orientation: $orientation, storageKey: tool.id.rawValue) {
+            inputPane
+        } secondary: {
+            outputPane
+        } status: {
             statusBar
         }
     }

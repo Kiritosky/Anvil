@@ -2,10 +2,14 @@ import SwiftUI
 
 /// The shape most tools have: two panes side by side, a status bar underneath.
 ///
-/// Four tools were building this by hand, each with its own arithmetic for the
+/// Every tool used to build this by hand, each with its own arithmetic for the
 /// gap between the panes — which is exactly the kind of thing that drifts by
 /// two points and then looks wrong without anyone being able to say why. Here
 /// the gap is decided once.
+///
+/// ``WorkbenchLayout`` underneath handles the split and its drag handle. Tools
+/// reach for that one directly only when they need something other than
+/// "two panes, status bar" — which so far none of them do.
 ///
 /// ```swift
 /// ToolWorkbench(orientation: $orientation, storageKey: metadata.id.rawValue) {

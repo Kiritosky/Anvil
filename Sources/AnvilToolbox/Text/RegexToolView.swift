@@ -42,17 +42,13 @@ public struct RegexToolView: View {
         VStack(spacing: AnvilSpacing.md) {
             patternField
 
-            WorkbenchLayout(orientation: $orientation, storageKey: metadata.id.rawValue) {
+            ToolWorkbench(orientation: $orientation, storageKey: metadata.id.rawValue) {
                 subjectPane
-                    .padding(.trailing, orientation == .horizontal ? AnvilSpacing.sm : 0)
-                    .padding(.bottom, orientation == .vertical ? AnvilSpacing.sm : 0)
             } secondary: {
                 resultPane
-                    .padding(.leading, orientation == .horizontal ? AnvilSpacing.sm : 0)
-                    .padding(.top, orientation == .vertical ? AnvilSpacing.sm : 0)
+            } status: {
+                statusBar
             }
-
-            statusBar
         }
     }
 

@@ -38,17 +38,11 @@ public struct VocabularyToolView: View {
     // MARK: - Content
 
     private var content: some View {
-        VStack(spacing: AnvilSpacing.md) {
-            WorkbenchLayout(orientation: $orientation, storageKey: metadata.id.rawValue) {
-                listPane
-                    .padding(.trailing, orientation == .horizontal ? AnvilSpacing.sm : 0)
-                    .padding(.bottom, orientation == .vertical ? AnvilSpacing.sm : 0)
-            } secondary: {
-                testColumn
-                    .padding(.leading, orientation == .horizontal ? AnvilSpacing.sm : 0)
-                    .padding(.top, orientation == .vertical ? AnvilSpacing.sm : 0)
-            }
-
+        ToolWorkbench(orientation: $orientation, storageKey: metadata.id.rawValue) {
+            listPane
+        } secondary: {
+            testColumn
+        } status: {
             statusBar
         }
     }
