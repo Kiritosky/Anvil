@@ -1,0 +1,43 @@
+name: Werkzeug oder Funktion vorschlagen
+description: Dir fehlt etwas.
+labels: ["wunsch"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Was du gerade tust, wenn es fehlt
+      description: >
+        Die Situation ist wichtiger als die Lösung — sie entscheidet, ob daraus
+        ein eigenes Werkzeug wird oder ein Schalter in einem vorhandenen.
+      placeholder: >
+        Ich kopiere ständig Farbwerte aus Figma und muss sie von Hand nach
+        SwiftUI übersetzen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: idee
+    attributes:
+      label: Wie du es dir vorstellst
+    validations:
+      required: true
+
+  - type: dropdown
+    id: art
+    attributes:
+      label: Art
+      options:
+        - Neues Werkzeug
+        - Erweiterung eines vorhandenen Werkzeugs
+        - Etwas an der App selbst (Fenster, Kürzel, Einstellungen)
+        - Weiß ich nicht
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: ki
+    attributes:
+      label: Braucht das ein Sprachmodell?
+      options:
+        - label: Nein, das lässt sich deterministisch rechnen
+        - label: Ja, ohne Modell geht es nicht

@@ -1,0 +1,91 @@
+name: Release
+
+# Aus einem Tag wird ein fertiges Zip. Signiert wird hier nicht — dafür bräuchte
+# es ein Developer-ID-Zertifikat im Repository, und das gibt es bewusst nicht.
+# Die App ist ad-hoc signiert; wie man sie trotzdem öffnet, steht in der
+# Release-Beschreibung, die dieser Workflow mitschreibt.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag, unter dem veröffentlicht wird (z. B. v0.1.0)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Bundle bauen und veröffentlichen
+    runs-on: macos-26
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Version bestimmen
+        id: version
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Tag gegen Info.plist prüfen
+        run: |
+          PLIST="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Resources/Info.plist)"
+          if [ "$PLIST" != "${{ steps.version.outputs.version }}" ]; then
+            echo "Tag ${{ steps.version.outputs.tag }} passt nicht zu CFBundleShortVersionString $PLIST" >&2
+            exit 1
+          fi
+
+      - name: Tests
+        run: swift test
+
+      - name: Release-Bundle bauen
+        run: ./Scripts/build-app.sh release
+
+      - name: Zippen
+        id: package
+        run: |
+          APP="$(swift build -c release --show-bin-path)/Anvil.app"
+          test -x "$APP/Contents/MacOS/Anvil"
+          NAME="Anvil-${{ steps.version.outputs.version }}.zip"
+          # ditto statt zip: erhält Symlinks und die Signatur im Bundle.
+          ditto -c -k --sequesterRsrc --keepParent "$APP" "$NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          shasum -a 256 "$NAME" | tee checksum.txt
+
+      - name: Veröffentlichen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > notes.md <<'NOTES'
+          ## Installieren
+
+          Zip entpacken, `Anvil.app` nach `/Programme` ziehen.
+
+          Anvil ist **nicht notarisiert** — es gibt kein Developer-ID-Zertifikat
+          für dieses Projekt. Beim ersten Start meldet sich Gatekeeper deshalb.
+          Einmalig im Terminal:
+
+          ```sh
+          xattr -dr com.apple.quarantine /Applications/Anvil.app
+          ```
+
+          Danach startet die App normal.
+
+          ## Voraussetzungen
+
+          macOS 26 oder neuer. Darunter fehlen die Apple Foundation Models und
+          `SpeechAnalyzer`, auf denen Diktat und KI-Werkzeuge aufsetzen.
+
+          ## Prüfsumme
+          NOTES
+          printf '\n```\n%s\n```\n' "$(cat checksum.txt)" >> notes.md
+
+          gh release create "${{ steps.version.outputs.tag }}" \
+            "${{ steps.package.outputs.name }}" \
+            --title "Anvil ${{ steps.version.outputs.version }}" \
+            --notes-file notes.md

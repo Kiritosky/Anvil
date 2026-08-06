@@ -1,0 +1,18 @@
+# Textdateien immer mit LF im Repository — sonst wandern Zeilenenden durch
+# Diffs, ohne dass jemand etwas geändert hat.
+* text=auto eol=lf
+
+*.swift   text diff=swift
+*.md      text
+*.plist   text
+*.strings text
+*.sh      text eol=lf
+*.py      text eol=lf
+
+# Binär, nie zusammenführen.
+*.icns    binary
+*.png     binary
+
+# Zählt nicht als Quelltext in der Sprachstatistik von GitHub.
+LICENSE           linguist-vendored
+docs/*            linguist-documentation

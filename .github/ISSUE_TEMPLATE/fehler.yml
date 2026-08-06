@@ -1,0 +1,50 @@
+name: Fehler melden
+description: Etwas funktioniert nicht so, wie es soll.
+labels: ["fehler"]
+body:
+  - type: textarea
+    id: was
+    attributes:
+      label: Was passiert
+      description: Was hast du gemacht, und was kam dabei heraus?
+      placeholder: |
+        1. Speech Studio geöffnet
+        2. Aufnahme gestartet und wieder gestoppt
+        3. Der Text bleibt leer
+    validations:
+      required: true
+
+  - type: textarea
+    id: erwartet
+    attributes:
+      label: Was du erwartet hättest
+    validations:
+      required: true
+
+  - type: input
+    id: werkzeug
+    attributes:
+      label: Werkzeug
+      description: In welchem Werkzeug tritt das auf?
+      placeholder: Bildschirmfoto
+
+  - type: input
+    id: version
+    attributes:
+      label: Anvil-Version
+      description: Steht unter Anvil › Über Anvil.
+      placeholder: 0.1.0
+
+  - type: input
+    id: macos
+    attributes:
+      label: macOS-Version
+      placeholder: macOS 26.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: rest
+    attributes:
+      label: Sonst noch etwas
+      description: Fehlertext, Screenshot, alles was hilft.
