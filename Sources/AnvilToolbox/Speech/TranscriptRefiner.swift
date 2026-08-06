@@ -139,7 +139,11 @@ public final class TranscriptRefiner {
     }
 
     /// The last sentence or two of the previous chunk.
-    static func tail(of text: String, limit: Int = 240) -> String {
+    ///
+    /// `nonisolated` for the same reason as ``stripWrapping(_:)``: a pure
+    /// function over a string has no business inheriting the class's
+    /// main-actor isolation, and ``prompt(for:of:previous:)`` calls it.
+    nonisolated static func tail(of text: String, limit: Int = 240) -> String {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmed.count > limit else { return trimmed }
 
