@@ -10,6 +10,7 @@
 "#FFFFFF" = "#FFFFFF";
 "%@ hat abgebrochen." = "%@ stopped.";
 "%@ hat nichts zurückgegeben." = "%@ returned nothing.";
+"%@ ist mit Fehler %lld beendet worden." = "%@ exited with error %lld.";
 "%@ konnte nicht gestartet werden: %@" = "%@ could not be started: %@";
 "%@ wird von der Spracherkennung auf diesem Mac nicht unterstützt." = "%@ is not supported by speech recognition on this Mac.";
 "%@ · lokal" = "%@ · local";
@@ -958,4 +959,5 @@
 "„%@\" ist kein Hex-Byte." = "“%@” is not a hex byte.";
 "„%@\" liegt außerhalb von %@." = "“%@” is outside %@.";
 "„%@\" wird von der Festplatte entfernt. Das lässt sich nicht rückgängig machen." = "“%@” will be removed from disk. This cannot be undone.";
+"„%@\" wurde nicht gefunden." = "“%@” was not found.";
 "„%@\" wurde nicht gefunden. Installiert? Danach in den Einstellungen erneut suchen lassen." = "“%@” was not found. Installed? Then let Settings search again.";

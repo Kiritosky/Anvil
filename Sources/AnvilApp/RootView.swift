@@ -25,6 +25,7 @@ struct RootView: View {
         .sheet(isPresented: $environment.isOnboardingOpen) {
             OnboardingView()
         }
+        .anvilWindowFrame(autosaveName: "anvil.main")
     }
 
     @ViewBuilder

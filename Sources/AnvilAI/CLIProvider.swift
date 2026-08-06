@@ -165,9 +165,43 @@ public struct CLIAgentProvider: AIProvider, Sendable {
         return output
     }
 
-    /// Non-interactive agents print their answer when they are done, so there
-    /// is nothing to stream. The default one-shot stream in ``AIProvider``
-    /// covers it — a spinner is more honest than fake typing.
+    /// Passes the command's output through as it appears.
+    ///
+    /// Some of these agents print while they think and some hold everything
+    /// until they exit; this makes the first kind feel live without pretending
+    /// anything about the second.
+    public func stream(_ request: AIRequest) -> AsyncThrowingStream<String, any Error> {
+        AsyncThrowingStream { continuation in
+            let task = Task {
+                guard let path = await CLIAgentLocator.shared.path(for: executableName) else {
+                    continuation.finish(throwing: AnvilError.modelUnavailable(
+                        localized("„\(executableName)\" wurde nicht gefunden.")
+                    ))
+                    return
+                }
+
+                let prompt = request.instructions.isEmpty
+                    ? request.prompt
+                    : request.instructions + "\n\n" + request.prompt
+
+                do {
+                    let output = ProcessRunner().stream(
+                        path,
+                        arguments: arguments + [prompt],
+                        environment: Self.environment,
+                        timeout: timeout
+                    )
+                    for try await text in output {
+                        continuation.yield(text.trimmingCharacters(in: .whitespacesAndNewlines))
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+            continuation.onTermination = { _ in task.cancel() }
+        }
+    }
 
     // MARK: - Helpers
 

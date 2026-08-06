@@ -145,3 +145,88 @@ private final class OutputCollector: @unchecked Sendable {
         return String(decoding: error, as: UTF8.self)
     }
 }
+
+extension ProcessRunner {
+    /// Runs a command and hands back its output as it arrives.
+    ///
+    /// Each element is the *cumulative* standard output so far, not a delta —
+    /// the same contract the model providers use, so a view can bind straight
+    /// to the latest value.
+    ///
+    /// Whether this actually produces more than one element is up to the
+    /// command: one that buffers until it exits yields once, at the end. That
+    /// is a property of the program, not a bug here.
+    public func stream(
+        _ executable: String,
+        arguments: [String],
+        workingDirectory: URL? = nil,
+        environment: [String: String]? = nil,
+        timeout: TimeInterval = 30
+    ) -> AsyncThrowingStream<String, any Error> {
+        AsyncThrowingStream { continuation in
+            let process = Process()
+            if executable.hasPrefix("/") {
+                process.executableURL = URL(filePath: executable)
+                process.arguments = arguments
+            } else {
+                process.executableURL = URL(filePath: "/usr/bin/env")
+                process.arguments = [executable] + arguments
+            }
+            process.currentDirectoryURL = workingDirectory
+            if let environment { process.environment = environment }
+
+            let outPipe = Pipe()
+            let errPipe = Pipe()
+            process.standardOutput = outPipe
+            process.standardError = errPipe
+
+            let state = OutputCollector()
+            outPipe.fileHandleForReading.readabilityHandler = { handle in
+                let data = handle.availableData
+                guard !data.isEmpty else { return }
+                state.appendOut(data)
+                continuation.yield(state.outText)
+            }
+            errPipe.fileHandleForReading.readabilityHandler = { handle in
+                state.appendError(handle.availableData)
+            }
+
+            process.terminationHandler = { finished in
+                outPipe.fileHandleForReading.readabilityHandler = nil
+                errPipe.fileHandleForReading.readabilityHandler = nil
+                state.appendOut(outPipe.fileHandleForReading.readDataToEndOfFile())
+                state.appendError(errPipe.fileHandleForReading.readDataToEndOfFile())
+                guard state.finish() else { return }
+
+                guard finished.terminationStatus == 0 else {
+                    continuation.finish(throwing: AnvilError.provider(
+                        localized("\(executable) ist mit Fehler \(Int(finished.terminationStatus)) beendet worden."),
+                        underlying: state.errorText.isEmpty ? nil : state.errorText
+                    ))
+                    return
+                }
+
+                continuation.yield(state.outText)
+                continuation.finish()
+            }
+
+            continuation.onTermination = { _ in
+                if process.isRunning { process.terminate() }
+            }
+
+            do {
+                try process.run()
+            } catch {
+                guard state.finish() else { return }
+                continuation.finish(throwing: AnvilError.unexpected(
+                    localized("\(executable) konnte nicht gestartet werden: \(error.localizedDescription)")
+                ))
+                return
+            }
+
+            DispatchQueue.global().asyncAfter(deadline: .now() + timeout) {
+                if process.isRunning { process.terminate() }
+            }
+        }
+    }
+}
