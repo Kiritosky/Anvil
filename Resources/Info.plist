@@ -31,6 +31,8 @@
 	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Anvil is free software under the GNU GPL v3.</string>
+	<key>NSScreenCaptureUsageDescription</key>
+	<string>Anvil reads text out of the screen area you select. The picture is used for recognition on this Mac and is not stored or sent anywhere.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Anvil records your voice so it can transcribe and clean up what you dictate. Audio stays on this Mac unless you explicitly pick a remote AI provider.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

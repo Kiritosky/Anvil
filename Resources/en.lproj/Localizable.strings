@@ -103,8 +103,10 @@
 "Aus dem Diff eine saubere Message" = "A clean message from the diff";
 "Aus der Zwischenablage einfügen" = "Paste from clipboard";
 "Aus der Zwischenablage lesen" = "Read from the clipboard";
+"Aus diesem Bild lässt sich nichts lesen." = "There is nothing readable in this image.";
 "Aus Favoriten entfernen" = "Remove from favourites";
 "Aus Stichworten eine Nachricht" = "A message from a few notes";
+"Aus Zwischenablage" = "From the clipboard";
 "Aus Zwischenablage laden" = "Load from clipboard";
 "Aus „das das\" wird „das\". Beabsichtigte Doppelungen wie „sehr sehr\" bleiben." = "“the the” becomes “the”. Deliberate doubling like “very very” is kept.";
 "Aus: der Text liegt immer nur in der Zwischenablage." = "Off: the text always goes to the clipboard only.";
@@ -117,8 +119,10 @@
 "ausführlicher" = "more detailed";
 "Ausführlichkeit" = "Verbosity";
 "Ausgewogen" = "Balanced";
+"Ausschnitt wählen" = "Select a region";
 "Auswahl" = "Either";
 "Auswerten" = "Analyse";
+"Automatisch kopieren" = "Copy automatically";
 "Basis-URL der API, z. B. http://localhost:11434/v1" = "Base URL of the API, e.g. http://localhost:11434/v1";
 "Bausteine" = "Building blocks";
 "Bedienung" = "Behaviour";
@@ -139,7 +143,9 @@
 "Beschreibung rein, Ausdruck raus" = "Description in, expression out";
 "Bessere Namen für Dinge im Code" = "Better names for things in code";
 "Betreff + kurzer Text" = "subject + short body";
+"Bild" = "Image";
 "Bild kopieren" = "Copy image";
+"Bildschirmausschnitt, Screenshot oder Datei" = "A screen region, a screenshot, or a file";
 "Blindtext" = "Placeholder text";
 "Braucht keine Eingabe — Länge rechts wählen." = "Needs no input — pick a length on the right.";
 "Braucht keine Eingabe — Variante rechts wählen." = "Needs no input — pick a variant on the right.";
@@ -170,6 +176,7 @@
 "Das ist keine gültige prozentkodierte Zeichenkette." = "That is not a valid percent-encoded string.";
 "Das ist keine gültige URL." = "That is not a valid URL.";
 "Das ist keine Zahl, die ich lesen kann: „%@\"." = "That is not a number I can read: “%@”.";
+"Das läuft auf diesem Mac, nichts geht ins Netz." = "This runs on this Mac; nothing goes online.";
 "Das Modell wird noch geladen. Versuch es gleich noch einmal." = "The model is still loading. Try again in a moment.";
 "Das Muster passt auf keine Stelle im Testtext." = "The pattern matches nothing in the test text.";
 "Das On-Device-Modell hat die Antwort abgelehnt." = "The on-device model declined to answer.";
@@ -186,6 +193,7 @@
 "Der %@ ist kein gültiges Base64." = "The %@ is not valid Base64.";
 "Der Anbieter hat mit HTTP %lld geantwortet." = "The provider responded with HTTP %lld.";
 "Der Export ist fehlgeschlagen: %@" = "The export failed: %@";
+"Der gelesene Text landet dann sofort in der Zwischenablage." = "The text goes straight to the clipboard.";
 "Der Schlüssel konnte nicht kodiert werden." = "The key could not be encoded.";
 "Der schnelle braune Fuchs springt über den faulen Hund." = "The quick brown fox jumps over the lazy dog.";
 "Der Server hat weiter hinten eine kaputte Antwort bekommen." = "The server got a broken answer from further back.";
@@ -312,6 +320,7 @@
 "fertig" = "done";
 "Fest" = "Fixed";
 "Filter" = "Filter";
+"Fließtext" = "Prose";
 "Form" = "Shape";
 "Format" = "Format";
 "Formatieren" = "Format";
@@ -336,6 +345,7 @@
 "Ganze Sammlung ein- oder ausschalten" = "Switch the whole collection on or off";
 "Geht so nicht" = "That won’t work";
 "Gekürzt" = "Condensed";
+"Gelesen" = "Read";
 "Genauer Modellname beim Anbieter." = "The provider’s exact model name.";
 "Gesichert" = "Saved";
 "Geänderter Text …" = "Changed text…";
@@ -375,6 +385,7 @@
 "Immer aktiv" = "Always on";
 "In alle passenden" = "Into every matching unit";
 "In dem Bild ist kein QR-Code zu finden." = "There is no QR code in that image.";
+"In dem Bild ist nichts, was sich als Text lesen ließe." = "There is nothing in that image that reads as text.";
 "In der Zwischenablage" = "On the clipboard";
 "In der Zwischenablage liegt kein Bild." = "There is no image on the clipboard.";
 "In die Zwischenablage kopieren" = "Copy to clipboard";
@@ -393,6 +404,7 @@
 "JSON-Dateien in ~/Library/Application Support/Anvil/Tools." = "JSON files in ~/Library/Application Support/Anvil/Tools.";
 "Juli" = "July";
 "Juni" = "June";
+"Kein Bild" = "No image";
 "Kein Diff geladen" = "No diff loaded";
 "Kein Eintrag enthält diesen Text." = "No entry contains that text.";
 "Kein gültiges JSON: %@" = "Not valid JSON: %@";
@@ -401,11 +413,13 @@
 "Kein Muster" = "No pattern";
 "Kein passendes Audioformat für die Spracherkennung." = "No suitable audio format for speech recognition.";
 "Kein Sprachmodell verfügbar" = "No language model available";
+"Kein Text gefunden" = "No text found";
 "Kein Tool passt zu „%@\"." = "No tool matches “%@”.";
 "Kein Treffer" = "No match";
 "Kein Unterschied" = "No difference";
 "Keine Einstellungen" = "No settings";
 "Keine Farbe erkannt" = "Not a colour";
+"Keine Korrektur. Für Code, Schlüssel und Nummern, wo jedes Zeichen zählt." = "No correction. For code, keys and numbers, where every character counts.";
 "Keine Query-Parameter." = "No query parameters.";
 "keine Schalter" = "no flags";
 "Keine Tools gefunden" = "No tools found";
@@ -434,6 +448,7 @@
 "Kopiervorlage für eigene Prompt-Tools" = "A template to copy for your own prompt tools";
 "Korrektheit" = "correctness";
 "Korrekturen" = "corrections";
+"Korrigiert anhand des Wortschatzes — richtig für Sätze." = "Corrects against a vocabulary — right for sentences.";
 "kurz" = "brief";
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der aufgeräumte Text geht ins Textfeld, in dem der Cursor steht — sonst in die Zwischenablage. ⎋ verwirft. Das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The cleaned-up text goes into the text field the caret sits in — otherwise to the clipboard. ⎋ discards. The main window stays closed.";
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der Text wird aufgeräumt und liegt danach in der Zwischenablage — das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The text is cleaned up and ends up on the clipboard — the main window stays closed.";
@@ -516,6 +531,7 @@
 "Noch keine Eingabe" = "No input yet";
 "Noch nichts aufgenommen" = "Nothing recorded yet";
 "Noch nichts erzeugt" = "Nothing generated yet";
+"Noch nichts gelesen" = "Nothing read yet";
 "Noch nichts gespeichert." = "Nothing saved yet.";
 "Noch nichts im Verlauf" = "Nothing in the history yet";
 "Noch nichts kopiert" = "Nothing copied yet";
@@ -568,6 +584,7 @@
 "Regex bauen" = "Build a regex";
 "Regex-Tester" = "Regex tester";
 "Register" = "Register";
+"Reihenfolge" = "Order";
 "Reine Prompt-Tools bestehen aus einer JSON-Datei. Neu geladen wird beim Start und über den Knopf oben rechts." = "Prompt-only tools are a single JSON file. They are reloaded at launch and with the button up top.";
 "Repository wählen" = "Choose repository";
 "Richtlinie" = "Policy";
@@ -597,6 +614,7 @@
 "Shell-Befehl" = "Shell command";
 "Sicherheit" = "security";
 "Sichern" = "Save";
+"Sobald ein Bild da ist, steht der Text hier." = "As soon as there is an image, the text appears here.";
 "Sobald etwas diktiert ist, räumt Anvil Füllwörter weg — und mit „Aufräumen\" macht das Modell daraus %@." = "As soon as something is dictated, Anvil strips the filler words — and “Clean up” turns it into %@.";
 "Sonderzeichen escapen" = "Escape special characters";
 "Sortieren, entdoppeln, nummerieren" = "Sort, deduplicate, number";
@@ -637,6 +655,7 @@
 "Tests schreiben" = "Write tests";
 "Testtext" = "Test text";
 "Text & Daten" = "Text & Data";
+"Text aus Bild" = "Text from image";
 "Text hier einfügen …" = "Paste text here…";
 "Text und Hexadezimal" = "Text and hexadecimal";
 "Text, der einfacher werden soll …" = "Text that should become simpler…";
@@ -687,6 +706,7 @@
 "Verlauf" = "History";
 "Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
 "verwerfen" = "discard";
+"Verwerfen" = "Discard";
 "Verwerfen (⎋)" = "Discard (⎋)";
 "Visitenkarte" = "Contact card";
 "Vokabular" = "vocabulary";
@@ -738,10 +758,13 @@
 "Zehn auf einmal" = "Ten at once";
 "Zeichen" = "characters";
 "Zeichen rein" = "characters in";
+"Zeichengenau" = "Character exact";
 "Zeilen" = "Lines";
+"Zeilen kommen von oben nach unten, gleich hohe von links nach rechts — zwei Spalten bleiben zwei Spalten." = "Lines come top to bottom, and left to right within a band — two columns stay two columns.";
 "zeilenweise" = "line by line";
 "Zeitstempel" = "Timestamps";
 "Zeitzonen" = "Time zones";
+"Zieh ein Bild hierher, nimm eines aus der Zwischenablage, oder wähl einen Ausschnitt vom Bildschirm." = "Drop an image here, take one from the clipboard, or select a region of the screen.";
 "Zieht Aufgaben, Zuständigkeiten und Entscheidungen heraus." = "Pulls out tasks, owners and decisions.";
 "Zielpuffer für die Audioumwandlung konnte nicht angelegt werden." = "The destination buffer for audio conversion could not be created.";
 "Zielsprache" = "Target language";

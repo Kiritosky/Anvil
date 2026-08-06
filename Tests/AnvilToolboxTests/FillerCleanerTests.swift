@@ -1,3 +1,4 @@
+import AnvilAI
 import Foundation
 import Testing
 
@@ -151,5 +152,53 @@ struct TranscriptRefinerTests {
     func keepsQuotationMarksThatBelongToTheText() {
         let text = "Er sagte \"hallo\" und ging"
         #expect(TranscriptRefiner.stripWrapping(text) == text)
+    }
+
+    // MARK: - Chunk seams
+
+    private func chunk(_ text: String, id: Int = 0) -> TextChunker.Chunk {
+        TextChunker.Chunk(id: id, text: text)
+    }
+
+    @Test
+    func aSingleChunkIsSentAsItIs() {
+        let prompt = TranscriptRefiner.prompt(for: chunk("Hallo Welt"), of: 1, previous: nil)
+        #expect(prompt == "Hallo Welt")
+    }
+
+    @Test
+    func aChunkedRunSaysWhichPartItIs() {
+        let prompt = TranscriptRefiner.prompt(for: chunk("Zweiter Teil", id: 1), of: 3, previous: nil)
+        #expect(prompt.contains("Teil 2 von 3"))
+        #expect(prompt.hasSuffix("Zweiter Teil"))
+    }
+
+    @Test
+    func theTailOfThePreviousChunkComesAlong() {
+        let prompt = TranscriptRefiner.prompt(
+            for: chunk("Zweiter Teil", id: 1),
+            of: 2,
+            previous: "Der erste Teil endete mit diesem Satz."
+        )
+        #expect(prompt.contains("Der erste Teil endete mit diesem Satz."))
+        #expect(prompt.contains("nicht wiederholen"))
+    }
+
+    @Test
+    func onlyTheTailComesAlongNotTheWholeChunk() {
+        let long = String(repeating: "Ein Satz über irgendetwas. ", count: 40)
+        let prompt = TranscriptRefiner.prompt(for: chunk("Weiter", id: 1), of: 2, previous: long)
+        #expect(prompt.count < 700)
+    }
+
+    @Test
+    func theTailStartsAtASentenceBoundary() {
+        let text = String(repeating: "x", count: 300) + ". Der letzte Satz."
+        #expect(TranscriptRefiner.tail(of: text) == "Der letzte Satz.")
+    }
+
+    @Test
+    func aShortPreviousChunkIsPassedWhole() {
+        #expect(TranscriptRefiner.tail(of: "  Kurz.  ") == "Kurz.")
     }
 }

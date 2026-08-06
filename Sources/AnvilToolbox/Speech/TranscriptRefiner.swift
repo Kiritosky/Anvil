@@ -72,7 +72,11 @@ public final class TranscriptRefiner {
 
             let request = AIRequest(
                 instructions: instructions,
-                prompt: prompt(for: chunk, of: chunks.count, style: style),
+                prompt: Self.prompt(
+                    for: chunk,
+                    of: chunks.count,
+                    previous: completed.last
+                ),
                 options: options
             )
 
@@ -94,19 +98,59 @@ public final class TranscriptRefiner {
 
     // MARK: - Prompting
 
-    private func prompt(for chunk: TextChunker.Chunk, of total: Int, style: RefinementStyle) -> String {
+    /// Builds the prompt for one chunk.
+    ///
+    /// `previous` is the finished text of the chunk before, and only its tail is
+    /// used. Without it the seams show: the model starts each piece as if it
+    /// were a fresh document, repeats the sentence it just finished, or switches
+    /// tense halfway through a paragraph. A couple of hundred characters of
+    /// context are enough to stop all three, and cheap enough to afford.
+    ///
+    /// `nonisolated` and static: a pure function over its arguments, which is
+    /// what lets it be tested without a router.
+    nonisolated static func prompt(
+        for chunk: TextChunker.Chunk,
+        of total: Int,
+        previous: String?
+    ) -> String {
         guard total > 1 else { return chunk.text }
 
         // Chunked runs need the model to know it is not seeing the whole thing,
         // or it writes an introduction for part 3 of 5 and a conclusion for
         // every single piece.
-        return """
+        var prompt = """
         Das ist Teil \(chunk.id + 1) von \(total) eines längeren Diktats. \
         Bearbeite nur diesen Teil. Schreibe weder Einleitung noch Fazit für das Gesamtdokument \
         und wiederhole nichts aus anderen Teilen.
-
-        \(chunk.text)
         """
+
+        if let tail = previous.map(Self.tail(of:)), !tail.isEmpty {
+            prompt += """
+
+
+            Der vorherige Teil endete so — nur zur Orientierung, nicht wiederholen \
+            und nicht mit ausgeben:
+            \(tail)
+            """
+        }
+
+        return prompt + "\n\n" + chunk.text
+    }
+
+    /// The last sentence or two of the previous chunk.
+    static func tail(of text: String, limit: Int = 240) -> String {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.count > limit else { return trimmed }
+
+        let excerpt = String(trimmed.suffix(limit))
+        // Start at a sentence boundary where there is one, so the model is not
+        // handed half a word.
+        if let boundary = excerpt.firstIndex(where: { $0 == "." || $0 == "!" || $0 == "?" }),
+           excerpt.index(after: boundary) < excerpt.endIndex {
+            return String(excerpt[excerpt.index(after: boundary)...])
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return excerpt
     }
 
     private func join(_ pieces: [String], style: RefinementStyle) -> String {

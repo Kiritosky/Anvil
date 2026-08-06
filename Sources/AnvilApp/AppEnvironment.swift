@@ -79,6 +79,7 @@ public final class AppEnvironment {
             TextToolBundle.self,
             DevToolBundle.self,
             EverydayToolBundle.self,
+            VisionToolBundle.self,
             SystemToolBundle.self
         ]
         for bundle in bundles {
