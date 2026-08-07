@@ -238,7 +238,13 @@ public struct TextToolView: View {
             }
             .disabled(output.isEmpty)
 
+            AnvilButton("Ergebnis sichern …", systemImage: "square.and.arrow.down", role: .secondary) {
+                save()
+            }
+            .disabled(output.isEmpty)
+
             AnvilButton("Zwischenablage einfügen", systemImage: "doc.on.clipboard", role: .secondary) {
+                file = nil
                 input = context.pasteboard.string() ?? input
                 run()
             }
@@ -324,6 +330,21 @@ public struct TextToolView: View {
         file = nil
         input = ""
         run()
+    }
+
+    /// Sichert das Ergebnis als Datei.
+    ///
+    /// Der Vorschlag ist der Name der geladenen Datei plus Variante — wer eine
+    /// Prüfsumme über „ubuntu.iso" gerechnet hat, will sie als
+    /// „ubuntu.iso SHA-256" ablegen und nicht als „Ergebnis".
+    private func save() {
+        let suggestion = file.map { "\($0.url.lastPathComponent) \(activeMode.title)" }
+            ?? "\(tool.title) \(activeMode.title)"
+        do {
+            try SavePanel.write(output, suggestedName: suggestion)
+        } catch {
+            dropError = AnvilError.wrapping(error)
+        }
     }
 
     private func swap() {

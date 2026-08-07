@@ -82,6 +82,7 @@ public struct QRCodeToolView: View {
                     .interpolation(.none)
                     .aspectRatio(1, contentMode: .fit)
                     .padding(AnvilSpacing.lg)
+                    .anvilDragOut(name: dragName) { .image(image) }
             }
         } accessory: {
             if case .success = rendered {
@@ -167,6 +168,16 @@ public struct QRCodeToolView: View {
         case empty
         case success(NSImage)
         case failure(String)
+    }
+
+    /// Der Dateiname beim Herausziehen: der Inhalt des Codes selbst.
+    ///
+    /// Eine URL im Finder heißt dann „anvil.dev.png" statt „QR 2026-08-06T…" —
+    /// man sieht der Datei an, was in ihr steckt, ohne sie zu öffnen.
+    /// ExportFile.sanitize kümmert sich um Schrägstriche und Länge.
+    private var dragName: String {
+        let firstLine = text.components(separatedBy: .newlines).first ?? text
+        return ExportFile.sanitize(firstLine, fallback: localized("QR-Code"))
     }
 
     private var rendered: Rendered {

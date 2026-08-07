@@ -270,6 +270,18 @@ public struct ScreenshotToolView: View {
         }
         .buttonStyle(.plain)
         .anvilHelp(.resolved(shot.target.title))
+        // Am Vorschaubild und nicht an der großen Ansicht: dort liegt schon
+        // die Geste zum Markieren, und zwei Gesten auf derselben Fläche
+        // heißt, dass keine von beiden zuverlässig auslöst.
+        .anvilDragOut(name: Self.exportName(for: shot)) {
+            .image(controller.flattened(shot))
+        }
+    }
+
+    /// Der Name, unter dem ein Bildschirmfoto im Finder ankommt.
+    private static func exportName(for shot: Screenshot) -> String {
+        let stamp = shot.takenAt.formatted(date: .numeric, time: .standard)
+        return localized("Bildschirmfoto \(stamp)")
     }
 
     private var statusBar: some View {
