@@ -130,7 +130,7 @@ public struct AnvilTextField: View {
         }
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                .strokeBorder(AnvilColor.border, lineWidth: 1)
+                .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
         }
     }
 }

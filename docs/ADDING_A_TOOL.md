@@ -75,6 +75,32 @@ Jeder Modus ist eine reine Funktion. Sie läuft live bei jedem Tastendruck, also
 darf sie nicht blockieren. Ungültige Eingaben wirft man als
 `AnvilError.invalidInput(_:)` — die Meldung erscheint im Ergebnisbereich.
 
+### Zwei Schalter, die man kennen sollte
+
+**`handlesSecrets: true`** — setzen, sobald die Eingabe ihrem Wesen nach ein
+Geheimnis sein *kann*: ein Token, ein Passwort, etwas Kodiertes, in dem beides
+stecken darf. Dann merkt sich Anvil dort nie etwas. Die Inhaltsprüfung
+(`Sensitivity`) greift zusätzlich, aber sie erkennt keinen hex-kodierten
+Schlüssel — deshalb gibt es diesen Schalter überhaupt.
+
+**`runOnFile:` am Modus** — dieselbe Variante, aber über eine Datei statt über
+getippten Text. Wer sie setzt, macht sein Werkzeug zum Ziel für gezogene
+Dateien; wer sie weglässt, nimmt keine an. Gebraucht wird sie, wo eine Datei
+etwas anderes ist als ihr Text:
+
+```swift
+TextToolMode(
+    id: "sha256",
+    title: "SHA-256",
+    runOnFile: { try FileDigest.hex(SHA256.self, of: $0) }
+) { input in
+    hexString(SHA256.hash(data: Data(input.utf8)))
+}
+```
+
+Gerechnet wird abseits des Hauptthreads; die Datei wird blockweise gelesen,
+damit ein Betriebssystem-Image nicht im Arbeitsspeicher landet.
+
 ## 4. Tool mit eigener Oberfläche
 
 Für alles, was mehr als Text rein / Text raus ist.

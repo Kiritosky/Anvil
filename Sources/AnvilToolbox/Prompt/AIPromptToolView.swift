@@ -43,11 +43,40 @@ public struct AIPromptToolView: View {
         } actions: {
             actions
         }
-        .onDisappear { runTask?.cancel() }
+        .onAppear(perform: restore)
+        .onDisappear {
+            runTask?.cancel()
+            remember()
+        }
         .anvilFileDrop(.text, error: $error) { dropped in
             guard case let .text(text, _) = dropped else { return }
             input = text
         }
+    }
+
+    // MARK: - Zurückholen und merken
+
+    /// Ein Diff, den man gerade an das Modell schicken wollte, ist nach einem
+    /// Neustart nicht wiederzubeschaffen — das Fenster war die einzige Stelle,
+    /// an der er stand.
+    ///
+    /// Ein Werkzeug, dessen Eingabe aus einem Git-Repository kommt, holt sie
+    /// sich beim Öffnen ohnehin frisch; dort wäre ein alter Diff schlimmer als
+    /// ein leeres Feld.
+    private func restore() {
+        guard tool.inputSource != .gitDiff,
+              let draft = context.drafts.draft(for: metadata.id)
+        else { return }
+        input = draft.input
+    }
+
+    private func remember() {
+        guard tool.inputSource != .gitDiff else { return }
+        context.drafts.save(
+            DraftStore.Draft(input: input),
+            for: metadata.id,
+            allowed: context.settings[.remembersInput]
+        )
     }
 
     // MARK: - Header

@@ -87,7 +87,7 @@ public struct TextCompareView: View {
             }
 
             resultPane
-                .frame(minHeight: 180)
+                .frame(minHeight: AnvilSize.resultMinHeight)
 
             statusBar
         }

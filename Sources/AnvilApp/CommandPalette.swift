@@ -24,7 +24,7 @@ struct CommandPalette: View {
             Divider()
             resultList
         }
-        .frame(width: 560)
+        .frame(width: AnvilSize.paletteWidth)
         .background(AnvilColor.canvas)
         .onAppear { isFieldFocused = true }
     }
@@ -66,7 +66,7 @@ struct CommandPalette: View {
             .frame(height: 180)
         } else {
             ScrollView {
-                LazyVStack(spacing: 2) {
+                LazyVStack(spacing: AnvilSpacing.xxs) {
                     ForEach(Array(results.enumerated()), id: \.element.id) { index, tool in
                         Button { environment.open(tool.id); dismiss() } label: {
                             ToolListRow(metadata: tool, isSelected: index == highlighted)

@@ -88,7 +88,7 @@ public struct AnvilButtonStyle: ButtonStyle {
             .overlay {
                 if role == .secondary {
                     RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                        .strokeBorder(AnvilColor.border, lineWidth: 1)
+                        .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
                 }
             }
             .opacity(isEnabled ? 1 : 0.45)

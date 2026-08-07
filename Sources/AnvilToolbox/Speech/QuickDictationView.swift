@@ -38,14 +38,14 @@ struct QuickDictationView: View {
         }
         .padding(.horizontal, AnvilSpacing.md)
         .padding(.vertical, AnvilSpacing.sm)
-        .frame(width: 300, height: 56)
+        .frame(width: AnvilSize.bubbleWidth, height: AnvilSize.bubbleHeight)
         .background {
             Capsule(style: .continuous)
                 .fill(.regularMaterial)
         }
         .overlay {
             Capsule(style: .continuous)
-                .strokeBorder(AnvilColor.border, lineWidth: 1)
+                .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
         }
         .animation(AnvilMotion.standard, value: controller.phase)
     }
@@ -59,7 +59,7 @@ struct QuickDictationView: View {
             ProgressView()
                 .controlSize(.small)
                 .scaleEffect(0.7)
-                .frame(width: 10, height: 10)
+                .frame(width: AnvilSize.dot, height: AnvilSize.dot)
         case .delivered:
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 11))
@@ -78,7 +78,7 @@ struct QuickDictationView: View {
         switch controller.phase {
         case .recording:
             LevelMeter(levels: controller.levels, tone: .danger, barCount: 26)
-                .frame(height: 20)
+                .frame(height: AnvilSize.meterHeight)
                 .frame(maxWidth: .infinity)
         case let .failed(message):
             Text(.resolved(message))

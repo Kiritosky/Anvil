@@ -85,7 +85,7 @@ public struct SettingsGroup<Content: View>: View {
             .clipShape(RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous)
-                    .strokeBorder(AnvilColor.border, lineWidth: 1)
+                    .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
             }
 
             if let footnote {

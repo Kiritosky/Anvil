@@ -18,6 +18,26 @@ struct TextToolCatalogTests {
         }
     }
 
+    /// Die Werkzeuge, deren Eingabe ihrem Wesen nach ein Geheimnis sein kann,
+    /// dürfen nichts merken.
+    ///
+    /// Das ist eine Regel, die still kaputtgeht: Wer einen Eintrag im Katalog
+    /// umsortiert oder ein Werkzeug neu aufsetzt, sieht dem fehlenden
+    /// Kennzeichen nichts an — bis Monate später ein Token auf der Platte
+    /// liegt. Also steht sie hier.
+    @Test
+    func toolsThatTouchSecretsNeverRemember() {
+        let mustNotRemember: Set<String> = ["text.jwt", "text.hash", "text.base64", "text.hex"]
+
+        for tool in TextToolCatalog.all where mustNotRemember.contains(tool.id.rawValue) {
+            #expect(tool.handlesSecrets, "\(tool.title) merkt sich Eingaben, obwohl es das nicht darf")
+        }
+
+        // Und die Gegenprobe: Wäre alles gesperrt, wäre das Merken wertlos.
+        let remembering = TextToolCatalog.all.filter { !$0.handlesSecrets }
+        #expect(remembering.count >= 8)
+    }
+
     @Test
     func toolIdentifiersAreUnique() {
         let ids = TextToolCatalog.all.map(\.id.rawValue)

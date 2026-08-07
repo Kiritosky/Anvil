@@ -141,14 +141,14 @@ public struct ToolStoreView: View {
             }
         }
         .padding(.horizontal, AnvilSpacing.md)
-        .frame(height: 32)
+        .frame(height: AnvilSize.filterBarHeight)
         .background {
             RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
                 .fill(AnvilColor.field)
         }
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .strokeBorder(AnvilColor.border, lineWidth: 1)
+                .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
         }
     }
 
@@ -201,7 +201,7 @@ public struct ToolStoreView: View {
                 size: 28
             )
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
                 HStack(spacing: AnvilSpacing.xs) {
                     Text(tool.metadata.title)
                         .font(AnvilFont.body.weight(.medium))
@@ -228,7 +228,7 @@ public struct ToolStoreView: View {
                             )
                         }
                     }
-                    .padding(.top, 1)
+                    .padding(.top, AnvilSize.hairline)
                 }
             }
 
@@ -279,7 +279,7 @@ public struct ToolStoreView: View {
         }
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .strokeBorder(AnvilColor.border, lineWidth: 1)
+                .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
         }
         .opacity(isEnabled ? 1 : 0.6)
         .animation(AnvilMotion.quick, value: isEnabled)
@@ -345,7 +345,7 @@ public struct ToolStoreView: View {
                     HStack(spacing: AnvilSpacing.xs) {
                         Circle()
                             .fill(activation.isBundleEnabled(group.origin) ? AnvilColor.success : AnvilColor.textTertiary)
-                            .frame(width: 6, height: 6)
+                            .frame(width: AnvilSize.dot, height: AnvilSize.dot)
                         Text(group.origin.displayName)
                             .font(AnvilFont.caption)
                             .foregroundStyle(AnvilColor.textSecondary)

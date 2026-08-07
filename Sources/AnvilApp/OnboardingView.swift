@@ -58,7 +58,7 @@ struct OnboardingView: View {
             Divider()
             footer
         }
-        .frame(width: 640, height: 560)
+        .frame(width: AnvilSize.onboardingWidth, height: AnvilSize.onboardingHeight)
         .background(AnvilColor.canvas)
     }
 

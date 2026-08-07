@@ -35,6 +35,12 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
   Codex oder die Gemini CLI installiert hat, nutzt sie ohne API-Schlüssel über
   die vorhandene Anmeldung. Auch Texterkennung aus Bildern läuft lokal über
   Vision.
+- **Rein und raus per Zug.** Textdateien und Bilder lassen sich ins Fenster
+  ziehen, Ergebnisse wieder heraus — ein QR-Code landet als PNG auf dem
+  Schreibtisch, benannt nach seinem Inhalt.
+- **Nichts Vertrauliches auf der Platte.** Werkzeuge merken sich, was zuletzt
+  drinstand — außer es sieht nach einem Schlüssel aus, und außer bei JWT,
+  Prüfsummen, Base64 und Hex. Ergebnisse werden nie gespeichert.
 - **Erweiterbar von Anfang an.** Tools sind Registrierungen, keine
   Sonderfälle. Reine Prompt-Tools kommen ohne Neukompilieren als JSON-Datei
   dazu, und im Tool-Store lässt sich jedes Tool ein- und ausschalten.
@@ -45,7 +51,7 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
 | --- | --- |
 | Sprache & Audio | Speech Studio, Diktat-Vokabular |
 | KI-Werkzeuge | 15 Prompt-Tools: Commit-Message, Code-Review, Tests, Regex, Shell, Übersetzen, E-Mail … |
-| Text & Daten | JSON, Base64, URL, JWT, Prüfsummen, UUID, Zeitstempel, Schreibweise, Zeilen, Slug, Hex, HTML, Statistik, Regex-Tester, Textvergleich |
+| Text & Daten | JSON, Base64, URL, JWT, Prüfsummen (auch von Dateien), UUID, Zeitstempel, Schreibweise, Zeilen, Slug, Hex, HTML, Statistik, Regex-Tester, Textvergleich |
 | Coding | Zahlensysteme, Zeichen (Unicode), Dateirechte, HTTP-Codes, Cron |
 | Alltag | Bildschirmfoto, Zwischenablage-Verlauf, Farben, QR-Code, Text aus Bild, Passwörter, Einheiten, Prozent, Zeitzonen, Blindtext |
 | System | Tool-Store |
@@ -120,10 +126,16 @@ Deutsch und Englisch. Der deutsche Quelltext ist zugleich der
 Übersetzungsschlüssel, eine neue Sprache ist ein zusätzlicher `.lproj`-Ordner —
 siehe [docs/LOCALIZATION.md](docs/LOCALIZATION.md).
 
+## Fenster
+
+Ein Hauptfenster mit Seitenleiste — und jedes Werkzeug zusätzlich in einem
+eigenen Fenster (⇧⌘N, oder Rechtsklick in der Seitenleiste). Dasselbe Werkzeug
+darf mehrfach offen sein, jedes Fenster mit eigenem Zustand und eigener Größe.
+
 ## Status
 
-In Entwicklung. Aufgebaut wird von unten nach oben: erst Kern und
-Design-System, dann Dienste, dann Tools.
+Version 1.0. Der Aufbau ging von unten nach oben: erst Kern und Design-System,
+dann Dienste, dann Tools.
 
 ## Lizenz
 

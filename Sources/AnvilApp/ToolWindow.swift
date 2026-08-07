@@ -19,7 +19,7 @@ struct ToolWindow: View {
 
     var body: some View {
         content
-            .frame(minWidth: 620, minHeight: 460)
+            .frame(minWidth: AnvilSize.toolWindowMinWidth, minHeight: AnvilSize.toolWindowMinHeight)
             // Jedes Werkzeug merkt sich seine eigene Fenstergröße; die des
             // Bildschirmfotos hat mit der des Farbwerkzeugs nichts zu tun.
             .anvilWindowFrame(autosaveName: "anvil.tool.\(toolID?.rawValue ?? "leer")")

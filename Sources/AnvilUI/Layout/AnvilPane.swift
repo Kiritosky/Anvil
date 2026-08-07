@@ -45,7 +45,7 @@ public struct AnvilPane<Content: View, Accessory: View>: View {
         .clipShape(RoundedRectangle(cornerRadius: theme.cardRadius, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: theme.cardRadius, style: .continuous)
-                .strokeBorder(AnvilColor.border, lineWidth: 1)
+                .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
         }
     }
 
@@ -124,7 +124,7 @@ public struct AnvilCard<Content: View>: View {
                     cornerRadius: theme.prefersFlatSurfaces ? AnvilRadius.md : theme.cardRadius,
                     style: .continuous
                 )
-                .strokeBorder(AnvilColor.border, lineWidth: 1)
+                .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
             }
     }
 }

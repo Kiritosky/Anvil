@@ -70,7 +70,7 @@ public struct SpeechStudioView: View {
 
         recordButton
 
-        Divider().frame(height: 18)
+        Divider().frame(height: AnvilSize.dividerHeight)
 
         WorkbenchOrientationPicker(orientation: $orientation)
 
@@ -174,7 +174,7 @@ public struct SpeechStudioView: View {
         }
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .strokeBorder(AnvilColor.border, lineWidth: 1)
+                .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
         }
     }
 
@@ -372,12 +372,12 @@ public struct SpeechStudioView: View {
                     text: $model.customInstruction,
                     placeholder: "Was soll das Modell mit dem Text machen?"
                 )
-                .frame(height: 80)
+                .frame(height: AnvilSize.previewHeight)
                 .background(AnvilColor.field)
                 .clipShape(RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous))
                 .overlay {
                     RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                        .strokeBorder(AnvilColor.border, lineWidth: 1)
+                        .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
                 }
             }
         }
@@ -477,7 +477,7 @@ struct HistorySheet: View {
                     LazyVStack(alignment: .leading, spacing: AnvilSpacing.sm) {
                         ForEach(entries) { entry in
                             Button { onSelect(entry) } label: {
-                                VStack(alignment: .leading, spacing: 2) {
+                                VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
                                     Text(entry.createdAt.formatted(date: .abbreviated, time: .shortened))
                                         .font(AnvilFont.caption)
                                         .foregroundStyle(AnvilColor.textTertiary)
@@ -501,6 +501,6 @@ struct HistorySheet: View {
                 }
             }
         }
-        .frame(width: 520, height: 460)
+        .frame(width: AnvilSize.sheetWidth, height: AnvilSize.sheetHeight)
     }
 }

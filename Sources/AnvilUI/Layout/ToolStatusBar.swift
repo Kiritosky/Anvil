@@ -32,7 +32,7 @@ public struct ToolStatusBar<Leading: View, Trailing: View>: View {
         .clipShape(RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .strokeBorder(AnvilColor.border, lineWidth: 1)
+                .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
         }
     }
 }

@@ -65,6 +65,41 @@ public enum AnvilSize {
     public static let toolIcon: CGFloat = 22
     /// A plain border: the line between a surface and what is next to it.
     public static let hairline: CGFloat = 1
+    /// A separator standing between two controls in a row — shorter than the
+    /// row so it reads as a divider and not as a frame.
+    public static let dividerHeight: CGFloat = 18
+    /// A status dot: recording, model reachable, tool active.
+    public static let dot: CGFloat = 6
+    /// The waveform strip while recording.
+    public static let meterHeight: CGFloat = 20
+    /// A pane that shows something rather than holding controls — the
+    /// annotation preview, the level history.
+    public static let previewHeight: CGFloat = 80
+    /// A result pane that sits under two inputs and needs its own room.
+    public static let resultMinHeight: CGFloat = 180
+    /// A search or filter bar inside a pane.
+    public static let filterBarHeight: CGFloat = 32
+    /// A sheet: big enough to work in, small enough to stay a sheet.
+    public static let sheetWidth: CGFloat = 520
+    public static let sheetHeight: CGFloat = 460
+    /// The dictation bubble that floats over every other app.
+    public static let bubbleWidth: CGFloat = 300
+    public static let bubbleHeight: CGFloat = 56
+    /// The smallest a window may get before its content stops making sense.
+    public static let windowMinWidth: CGFloat = 900
+    public static let windowMinHeight: CGFloat = 560
+    /// The same for a window showing a single tool — no sidebar to fit.
+    public static let toolWindowMinWidth: CGFloat = 620
+    public static let toolWindowMinHeight: CGFloat = 460
+    /// The settings window: a fixed size, because a form that reflows while
+    /// you read it is worse than one that does not resize.
+    public static let settingsWidth: CGFloat = 860
+    public static let settingsHeight: CGFloat = 600
+    /// The introduction, shown once.
+    public static let onboardingWidth: CGFloat = 640
+    public static let onboardingHeight: CGFloat = 560
+    /// The command palette: wide enough for a tool name plus its subtitle.
+    public static let paletteWidth: CGFloat = 560
     /// A border that means something — focus, or a drop target waiting for the
     /// mouse to let go. Thick enough to read as deliberate at a glance.
     public static let focusRing: CGFloat = 2

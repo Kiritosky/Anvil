@@ -50,7 +50,7 @@ struct SettingsWindow: View {
         } detail: {
             detail
         }
-        .frame(width: 860, height: 600)
+        .frame(width: AnvilSize.settingsWidth, height: AnvilSize.settingsHeight)
     }
 
     @ViewBuilder

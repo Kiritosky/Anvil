@@ -219,7 +219,7 @@ public struct ColorToolView: View {
             .frame(width: size, height: size)
             .overlay {
                 RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                    .strokeBorder(AnvilColor.border, lineWidth: 1)
+                    .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
             }
     }
 

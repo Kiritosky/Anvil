@@ -30,7 +30,7 @@ struct AnvilApp: App {
             RootView()
                 .environment(environment)
                 .environment(environment.router)
-                .frame(minWidth: 900, minHeight: 560)
+                .frame(minWidth: AnvilSize.windowMinWidth, minHeight: AnvilSize.windowMinHeight)
                 .task { await environment.refreshModelStatus() }
         }
         .defaultSize(width: 1_180, height: 760)

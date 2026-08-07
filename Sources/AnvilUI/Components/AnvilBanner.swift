@@ -93,7 +93,7 @@ public struct AnvilBanner: View {
         }
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .strokeBorder(tone.color.opacity(0.3), lineWidth: 1)
+                .strokeBorder(tone.color.opacity(0.3), lineWidth: AnvilSize.hairline)
         }
         .transition(.move(edge: .top).combined(with: .opacity))
     }

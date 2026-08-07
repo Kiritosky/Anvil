@@ -137,7 +137,7 @@ struct SidebarView: View {
             if let router {
                 Circle()
                     .fill(router.availability.isAvailable ? AnvilColor.success : AnvilColor.warning)
-                    .frame(width: 6, height: 6)
+                    .frame(width: AnvilSize.dot, height: AnvilSize.dot)
 
                 Text(router.statusSummary)
                     .font(AnvilFont.caption)
