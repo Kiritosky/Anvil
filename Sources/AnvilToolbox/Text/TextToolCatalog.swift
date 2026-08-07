@@ -59,6 +59,8 @@ public enum TextToolCatalog {
             systemImage: "arrow.left.arrow.right.square",
             category: .coding,
             keywords: ["base64", "encode", "decode", "kodieren", "dekodieren"],
+            // Base64 ist der übliche Weg, Zugangsdaten weiterzureichen.
+            handlesSecrets: true,
             modes: [
                 TextToolMode(id: "encode", title: "Kodieren", systemImage: "lock") { input in
                     Data(input.utf8).base64EncodedString()
@@ -132,6 +134,8 @@ public enum TextToolCatalog {
             category: .coding,
             keywords: ["jwt", "token", "jose", "claims", "auth"],
             placeholder: "eyJhbGciOi…",
+            // Ein JWT ist immer ein Token — auch das abgelaufene aus dem Test.
+            handlesSecrets: true,
             modes: [
                 TextToolMode(id: "decode", title: "Dekodieren", systemImage: "eye") { input in
                     let parts = input.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -166,6 +170,8 @@ public enum TextToolCatalog {
                 "hash", "md5", "sha", "checksum", "prüfsumme", "digest",
                 "datei", "download", "verifizieren", "integrität"
             ],
+            // Prüfsummen rechnet man oft über Passwörter.
+            handlesSecrets: true,
             modes: [
                 TextToolMode(
                     id: "sha256",
@@ -363,6 +369,8 @@ public enum TextToolCatalog {
             systemImage: "number.circle",
             category: .coding,
             keywords: ["hex", "hexadezimal", "bytes", "dump"],
+            // Wie Base64: der Inhalt kann alles sein, auch ein Schlüssel.
+            handlesSecrets: true,
             modes: [
                 TextToolMode(id: "encode", title: "Nach Hex") { input in
                     Data(input.utf8).map { String(format: "%02x", $0) }.joined(separator: " ")

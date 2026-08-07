@@ -50,6 +50,13 @@ public struct TextTool: Sendable {
     public let placeholder: String
     /// Tools like "UUID erzeugen" produce output without any input.
     public let generatesWithoutInput: Bool
+    /// Ob dieses Werkzeug seinem Wesen nach mit Geheimnissen umgeht.
+    ///
+    /// Was hier steht, wird nie gemerkt — unabhängig davon, wie harmlos der
+    /// Text im Einzelfall aussieht. Bei einem JWT-Werkzeug ist die Eingabe
+    /// immer ein Token, auch wenn keine Prüfung der Welt es erkennt, und wer
+    /// eine Prüfsumme rechnet, tut das oft über ein Passwort.
+    public let handlesSecrets: Bool
 
     public init(
         id: ToolIdentifier,
@@ -61,8 +68,10 @@ public struct TextTool: Sendable {
         isMonospaced: Bool = true,
         placeholder: String = "Text hier einfügen …",
         generatesWithoutInput: Bool = false,
+        handlesSecrets: Bool = false,
         modes: [TextToolMode]
     ) {
+        self.handlesSecrets = handlesSecrets
         self.id = id
         self.title = title
         self.subtitle = subtitle

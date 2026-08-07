@@ -39,10 +39,15 @@ public enum AppPaths {
         support.appending(path: "Screenshots", directoryHint: .isDirectory)
     }
 
+    /// What was left in a tool when it was last closed.
+    public static var drafts: URL {
+        support.appending(path: "Drafts", directoryHint: .isDirectory)
+    }
+
     /// Creates every directory the app expects. Safe to call repeatedly.
     @discardableResult
     public static func bootstrap() -> Bool {
-        let directories = [support, customTools, recordings, history, exports, screenshots]
+        let directories = [support, customTools, recordings, history, exports, screenshots, drafts]
         do {
             for directory in directories {
                 try FileManager.default.createDirectory(

@@ -86,6 +86,14 @@ struct GeneralSettingsView: View {
 
     private var settings: SettingsStore { environment.settings }
 
+    /// Ausschalten heißt auch aufräumen. Ein Schalter, der das Merken beendet
+    /// und das bereits Gemerkte liegen lässt, sagt nicht die Wahrheit.
+    private var rememberBinding: Binding<Bool> {
+        settings.bind(.remembersInput) { isOn in
+            if !isOn { environment.context.drafts.forgetEverything() }
+        }
+    }
+
     var body: some View {
         SettingsPage("Allgemein", description: "Verhalten der App insgesamt.") {
             SettingsGroup("Bedienung") {
@@ -130,6 +138,30 @@ struct GeneralSettingsView: View {
                     AnvilButton("Öffnen", role: .secondary) {
                         AppPaths.bootstrap()
                         NSWorkspace.shared.open(AppPaths.support)
+                    }
+                }
+            }
+
+            SettingsGroup(
+                "Merken",
+                footnote: "Nie gemerkt wird, was nach einem Geheimnis aussieht — Schlüssel, Tokens, Zugangsdaten — und was in Werkzeugen steht, deren Zweck Geheimnisse sind: JWT, Prüfsummen, Base64, Hex. Ergebnisse werden grundsätzlich nicht gespeichert."
+            ) {
+                SettingsRow(
+                    "Eingaben behalten",
+                    help: "Beim nächsten Öffnen steht wieder da, was zuletzt drinstand.",
+                    systemImage: "arrow.counterclockwise"
+                ) {
+                    Toggle("", isOn: rememberBinding)
+                        .toggleStyle(.switch)
+                }
+
+                SettingsRow(
+                    "Gemerktes verwerfen",
+                    help: "Löscht alle behaltenen Eingaben von der Platte.",
+                    systemImage: "trash"
+                ) {
+                    AnvilButton("Verwerfen", role: .secondary) {
+                        environment.context.drafts.forgetEverything()
                     }
                 }
             }

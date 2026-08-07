@@ -42,7 +42,8 @@ public struct TextToolView: View {
         } actions: {
             actions
         }
-        .onAppear(perform: run)
+        .onAppear(perform: restore)
+        .onDisappear(perform: remember)
         .anvilErrorBanner($dropError)
         // Werkzeuge, die über Bytes rechnen, wollen die Datei selbst; alle
         // anderen deren Text. Beides über denselben Empfänger, damit es für den
@@ -64,6 +65,42 @@ public struct TextToolView: View {
     /// Ob dieses Werkzeug mit einer Datei überhaupt etwas anfangen kann.
     private var acceptsFiles: Bool {
         tool.modes.contains { $0.runOnFile != nil }
+    }
+
+    // MARK: - Zurückholen und merken
+
+    /// Holt zurück, was beim letzten Mal drinstand.
+    ///
+    /// Dass hier überhaupt etwas ankommt, heißt schon, dass es unverfänglich
+    /// war — der Store speichert nichts anderes. Trotzdem wird die Variante
+    /// nur übernommen, wenn es sie noch gibt: Werkzeuge bekommen neue
+    /// Varianten und verlieren alte.
+    private func restore() {
+        if let draft = context.drafts.draft(for: tool.id) {
+            input = draft.input
+            if let modeID = draft.modeID, tool.modes.contains(where: { $0.id == modeID }) {
+                self.modeID = modeID
+            }
+        }
+        run()
+    }
+
+    /// Merkt sich den Stand beim Verlassen.
+    ///
+    /// Eine geladene Datei wird nicht gemerkt: Wege auf der Platte ändern
+    /// sich, und ein Werkzeug, das beim Öffnen auf eine Datei zeigt, die es
+    /// nicht mehr gibt, ist schlechter als eines, das leer beginnt.
+    private func remember() {
+        guard file == nil else {
+            context.drafts.forget(tool.id)
+            return
+        }
+
+        context.drafts.save(
+            DraftStore.Draft(input: input, modeID: modeID),
+            for: tool.id,
+            allowed: !tool.handlesSecrets && context.settings[.remembersInput]
+        )
     }
 
     private var emptyMessage: LocalizedStringKey {

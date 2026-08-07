@@ -53,6 +53,7 @@ public final class AppEnvironment {
         let context = ToolContext(settings: settings, history: history)
         context.register(registry)
         context.register(router)
+        context.register(DraftStore())
         self.context = context
 
         let customTools = CustomToolStore(registry: registry)
