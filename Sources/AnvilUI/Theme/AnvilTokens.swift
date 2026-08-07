@@ -68,8 +68,12 @@ public enum AnvilSize {
     /// A separator standing between two controls in a row — shorter than the
     /// row so it reads as a divider and not as a frame.
     public static let dividerHeight: CGFloat = 18
-    /// A status dot: recording, model reachable, tool active.
+    /// A status dot standing still: model reachable, tool active.
     public static let dot: CGFloat = 6
+    /// A dot that pulses — recording, streaming, listening. Larger than the
+    /// resting one on purpose: at 6pt a pulse reads as a flicker rather than
+    /// as a heartbeat.
+    public static let activityDot: CGFloat = 8
     /// The waveform strip while recording.
     public static let meterHeight: CGFloat = 20
     /// A pane that shows something rather than holding controls — the

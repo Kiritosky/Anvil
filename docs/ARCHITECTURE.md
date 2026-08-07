@@ -37,6 +37,21 @@ Das ist Absicht: der Kern soll austauschbar bleiben.
 | `HistoryStore` | Durchläufe pro Tool, als JSON auf der Platte |
 | `DraftStore` | was zuletzt im Tool stand — nur, wenn es unverfänglich ist |
 | `Sensitivity` | erkennt Schlüssel, Tokens und Zugangsdaten in Text |
+
+### Verlauf und Entwurf sind nicht dasselbe
+
+Beide merken sich etwas, aber sie beantworten verschiedene Fragen — und sie
+gelten für verschiedene Tools.
+
+**Der Verlauf** sammelt abgeschlossene Durchläufe: Diktat und Prompt-Tools, wo
+man auf einen Knopf drückt und danach ein Ergebnis dasteht, das man in zehn
+Minuten vielleicht wiederhaben will. Die deterministischen Tools haben bewusst
+keinen. Sie laufen live bei jedem Tastendruck; jeder Zwischenstand wäre ein
+Eintrag, und ein Verlauf, in dem `{`, `{ "a`, `{ "ab` steht, ist kein Verlauf.
+
+**Der Entwurf** merkt sich genau einen Stand pro Tool — den letzten — und gilt
+für alles mit einem Eingabefeld. Er ist kein Archiv, sondern die Antwort auf
+„ich mache gleich weiter".
 | `GlobalShortcut` | Tastenkombination für systemweite Kürzel |
 | `HotKeyCenter` | Registrierung über Carbon — ohne Bedienungshilfen-Recht |
 | `PasteService` | ⌘V in die vorherige App; das einzige Stück mit Accessibility |

@@ -52,7 +52,7 @@ public struct ActivityDot: View {
     public var body: some View {
         Circle()
             .fill(isActive ? tone.color : AnvilColor.textTertiary)
-            .frame(width: 8, height: 8)
+            .frame(width: AnvilSize.activityDot, height: AnvilSize.activityDot)
             .scaleEffect(isActive && isPulsing ? 1.35 : 1)
             .opacity(isActive && isPulsing ? 0.55 : 1)
             .onAppear {

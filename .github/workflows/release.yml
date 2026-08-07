@@ -11,8 +11,12 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Tag, unter dem veröffentlicht wird (z. B. v0.1.0)
+        description: Tag, unter dem veröffentlicht wird (z. B. v1.0.0)
         required: true
+      dry_run:
+        description: Alles bauen, aber nichts veröffentlichen
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -21,6 +25,12 @@ jobs:
   release:
     name: Bundle bauen und veröffentlichen
     runs-on: macos-26
+    # Ein Workflow, den man erst beim ersten echten Release zum ersten Mal
+    # laufen sieht, ist eine Wette. Der Probelauf macht alles außer dem
+    # letzten Schritt — und der letzte Schritt ist der, den man nicht
+    # zurücknehmen kann.
+    env:
+      DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -84,6 +94,15 @@ jobs:
           ## Prüfsumme
           NOTES
           printf '\n```\n%s\n```\n' "$(cat checksum.txt)" >> notes.md
+
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "Probelauf — es wird nichts veröffentlicht."
+            echo "Entstanden wäre: Release ${{ steps.version.outputs.tag }}"
+            echo "mit ${{ steps.package.outputs.name }} ($(du -h "${{ steps.package.outputs.name }}" | cut -f1))"
+            echo "--- Beschreibung ---"
+            cat notes.md
+            exit 0
+          fi
 
           gh release create "${{ steps.version.outputs.tag }}" \
             "${{ steps.package.outputs.name }}" \
