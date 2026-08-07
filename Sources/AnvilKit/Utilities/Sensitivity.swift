@@ -18,6 +18,7 @@ public enum Sensitivity {
         guard !trimmed.isEmpty else { return false }
 
         if containsKeyBlock(trimmed) { return true }
+        if containsWiFiCredentials(trimmed) { return true }
         if containsKnownTokenPrefix(trimmed) { return true }
         if containsJSONWebToken(trimmed) { return true }
         if namesASecret(trimmed) { return true }
@@ -32,6 +33,15 @@ public enum Sensitivity {
             "-----BEGIN", "PRIVATE KEY", "ssh-rsa ", "ssh-ed25519 ", "PuTTY-User-Key"
         ]
         return markers.contains { text.localizedCaseInsensitiveContains($0) }
+    }
+
+    /// Der QR-Code, mit dem man Gäste ins WLAN lässt, trägt das Passwort im
+    /// Klartext: `WIFI:T:WPA;S:Netz;P:geheim;;`. Das Wort „password" kommt
+    /// darin nicht vor — ohne diesen Fall würde ausgerechnet der häufigste
+    /// selbstgebaute QR-Code gemerkt.
+    private static func containsWiFiCredentials(_ text: String) -> Bool {
+        let upper = text.uppercased()
+        return upper.contains("WIFI:") && upper.contains("P:")
     }
 
     /// Die Anbieter, die ihren Schlüsseln ein erkennbares Präfix geben. Wer

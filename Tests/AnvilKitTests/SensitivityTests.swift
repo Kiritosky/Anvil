@@ -36,6 +36,14 @@ struct SensitivityTests {
     }
 
     /// Die Anbieter, die ihren Schlüsseln ein Präfix geben, machen es leicht.
+    /// Der häufigste selbstgebaute QR-Code ist der fürs Gäste-WLAN — und er
+    /// trägt das Passwort im Klartext, ohne das Wort „password" zu benutzen.
+    @Test
+    func recognisesWiFiQRCodes() {
+        #expect(Sensitivity.looksConfidential("WIFI:T:WPA;S:Gaeste;P:sommer2026;;"))
+        #expect(!Sensitivity.looksConfidential("Das WLAN heißt Gaeste."))
+    }
+
     @Test
     func recognisesProviderTokens() {
         #expect(Sensitivity.looksConfidential("sk-abcdefghijklmnopqrstuvwxyz012345"))
@@ -141,6 +149,46 @@ struct DraftStoreTests {
 
         store.save(DraftStore.Draft(input: "Harmlos"), for: "text.jwt", allowed: false)
         #expect(store.draft(for: "text.jwt") == nil)
+    }
+
+    /// Werkzeuge mit zwei Feldern: geprüft wird jedes. Sonst wandert ein
+    /// Schlüssel, den jemand in die zweite Fassung des Vergleichs einfügt,
+    /// ungeprüft mit.
+    @Test
+    func checksEveryFieldNotJustTheFirst() {
+        let (store, directory) = makeStore()
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        store.save(
+            DraftStore.Draft(
+                input: "Harmlos",
+                extras: ["right": "ghp_1234567890abcdefghijklmnopqrstuvwxyz"]
+            ),
+            for: "text.compare"
+        )
+        #expect(store.draft(for: "text.compare") == nil)
+    }
+
+    @Test
+    func keepsEveryFieldWhenAllAreHarmless() {
+        let (store, directory) = makeStore()
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        store.save(
+            DraftStore.Draft(input: "vorher", extras: ["right": "nachher"]),
+            for: "text.compare"
+        )
+        #expect(store.draft(for: "text.compare")?.extra("right") == "nachher")
+    }
+
+    /// Ein Entwurf, in dem nirgends etwas steht, ist keiner.
+    @Test
+    func storesNothingWhenEveryFieldIsEmpty() {
+        let (store, directory) = makeStore()
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        store.save(DraftStore.Draft(input: "", extras: ["right": ""]), for: "text.compare")
+        #expect(store.draft(for: "text.compare") == nil)
     }
 
     @Test

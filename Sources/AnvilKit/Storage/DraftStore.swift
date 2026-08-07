@@ -36,12 +36,34 @@ public final class DraftStore {
         public var input: String
         /// Welche Variante zuletzt gewählt war — „SHA-256", „Formatieren".
         public var modeID: String?
+        /// Weitere Felder für Werkzeuge mit mehr als einer Eingabe: das
+        /// Muster beim Regex-Tester, die zweite Fassung beim Textvergleich.
+        public var extras: [String: String]
         public var savedAt: Date
 
-        public init(input: String, modeID: String? = nil, savedAt: Date = .now) {
+        public init(
+            input: String,
+            modeID: String? = nil,
+            extras: [String: String] = [:],
+            savedAt: Date = .now
+        ) {
             self.input = input
             self.modeID = modeID
+            self.extras = extras
             self.savedAt = savedAt
+        }
+
+        public func extra(_ name: String) -> String {
+            extras[name] ?? ""
+        }
+
+        /// Jeder Text, der bei diesem Entwurf auf der Platte landen würde.
+        ///
+        /// Der Grund, warum es diese Eigenschaft gibt: Wird nur `input`
+        /// geprüft, wandert ein Schlüssel, den jemand in das zweite Feld des
+        /// Textvergleichs einfügt, ungeprüft mit.
+        var allText: [String] {
+            [input] + extras.values
         }
     }
 
@@ -63,7 +85,12 @@ public final class DraftStore {
     /// einfügt, in dem vorher etwas Harmloses stand, soll nicht das Harmlose
     /// auf der Platte behalten und den Schlüssel im Fenster. Beides muss weg.
     public func save(_ draft: Draft, for tool: ToolIdentifier, allowed: Bool = true) {
-        guard allowed, Self.mayStore(draft.input) else {
+        // Ein einziges verdächtiges Feld verwirft den ganzen Entwurf. Die
+        // Hälfte zu behalten wäre schlimmer als nichts: der Benutzer sähe
+        // beim nächsten Öffnen einen Stand, den es so nie gab.
+        guard allowed, draft.allText.contains(where: { !$0.isEmpty }),
+              draft.allText.allSatisfy({ $0.isEmpty || Self.mayStore($0) })
+        else {
             forget(tool)
             return
         }

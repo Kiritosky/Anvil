@@ -40,6 +40,27 @@ public struct TextCompareView: View {
             WorkbenchOrientationPicker(orientation: $orientation)
         }
         .anvilErrorBanner($dropError)
+        .onAppear(perform: restore)
+        .onDisappear(perform: remember)
+    }
+
+    // MARK: - Zurückholen und merken
+
+    private func restore() {
+        guard let draft = context.drafts.draft(for: metadata.id) else { return }
+        left = draft.input
+        right = draft.extra("right")
+    }
+
+    /// Beide Seiten werden geprüft, nicht nur die erste. Wer einen Schlüssel
+    /// rechts einfügt, um zwei Fassungen zu vergleichen, hätte ihn sonst
+    /// ungeprüft auf der Platte.
+    private func remember() {
+        context.drafts.save(
+            DraftStore.Draft(input: left, extras: ["right": right]),
+            for: metadata.id,
+            allowed: context.settings[.remembersInput]
+        )
     }
 
     // MARK: - Content

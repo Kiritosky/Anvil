@@ -27,6 +27,25 @@ public struct ColorToolView: View {
         } inspector: {
             inspector
         }
+        .onAppear(perform: restore)
+        .onDisappear(perform: remember)
+    }
+
+    // MARK: - Zurückholen und merken
+
+    private func restore() {
+        guard let draft = context.drafts.draft(for: metadata.id) else { return }
+        input = draft.input
+        let partner = draft.extra("partner")
+        if !partner.isEmpty { partnerInput = partner }
+    }
+
+    private func remember() {
+        context.drafts.save(
+            DraftStore.Draft(input: input, extras: ["partner": partnerInput]),
+            for: metadata.id,
+            allowed: context.settings[.remembersInput]
+        )
     }
 
     // MARK: - Content

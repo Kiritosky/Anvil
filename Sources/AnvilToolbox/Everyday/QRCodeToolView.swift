@@ -35,6 +35,26 @@ public struct QRCodeToolView: View {
             guard case let .image(image, _) = dropped else { return }
             read(image)
         }
+        .onAppear(perform: restore)
+        .onDisappear(perform: remember)
+    }
+
+    // MARK: - Zurückholen und merken
+
+    private func restore() {
+        guard let draft = context.drafts.draft(for: metadata.id) else { return }
+        text = draft.input
+    }
+
+    /// Der häufigste selbstgebaute QR-Code ist der fürs Gäste-WLAN, und der
+    /// trägt das Passwort im Klartext. Sensitivity kennt diese Form —
+    /// gemerkt wird sie deshalb nicht.
+    private func remember() {
+        context.drafts.save(
+            DraftStore.Draft(input: text),
+            for: metadata.id,
+            allowed: context.settings[.remembersInput]
+        )
     }
 
     // MARK: - Content

@@ -40,6 +40,30 @@ public struct RegexToolView: View {
             guard case let .text(text, _) = dropped else { return }
             subject = text
         }
+        .onAppear(perform: restore)
+        .onDisappear(perform: remember)
+    }
+
+    // MARK: - Zurückholen und merken
+
+    /// Ein halbfertiger Ausdruck ist genau das, wofür man wiederkommt —
+    /// deshalb wandern Muster, Testtext und Ersetzung mit.
+    private func restore() {
+        guard let draft = context.drafts.draft(for: metadata.id) else { return }
+        pattern = draft.input
+        subject = draft.extra("subject")
+        replacement = draft.extra("replacement")
+    }
+
+    private func remember() {
+        context.drafts.save(
+            DraftStore.Draft(
+                input: pattern,
+                extras: ["subject": subject, "replacement": replacement]
+            ),
+            for: metadata.id,
+            allowed: context.settings[.remembersInput]
+        )
     }
 
     // MARK: - Content

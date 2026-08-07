@@ -35,6 +35,8 @@ Das ist Absicht: der Kern soll austauschbar bleiben.
 | `SettingsStore` | typisierte, beobachtbare Einstellungen über `UserDefaults` |
 | `KeychainStore` | API-Schlüssel — niemals in den Einstellungen |
 | `HistoryStore` | Durchläufe pro Tool, als JSON auf der Platte |
+| `DraftStore` | was zuletzt im Tool stand — nur, wenn es unverfänglich ist |
+| `Sensitivity` | erkennt Schlüssel, Tokens und Zugangsdaten in Text |
 | `GlobalShortcut` | Tastenkombination für systemweite Kürzel |
 | `HotKeyCenter` | Registrierung über Carbon — ohne Bedienungshilfen-Recht |
 | `PasteService` | ⌘V in die vorherige App; das einzige Stück mit Accessibility |
