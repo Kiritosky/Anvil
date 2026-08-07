@@ -11,6 +11,9 @@ import SwiftUI
 /// the things you want without bringing a window forward.
 @main
 struct AnvilApp: App {
+    /// Die Kennung der Fenstergruppe für einzelne Werkzeuge.
+    static let toolWindowID = "anvil.tool"
+
     @State private var environment = AppEnvironment()
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
@@ -32,6 +35,16 @@ struct AnvilApp: App {
         }
         .defaultSize(width: 1_180, height: 760)
         .commands { AnvilCommands(environment: environment) }
+
+        // Ein Werkzeug für sich. Beliebig viele davon, jedes mit eigenem
+        // Zustand — die Kennung im Wert macht sie unterscheidbar, sodass
+        // dasselbe Werkzeug auch zweimal offen sein kann.
+        WindowGroup(id: Self.toolWindowID, for: ToolIdentifier.self) { $toolID in
+            ToolWindow(toolID: toolID)
+                .environment(environment)
+                .environment(environment.router)
+        }
+        .defaultSize(width: 900, height: 640)
 
         Settings {
             SettingsWindow()
@@ -65,6 +78,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 /// Menu-bar commands and their shortcuts.
 struct AnvilCommands: Commands {
     let environment: AppEnvironment
+
+    @Environment(\.openWindow) private var openWindow
+
+    private func openToolWindow(_ id: ToolIdentifier) {
+        openWindow(id: AnvilApp.toolWindowID, value: id)
+    }
 
     /// Fills in the standard About panel.
     private func showAboutPanel() {
@@ -117,6 +136,13 @@ struct AnvilCommands: Commands {
         }
 
         CommandGroup(after: .newItem) {
+            Button("In neuem Fenster öffnen") {
+                guard let id = environment.selectedToolID else { return }
+                openToolWindow(id)
+            }
+            .keyboardShortcut("n", modifiers: [.command, .shift])
+            .disabled(environment.selectedToolID == nil)
+
             Button("Eigene Tools neu laden") {
                 environment.customTools.reloadUserTools()
             }

@@ -10,6 +10,7 @@ import SwiftUI
 struct SidebarView: View {
     @Environment(AppEnvironment.self) private var environment
     @Environment(AIRouter.self) private var router: AIRouter?
+    @Environment(\.openWindow) private var openWindow
 
     @State private var query = ""
 
@@ -115,6 +116,18 @@ struct SidebarView: View {
                     )
                 }
                 .buttonStyle(.plain)
+                // Der zweite Weg zum eigenen Fenster. Der Menübefehl öffnet
+                // das ausgewählte Werkzeug; hier geht auch eines, das man
+                // gerade gar nicht offen hat.
+                .contextMenu {
+                    Button("In neuem Fenster öffnen") {
+                        openWindow(id: AnvilApp.toolWindowID, value: tool.id)
+                    }
+
+                    Button(registry.isFavourite(tool.id) ? "Aus Favoriten entfernen" : "Zu Favoriten") {
+                        registry.toggleFavourite(tool.id)
+                    }
+                }
             }
         }
     }
