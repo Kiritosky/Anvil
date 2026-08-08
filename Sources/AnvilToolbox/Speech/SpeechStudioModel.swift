@@ -305,15 +305,48 @@ public final class SpeechStudioModel {
 
     /// Transcribes an audio file the user picked, replacing the current text.
     public func transcribeFile(at url: URL) async {
+        await transcribeFiles(at: [url])
+    }
+
+    /// Transkribiert mehrere Aufnahmen nacheinander.
+    ///
+    /// Ein Ordner mit Sprachnachrichten ist der Fall, für den es das gibt —
+    /// zehnmal einzeln auswählen und dazwischen den Text wegkopieren wäre die
+    /// Arbeit, die das Werkzeug abnehmen soll.
+    ///
+    /// Nacheinander und nicht nebeneinander: Der Transkriptions-Analyzer hält
+    /// Sprachmodelle im Speicher, und mehrere gleichzeitig bringen keine Zeit
+    /// ein, sondern nur Druck auf den Arbeitsspeicher.
+    public func transcribeFiles(at urls: [URL]) async {
+        guard !urls.isEmpty else { return }
         error = nil
-        do {
-            let transcript = try await fileTranscriber.transcribe(url: url, locale: locale)
-            rawText = transcript.finalizedText
-            recompute()
-            if refinesAutomatically, usesAI { await refine() }
-        } catch {
-            self.error = AnvilError.wrapping(error)
+
+        var pieces: [(name: String, text: String)] = []
+        var firstFailure: AnvilError?
+
+        for url in urls {
+            do {
+                let transcript = try await fileTranscriber.transcribe(url: url, locale: locale)
+                pieces.append((url.lastPathComponent, transcript.finalizedText))
+            } catch {
+                // Eine Aufnahme, die nicht gelesen werden kann, beendet den
+                // Stapel nicht — sie bekommt ihre Zeile, und die übrigen neun
+                // laufen weiter.
+                let failure = AnvilError.wrapping(error)
+                firstFailure = firstFailure ?? failure
+                pieces.append((url.lastPathComponent, ""))
+            }
         }
+
+        rawText = TextBlocks.combine(pieces, emptyNote: localized("— nichts erkannt —"))
+        recompute()
+        if let firstFailure { self.error = firstFailure }
+
+        // Automatisch aufgeräumt wird nur bei einer einzelnen Aufnahme. Bei
+        // einem Stapel ist das Ergebnis ein Dokument aus Abschnitten, und ein
+        // Modell darüber laufen zu lassen verwischt genau die Grenzen, die man
+        // gerade hergestellt hat.
+        if urls.count == 1, refinesAutomatically, usesAI { await refine() }
     }
 
     public var fileTranscriptionProgress: Double? {

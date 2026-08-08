@@ -356,9 +356,7 @@ public struct TextRecognizerToolView: View {
 
     /// Der Text aller Bilder, mit Überschriften, sobald es mehr als eines ist.
     private var combinedText: String {
-        TextRecognizer.Result.combine(
-            pages.map { ($0.name, $0.result?.text ?? "") }
-        )
+        TextBlocks.combine(pages.map { ($0.name, $0.result?.text ?? "") })
         .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 

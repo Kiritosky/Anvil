@@ -29,6 +29,7 @@
 ", am %@. des Monats" = ", on day %@ of the month";
 ", im %@" = ", in %@";
 ". trifft auch Zeilenumbrüche" = ". matches newlines too";
+"Aufnahme wird transkribiert" = "Transcribing recording";
 "Aufnahmeort" = "Location";
 "Aufnahmezeit" = "Date taken";
 "Ausschnitt %lld" = "Selection %lld";
@@ -55,6 +56,7 @@
 "Die Datei ist größer als %@ MB — das ist kein Text mehr, den man bearbeitet." = "The file is larger than %@ MB — that is no longer text anyone edits.";
 "Die Datei zum Herausziehen ließ sich nicht anlegen: %@" = "The file for dragging out could not be created: %@";
 "Die Zeichenfläche ließ sich nicht anlegen." = "The drawing surface could not be created.";
+"Drück auf Aufnehmen und sprich einfach los — ⌘⇧R geht auch. Oder zieh Audiodateien ins Fenster, auch mehrere auf einmal." = "Hit Record and just start talking — ⌘⇧R works too. Or drag audio files into the window, several at a time.";
 "Eingaben behalten" = "Keep inputs";
 "Es ist abgeschaltet oder gibt es nicht mehr. Im Tool-Store lässt es sich wieder einschalten." = "It is switched off or no longer exists. The Tool Store can switch it back on.";
 "FEHLER" = "ERROR";
@@ -89,6 +91,7 @@
 "Original" = "Original";
 "Rechts Format und Größe wählen — das Ergebnis erscheint sofort." = "Pick format and size on the right — the result appears at once.";
 "Sichern nach „%@\" ist fehlgeschlagen: %@" = "Saving to “%@” failed: %@";
+"Transkribieren" = "Transcribe";
 "Umwandeln" = "Convert";
 "Unter 60 % sieht man es, über 90 % bringt es kaum noch etwas." = "Below 60% you can see it, above 90% it barely helps.";
 "Vergrößert wird nie — das macht die Datei größer, ohne einen einzigen Bildpunkt hinzuzufügen." = "It never enlarges — that makes the file bigger without adding a single pixel.";
@@ -1029,6 +1032,7 @@
 "Übersetzen" = "Translate";
 "Überspringen" = "Skip";
 "— kein Text —" = "— no text —";
+"— nichts erkannt —" = "— nothing recognised —";
 "„%@\" enthält keinen lesbaren Text." = "“%@” contains no readable text.";
 "„%@\" ergibt im Feld %@ keinen Sinn." = "“%@” makes no sense in the %@ field.";
 "„%@\" gibt es für Dateien nicht." = "“%@” does not exist for files.";

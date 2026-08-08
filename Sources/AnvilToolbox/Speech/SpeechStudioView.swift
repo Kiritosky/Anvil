@@ -40,6 +40,14 @@ public struct SpeechStudioView: View {
             model.cancelRefinement()
             Task { await model.releaseSpeechAssets() }
         }
+        .anvilFilesDrop(.file) { dropped in
+            // Nur Audio: Ein Bild oder ein PDF hier fallen zu lassen ist ein
+            // Versehen, und der Analyzer würde es mit einer Meldung quittieren,
+            // die niemandem hilft.
+            let audio = dropped.compactMap(\.url).filter(Self.isAudio)
+            guard !audio.isEmpty else { return }
+            Task { await model.transcribeFiles(at: audio) }
+        }
         .sheet(isPresented: $isShowingHistory) {
             HistorySheet(entries: model.history) { entry in
                 model.restore(entry)
@@ -129,7 +137,7 @@ public struct SpeechStudioView: View {
             }
 
             if let progress = model.fileTranscriptionProgress {
-                ProgressStrip("Datei wird transkribiert", progress: progress, tone: .accent)
+                ProgressStrip("Aufnahme wird transkribiert", progress: progress, tone: .accent)
             }
 
             ToolWorkbench(orientation: $orientation, storageKey: metadata.id.rawValue) {
@@ -187,7 +195,7 @@ public struct SpeechStudioView: View {
             if model.rawText.isEmpty, !model.session.isActive {
                 EmptyStateView(
                     title: "Noch nichts aufgenommen",
-                    message: "Drück auf Aufnehmen und sprich einfach los — ⌘⇧R geht auch. Alternativ eine vorhandene Audiodatei öffnen.",
+                    message: "Drück auf Aufnehmen und sprich einfach los — ⌘⇧R geht auch. Oder zieh Audiodateien ins Fenster, auch mehrere auf einmal.",
                     systemImage: "waveform",
                     tone: .ai
                 ) {
@@ -434,11 +442,21 @@ public struct SpeechStudioView: View {
     private func openAudioFile() {
         let panel = NSOpenPanel()
         panel.allowedContentTypes = [.audio, .mpeg4Audio, .wav, .aiff, .mp3]
-        panel.allowsMultipleSelection = false
-        panel.prompt = "Transkribieren"
+        panel.allowsMultipleSelection = true
+        panel.prompt = localized("Transkribieren")
 
-        guard panel.runModal() == .OK, let url = panel.url else { return }
-        Task { await model.transcribeFile(at: url) }
+        guard panel.runModal() == .OK, !panel.urls.isEmpty else { return }
+        Task { await model.transcribeFiles(at: panel.urls) }
+    }
+
+    /// Ob die Datei nach Ton aussieht.
+    ///
+    /// Über die Endung statt über den Inhalt: Zum Zeitpunkt des Ziehens
+    /// jede Datei zu öffnen, um hineinzuschauen, wäre teurer als der
+    /// Fehlversuch, den es verhindert.
+    static func isAudio(_ url: URL) -> Bool {
+        guard let type = UTType(filenameExtension: url.pathExtension) else { return false }
+        return type.conforms(to: .audio) || type.conforms(to: .audiovisualContent)
     }
 
     static func timecode(_ interval: TimeInterval) -> String {
