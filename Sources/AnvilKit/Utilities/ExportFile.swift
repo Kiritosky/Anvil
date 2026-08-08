@@ -34,6 +34,39 @@ public enum ExportFile {
         return trimmed.isEmpty ? fallback : trimmed
     }
 
+    /// Ein Pfad in `directory`, den es noch nicht gibt.
+    ///
+    /// Bei einem Stapel ist das keine Feinheit: Wer dreißig Bilder in einen
+    /// Ordner legt, in dem schon welche liegen, würde sonst welche
+    /// überschreiben — und merkt es erst, wenn das Original weg ist. Statt zu
+    /// fragen oder zu überschreiben wird durchnummeriert, wie der Finder es
+    /// auch tut.
+    public static func uniqueURL(
+        in directory: URL,
+        named name: String,
+        extension pathExtension: String
+    ) -> URL {
+        let base = sanitize(name)
+        let candidate = directory.appending(path: "\(base).\(pathExtension)")
+        guard FileManager.default.fileExists(atPath: candidate.path(percentEncoded: false)) else {
+            return candidate
+        }
+
+        // Bei 2 anfangen, weil „Bild 2" nach „Bild" die Zählung ist, die jeder
+        // erwartet — nicht „Bild 1".
+        for number in 2...999 {
+            let next = directory.appending(path: "\(base) \(number).\(pathExtension)")
+            if !FileManager.default.fileExists(atPath: next.path(percentEncoded: false)) {
+                return next
+            }
+        }
+
+        // Tausend gleichnamige Dateien sind kein Ordner mehr, sondern ein
+        // Versehen. Dann entscheidet die Uhr.
+        let stamp = Int(Date().timeIntervalSince1970)
+        return directory.appending(path: "\(base) \(stamp).\(pathExtension)")
+    }
+
     /// Legt eine Datei zum Herausziehen an und gibt zurück, wo sie liegt.
     ///
     /// Jeder Export bekommt einen eigenen Unterordner. Ohne den würde ein

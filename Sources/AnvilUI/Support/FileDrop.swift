@@ -58,6 +58,26 @@ extension View {
         error: Binding<AnvilError?>? = nil,
         perform action: @escaping @MainActor (DroppedFile) -> Void
     ) -> some View {
+        modifier(FileDropModifier(kinds: kinds, error: error) { files in
+            guard let first = files.first else { return }
+            action(first)
+        })
+    }
+
+    /// Dasselbe, aber für alle gezogenen Dateien auf einmal.
+    ///
+    /// Getrennter Name statt einer Überladung: bei zwei Methoden, die sich nur
+    /// im Namen des letzten Arguments unterscheiden, wird jede geschweifte
+    /// Klammer am Ende mehrdeutig.
+    ///
+    /// Der Empfänger wird einmal gerufen, wenn alles gelesen ist — nicht je
+    /// Datei. Ein Werkzeug, das dreißig Bilder bekommt, will dreißigmal
+    /// rechnen und einmal etwas anzeigen.
+    public func anvilFilesDrop(
+        _ kinds: FileDropKind = .any,
+        error: Binding<AnvilError?>? = nil,
+        perform action: @escaping @MainActor ([DroppedFile]) -> Void
+    ) -> some View {
         modifier(FileDropModifier(kinds: kinds, error: error, action: action))
     }
 }
@@ -65,7 +85,7 @@ extension View {
 private struct FileDropModifier: ViewModifier {
     let kinds: FileDropKind
     let error: Binding<AnvilError?>?
-    let action: @MainActor (DroppedFile) -> Void
+    let action: @MainActor ([DroppedFile]) -> Void
 
     @State private var isTargeted = false
 
@@ -79,12 +99,14 @@ private struct FileDropModifier: ViewModifier {
             }
             .animation(AnvilMotion.quick, value: isTargeted)
             .onDrop(of: kinds.typeIdentifiers, isTargeted: $isTargeted) { providers in
-                guard let provider = providers.first else { return false }
-                FileDropReader.read(provider, kinds: kinds) { result in
-                    switch result {
-                    case let .success(file): action(file)
-                    case let .failure(failure): error?.wrappedValue = failure
-                    }
+                guard !providers.isEmpty else { return false }
+                FileDropReader.readAll(providers, kinds: kinds) { files, failure in
+                    // Gemeldet wird der erste Fehler, und auch nur dann, wenn
+                    // gar nichts durchkam. Wer zwanzig Bilder und ein PDF
+                    // zieht, will die zwanzig Bilder — nicht eine Meldung
+                    // über das PDF.
+                    if files.isEmpty, let failure { error?.wrappedValue = failure }
+                    if !files.isEmpty { action(files) }
                 }
                 return true
             }
@@ -97,6 +119,37 @@ private struct FileDropModifier: ViewModifier {
 /// steckt, die nichts mit Darstellung zu tun hat: welcher Anbieter welchen
 /// Inhalt liefert, und was passiert, wenn keiner passt.
 enum FileDropReader {
+    /// Liest alle Anbieter und ruft den Empfänger einmal, wenn der letzte
+    /// fertig ist.
+    ///
+    /// Die Anbieter antworten in beliebiger Reihenfolge und auf fremden
+    /// Threads; die Reihenfolge, in der die Dateien gezogen wurden, geht dabei
+    /// verloren. Deshalb wird jedes Ergebnis an seinen Platz gelegt statt
+    /// angehängt — sonst stünde die Liste bei jedem Drop anders da.
+    @MainActor
+    static func readAll(
+        _ providers: [NSItemProvider],
+        kinds: FileDropKind,
+        completion: @escaping @MainActor ([DroppedFile], AnvilError?) -> Void
+    ) {
+        var slots = [DroppedFile?](repeating: nil, count: providers.count)
+        var firstFailure: AnvilError?
+        var remaining = providers.count
+
+        for (index, provider) in providers.enumerated() {
+            read(provider, kinds: kinds) { result in
+                switch result {
+                case let .success(file): slots[index] = file
+                case let .failure(failure): firstFailure = firstFailure ?? failure
+                }
+
+                remaining -= 1
+                guard remaining == 0 else { return }
+                completion(slots.compactMap { $0 }, firstFailure)
+            }
+        }
+    }
+
     static func read(
         _ provider: NSItemProvider,
         kinds: FileDropKind,

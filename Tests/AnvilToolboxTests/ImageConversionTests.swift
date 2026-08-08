@@ -132,6 +132,82 @@ struct ImageConversionTests {
         #expect(ImageConversion.Format.heic.isLossy)
     }
 
+    // MARK: - Stapel
+
+    /// Der Punkt eines Stapels: Eine kaputte Datei darf die anderen
+    /// neunundzwanzig nicht mitnehmen. Alles andere wäre eine Zumutung —
+    /// einmal scheitern, alles noch einmal.
+    @Test
+    func oneBadFileDoesNotStopTheBatch() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appending(path: "anvil-batch-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let good = directory.appending(path: "gut.png")
+        try ImageConversion.convert(image(width: 40, height: 30), to: .png).data.write(to: good)
+
+        let broken = directory.appending(path: "kaputt.png")
+        try Data("das ist kein Bild".utf8).write(to: broken)
+
+        let results = ImageConversion.convertAll([good, broken, good], to: .jpeg)
+
+        #expect(results.count == 3)
+        #expect(results[0].succeeded)
+        #expect(!results[1].succeeded)
+        #expect(results[1].failure != nil)
+        #expect(results[2].succeeded)
+    }
+
+    /// Der Fortschritt muss vollständig zählen — ein Balken, der bei 2 von 3
+    /// stehenbleibt, sieht aus wie ein Absturz.
+    @Test
+    func progressCountsEveryFile() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appending(path: "anvil-batch-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let url = directory.appending(path: "bild.png")
+        try ImageConversion.convert(image(width: 20, height: 20), to: .png).data.write(to: url)
+
+        let seen = Reported()
+        _ = ImageConversion.convertAll(
+            [url, url, url],
+            to: .png,
+            onProgress: { done, total in seen.add(done, total) }
+        )
+
+        #expect(seen.steps == [(1, 3), (2, 3), (3, 3)].map { "\($0.0)/\($0.1)" })
+    }
+
+    /// Ein Stapel aus einer Datei, die es nicht gibt, ist kein Absturz —
+    /// sondern ein Ergebnis mit einem Fehler darin.
+    @Test
+    func aMissingFileBecomesAFailedEntry() {
+        let results = ImageConversion.convertAll(
+            [URL(filePath: "/gibt/es/nicht/bild.png")],
+            to: .png
+        )
+        #expect(results.count == 1)
+        #expect(!results[0].succeeded)
+    }
+
+    /// Sammelt, was der Fortschritt meldet — über Threads hinweg.
+    private final class Reported: @unchecked Sendable {
+        private let lock = NSLock()
+        private var values: [String] = []
+
+        func add(_ done: Int, _ total: Int) {
+            lock.lock(); values.append("\(done)/\(total)"); lock.unlock()
+        }
+
+        var steps: [String] {
+            lock.lock(); defer { lock.unlock() }
+            return values
+        }
+    }
+
     // MARK: - Metadaten
 
     /// Der stillste und wichtigste Teil: Was hineingeht, darf nicht

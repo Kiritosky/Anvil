@@ -40,6 +40,20 @@ public enum SavePanel {
         return try image.writePNG(to: url)
     }
 
+    /// Fragt nach einem Ordner — für einen Stapel, bei dem nicht dreißigmal
+    /// nach einem Dateinamen gefragt werden kann.
+    public static func directory(prompt: String) -> URL? {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        panel.canCreateDirectories = true
+        panel.prompt = prompt
+        panel.level = .modalPanel
+
+        return panel.runModal() == .OK ? panel.url : nil
+    }
+
     /// Fragt nur nach dem Ort und schreibt selbst nichts.
     ///
     /// Für alles, was schon als fertige Bytes vorliegt — ein umgewandeltes

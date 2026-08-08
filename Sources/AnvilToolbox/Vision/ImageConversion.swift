@@ -157,7 +157,17 @@ public enum ImageConversion {
         guard let source = cgImage(from: image) else {
             throw AnvilError.invalidInput(localized("Das Bild ließ sich nicht lesen."))
         }
+        return try encode(source, to: format, scale: scale, longestEdge: longestEdge, quality: quality)
+    }
 
+    /// Der gemeinsame Kern: verkleinern, kodieren, fertig.
+    private static func encode(
+        _ source: CGImage,
+        to format: Format,
+        scale: Scale,
+        longestEdge: Int,
+        quality: Double
+    ) throws -> Output {
         let original = CGSize(width: source.width, height: source.height)
         let target = targetSize(for: original, scale: scale, longestEdge: longestEdge)
         let scaled = try redraw(source, to: target)
@@ -189,6 +199,68 @@ public enum ImageConversion {
             pixelSize: CGSize(width: scaled.width, height: scaled.height),
             format: format
         )
+    }
+
+    /// Dasselbe für eine Datei auf der Platte.
+    ///
+    /// Der Weg über die URL statt über ein `NSImage` ist bei einem Stapel der
+    /// entscheidende: dreißig Fotos als `NSImage` sind dreißig entpackte
+    /// Bitmaps im Speicher, hier ist immer nur eines offen.
+    public static func convert(
+        contentsOf url: URL,
+        to format: Format,
+        scale: Scale = .original,
+        longestEdge: Int = 2000,
+        quality: Double = 0.85
+    ) throws -> Output {
+        guard let source = CGImageSourceCreateWithURL(url as CFURL, nil),
+              let image = CGImageSourceCreateImageAtIndex(source, 0, nil)
+        else {
+            throw AnvilError.invalidInput(
+                localized("„\(url.lastPathComponent)\" ließ sich nicht als Bild lesen.")
+            )
+        }
+        return try encode(image, to: format, scale: scale, longestEdge: longestEdge, quality: quality)
+    }
+
+    /// Ein ganzer Stapel.
+    ///
+    /// Ein Bild, das nicht gelesen werden kann, beendet den Stapel nicht — es
+    /// bekommt seinen Fehler und die anderen laufen weiter. Alles andere wäre
+    /// bei dreißig Dateien eine Zumutung: einmal scheitern, alles noch einmal.
+    public struct BatchResult: Sendable {
+        public let url: URL
+        public let output: Output?
+        public let failure: String?
+
+        public var succeeded: Bool { output != nil }
+    }
+
+    public static func convertAll(
+        _ urls: [URL],
+        to format: Format,
+        scale: Scale = .original,
+        longestEdge: Int = 2000,
+        quality: Double = 0.85,
+        onProgress: (@Sendable (Int, Int) -> Void)? = nil
+    ) -> [BatchResult] {
+        urls.enumerated().map { index, url in
+            defer { onProgress?(index + 1, urls.count) }
+            do {
+                let output = try convert(
+                    contentsOf: url,
+                    to: format,
+                    scale: scale,
+                    longestEdge: longestEdge,
+                    quality: quality
+                )
+                return BatchResult(url: url, output: output, failure: nil)
+            } catch let error as AnvilError {
+                return BatchResult(url: url, output: nil, failure: error.message)
+            } catch {
+                return BatchResult(url: url, output: nil, failure: error.localizedDescription)
+            }
+        }
     }
 
     /// Zeichnet das Bild in der Zielgröße neu.

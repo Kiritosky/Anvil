@@ -4,17 +4,18 @@ import AppKit
 import Foundation
 import SwiftUI
 
-/// Bild rein, kleineres Bild in einem anderen Format raus.
+/// Bilder rein, kleinere Bilder in einem anderen Format raus — eines oder
+/// dreißig.
+///
+/// Ein Bildwerkzeug, das immer nur ein Bild kann, ist ein halbes: Wer
+/// umwandelt, hat fast nie genau eine Datei, sondern den Inhalt eines Ordners.
 public struct ImageToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
 
-    @State private var image: NSImage?
-    @State private var sourceData: Data?
-    @State private var sourceName = ""
-    @State private var output: ImageConversion.Output?
+    @State private var batch = ImageBatch()
+    @State private var selectedID: ImageBatch.Entry.ID?
     @State private var error: AnvilError?
-    @State private var isWorking = false
 
     public init(context: ToolContext, metadata: ToolMetadata) {
         self.context = context
@@ -32,160 +33,193 @@ public struct ImageToolView: View {
         } inspector: {
             inspector
         } actions: {
-            AnvilButton("Aus Zwischenablage", systemImage: "doc.on.clipboard") {
-                readFromPasteboard()
-            }
+            AnvilButton("Bilder wählen …", systemImage: "folder") { chooseFiles() }
 
             AnvilButton(
-                "Sichern …",
-                systemImage: "square.and.arrow.down",
-                role: .primary
+                "Umwandeln",
+                systemImage: "arrow.triangle.2.circlepath",
+                role: .primary,
+                isBusy: batch.isWorking
             ) {
-                save()
+                convert()
             }
-            .disabled(output == nil)
+            .disabled(batch.isEmpty || batch.isWorking)
+
+            AnvilButton("Alle sichern …", systemImage: "square.and.arrow.down") { saveAll() }
+                .disabled(batch.successCount == 0)
         }
         .anvilErrorBanner($error)
-        .anvilFileDrop(.image, error: $error) { dropped in
-            guard case let .image(dropped, url) = dropped else { return }
-            load(dropped, url: url)
+        .anvilFilesDrop(.image, error: $error) { files in
+            batch.load(files.compactMap(\.url))
+            convert()
         }
     }
 
     // MARK: - Content
 
     private var content: some View {
-        ToolWorkbench(storageKey: metadata.id.rawValue) {
-            sourcePane
-        } secondary: {
-            resultPane
-        } status: {
-            statusBar
+        VStack(spacing: AnvilSpacing.md) {
+            if let progress = batch.progress {
+                ProgressStrip("Bilder werden umgewandelt", progress: progress, tone: .accent)
+            }
+
+            ToolWorkbench(storageKey: metadata.id.rawValue) {
+                listPane
+            } secondary: {
+                previewPane
+            } status: {
+                statusBar
+            }
         }
     }
 
-    private var sourcePane: some View {
-        AnvilPane("Bild", systemImage: "photo") {
-            if let image {
-                Image(nsImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding(AnvilSpacing.md)
-            } else {
+    private var listPane: some View {
+        AnvilPane("Bilder", systemImage: "photo.stack", contentInset: true) {
+            if batch.isEmpty {
                 EmptyStateView(
-                    title: "Kein Bild",
-                    message: "Zieh ein Bild ins Fenster oder hol eines aus der Zwischenablage.",
+                    title: "Keine Bilder",
+                    message: "Zieh Bilder ins Fenster — auch einen ganzen Schwung auf einmal.",
                     systemImage: "photo.on.rectangle.angled"
-                )
+                ) {
+                    AnvilButton("Bilder wählen …", systemImage: "folder", role: .secondary) {
+                        chooseFiles()
+                    }
+                }
+            } else {
+                ScrollView(.vertical) {
+                    LazyVStack(spacing: AnvilSpacing.xxs) {
+                        ForEach(batch.entries) { entry in
+                            row(entry)
+                        }
+                    }
+                    .padding(.vertical, AnvilSpacing.xxs)
+                }
             }
         } accessory: {
-            if image != nil {
-                Button { clear() } label: {
-                    Image(systemName: "xmark.circle")
+            if !batch.isEmpty {
+                Text(verbatim: "\(batch.entries.count)")
+                    .font(AnvilFont.caption.monospacedDigit())
+                    .foregroundStyle(AnvilColor.textTertiary)
+
+                Button { batch.clear() } label: {
+                    Image(systemName: "trash")
                 }
-                .buttonStyle(AnvilIconButtonStyle())
-                .anvilHelp("Bild entfernen")
+                .buttonStyle(AnvilIconButtonStyle(tone: .danger))
+                .anvilHelp("Liste leeren")
             }
         }
     }
 
-    private var resultPane: some View {
+    private func row(_ entry: ImageBatch.Entry) -> some View {
+        Button { selectedID = entry.id } label: {
+            HStack(spacing: AnvilSpacing.sm) {
+                Image(systemName: icon(for: entry))
+                    .foregroundStyle(tone(for: entry).color)
+
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(verbatim: entry.url.lastPathComponent)
+                        .font(AnvilFont.rowTitle)
+                        .foregroundStyle(AnvilColor.textPrimary)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+
+                    Text(verbatim: detail(for: entry))
+                        .font(AnvilFont.caption)
+                        .foregroundStyle(AnvilColor.textTertiary)
+                        .lineLimit(1)
+                }
+
+                Spacer(minLength: 0)
+
+                Button { batch.remove(entry) } label: {
+                    Image(systemName: "xmark")
+                }
+                .buttonStyle(AnvilIconButtonStyle())
+                .anvilHelp("Aus der Liste nehmen")
+            }
+            .padding(.horizontal, AnvilSpacing.sm)
+            .padding(.vertical, AnvilSpacing.xs)
+            .background {
+                RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
+                    .fill(selectedID == entry.id ? AnvilColor.accent.opacity(0.15) : .clear)
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var previewPane: some View {
         AnvilPane(
-            "Ergebnis",
-            systemImage: "arrow.down.circle",
-            tone: output == nil ? .neutral : .success
+            "Vorschau",
+            systemImage: "eye",
+            tone: selected?.output == nil ? .neutral : .success
         ) {
-            if isWorking {
-                EmptyStateView(
-                    title: "Wird umgewandelt …",
-                    message: "Bei großen Bildern dauert das einen Moment.",
-                    systemImage: "hourglass"
-                )
-            } else if let output, let preview = NSImage(data: output.data) {
+            if let entry = selected, let output = entry.output,
+               let preview = NSImage(data: output.data) {
                 VStack(spacing: AnvilSpacing.md) {
                     Image(nsImage: preview)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        // Das fertige Bild lässt sich direkt in den Finder
-                        // ziehen — der kürzeste Weg von hier nach dort.
-                        .anvilDragOut(name: exportName) {
+                        // Ein einzelnes Ergebnis lässt sich direkt in den
+                        // Finder ziehen, ohne den Umweg über „alle sichern".
+                        .anvilDragOut(name: "\(entry.name) \(format.title)") {
                             .image(preview)
                         }
 
-                    savingsLabel(for: output)
+                    Text(verbatim: "\(Int(output.pixelSize.width))×\(Int(output.pixelSize.height)) · \(bytes(output.byteCount))")
+                        .font(AnvilFont.caption.monospacedDigit())
+                        .foregroundStyle(AnvilColor.textTertiary)
                 }
                 .padding(AnvilSpacing.md)
+            } else if let entry = selected, let failure = entry.failure {
+                EmptyStateView(
+                    title: "Ging nicht",
+                    message: .resolved(failure),
+                    systemImage: "exclamationmark.triangle",
+                    tone: .warning
+                )
             } else {
                 EmptyStateView(
-                    title: "Noch nichts umgewandelt",
-                    message: "Rechts Format und Größe wählen — das Ergebnis erscheint sofort.",
-                    systemImage: "arrow.down.circle"
+                    title: batch.isEmpty ? "Noch nichts" : "Nichts ausgewählt",
+                    message: batch.isEmpty
+                        ? "Links Bilder hineinziehen, rechts Format und Größe wählen."
+                        : "Wähl links ein Bild, um das Ergebnis zu sehen.",
+                    systemImage: "eye"
                 )
             }
-        } accessory: {
-            if let output {
-                Button { copyResult(output) } label: {
-                    Image(systemName: "doc.on.doc")
-                }
-                .buttonStyle(AnvilIconButtonStyle())
-                .anvilHelp("Ergebnis kopieren")
-            }
         }
-    }
-
-    /// Was die Umwandlung gebracht hat — und ehrlich auch, wenn sie nichts
-    /// gebracht hat: ein PNG-Bildschirmfoto wird als PNG gern größer.
-    @ViewBuilder
-    private func savingsLabel(for output: ImageConversion.Output) -> some View {
-        if let sourceData {
-            let saved = sourceData.count - output.byteCount
-            StatusPill(
-                .resolved(savingsText(saved: saved, of: sourceData.count)),
-                systemImage: saved > 0 ? "arrow.down" : "arrow.up",
-                tone: saved > 0 ? .success : .warning
-            )
-        }
-    }
-
-    private func savingsText(saved: Int, of original: Int) -> String {
-        guard saved > 0 else {
-            let grown = ByteCountFormatter.string(fromByteCount: Int64(-saved), countStyle: .file)
-            return localized("\(grown) größer")
-        }
-        let share = Int(Double(saved) / Double(max(original, 1)) * 100)
-        return localized("\(share) % kleiner")
     }
 
     private var statusBar: some View {
         ToolStatusBar {
-            if let image {
+            StatusMetric("\(batch.entries.count)", label: "Bilder", systemImage: "photo.stack")
+
+            if batch.successCount > 0 {
                 StatusMetric(
-                    "\(Int(pixelSize(of: image).width))×\(Int(pixelSize(of: image).height))",
-                    label: "Original",
-                    systemImage: "photo"
-                )
-            }
-            if let sourceData {
-                StatusMetric(
-                    ByteCountFormatter.string(fromByteCount: Int64(sourceData.count), countStyle: .file),
+                    bytes(batch.totalOriginalBytes),
                     label: "vorher",
                     systemImage: "externaldrive"
                 )
-            }
-            if let output {
                 StatusMetric(
-                    "\(Int(output.pixelSize.width))×\(Int(output.pixelSize.height))",
+                    bytes(batch.totalOutputBytes),
                     label: "nachher",
-                    systemImage: "arrow.right"
-                )
-                StatusMetric(
-                    ByteCountFormatter.string(fromByteCount: Int64(output.byteCount), countStyle: .file),
-                    label: "Größe",
                     systemImage: "externaldrive.badge.checkmark"
                 )
             }
+
+            if batch.failureCount > 0 {
+                StatusMetric(
+                    "\(batch.failureCount)",
+                    label: "fehlgeschlagen",
+                    systemImage: "exclamationmark.triangle",
+                    tone: .warning
+                )
+            }
         } trailing: {
-            StatusPill(.resolved(format.title), tone: .accent)
+            if batch.successCount > 0 {
+                StatusPill(.resolved(savingsText), tone: savedBytes > 0 ? .success : .warning)
+            } else {
+                StatusPill(.resolved(format.title), tone: .accent)
+            }
         }
     }
 
@@ -212,9 +246,10 @@ public struct ImageToolView: View {
                 footnote: "Unter 60 % sieht man es, über 90 % bringt es kaum noch etwas."
             ) {
                 Slider(
-                    value: settings.bind(.imageQuality) { _ in convert() },
+                    value: settings.bind(.imageQuality),
                     in: 0.3...1.0,
-                    step: 0.05
+                    step: 0.05,
+                    onEditingChanged: { isEditing in if !isEditing { convert() } }
                 )
                 Text(verbatim: "\(Int(settings[.imageQuality] * 100)) %")
                     .font(AnvilFont.caption.monospacedDigit())
@@ -248,10 +283,10 @@ public struct ImageToolView: View {
         InspectorSection(
             "Metadaten",
             systemImage: "eye.slash",
-            footnote: "Das Bild wird neu gezeichnet und neu kodiert. EXIF, Aufnahmeort und Gerätename bleiben dabei zurück — nicht als Schalter, sondern als Folge."
+            footnote: "Jedes Bild wird neu gezeichnet und neu kodiert. EXIF, Aufnahmeort und Gerätename bleiben dabei zurück — nicht als Schalter, sondern als Folge."
         ) {
             if metadataFound.isEmpty {
-                Text("In diesem Bild steckt nichts Auffälliges.")
+                Text("In den gewählten Bildern steckt nichts Auffälliges.")
                     .font(AnvilFont.caption)
                     .foregroundStyle(AnvilColor.textTertiary)
             } else {
@@ -270,83 +305,92 @@ public struct ImageToolView: View {
 
     // MARK: - Arbeit
 
-    private func load(_ dropped: NSImage, url: URL?) {
-        image = dropped
-        sourceName = url?.deletingPathExtension().lastPathComponent ?? localized("Bild")
-        sourceData = url.flatMap { try? Data(contentsOf: $0) } ?? dropped.tiffRepresentation
+    private func chooseFiles() {
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = true
+        panel.canChooseDirectories = false
+        panel.allowedContentTypes = [.image]
+        panel.prompt = localized("Hinzufügen")
+
+        guard panel.runModal() == .OK else { return }
+        batch.load(panel.urls)
         convert()
     }
 
-    private func readFromPasteboard() {
-        let objects = NSPasteboard.general.readObjects(forClasses: [NSImage.self]) as? [NSImage]
-        guard let pasted = objects?.first else {
-            error = .invalidInput(localized("In der Zwischenablage liegt kein Bild."))
-            return
-        }
-        load(pasted, url: nil)
-    }
-
     private func convert() {
-        guard let image else { return }
-        isWorking = true
-        defer { isWorking = false }
-
-        do {
-            output = try ImageConversion.convert(
-                image,
+        guard !batch.isEmpty else { return }
+        Task {
+            await batch.convert(
                 to: format,
                 scale: scale,
                 longestEdge: settings[.imageLongestEdge],
                 quality: settings[.imageQuality]
             )
+            if selectedID == nil { selectedID = batch.entries.first?.id }
+        }
+    }
+
+    private func saveAll() {
+        guard let directory = SavePanel.directory(prompt: localized("Hierhin sichern")) else {
+            return
+        }
+        do {
+            try batch.write(into: directory)
         } catch {
             self.error = AnvilError.wrapping(error)
-            output = nil
         }
-    }
-
-    private func save() {
-        guard let output,
-              let url = SavePanel.url(suggestedName: exportName, type: format.type)
-        else { return }
-
-        do {
-            try output.data.write(to: url)
-        } catch {
-            self.error = .storage(
-                localized("Sichern nach „\(url.lastPathComponent)\" ist fehlgeschlagen: \(error.localizedDescription)")
-            )
-        }
-    }
-
-    private func copyResult(_ output: ImageConversion.Output) {
-        guard let image = NSImage(data: output.data) else { return }
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.writeObjects([image])
-    }
-
-    private func clear() {
-        image = nil
-        sourceData = nil
-        output = nil
-        sourceName = ""
     }
 
     // MARK: - Abgeleitet
 
-    private var exportName: String {
-        let base = sourceName.isEmpty ? localized("Bild") : sourceName
-        return "\(base) \(format.title)"
+    private var selected: ImageBatch.Entry? {
+        batch.entries.first { $0.id == selectedID } ?? batch.entries.first
     }
 
+    private var savedBytes: Int {
+        batch.totalOriginalBytes - batch.totalOutputBytes
+    }
+
+    private var savingsText: String {
+        guard savedBytes > 0 else {
+            return localized("\(bytes(-savedBytes)) größer")
+        }
+        let share = Int(Double(savedBytes) / Double(max(batch.totalOriginalBytes, 1)) * 100)
+        return localized("\(share) % kleiner")
+    }
+
+    /// Was in den Bildern steckt, über den ganzen Stapel gesehen — sonst
+    /// stünde bei dreißig Fotos dreißigmal „Aufnahmeort".
     private var metadataFound: [String] {
-        sourceData.map { ImageConversion.metadataSummary(of: $0) } ?? []
+        var seen: [String] = []
+        for entry in batch.entries.prefix(20) {
+            guard let data = try? Data(contentsOf: entry.url) else { continue }
+            for item in ImageConversion.metadataSummary(of: data) where !seen.contains(item) {
+                seen.append(item)
+            }
+        }
+        return seen
     }
 
-    private func pixelSize(of image: NSImage) -> CGSize {
-        guard let representation = image.representations.first else { return image.size }
-        return CGSize(width: representation.pixelsWide, height: representation.pixelsHigh)
+    private func icon(for entry: ImageBatch.Entry) -> String {
+        if entry.failure != nil { return "exclamationmark.triangle" }
+        return entry.output == nil ? "photo" : "checkmark.circle"
+    }
+
+    private func tone(for entry: ImageBatch.Entry) -> AnvilTone {
+        if entry.failure != nil { return .warning }
+        return entry.output == nil ? .neutral : .success
+    }
+
+    private func detail(for entry: ImageBatch.Entry) -> String {
+        if let failure = entry.failure { return failure }
+        guard let output = entry.output else { return bytes(entry.originalBytes) }
+        let arrow = entry.savedBytes > 0 ? "↓" : "↑"
+        return "\(bytes(entry.originalBytes)) → \(bytes(output.byteCount)) \(arrow)"
+    }
+
+    private func bytes(_ count: Int) -> String {
+        ByteCountFormatter.string(fromByteCount: Int64(count), countStyle: .file)
     }
 }
 

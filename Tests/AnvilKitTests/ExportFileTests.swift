@@ -98,6 +98,60 @@ struct ExportFileTests {
         #expect(contentsOfFirst == "eins")
     }
 
+    // MARK: - Ein Stapel in einen Ordner
+
+    /// Der Fall, der bei einem Stapel wirklich weh tut: In den Zielordner
+    /// gehen dreißig Dateien, und eine davon heißt wie eine, die schon da
+    /// liegt. Überschreiben würde das Original vernichten, und man merkt es
+    /// erst, wenn es weg ist.
+    @Test
+    func aSecondFileWithTheSameNameGetsANumber() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appending(path: "anvil-unique-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let first = ExportFile.uniqueURL(in: directory, named: "Foto", extension: "jpg")
+        #expect(first.lastPathComponent == "Foto.jpg")
+        try Data("eins".utf8).write(to: first)
+
+        let second = ExportFile.uniqueURL(in: directory, named: "Foto", extension: "jpg")
+        #expect(second.lastPathComponent == "Foto 2.jpg")
+        try Data("zwei".utf8).write(to: second)
+
+        let third = ExportFile.uniqueURL(in: directory, named: "Foto", extension: "jpg")
+        #expect(third.lastPathComponent == "Foto 3.jpg")
+
+        // Und das Original steht unangetastet da.
+        let original = try String(contentsOf: first, encoding: .utf8)
+        #expect(original == "eins")
+    }
+
+    /// Dieselbe Endung entscheidet mit: ein Foto.png neben einem Foto.jpg ist
+    /// kein Zusammenstoß.
+    @Test
+    func differentExtensionsDoNotCollide() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appending(path: "anvil-unique-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        try Data().write(to: ExportFile.uniqueURL(in: directory, named: "Foto", extension: "png"))
+        let jpg = ExportFile.uniqueURL(in: directory, named: "Foto", extension: "jpg")
+        #expect(jpg.lastPathComponent == "Foto.jpg")
+    }
+
+    @Test
+    func theNameIsCleanedBeforeTheCollisionCheck() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appending(path: "anvil-unique-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let url = ExportFile.uniqueURL(in: directory, named: "a/b", extension: "png")
+        #expect(url.lastPathComponent == "a b.png")
+    }
+
     @Test
     func sanitizesTheNameOnTheWayToDisk() throws {
         let url = try ExportFile.temporary(
