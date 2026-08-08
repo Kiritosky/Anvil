@@ -53,7 +53,7 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
 | KI-Werkzeuge | 15 Prompt-Tools: Commit-Message, Code-Review, Tests, Regex, Shell, Übersetzen, E-Mail … |
 | Text & Daten | JSON, Base64, URL, JWT, Prüfsummen (auch von Dateien), UUID, Zeitstempel, Schreibweise, Zeilen, Slug, Hex, HTML, Statistik, Regex-Tester, Textvergleich |
 | Coding | Zahlensysteme, Zeichen (Unicode), Dateirechte, HTTP-Codes, Cron |
-| Alltag | Bildschirmfoto, Zwischenablage-Verlauf, Farben, QR-Code, Text aus Bild, Passwörter, Einheiten, Prozent, Zeitzonen, Blindtext |
+| Alltag | Bildschirmfoto, Zwischenablage-Verlauf, Farben, QR-Code, Text aus Bild, Bild umwandeln, Passwörter, Einheiten, Prozent, Zeitzonen, Blindtext |
 | System | Tool-Store |
 
 Alles ohne KI-Bedarf läuft deterministisch und ohne Netz; die KI-Werkzeuge

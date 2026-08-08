@@ -72,6 +72,8 @@ SKIP = {
     "Apple Intelligence (on-device)",
     "Base64", "Hex", "JSON", "JWT", "SQL", "URL", "UUID", "PostgreSQL",
     "MD5", "SHA-1", "SHA-256", "SHA-512",
+    # Bildformate heißen in jeder Sprache gleich.
+    "PNG", "JPEG", "HEIC", "TIFF",
     "camelCase", "PascalCase", "snake_case", "kebab-case", "CONSTANT_CASE",
     "ICU (Swift/NSRegularExpression)", "Swift DocC (///)",
     "A → Z", "Z → A", "Slug", "Speech Studio",

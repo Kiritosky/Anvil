@@ -9,6 +9,7 @@ public enum ScreenshotToolBundle: ToolBundle {
 
     public static let toolID: ToolIdentifier = "screen.shot"
     public static let recognizerToolID: ToolIdentifier = "vision.text"
+    public static let imageToolID: ToolIdentifier = "vision.image"
 
     public static let regionActionID: ShortcutActionID = "screenshot.region"
     public static let windowActionID: ShortcutActionID = "screenshot.window"
@@ -24,7 +25,7 @@ public enum ScreenshotToolBundle: ToolBundle {
         // One bundle rather than two: aufnehmen and auslesen are the same
         // subject, and a Tool Store full of one-tool groups is a list of
         // headings.
-        [screenshot, textRecognizer]
+        [screenshot, textRecognizer, imageConverter]
     }
 
     @MainActor
@@ -45,6 +46,29 @@ public enum ScreenshotToolBundle: ToolBundle {
 
         return ToolRegistration(metadata: metadata) { context in
             ScreenshotToolView(context: context, metadata: metadata)
+        }
+    }
+
+    /// Bilder umwandeln — im selben Bündel wie die Texterkennung, weil beide
+    /// dasselbe tun: ein Bild hineingeben und etwas anderes herausholen.
+    @MainActor
+    private static var imageConverter: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: imageToolID,
+            title: "Bild umwandeln",
+            subtitle: "Format, Größe, Metadaten",
+            systemImage: "photo.badge.arrow.down",
+            category: .everyday,
+            keywords: [
+                "bild", "image", "png", "jpeg", "jpg", "heic", "tiff",
+                "umwandeln", "konvertieren", "verkleinern", "komprimieren",
+                "exif", "metadaten", "gps", "aufnahmeort"
+            ],
+            badge: "Neu"
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            ImageToolView(context: context, metadata: metadata)
         }
     }
 

@@ -40,6 +40,15 @@ public enum SavePanel {
         return try image.writePNG(to: url)
     }
 
+    /// Fragt nur nach dem Ort und schreibt selbst nichts.
+    ///
+    /// Für alles, was schon als fertige Bytes vorliegt — ein umgewandeltes
+    /// Bild etwa. Die Alternative wäre, die Daten durch eine der
+    /// `write`-Methoden zu schleusen, die sie vorher gar nicht kennt.
+    public static func url(suggestedName: String, type: UTType) -> URL? {
+        ask(suggestedName: suggestedName, type: type)
+    }
+
     private static func ask(suggestedName: String, type: UTType) -> URL? {
         let panel = NSSavePanel()
         panel.allowedContentTypes = [type]
