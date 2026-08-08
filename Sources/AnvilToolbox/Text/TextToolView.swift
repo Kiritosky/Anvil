@@ -428,7 +428,7 @@ public struct TextToolView: View {
     }
 
     private func swap() {
-        file = nil
+        files = []
         input = output
         run()
     }

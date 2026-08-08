@@ -88,28 +88,31 @@ public final class ImageBatch {
 
         let urls = entries.map(\.url)
 
-        let results = await Task.detached(priority: .userInitiated) { [weak self] in
-            ImageConversion.convertAll(
-                urls,
-                to: format,
-                scale: scale,
-                longestEdge: longestEdge,
-                quality: quality,
-                onProgress: { done, total in
-                    guard total > 0 else { return }
-                    let share = Double(done) / Double(total)
-                    Task { @MainActor in self?.progress = share }
-                }
-            )
-        }.value
+        // Datei für Datei statt alles in einem Rutsch: Der Fortschritt
+        // entsteht dann hier, wo er hingehört, statt über einen Rückruf aus
+        // einer abgesetzten Aufgabe zurück auf den Hauptaktor zu müssen. Das
+        // war der Weg, den Swift 6 zu Recht verbietet — und er war auch
+        // umständlicher.
+        for (index, url) in urls.enumerated() {
+            let result = await Task.detached(priority: .userInitiated) {
+                ImageConversion.convertAll(
+                    [url],
+                    to: format,
+                    scale: scale,
+                    longestEdge: longestEdge,
+                    quality: quality
+                )
+            }.value
 
-        // Zugeordnet wird über die URL, nicht über den Index: während
-        // gerechnet wurde, kann etwas aus der Liste geflogen sein.
-        let byURL = Dictionary(uniqueKeysWithValues: results.map { ($0.url, $0) })
-        for index in entries.indices {
-            guard let result = byURL[entries[index].url] else { continue }
-            entries[index].output = result.output
-            entries[index].failure = result.failure
+            progress = Double(index + 1) / Double(urls.count)
+
+            // Zugeordnet wird über die URL, nicht über den Index: während
+            // gerechnet wurde, kann etwas aus der Liste geflogen sein.
+            guard let outcome = result.first,
+                  let position = entries.firstIndex(where: { $0.url == outcome.url })
+            else { continue }
+            entries[position].output = outcome.output
+            entries[position].failure = outcome.failure
         }
     }
 

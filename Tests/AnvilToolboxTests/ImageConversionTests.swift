@@ -159,26 +159,24 @@ struct ImageConversionTests {
         #expect(results[2].succeeded)
     }
 
-    /// Der Fortschritt muss vollständig zählen — ein Balken, der bei 2 von 3
-    /// stehenbleibt, sieht aus wie ein Absturz.
+    /// Reihenfolge und Anzahl bleiben, wie sie hineingingen — die Liste in
+    /// der Ansicht hängt daran.
     @Test
-    func progressCountsEveryFile() throws {
+    func keepsOrderAndCount() throws {
         let directory = FileManager.default.temporaryDirectory
             .appending(path: "anvil-batch-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directory) }
 
-        let url = directory.appending(path: "bild.png")
-        try ImageConversion.convert(image(width: 20, height: 20), to: .png).data.write(to: url)
+        let urls = try (1...4).map { number -> URL in
+            let url = directory.appending(path: "bild\(number).png")
+            try ImageConversion.convert(image(width: 10 * number, height: 10), to: .png)
+                .data.write(to: url)
+            return url
+        }
 
-        let seen = Reported()
-        _ = ImageConversion.convertAll(
-            [url, url, url],
-            to: .png,
-            onProgress: { done, total in seen.add(done, total) }
-        )
-
-        #expect(seen.steps == [(1, 3), (2, 3), (3, 3)].map { "\($0.0)/\($0.1)" })
+        let results = ImageConversion.convertAll(urls, to: .png)
+        #expect(results.map(\.url) == urls)
     }
 
     /// Ein Stapel aus einer Datei, die es nicht gibt, ist kein Absturz —
@@ -191,21 +189,6 @@ struct ImageConversionTests {
         )
         #expect(results.count == 1)
         #expect(!results[0].succeeded)
-    }
-
-    /// Sammelt, was der Fortschritt meldet — über Threads hinweg.
-    private final class Reported: @unchecked Sendable {
-        private let lock = NSLock()
-        private var values: [String] = []
-
-        func add(_ done: Int, _ total: Int) {
-            lock.lock(); values.append("\(done)/\(total)"); lock.unlock()
-        }
-
-        var steps: [String] {
-            lock.lock(); defer { lock.unlock() }
-            return values
-        }
     }
 
     // MARK: - Metadaten

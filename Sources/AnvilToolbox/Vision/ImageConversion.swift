@@ -241,11 +241,9 @@ public enum ImageConversion {
         to format: Format,
         scale: Scale = .original,
         longestEdge: Int = 2000,
-        quality: Double = 0.85,
-        onProgress: (@Sendable (Int, Int) -> Void)? = nil
+        quality: Double = 0.85
     ) -> [BatchResult] {
-        urls.enumerated().map { index, url in
-            defer { onProgress?(index + 1, urls.count) }
+        urls.map { url in
             do {
                 let output = try convert(
                     contentsOf: url,
