@@ -176,28 +176,28 @@ public enum TextToolCatalog {
                 TextToolMode(
                     id: "sha256",
                     title: "SHA-256",
-                    runOnFile: { try FileDigest.hex(SHA256.self, of: $0) }
+                    runOnFiles: { try FileDigest.report(SHA256.self, of: $0) }
                 ) { input in
                     hexString(SHA256.hash(data: Data(input.utf8)))
                 },
                 TextToolMode(
                     id: "sha512",
                     title: "SHA-512",
-                    runOnFile: { try FileDigest.hex(SHA512.self, of: $0) }
+                    runOnFiles: { try FileDigest.report(SHA512.self, of: $0) }
                 ) { input in
                     hexString(SHA512.hash(data: Data(input.utf8)))
                 },
                 TextToolMode(
                     id: "sha1",
                     title: "SHA-1",
-                    runOnFile: { try FileDigest.hex(Insecure.SHA1.self, of: $0) }
+                    runOnFiles: { try FileDigest.report(Insecure.SHA1.self, of: $0) }
                 ) { input in
                     hexString(Insecure.SHA1.hash(data: Data(input.utf8)))
                 },
                 TextToolMode(
                     id: "md5",
                     title: "MD5",
-                    runOnFile: { try FileDigest.hex(Insecure.MD5.self, of: $0) }
+                    runOnFiles: { try FileDigest.report(Insecure.MD5.self, of: $0) }
                 ) { input in
                     hexString(Insecure.MD5.hash(data: Data(input.utf8)))
                 },
@@ -205,11 +205,7 @@ public enum TextToolCatalog {
                     id: "all",
                     title: "Alle",
                     systemImage: "list.bullet",
-                    runOnFile: { url in
-                        try FileDigest.all(of: url)
-                            .map { "\($0.name.padding(toLength: 9, withPad: " ", startingAt: 0))\($0.value)" }
-                            .joined(separator: "\n")
-                    }
+                    runOnFiles: { FileDigest.allLines(of: $0) }
                 ) { input in
                     let data = Data(input.utf8)
                     return """

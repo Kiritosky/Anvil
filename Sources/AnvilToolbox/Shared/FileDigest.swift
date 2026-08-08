@@ -49,6 +49,63 @@ enum FileDigest {
         ]
     }
 
+    /// Was das Werkzeug anzeigt — je nachdem, wie viele Dateien da sind.
+    ///
+    /// Bei einer Datei nur die Prüfsumme: Man will sie neben die von der
+    /// Webseite halten, und ein Dateiname daneben stört dabei. Ab zwei die
+    /// shasum-Form mit Namen, weil eine Liste ohne Namen nutzlos ist.
+    static func report<Function: HashFunction>(
+        _ function: Function.Type,
+        of urls: [URL]
+    ) throws -> String {
+        guard urls.count != 1 else { return try hex(function, of: urls[0]) }
+        return lines(function, of: urls)
+    }
+
+    /// Mehrere Dateien, eine Zeile je Datei.
+    ///
+    /// Das Format ist nicht frei gewählt: `<prüfsumme>␣␣<name>` ist das, was
+    /// `shasum` ausgibt und `shasum -c` wieder liest. Wer die Liste einer
+    /// Veröffentlichung beilegt, gibt damit etwas heraus, das der Empfänger
+    /// ohne Abtippen prüfen kann.
+    ///
+    /// Eine Datei, die nicht gelesen werden kann, bekommt ihre Zeile mit dem
+    /// Fehler statt einer Prüfsumme — sie fällt nicht stillschweigend aus der
+    /// Liste, sonst prüft jemand fünf von sechs Dateien und hält das für alle.
+    static func lines<Function: HashFunction>(
+        _ function: Function.Type,
+        of urls: [URL]
+    ) -> String {
+        urls.map { url in
+            do {
+                return "\(try hex(function, of: url))  \(url.lastPathComponent)"
+            } catch let error as AnvilError {
+                return "\(localized("FEHLER")): \(error.message)  \(url.lastPathComponent)"
+            } catch {
+                return "\(localized("FEHLER")): \(error.localizedDescription)  \(url.lastPathComponent)"
+            }
+        }
+        .joined(separator: "\n")
+    }
+
+    /// Dasselbe mit allen vier Verfahren, nach Datei gruppiert.
+    static func allLines(of urls: [URL]) -> String {
+        urls.map { url in
+            let header = url.lastPathComponent
+            do {
+                let rows = try all(of: url)
+                    .map { "  \($0.name.padding(toLength: 9, withPad: " ", startingAt: 0))\($0.value)" }
+                    .joined(separator: "\n")
+                return "\(header)\n\(rows)"
+            } catch let error as AnvilError {
+                return "\(header)\n  \(error.message)"
+            } catch {
+                return "\(header)\n  \(error.localizedDescription)"
+            }
+        }
+        .joined(separator: "\n\n")
+    }
+
     /// Die Größe der Datei, für die Anzeige daneben.
     static func size(of url: URL) -> Int64 {
         let values = try? url.resourceValues(forKeys: [.fileSizeKey])

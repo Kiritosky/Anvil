@@ -13,25 +13,29 @@ public struct TextToolMode: Identifiable, Sendable {
     /// Transforms input into output, or throws ``AnvilError/invalidInput(_:)``
     /// with a message the user can act on.
     public let run: @Sendable (String) throws -> String
-    /// Dasselbe für eine Datei, wo das etwas anderes ist als für ihren Text.
+    /// Dasselbe für Dateien, wo das etwas anderes ist als für ihren Text.
     ///
     /// Eine Prüfsumme ist der Fall, für den es das gibt: die eines Downloads
     /// rechnet sich über dessen Bytes, und die Datei ist zu groß, um sie
     /// vorher in eine Zeichenkette zu verwandeln. Fehlt die Funktion, nimmt
     /// das Werkzeug keine Dateien an.
-    public let runOnFile: (@Sendable (URL) throws -> String)?
+    ///
+    /// Die Liste ist der Normalfall, nicht die Ausnahme: Wer Prüfsummen
+    /// braucht, hat selten genau eine Datei, sondern den Inhalt eines
+    /// Download-Ordners.
+    public let runOnFiles: (@Sendable ([URL]) throws -> String)?
 
     public init(
         id: String,
         title: String,
         systemImage: String? = nil,
-        runOnFile: (@Sendable (URL) throws -> String)? = nil,
+        runOnFiles: (@Sendable ([URL]) throws -> String)? = nil,
         run: @escaping @Sendable (String) throws -> String
     ) {
         self.id = id
         self.title = localized(runtime: title)
         self.systemImage = systemImage
-        self.runOnFile = runOnFile
+        self.runOnFiles = runOnFiles
         self.run = run
     }
 }

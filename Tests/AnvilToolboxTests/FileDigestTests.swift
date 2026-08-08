@@ -95,6 +95,75 @@ struct FileDigestTests {
         }
     }
 
+    // MARK: - Mehrere Dateien
+
+    /// Bei einer Datei nur die Prüfsumme — man hält sie neben die von der
+    /// Webseite, und ein Dateiname daneben stört dabei.
+    @Test
+    func aSingleFileReportsJustTheDigest() throws {
+        try withFile(Data("abc".utf8)) { url in
+            let report = try FileDigest.report(SHA256.self, of: [url])
+            #expect(report == "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")
+        }
+    }
+
+    /// Ab zwei die shasum-Form: Prüfsumme, zwei Leerzeichen, Name. Das ist
+    /// nicht Geschmack, sondern das Format, das `shasum -c` wieder liest.
+    @Test
+    func severalFilesUseTheShasumFormat() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appending(path: "anvil-digest-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let first = directory.appending(path: "eins.txt")
+        let second = directory.appending(path: "zwei.txt")
+        try Data("abc".utf8).write(to: first)
+        try Data("abc".utf8).write(to: second)
+
+        let report = try FileDigest.report(SHA256.self, of: [first, second])
+        let rows = report.components(separatedBy: "\n")
+
+        #expect(rows.count == 2)
+        #expect(rows[0] == "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad  eins.txt")
+        #expect(rows[1].hasSuffix("  zwei.txt"))
+    }
+
+    /// Eine unlesbare Datei bekommt ihre Zeile mit dem Fehler statt still aus
+    /// der Liste zu fallen — sonst prüft jemand fünf von sechs Dateien und
+    /// hält das für alle.
+    @Test
+    func anUnreadableFileStillGetsALine() throws {
+        try withFile(Data("abc".utf8)) { url in
+            let missing = URL(filePath: "/gibt/es/nicht/anvil.bin")
+            let report = try FileDigest.report(SHA256.self, of: [url, missing])
+            let rows = report.components(separatedBy: "\n")
+
+            #expect(rows.count == 2)
+            #expect(rows[1].contains("anvil.bin"))
+            #expect(!rows[1].hasPrefix("ba7816bf"))
+        }
+    }
+
+    /// „Alle" gruppiert nach Datei — vier Zeilen unter einem Namen sind
+    /// lesbar, vier Namen mit je vier Werten dazwischen nicht.
+    @Test
+    func allLinesGroupsByFile() throws {
+        try withFile(Data("abc".utf8)) { url in
+            let report = FileDigest.allLines(of: [url, url])
+            let blocks = report.components(separatedBy: "\n\n")
+
+            #expect(blocks.count == 2)
+            #expect(blocks[0].hasPrefix(url.lastPathComponent))
+            #expect(blocks[0].contains("SHA-256"))
+        }
+    }
+
+    @Test
+    func anEmptyListProducesNothing() throws {
+        #expect(try FileDigest.report(SHA256.self, of: []).isEmpty)
+    }
+
     // MARK: - Größe und Fehler
 
     @Test

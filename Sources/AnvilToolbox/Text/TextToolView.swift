@@ -17,15 +17,17 @@ public struct TextToolView: View {
     @State private var output = ""
     @State private var failure: String?
     @State private var dropError: AnvilError?
-    @State private var file: LoadedFile?
+    @State private var files: [LoadedFile] = []
     @State private var isWorking = false
     @State private var modeID: String
     @State private var orientation: WorkbenchOrientation = .horizontal
 
     /// Eine Datei, die statt des getippten Textes durchgerechnet wird.
-    struct LoadedFile: Equatable {
+    struct LoadedFile: Equatable, Identifiable {
         let url: URL
         let size: Int64
+
+        var id: URL { url }
     }
 
     public init(tool: TextTool, context: ToolContext) {
@@ -48,15 +50,21 @@ public struct TextToolView: View {
         // Werkzeuge, die über Bytes rechnen, wollen die Datei selbst; alle
         // anderen deren Text. Beides über denselben Empfänger, damit es für den
         // Benutzer keinen Unterschied macht, wo er loslässt.
-        .anvilFileDrop(acceptsFiles ? .file : .text, error: $dropError) { dropped in
-            switch dropped {
-            case let .text(text, _):
-                file = nil
-                input = text
-            case let .file(url):
-                file = LoadedFile(url: url, size: FileDigest.size(of: url))
-            case .image:
-                return
+        .anvilFilesDrop(acceptsFiles ? .file : .text, error: $dropError) { dropped in
+            // Ein Werkzeug, das über Bytes rechnet, bekommt alle gezogenen
+            // Dateien; eines, das Text erwartet, kann nur eine anzeigen.
+            let urls = dropped.compactMap { item -> URL? in
+                if case let .file(url) = item { return url }
+                return nil
+            }
+
+            if urls.isEmpty {
+                if case let .text(text, _)? = dropped.first {
+                    files = []
+                    input = text
+                }
+            } else {
+                add(urls)
             }
             run()
         }
@@ -64,7 +72,18 @@ public struct TextToolView: View {
 
     /// Ob dieses Werkzeug mit einer Datei überhaupt etwas anfangen kann.
     private var acceptsFiles: Bool {
-        tool.modes.contains { $0.runOnFile != nil }
+        tool.modes.contains { $0.runOnFiles != nil }
+    }
+
+    /// Nimmt Dateien in die Liste, ohne Doppelte.
+    ///
+    /// Dieselbe Datei zweimal wäre zweimal dieselbe Prüfsumme unter demselben
+    /// Namen — eine Liste, die man nicht mehr liest, sondern zählt.
+    private func add(_ urls: [URL]) {
+        let known = Set(files.map(\.url))
+        files += urls
+            .filter { !known.contains($0) }
+            .map { LoadedFile(url: $0, size: FileDigest.size(of: $0)) }
     }
 
     // MARK: - Zurückholen und merken
@@ -91,7 +110,7 @@ public struct TextToolView: View {
     /// sich, und ein Werkzeug, das beim Öffnen auf eine Datei zeigt, die es
     /// nicht mehr gibt, ist schlechter als eines, das leer beginnt.
     private func remember() {
-        guard file == nil else {
+        guard files.isEmpty else {
             context.drafts.forget(tool.id)
             return
         }
@@ -106,7 +125,7 @@ public struct TextToolView: View {
     private var emptyMessage: LocalizedStringKey {
         if tool.generatesWithoutInput { return "Wähle rechts eine Variante." }
         if acceptsFiles {
-            return "Links etwas einfügen — oder eine Datei ins Fenster ziehen."
+            return "Links etwas einfügen — oder Dateien ins Fenster ziehen, auch viele."
         }
         return "Links etwas einfügen — das Ergebnis erscheint sofort."
     }
@@ -125,12 +144,12 @@ public struct TextToolView: View {
 
     private var inputPane: some View {
         AnvilPane(
-            file == nil ? "Eingabe" : "Datei",
-            systemImage: file == nil ? "square.and.pencil" : "doc",
-            tone: file == nil ? .neutral : .accent
+            files.isEmpty ? "Eingabe" : "Dateien",
+            systemImage: files.isEmpty ? "square.and.pencil" : "doc.on.doc",
+            tone: files.isEmpty ? .neutral : .accent
         ) {
-            if let file {
-                loadedFile(file)
+            if !files.isEmpty {
+                fileList
             } else {
                 AnvilTextEditor(
                     text: $input,
@@ -141,7 +160,7 @@ public struct TextToolView: View {
             }
         } accessory: {
             Button {
-                file = nil
+                files = []
                 input = context.pasteboard.string() ?? input
                 run()
             } label: {
@@ -155,39 +174,52 @@ public struct TextToolView: View {
             }
             .buttonStyle(AnvilIconButtonStyle())
             .anvilHelp("Leeren")
-            .disabled(input.isEmpty && file == nil)
+            .disabled(input.isEmpty && files.isEmpty)
         }
     }
 
-    /// Was statt des Editors steht, solange eine Datei geladen ist.
+    /// Was statt des Editors steht, solange Dateien geladen sind.
     ///
-    /// Kein Textfeld mit dem Dateinamen darin: die Prüfsumme gehört zu den
+    /// Kein Textfeld mit den Dateinamen darin: die Prüfsumme gehört zu den
     /// Bytes auf der Platte, nicht zu einer Zeichenkette, die man versehentlich
     /// bearbeiten könnte.
-    private func loadedFile(_ file: LoadedFile) -> some View {
-        VStack(spacing: AnvilSpacing.md) {
-            Spacer(minLength: 0)
+    private var fileList: some View {
+        ScrollView(.vertical) {
+            LazyVStack(spacing: AnvilSpacing.xxs) {
+                ForEach(files) { file in
+                    HStack(spacing: AnvilSpacing.sm) {
+                        Image(systemName: "doc")
+                            .foregroundStyle(AnvilColor.accent)
 
-            Image(systemName: "doc.text.magnifyingglass")
-                .font(AnvilFont.title)
-                .foregroundStyle(AnvilColor.accent)
+                        Text(verbatim: file.url.lastPathComponent)
+                            .font(AnvilFont.rowTitle)
+                            .foregroundStyle(AnvilColor.textPrimary)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
 
-            Text(verbatim: file.url.lastPathComponent)
-                .font(AnvilFont.rowTitle)
-                .foregroundStyle(AnvilColor.textPrimary)
-                .lineLimit(2)
-                .multilineTextAlignment(.center)
+                        Spacer(minLength: 0)
 
-            Text(verbatim: ByteCountFormatter.string(fromByteCount: file.size, countStyle: .file))
-                .font(AnvilFont.caption.monospacedDigit())
-                .foregroundStyle(AnvilColor.textTertiary)
+                        Text(verbatim: ByteCountFormatter.string(fromByteCount: file.size, countStyle: .file))
+                            .font(AnvilFont.caption.monospacedDigit())
+                            .foregroundStyle(AnvilColor.textTertiary)
 
-            AnvilButton("Datei entfernen", systemImage: "xmark", role: .ghost) { clear() }
-
-            Spacer(minLength: 0)
+                        Button { remove(file) } label: {
+                            Image(systemName: "xmark")
+                        }
+                        .buttonStyle(AnvilIconButtonStyle())
+                        .anvilHelp("Aus der Liste nehmen")
+                    }
+                    .padding(.horizontal, AnvilSpacing.sm)
+                    .padding(.vertical, AnvilSpacing.xs)
+                }
+            }
+            .padding(.vertical, AnvilSpacing.xxs)
         }
-        .frame(maxWidth: .infinity)
-        .padding(AnvilSpacing.lg)
+    }
+
+    private func remove(_ file: LoadedFile) {
+        files.removeAll { $0.url == file.url }
+        run()
     }
 
     private var outputPane: some View {
@@ -232,11 +264,15 @@ public struct TextToolView: View {
 
     private var statusBar: some View {
         ToolStatusBar {
-            if let file {
+            if !files.isEmpty {
+                StatusMetric("\(files.count)", label: "Dateien", systemImage: "doc.on.doc")
                 StatusMetric(
-                    ByteCountFormatter.string(fromByteCount: file.size, countStyle: .file),
-                    label: "Datei",
-                    systemImage: "doc"
+                    ByteCountFormatter.string(
+                        fromByteCount: files.reduce(0) { $0 + $1.size },
+                        countStyle: .file
+                    ),
+                    label: "gesamt",
+                    systemImage: "externaldrive"
                 )
             } else {
                 StatusMetric("\(input.count)", label: "Zeichen rein", systemImage: "character")
@@ -281,7 +317,7 @@ public struct TextToolView: View {
             .disabled(output.isEmpty)
 
             AnvilButton("Zwischenablage einfügen", systemImage: "doc.on.clipboard", role: .secondary) {
-                file = nil
+                files = []
                 input = context.pasteboard.string() ?? input
                 run()
             }
@@ -303,8 +339,8 @@ public struct TextToolView: View {
     }
 
     private func run() {
-        if let file {
-            runOnFile(file)
+        if !files.isEmpty {
+            runOnFiles(files)
             return
         }
 
@@ -326,14 +362,14 @@ public struct TextToolView: View {
         }
     }
 
-    private func runOnFile(_ file: LoadedFile) {
-        Task { await compute(file) }
+    private func runOnFiles(_ files: [LoadedFile]) {
+        Task { await compute(files) }
     }
 
-    /// Rechnet die Datei durch — abseits des Hauptthreads, weil ein
+    /// Rechnet die Dateien durch — abseits des Hauptthreads, weil ein
     /// Betriebssystem-Image nichts ist, was zwischen zwei Bildaufbauten passt.
-    private func compute(_ file: LoadedFile) async {
-        guard let handler = activeMode.runOnFile else {
+    private func compute(_ files: [LoadedFile]) async {
+        guard let handler = activeMode.runOnFiles else {
             output = ""
             failure = localized("„\(activeMode.title)\" gibt es für Dateien nicht.")
             return
@@ -342,29 +378,30 @@ public struct TextToolView: View {
         isWorking = true
         defer { isWorking = false }
 
+        let urls = files.map(\.url)
         do {
             let result = try await Task.detached(priority: .userInitiated) {
-                try handler(file.url)
+                try handler(urls)
             }.value
-            // Zwischendurch kann die Datei entfernt oder die Variante
+            // Zwischendurch kann eine Datei entfernt oder die Variante
             // gewechselt worden sein — dann gehört dieses Ergebnis nicht mehr
             // auf den Bildschirm.
-            guard self.file == file else { return }
+            guard self.files == files else { return }
             output = result
             failure = nil
         } catch let error as AnvilError {
-            guard self.file == file else { return }
+            guard self.files == files else { return }
             output = ""
             failure = error.message
         } catch {
-            guard self.file == file else { return }
+            guard self.files == files else { return }
             output = ""
             failure = error.localizedDescription
         }
     }
 
     private func clear() {
-        file = nil
+        files = []
         input = ""
         run()
     }
@@ -375,8 +412,14 @@ public struct TextToolView: View {
     /// Prüfsumme über „ubuntu.iso" gerechnet hat, will sie als
     /// „ubuntu.iso SHA-256" ablegen und nicht als „Ergebnis".
     private func save() {
-        let suggestion = file.map { "\($0.url.lastPathComponent) \(activeMode.title)" }
-            ?? "\(tool.title) \(activeMode.title)"
+        let suggestion: String
+        switch files.count {
+        case 0: suggestion = "\(tool.title) \(activeMode.title)"
+        case 1: suggestion = "\(files[0].url.lastPathComponent) \(activeMode.title)"
+        // Bei mehreren ist der Name der Liste die Aufgabe, nicht die einzelne
+        // Datei — so heißt sie wie das, was drinsteht.
+        default: suggestion = "\(activeMode.title) \(localized("Prüfsummen"))"
+        }
         do {
             try SavePanel.write(output, suggestedName: suggestion)
         } catch {
