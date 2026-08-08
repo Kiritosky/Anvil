@@ -15,10 +15,22 @@ public struct TextRecognizerToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
 
-    @State private var image: NSImage?
-    @State private var result: TextRecognizer.Result?
+    @State private var pages: [Page] = []
+    @State private var selectedID: Page.ID?
     @State private var isWorking = false
     @State private var error: AnvilError?
+
+    /// Ein Bild und das, was darin stand.
+    ///
+    /// Mehrere davon, weil man selten genau einen Screenshot ausliest: Eine
+    /// Anleitung besteht aus fünf, ein abfotografiertes Dokument aus zehn.
+    struct Page: Identifiable {
+        let id = UUID()
+        let name: String
+        let image: NSImage
+        var result: TextRecognizer.Result?
+        var failure: String?
+    }
 
     public init(context: ToolContext, metadata: ToolMetadata) {
         self.context = context
@@ -47,10 +59,14 @@ public struct TextRecognizerToolView: View {
             }
         }
         .anvilErrorBanner($error)
-        .anvilFileDrop(.image, error: $error) { dropped in
-            guard case let .image(dropped, _) = dropped else { return }
-            image = dropped
-            Task { await recognize() }
+        .anvilFilesDrop(.image, error: $error) { dropped in
+            add(dropped.compactMap { item -> Page? in
+                guard case let .image(image, url) = item else { return nil }
+                return Page(
+                    name: url?.lastPathComponent ?? localized("Bild \(pages.count + 1)"),
+                    image: image
+                )
+            })
         }
     }
 
@@ -67,8 +83,13 @@ public struct TextRecognizerToolView: View {
     }
 
     private var imagePane: some View {
-        AnvilPane("Bild", systemImage: "photo") {
-            if let image {
+        AnvilPane(
+            pages.count > 1 ? "Bilder" : "Bild",
+            systemImage: pages.count > 1 ? "photo.stack" : "photo"
+        ) {
+            if pages.count > 1 {
+                pageList
+            } else if let image = pages.first?.image {
                 Image(nsImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -85,7 +106,13 @@ public struct TextRecognizerToolView: View {
                 }
             }
         } accessory: {
-            if image != nil {
+            if !pages.isEmpty {
+                if pages.count > 1 {
+                    Text(verbatim: "\(pages.count)")
+                        .font(AnvilFont.caption.monospacedDigit())
+                        .foregroundStyle(AnvilColor.textTertiary)
+                }
+
                 Button { clear() } label: {
                     Image(systemName: "xmark")
                 }
@@ -95,20 +122,80 @@ public struct TextRecognizerToolView: View {
         }
     }
 
+    /// Die Liste, sobald es mehr als ein Bild ist.
+    ///
+    /// Mit Vorschaubild, weil ein Dateiname bei zehn Screenshots aus derselben
+    /// Anleitung nichts unterscheidet — das Bild schon.
+    private var pageList: some View {
+        ScrollView(.vertical) {
+            LazyVStack(spacing: AnvilSpacing.xxs) {
+                ForEach(pages) { page in
+                    Button { selectedID = page.id } label: {
+                        HStack(spacing: AnvilSpacing.sm) {
+                            Image(nsImage: page.image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(
+                                    width: AnvilSize.thumbnailWidth / 2,
+                                    height: AnvilSize.thumbnailHeight / 2
+                                )
+                                .clipShape(
+                                    RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
+                                )
+
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(verbatim: page.name)
+                                    .font(AnvilFont.rowTitle)
+                                    .foregroundStyle(AnvilColor.textPrimary)
+                                    .lineLimit(1)
+                                    .truncationMode(.middle)
+
+                                Text(verbatim: summary(of: page))
+                                    .font(AnvilFont.caption)
+                                    .foregroundStyle(AnvilColor.textTertiary)
+                                    .lineLimit(1)
+                            }
+
+                            Spacer(minLength: 0)
+
+                            Button { remove(page) } label: {
+                                Image(systemName: "xmark")
+                            }
+                            .buttonStyle(AnvilIconButtonStyle())
+                            .anvilHelp("Aus der Liste nehmen")
+                        }
+                        .padding(.horizontal, AnvilSpacing.sm)
+                        .padding(.vertical, AnvilSpacing.xs)
+                        .background {
+                            RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
+                                .fill(selectedID == page.id ? AnvilColor.accent.opacity(0.15) : .clear)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.vertical, AnvilSpacing.xxs)
+        }
+    }
+
     private var textPane: some View {
-        AnvilPane("Gelesen", systemImage: "text.viewfinder", tone: result == nil ? .neutral : .success) {
+        AnvilPane(
+            "Gelesen",
+            systemImage: "text.viewfinder",
+            tone: combinedText.isEmpty ? .neutral : .success
+        ) {
             if isWorking {
                 EmptyStateView(
                     title: "Wird gelesen …",
                     message: "Das läuft auf diesem Mac, nichts geht ins Netz.",
                     systemImage: "sparkles"
                 )
-            } else if let result, !result.isEmpty {
-                AnvilTextView(result.text)
-            } else if image != nil {
+            } else if !combinedText.isEmpty {
+                AnvilTextView(combinedText)
+            } else if !pages.isEmpty {
                 EmptyStateView(
                     title: "Kein Text gefunden",
-                    message: "In dem Bild ist nichts, was sich als Text lesen ließe.",
+                    message: "In den Bildern ist nichts, was sich als Text lesen ließe.",
                     systemImage: "questionmark.circle",
                     tone: .warning
                 )
@@ -120,22 +207,25 @@ public struct TextRecognizerToolView: View {
                 )
             }
         } accessory: {
-            if let result, !result.isEmpty {
-                CopyButton(text: result.text)
+            if !combinedText.isEmpty {
+                CopyButton(text: combinedText)
             }
         }
     }
 
     private var statusBar: some View {
         ToolStatusBar {
-            if let result, !result.isEmpty {
-                StatusMetric("\(result.lines.count)", label: "Zeilen", systemImage: "text.alignleft")
-                StatusMetric("\(result.text.count)", label: "Zeichen", systemImage: "character")
+            if pages.count > 1 {
+                StatusMetric("\(pages.count)", label: "Bilder", systemImage: "photo.stack")
+            }
+            if !readPages.isEmpty {
+                StatusMetric("\(totalLines)", label: "Zeilen", systemImage: "text.alignleft")
+                StatusMetric("\(combinedText.count)", label: "Zeichen", systemImage: "character")
                 StatusMetric(
-                    "\(Int((result.confidence * 100).rounded()))%",
+                    "\(Int((averageConfidence * 100).rounded()))%",
                     label: "Sicherheit",
                     systemImage: "checkmark.seal",
-                    tone: result.confidence > 0.6 ? .success : .warning
+                    tone: averageConfidence > 0.6 ? .success : .warning
                 )
             }
         } trailing: {
@@ -183,11 +273,27 @@ public struct TextRecognizerToolView: View {
         error = nil
         do {
             guard let captured = try await TextRecognizer.captureRegion() else { return }
-            image = captured
-            await recognize()
+            add([Page(name: localized("Ausschnitt \(pages.count + 1)"), image: captured)])
         } catch {
             self.error = AnvilError.wrapping(error)
         }
+    }
+
+    /// Nimmt Bilder auf und liest sie gleich aus.
+    ///
+    /// Angehängt statt ersetzt: Wer zweimal hintereinander einen Ausschnitt
+    /// wählt, will beide Texte — sonst müsste er den ersten vorher irgendwo
+    /// zwischenlagern.
+    private func add(_ newPages: [Page]) {
+        guard !newPages.isEmpty else { return }
+        pages += newPages
+        if selectedID == nil { selectedID = pages.first?.id }
+        Task { await recognize() }
+    }
+
+    private func remove(_ page: Page) {
+        pages.removeAll { $0.id == page.id }
+        if selectedID == page.id { selectedID = pages.first?.id }
     }
 
     private func readFromPasteboard() {
@@ -197,34 +303,82 @@ public struct TextRecognizerToolView: View {
             error = .invalidInput(localized("In der Zwischenablage liegt kein Bild."))
             return
         }
-        image = pasted
-        Task { await recognize() }
+        add([Page(name: localized("Zwischenablage \(pages.count + 1)"), image: pasted)])
     }
 
-    private func recognize() async {
-        guard let image else { return }
+    /// Liest alle Bilder aus, die noch kein Ergebnis haben.
+    ///
+    /// Nur die neuen: Ein zehntes Bild dazuzulegen darf nicht heißen, die
+    /// neun davor noch einmal durch Vision zu schicken.
+    private func recognize(force: Bool = false) async {
+        let todo = pages.indices.filter { force || pages[$0].result == nil }
+        guard !todo.isEmpty else { return }
+
         isWorking = true
         defer { isWorking = false }
 
-        do {
-            let recognised = try TextRecognizer.recognize(image, mode: mode)
-            result = recognised
-            if settings[.ocrAutoCopy], !recognised.isEmpty {
-                context.pasteboard.copy(recognised.text)
+        for index in todo {
+            guard index < pages.count else { continue }
+            let image = pages[index].image
+            let mode = mode
+            do {
+                let recognised = try await Task.detached(priority: .userInitiated) {
+                    try TextRecognizer.recognize(image, mode: mode)
+                }.value
+                guard index < pages.count else { continue }
+                pages[index].result = recognised
+                pages[index].failure = nil
+            } catch let failure as AnvilError {
+                guard index < pages.count else { continue }
+                pages[index].failure = failure.message
+            } catch {
+                guard index < pages.count else { continue }
+                pages[index].failure = error.localizedDescription
             }
-        } catch {
-            self.error = AnvilError.wrapping(error)
-            result = nil
+        }
+
+        if settings[.ocrAutoCopy], !combinedText.isEmpty {
+            context.pasteboard.copy(combinedText)
         }
     }
 
     private func clear() {
-        image = nil
-        result = nil
+        pages = []
+        selectedID = nil
         error = nil
     }
 
     // MARK: - Derived
+
+    private var readPages: [Page] {
+        pages.filter { $0.result?.isEmpty == false }
+    }
+
+    /// Der Text aller Bilder, mit Überschriften, sobald es mehr als eines ist.
+    private var combinedText: String {
+        TextRecognizer.Result.combine(
+            pages.map { ($0.name, $0.result?.text ?? "") }
+        )
+        .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private var totalLines: Int {
+        readPages.reduce(0) { $0 + ($1.result?.lines.count ?? 0) }
+    }
+
+    private var averageConfidence: Float {
+        guard !readPages.isEmpty else { return 0 }
+        let sum = readPages.reduce(Float(0)) { $0 + ($1.result?.confidence ?? 0) }
+        return sum / Float(readPages.count)
+    }
+
+    private func summary(of page: Page) -> String {
+        if let failure = page.failure { return failure }
+        guard let result = page.result else { return localized("wird gelesen …") }
+        return result.isEmpty
+            ? localized("kein Text")
+            : localized("\(result.lines.count) Zeilen")
+    }
 
     private var mode: TextRecognizer.Mode {
         settings[.ocrMode]
@@ -235,7 +389,9 @@ public struct TextRecognizerToolView: View {
             get: { settings[.ocrMode] },
             set: { newValue in
                 settings[.ocrMode] = newValue
-                Task { await recognize() }
+                // Die Erkennungsart ändert jedes Ergebnis, auch die schon
+                // gelesenen — hier muss alles noch einmal durch.
+                Task { await recognize(force: true) }
             }
         )
     }

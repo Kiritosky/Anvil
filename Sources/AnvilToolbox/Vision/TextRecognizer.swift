@@ -37,6 +37,30 @@ public enum TextRecognizer {
 
         public var isEmpty: Bool { lines.isEmpty }
 
+        /// Setzt den Text mehrerer Bilder zu einem zusammen.
+        ///
+        /// Bei einem Bild bleibt es der reine Text — man will ihn einfügen,
+        /// nicht lesen, wo er herkommt. Ab zwei bekommt jeder Block den Namen
+        /// seines Bildes davor: Ohne den weiß nach dem Einfügen niemand mehr,
+        /// welcher Absatz aus welchem Screenshot stammt, und das ist genau
+        /// der Fall, für den man mehrere auf einmal liest.
+        ///
+        /// Bilder ohne Text fallen nicht heraus, sondern bekommen ihren
+        /// Hinweis. Eine Lücke, die man nicht sieht, hält man für Text, den es
+        /// nicht gab.
+        public static func combine(_ pieces: [(name: String, text: String)]) -> String {
+            guard pieces.count != 1 else { return pieces[0].text }
+
+            return pieces
+                .map { piece in
+                    let body = piece.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                    return body.isEmpty
+                        ? "\(piece.name)\n\(localized("— kein Text —"))"
+                        : "\(piece.name)\n\(body)"
+                }
+                .joined(separator: "\n\n")
+        }
+
         /// The mean of Vision's per-line confidences.
         public var confidence: Float {
             guard !lines.isEmpty else { return 0 }

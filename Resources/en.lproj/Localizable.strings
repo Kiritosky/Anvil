@@ -15,6 +15,7 @@
 "%@ wird von der Spracherkennung auf diesem Mac nicht unterstützt." = "%@ is not supported by speech recognition on this Mac.";
 "%@ · lokal" = "%@ · local";
 "%lld Dateien · %@" = "%lld files · %@";
+"%lld Zeilen" = "%lld lines";
 "%lld entfernt" = "%lld removed";
 "%lld ergänzt" = "%lld added";
 "%lld gespeicherte Durchläufe" = "%lld saved runs";
@@ -30,9 +31,11 @@
 ". trifft auch Zeilenumbrüche" = ". matches newlines too";
 "Aufnahmeort" = "Location";
 "Aufnahmezeit" = "Date taken";
+"Ausschnitt %lld" = "Selection %lld";
 "Bei großen Bildern dauert das einen Moment." = "With large images this takes a moment.";
 "Bei großen Dateien dauert das einen Moment." = "With large files this takes a moment.";
 "Beim nächsten Öffnen steht wieder da, was zuletzt drinstand." = "Next time you open it, what was last in it is back.";
+"Bild %lld" = "Image %lld";
 "Bild umwandeln" = "Convert image";
 "Bilder" = "Images";
 "Bilder werden umgewandelt" = "Converting images";
@@ -64,6 +67,7 @@
 "Hier gehen nur Textdateien hinein." = "Only text files go in here.";
 "Hier geht eine Datei hinein — gezogener Text ist keine." = "A file goes in here — dragged text is not one.";
 "Hierhin sichern" = "Save here";
+"In den Bildern ist nichts, was sich als Text lesen ließe." = "There is nothing in these images that reads as text.";
 "In den gewählten Bildern steckt nichts Auffälliges." = "There is nothing notable in the chosen images.";
 "In diesem Bild steckt nichts Auffälliges." = "There is nothing notable in this image.";
 "In neuem Fenster öffnen" = "Open in a new window";
@@ -96,6 +100,7 @@
 "Wird gerechnet …" = "Computing …";
 "Zieh Bilder ins Fenster — auch einen ganzen Schwung auf einmal." = "Drag images into the window — a whole batch at once is fine.";
 "Zieh ein Bild ins Fenster oder hol eines aus der Zwischenablage." = "Drag an image into the window or take one from the clipboard.";
+"Zwischenablage %lld" = "Clipboard %lld";
 "^ und $ je Zeile" = "^ and $ per line";
 "AA" = "AA";
 "AAA" = "AAA";
@@ -576,6 +581,7 @@
 "Keine Farbe erkannt" = "Not a colour";
 "Keine Korrektur. Für Code, Schlüssel und Nummern, wo jedes Zeichen zählt." = "No correction. For code, keys and numbers, where every character counts.";
 "Keine Query-Parameter." = "No query parameters.";
+"kein Text" = "no text";
 "keine Schalter" = "no flags";
 "Keine Tools gefunden" = "No tools found";
 "Keine Treffer" = "No matches";
@@ -978,6 +984,7 @@
 "Zeigt die Schritte vom ersten Start noch einmal." = "Shows the first-run steps again.";
 "Zeilen" = "Lines";
 "Zeilen kommen von oben nach unten, gleich hohe von links nach rechts — zwei Spalten bleiben zwei Spalten." = "Lines come top to bottom, and left to right within a band — two columns stay two columns.";
+"wird gelesen …" = "reading …";
 "zeilenweise" = "line by line";
 "Zeitstempel" = "Timestamps";
 "Zeitzonen" = "Time zones";
@@ -1021,6 +1028,7 @@
 "Überlastet oder in Wartung." = "Overloaded or in maintenance.";
 "Übersetzen" = "Translate";
 "Überspringen" = "Skip";
+"— kein Text —" = "— no text —";
 "„%@\" enthält keinen lesbaren Text." = "“%@” contains no readable text.";
 "„%@\" ergibt im Feld %@ keinen Sinn." = "“%@” makes no sense in the %@ field.";
 "„%@\" gibt es für Dateien nicht." = "“%@” does not exist for files.";
