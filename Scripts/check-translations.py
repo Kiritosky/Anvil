@@ -71,6 +71,7 @@ SKIP = {
     "Anvil",
     "Apple Intelligence (on-device)",
     "Base64", "Hex", "JSON", "JWT", "SQL", "URL", "UUID", "PostgreSQL",
+    "Markdown", "CSV", "TSV",
     "MD5", "SHA-1", "SHA-256", "SHA-512",
     # Bildformate heißen in jeder Sprache gleich.
     "PNG", "JPEG", "HEIC", "TIFF",
@@ -80,6 +81,11 @@ SKIP = {
     "Apple Foundation Models",
     "Claude Code", "Codex", "Gemini CLI",   # Produktnamen
     "-p",                                    # Beispielargument
+    "\\t",                                   # das Trennzeichen selbst
+    # SQL- und JSON-Syntax. Steht im Quelltext hinter einem `return` und sieht
+    # damit aus wie Anzeigetext — ist aber Format und wird nie übersetzt.
+    "INSERT INTO %@ (%@) VALUES (%@);",
+    "    %@: %@",
 }
 SKIP_PATTERNS = [
     re.compile(r"^[a-z0-9.]+$"),          # SF-Symbol-Namen

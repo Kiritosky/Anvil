@@ -156,6 +156,7 @@
 "Als PNG behalten" = "Keep as a PNG";
 "Als PNG sichern" = "Save as PNG";
 "Als String escapen" = "Escape as string";
+"Als Text" = "As text";
 "Anbieter-Fehler" = "Provider error";
 "Anbieter-NAT (RFC 6598)" = "Carrier-grade NAT (RFC 6598)";
 "Andere Familie" = "Different family";
@@ -223,6 +224,7 @@
 "ausführlich" = "detailed";
 "ausführlicher" = "more detailed";
 "Ausführlichkeit" = "Verbosity";
+"Ausgabe" = "Output";
 "Ausgewogen" = "Balanced";
 "Auslöseton" = "Shutter sound";
 "Ausschnitt" = "Region";
@@ -233,7 +235,9 @@
 "Ausschnitt, Fenster oder ganzer Bildschirm — mit Markierungen, und auf Wunsch gleich als Text." = "A region, a window or the whole screen — with marks, and as text if you like.";
 "Auswahl" = "Either";
 "Auswerten" = "Analyse";
+"Automatisch" = "Automatic";
 "Automatisch kopieren" = "Copy automatically";
+"Automatisch wählt das Zeichen, das in jeder Zeile gleich oft vorkommt." = "Automatic picks the character that occurs the same number of times in every line.";
 "Basis-URL der API, z. B. http://localhost:11434/v1" = "Base URL of the API, e.g. http://localhost:11434/v1";
 "Bausteine" = "Building blocks";
 "Bedienung" = "Behaviour";
@@ -245,6 +249,7 @@
 "Begriffe an das Modell geben" = "Pass the terms to the model";
 "Behält jedes inhaltliche Wort. Nur Verzögerungslaute, Versprecher, Grammatik und Zeichensetzung werden korrigiert." = "Keeps every word of substance. Only hesitation sounds, slips, grammar and punctuation are corrected.";
 "Beide Fassungen sind Wort für Wort gleich." = "Both versions are identical, word for word.";
+"Beim Kopieren trennen mit" = "Separate with, when copying";
 "Beispiel-Tool" = "Example tool";
 "Belegt" = "Taken";
 "Beliebig oft" = "Any number";
@@ -280,6 +285,8 @@
 "Broadcast an alle" = "Broadcast to everyone";
 "Bytes" = "bytes";
 "CIDR rechnen, teilen, Adressen zuordnen" = "Work out CIDR, split it, place addresses";
+"CSV ansehen, sortieren, umwandeln" = "View CSV, sort it, convert it";
+"CSV, TSV oder mit Semikolon — das Trennzeichen erkennt Anvil selbst." = "CSV, TSV or semicolon-separated — Anvil works out the delimiter itself.";
 "camelCase, snake_case, kebab-case …" = "camelCase, snake_case, kebab-case…";
 "chmod-Zahlen haben drei Ziffern von 0 bis 7." = "chmod numbers have three digits from 0 to 7.";
 "chmod-Zahlen und rwx" = "chmod numbers and rwx";
@@ -331,6 +338,7 @@
 "Der Anbieter hat mit HTTP %lld geantwortet." = "The provider responded with HTTP %lld.";
 "Der Bildschirm konnte nicht aufgenommen werden: %@" = "The screen could not be captured: %@";
 "Der Export ist fehlgeschlagen: %@" = "The export failed: %@";
+"Der Filter rechts trifft in keiner Spalte." = "The filter on the right matches in no column.";
 "Der gelesene Text landet dann sofort in der Zwischenablage." = "The text goes straight to the clipboard.";
 "Der Schalter entscheidet, ob das Kürzel überall gilt. Feiner einstellen lässt sich das in den Einstellungen unter „Tastenkürzel\"." = "The switch decides whether the shortcut works everywhere. Finer control is in Settings under “Shortcuts”.";
 "Der Schlüssel konnte nicht kodiert werden." = "The key could not be encoded.";
@@ -462,6 +470,7 @@
 "Erst das Apple-Modell. Nur wenn das nicht kann, geht es an den externen Anbieter." = "Apple’s model first. The remote provider is used only when it cannot do the job.";
 "Erst der externe Anbieter, das Apple-Modell als Rückfallebene." = "Remote provider first, Apple’s model as the fallback.";
 "Erst oben einschalten." = "Switch it on above first.";
+"Erste Zeile ist die Kopfzeile" = "First line is the header";
 "Erteilt" = "Granted";
 "Erteilt oder nicht" = "Granted or not";
 "Erzeugen und aus Bildern lesen" = "Create them, and read them from images";
@@ -495,6 +504,7 @@
 "fertig" = "done";
 "Fest" = "Fixed";
 "Filter" = "Filter";
+"Filtern" = "Filter";
 "Fließtext" = "Prose";
 "Form" = "Shape";
 "Format" = "Format";
@@ -621,6 +631,7 @@
 "Keine Farbe erkannt" = "Not a colour";
 "Keine Korrektur. Für Code, Schlüssel und Nummern, wo jedes Zeichen zählt." = "No correction. For code, keys and numbers, where every character counts.";
 "Keine Query-Parameter." = "No query parameters.";
+"Keine Zeile passt" = "No row matches";
 "kein Text" = "no text";
 "keine Schalter" = "no flags";
 "Keine Tools gefunden" = "No tools found";
@@ -638,6 +649,7 @@
 "knapp" = "terse";
 "Kodieren" = "Encode";
 "Kodieren und dekodieren" = "Encode and decode";
+"Komma" = "Comma";
 "kollegial (du)" = "collegial";
 "Kollidiert mit dem, was schon da ist." = "Collides with what is already there.";
 "Komfortabel" = "Comfortable";
@@ -724,6 +736,7 @@
 "Nachher" = "After";
 "Nachschlagen" = "Look up";
 "Nachsehen" = "Checking";
+"Name,Ort,Umsatz\nAnna,Bremen,1200\nBen,Kiel,980" = "Name,City,Revenue\nAnna,Bristol,1200\nBen,Leeds,980";
 "Natürlich, nicht wörtlich" = "Natural, not literal";
 "Nebeneinander" = "Side by side";
 "Netz" = "Network";
@@ -735,6 +748,8 @@
 "Neu laden" = "Reload";
 "Neue Präfixlänge" = "New prefix length";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
+"Tabulator" = "Tab";
+"Text in irgendeiner Spalte" = "Text in any column";
 "neutral" = "neutral";
 "Nicht angeheftete löschen" = "Clear unpinned";
 "Nicht angemeldet. Heißt Unauthorized, meint Unauthenticated." = "Not signed in. Says Unauthorized, means unauthenticated.";
@@ -757,6 +772,7 @@
 "Noch keine Begriffe" = "No terms yet";
 "Noch keine Begriffe — anzulegen im Werkzeug „Diktat-Vokabular\"." = "No terms yet — add them in the Dictation Vocabulary tool.";
 "Noch keine Eingabe" = "No input yet";
+"Noch keine Tabelle" = "No table yet";
 "Noch nicht gefragt" = "Not asked yet";
 "Noch nicht gelesen" = "Not read yet";
 "Noch nichts aufgenommen" = "Nothing recorded yet";
@@ -768,6 +784,7 @@
 "Noch nichts zu vergleichen" = "Nothing to compare yet";
 "Normalform" = "Normal form";
 "Nur dieses Netzsegment" = "This link only";
+"Tabellenname" = "Table name";
 "nicht belegt" = "not assigned";
 "normal" = "normal";
 "November" = "November";
@@ -830,6 +847,12 @@
 "QR-Code" = "QR code";
 "Rahmen" = "Box";
 "Rahmt einen Bereich ein." = "Frames an area.";
+"Semikolon" = "Semicolon";
+"Spalte %lld" = "Column %lld";
+"Spalten" = "Columns";
+"Strich" = "Pipe";
+"Tabelle" = "Table";
+"Tabellen" = "Tables";
 "Teilen" = "Split";
 "Teilnetze zeigen" = "Show subnets";
 "Wildcard" = "Wildcard";
@@ -949,6 +972,7 @@
 "Trag eine Zahl ein — 404, oder 4 für alle davon." = "Enter a number — 404, or 4 for all of them.";
 "Trag oben einen regulären Ausdruck ein — Treffer erscheinen sofort." = "Type a regular expression above — matches appear instantly.";
 "Treffer" = "Matches";
+"Trennzeichen" = "Delimiter";
 "Uhrzeiten sehen so aus: 14:30." = "Times look like this: 14:30.";
 "um %@ Uhr" = "at %@ o'clock";
 "Umdrehen" = "Reverse";

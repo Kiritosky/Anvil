@@ -75,6 +75,15 @@ public enum AnvilSize {
     /// Narrowest a tool row with a subtitle may become. Wider than the sidebar
     /// column, which shows the title alone.
     public static let toolRowMinWidth: CGFloat = 260
+    /// A column in a data table: room for a date, a price or a short name.
+    /// Every column the same width, because a table whose columns jump around
+    /// while you type is unreadable.
+    public static let tableColumnWidth: CGFloat = 150
+    /// The narrow leading column that holds the row number.
+    public static let tableRowNumberWidth: CGFloat = 44
+    /// One row of a data table. Tighter than a control row — a table is read,
+    /// not clicked.
+    public static let tableRowHeight: CGFloat = 24
     /// A plain border: the line between a surface and what is next to it.
     public static let hairline: CGFloat = 1
     /// A separator standing between two controls in a row — shorter than the
