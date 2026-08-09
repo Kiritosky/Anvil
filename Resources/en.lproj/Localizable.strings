@@ -6,6 +6,7 @@
    to a key. Add another language by copying this file into <code>.lproj.
 */
 
+"# Überschrift\n\nText mit einem [Link](https://example.com)." = "# Heading\n\nText with a [link](https://example.com).";
 "#3A7BD5" = "#3A7BD5";
 "#FFFFFF" = "#FFFFFF";
 "%@ hat abgebrochen." = "%@ stopped.";
@@ -29,6 +30,7 @@
 ", am %@. des Monats" = ", on day %@ of the month";
 ", im %@" = ", in %@";
 ". trifft auch Zeilenumbrüche" = ". matches newlines too";
+"Absätze" = "Paragraphs";
 "Adresse suchen" = "Find address";
 "Adressen" = "Addresses";
 "Aufnahme wird transkribiert" = "Transcribing recording";
@@ -167,6 +169,7 @@
 "Angemeldet, aber nicht befugt." = "Signed in, but not allowed.";
 "Anklicken übernimmt die Abstufung als Farbe." = "Click a shade to make it the colour.";
 "Anordnung: %@" = "Layout: %@";
+"Ansicht" = "View";
 "Anteil, Aufschlag, Veränderung" = "Share, surcharge, change";
 "Anthropic hat mit HTTP %lld geantwortet." = "Anthropic responded with HTTP %lld.";
 "Anvil beenden" = "Quit Anvil";
@@ -189,6 +192,7 @@
 "Audioumwandlung fehlgeschlagen: %@" = "Audio conversion failed: %@";
 "Auf Vorgabe" = "Restore defaults";
 "Auf Vorgabe zurücksetzen" = "Back to the default";
+"Aufgaben" = "Tasks";
 "Aufnahme" = "Recording";
 "Aufnahme behalten" = "Keep the recording";
 "Aufnahme pausiert" = "Recording paused";
@@ -288,6 +292,7 @@
 "CSV ansehen, sortieren, umwandeln" = "View CSV, sort it, convert it";
 "CSV, TSV oder mit Semikolon — das Trennzeichen erkennt Anvil selbst." = "CSV, TSV or semicolon-separated — Anvil works out the delimiter itself.";
 "Codeblock nicht geschlossen" = "Code block never closed";
+"Ganze Seite" = "Whole page";
 "camelCase, snake_case, kebab-case …" = "camelCase, snake_case, kebab-case…";
 "chmod-Zahlen haben drei Ziffern von 0 bis 7." = "chmod numbers have three digits from 0 to 7.";
 "chmod-Zahlen und rwx" = "chmod numbers and rwx";
@@ -297,6 +302,7 @@
 "Code-Kommentar" = "Code comment";
 "Code-Points, Namen, UTF-8" = "Code points, names, UTF-8";
 "Code-Review" = "Code review";
+"Codeblöcke" = "Code blocks";
 "Coding" = "Coding";
 "Commit-Message" = "Commit message";
 "Cron" = "Cron";
@@ -368,6 +374,7 @@
 "Die Aufnahmedatei konnte nicht angelegt werden: %@" = "The recording file could not be created: %@";
 "Die Datei konnte nicht gelesen werden: %@" = "The file could not be read: %@";
 "Die Einheit hinter der Zahl kenne ich nicht." = "I do not know the unit after the number.";
+"Die Gliederung steigt lückenlos, jede Überschrift ist eindeutig, und alle Sprungmarken gibt es." = "The outline rises without gaps, every heading is unique, and every anchor exists.";
 "Die Schrittweite in %@ muss eine Zahl über null sein." = "The step in %@ has to be a number above zero.";
 "Die Sprachdaten konnten nicht geladen werden: %@" = "The language assets could not be loaded: %@";
 "Die Spracherkennung konnte nicht gestartet werden: %@" = "Speech recognition could not be started: %@";
@@ -390,6 +397,7 @@
 "Diktieren, überall" = "Dictate anywhere";
 "Direkt einfügen" = "Paste straight in";
 "Doku-Kommentar" = "Doc comment";
+"Dokument" = "Document";
 "Dokumentation zu einer Funktion" = "Documentation for a function";
 "Doppelt belegt" = "Assigned twice";
 "Doppelte entfernen" = "Remove duplicates";
@@ -427,6 +435,8 @@
 "Eine IPv4-Präfixlänge liegt zwischen 0 und 32." = "An IPv4 prefix length is between 0 and 32.";
 "Eine IPv6-Präfixlänge liegt zwischen 0 und 128." = "An IPv6 prefix length is between 0 and 128.";
 "Eine gerade Linie." = "A straight line.";
+"Gliedern, prüfen, nach HTML" = "Outline it, check it, turn it into HTML";
+"Gliederung" = "Outline";
 "eine Zeile" = "one line";
 "Eine Zeile je Begriff. Verhörer stehen nach einem Doppelpunkt, mit Komma getrennt." = "One term per line. Misrecognitions follow a colon, separated by commas.";
 "Einfügen" = "Paste";
@@ -598,6 +608,7 @@
 "In einer IPv6-Adresse darf höchstens einmal :: stehen: %@" = "An IPv6 address may contain :: at most once: %@";
 "Inhalt" = "Content";
 "Inhalte, die eine App als vertraulich kennzeichnet — etwa aus einem Passwortmanager — werden nie mitgeschnitten." = "Content an app marks as confidential — from a password manager, say — is never recorded.";
+"Inhaltsverzeichnis" = "Table of contents";
 "installiert" = "installed";
 "Installiertes Werkzeug" = "Installed tool";
 "Italienisch" = "Italian";
@@ -642,6 +653,8 @@
 "KI" = "AI";
 "KI-Aufbereitung ist in den Optionen aus" = "AI clean-up is switched off in the options";
 "KI-Werkzeuge" = "AI Tools";
+"Keine Verweise" = "No links";
+"Keine Überschriften" = "No headings";
 "klein" = "lowercase";
 "Klein (7 %)" = "Small (7%)";
 "Klein geschrieben" = "Lowercased";
@@ -691,6 +704,7 @@
 "Links etwas einfügen — das Ergebnis erscheint sofort." = "Paste something on the left — the result appears instantly.";
 "Liste" = "List";
 "LM Studio (lokal)" = "LM Studio (local)";
+"Links" = "Links";
 "locker" = "casual";
 "locker (du)" = "casual";
 "Los geht's" = "Let's go";
@@ -702,6 +716,7 @@
 "Macht aus der Beschreibung einen Doku-Kommentar." = "Turns the description into a documentation comment.";
 "Mai" = "May";
 "Manche Berechtigungen melden ihren neuen Zustand erst nach einem Neustart von Anvil." = "Some permissions only report their new state after Anvil restarts.";
+"Markdown einwerfen oder eine Datei ins Fenster ziehen." = "Drop in some Markdown, or drag a file into the window.";
 "Markieren" = "Mark up";
 "Maske" = "Mask";
 "Mauszeiger mit aufnehmen" = "Include the pointer";
@@ -712,6 +727,7 @@
 "Merkbare Wortfolge" = "Memorable word chain";
 "Mikrofon" = "Microphone";
 "Mikrofon wird geöffnet" = "Opening the microphone";
+"Min. Lesezeit" = "min. reading time";
 "Mindestens eins" = "One or more";
 "Minute" = "minute";
 "Mit dem Modell aufräumen" = "Clean up with the model";
@@ -764,12 +780,14 @@
 "Nichts gefunden" = "Nothing found";
 "Nichts verlässt diesen Mac. Ohne Apple Intelligence bleiben KI-Tools aus." = "Nothing leaves this Mac. Without Apple Intelligence, AI tools stay unavailable.";
 "Nichts verstanden." = "Didn’t catch anything.";
+"Nichts zu beanstanden" = "Nothing to report";
 "Nichts zu prüfen" = "Nothing to check";
 "Nimm, was du im Cache hast." = "Use what you have in the cache.";
 "Noch kein Code" = "No code yet";
 "Noch kein Ergebnis" = "No result yet";
 "Noch kein Netz" = "No network yet";
 "Noch kein Schlüssel hinterlegt." = "No key stored yet.";
+"Noch kein Text" = "No text yet";
 "Noch keine Aufnahme" = "No capture yet";
 "Noch keine Begriffe" = "No terms yet";
 "Noch keine Begriffe — anzulegen im Werkzeug „Diktat-Vokabular\"." = "No terms yet — add them in the Dictation Vocabulary tool.";
@@ -812,6 +830,7 @@
 "Ohne das schreibt das Modell unbekannte Namen gern wieder in ein Wort um, das es kennt." = "Without this the model likes to turn a name it does not know back into a word it does.";
 "Ohne Mikrofon kein Diktat; ohne Spracherkennung keine Umsetzung in Text." = "No microphone, no dictation; no speech recognition, no text.";
 "Ohne Mikrofon lässt sich nichts diktieren." = "No microphone, no dictation.";
+"Ohne Überschriften gibt es nichts zu gliedern — und keine Sprungmarken." = "Without headings there is nothing to outline — and no anchors.";
 "Privates Netz (RFC 1918)" = "Private network (RFC 1918)";
 "Punkt-zu-Punkt nach RFC 3021: beide Adressen sind benutzbar, es gibt keinen Broadcast." = "Point-to-point per RFC 3021: both addresses are usable, there is no broadcast.";
 "ohne Namen" = "unnamed";
@@ -846,10 +865,12 @@
 "Prüfe API-Schlüssel, Modellnamen und Netzwerkverbindung in den Einstellungen." = "Check the API key, model name and network connection in Settings.";
 "Prüfen" = "Check";
 "Prüfsummen" = "Checksums";
+"Prüfung" = "Check";
 "QR-Code" = "QR code";
 "Rahmen" = "Box";
 "Rahmt einen Bereich ein." = "Frames an area.";
 "Semikolon" = "Semicolon";
+"Setzt die Liste oben in den Text ein, mit Sprungmarken wie auf GitHub." = "Inserts the list at the top of the text, with anchors the way GitHub makes them.";
 "Spalte %lld" = "Column %lld";
 "Spalten" = "Columns";
 "Strich" = "Pipe";
@@ -1006,6 +1027,7 @@
 "Verlauf" = "History";
 "Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
 "Verweigert" = "Denied";
+"Verweise" = "Links and images";
 "verwerfen" = "discard";
 "Verwerfen" = "Discard";
 "Verwerfen (⎋)" = "Discard (⎋)";
@@ -1019,6 +1041,7 @@
 "Voreinstellung" = "Preset";
 "Vorher" = "Before";
 "Vorlagen" = "Templates";
+"Vorne einfügen" = "Insert at the top";
 "Vorübergehend woanders." = "Somewhere else for now.";
 "Wandelt die Aufnahme in Text um. Läuft auf diesem Mac." = "Turns the recording into text. Runs on this Mac.";
 "Was 418 eigentlich heißt" = "What 418 actually means";
@@ -1031,6 +1054,7 @@
 "Was soll das Modell mit dem Text machen?" = "What should the model do with the text?";
 "Was soll der Befehl tun?" = "What should the command do?";
 "Was soll die Abfrage liefern?" = "What should the query return?";
+"Weder Links noch Bilder im Text." = "Neither links nor images in the text.";
 "Weder Unix-Zeit noch ein erkennbares Datum." = "Neither Unix time nor a recognisable date.";
 "Weiter" = "Resume";
 "Weiter aufnehmen" = "Continue recording";
@@ -1076,6 +1100,7 @@
 "Zeichengenau" = "Character exact";
 "Zeigt auf die Stelle, um die es geht." = "Points at the thing you mean.";
 "Zeigt die Schritte vom ersten Start noch einmal." = "Shows the first-run steps again.";
+"Zeile %lld: %@" = "Line %lld: %@";
 "Zeilen" = "Lines";
 "Zeilen kommen von oben nach unten, gleich hohe von links nach rechts — zwei Spalten bleiben zwei Spalten." = "Lines come top to bottom, and left to right within a band — two columns stay two columns.";
 "Zerlegt das Netz in gleich große Teile. Gezeigt werden die ersten 64." = "Splits the network into equal parts. The first 64 are shown.";
@@ -1110,6 +1135,7 @@
 "Zwischenablage beobachten" = "Watch the clipboard";
 "Zwischenablage einfügen" = "Paste clipboard";
 "Zwischenablage-Verlauf, Farben, Einheiten, JSON, Cron, QR-Codes — und KI-Werkzeuge fürs Schreiben und für Code." = "Clipboard history, colours, units, JSON, cron, QR codes — and AI tools for writing and for code.";
+"ohne Leerzeichen" = "without spaces";
 "Ähnlich" = "Similar";
 "Ältere Durchläufe werden verworfen, sobald die Grenze erreicht ist." = "Older runs are dropped once the limit is reached.";
 "Ändern lässt sich das in den Einstellungen unter „Tastenkürzel\"." = "Change it in Settings under “Shortcuts”.";
@@ -1123,6 +1149,7 @@
 "Übereinstimmung" = "match";
 "Überlastet oder in Wartung." = "Overloaded or in maintenance.";
 "Überschrift kommt doppelt vor" = "Heading occurs twice";
+"Überschriften" = "Headings";
 "Überschriftstufe übersprungen" = "Heading level skipped";
 "Übersetzen" = "Translate";
 "Überspringen" = "Skip";

@@ -63,7 +63,8 @@ PATTERNS = [
 
 # Interpolationen, die eine Zahl einsetzen — Foundation erzeugt dafür %lld.
 INTEGER_EXPRESSION = re.compile(
-    r"\.count\b|^count$|statusCode|Int\(|wordCount\(|recordingCount|WordCount|\bindex\b|\+ 1\b"
+    r"\.count\b|^count$|statusCode|Int\(|wordCount\(|recordingCount|WordCount"
+    r"|\bindex\b|\+ 1\b|\.line\b|\.level\b"
 )
 
 # Was absichtlich unübersetzt bleibt.
@@ -71,7 +72,7 @@ SKIP = {
     "Anvil",
     "Apple Intelligence (on-device)",
     "Base64", "Hex", "JSON", "JWT", "SQL", "URL", "UUID", "PostgreSQL",
-    "Markdown", "CSV", "TSV",
+    "Markdown", "CSV", "TSV", "HTML",
     "MD5", "SHA-1", "SHA-256", "SHA-512",
     # Bildformate heißen in jeder Sprache gleich.
     "PNG", "JPEG", "HEIC", "TIFF",
