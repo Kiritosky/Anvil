@@ -63,6 +63,18 @@ public enum AnvilSize {
     public static let thumbnailHeight: CGFloat = 60
     /// Square size of a tool icon in the sidebar.
     public static let toolIcon: CGFloat = 22
+    /// The same icon on a start-screen card: one step up, because a card has
+    /// the room and the icon is what the eye lands on first.
+    public static let toolIconLarge: CGFloat = 28
+    /// Narrowest a tool card may become before its subtitle stops fitting on
+    /// two lines. The start screen's grid grows from here.
+    public static let toolCardMinWidth: CGFloat = 220
+    /// Card height, fixed so a row of cards has one baseline: icon, title and
+    /// two lines of subtitle, whether or not the tool fills all of them.
+    public static let toolCardHeight: CGFloat = 116
+    /// Narrowest a tool row with a subtitle may become. Wider than the sidebar
+    /// column, which shows the title alone.
+    public static let toolRowMinWidth: CGFloat = 260
     /// A plain border: the line between a surface and what is next to it.
     public static let hairline: CGFloat = 1
     /// A separator standing between two controls in a row — shorter than the
@@ -118,6 +130,9 @@ public enum AnvilSize {
 public enum AnvilFont {
     /// The app wordmark. The only place rounded design is used.
     public static let wordmark = Font.system(size: 17, weight: .semibold, design: .rounded)
+    /// The wordmark on the start screen, which has a page to itself and would
+    /// look unfinished with a heading the size of a tool title.
+    public static let display = Font.system(size: 26, weight: .semibold, design: .rounded)
     /// Tool title in the header.
     public static let title = Font.system(size: 19, weight: .semibold)
     /// Section heading inside a tool.

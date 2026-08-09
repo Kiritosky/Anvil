@@ -10,6 +10,7 @@ public struct ToolListRow: View {
     private let isSelected: Bool
     private let isFavourite: Bool
     private let showsSubtitle: Bool
+    private let shortcutHint: String?
     private let onToggleFavourite: (() -> Void)?
 
     @State private var isHovering = false
@@ -19,12 +20,14 @@ public struct ToolListRow: View {
         isSelected: Bool = false,
         isFavourite: Bool = false,
         showsSubtitle: Bool = true,
+        shortcutHint: String? = nil,
         onToggleFavourite: (() -> Void)? = nil
     ) {
         self.metadata = metadata
         self.isSelected = isSelected
         self.isFavourite = isFavourite
         self.showsSubtitle = showsSubtitle
+        self.shortcutHint = shortcutHint
         self.onToggleFavourite = onToggleFavourite
     }
 
@@ -60,6 +63,12 @@ public struct ToolListRow: View {
 
             Spacer(minLength: AnvilSpacing.xs)
 
+            // Das Kürzel steht dort, wo es gedrückt wird — sonst weiß niemand,
+            // dass es die Zeile überhaupt gibt.
+            if let shortcutHint {
+                KeycapLabel(shortcutHint, isMuted: !isSelected)
+            }
+
             if let onToggleFavourite, isHovering || isFavourite {
                 Button(action: onToggleFavourite) {
                     Image(systemName: isFavourite ? "star.fill" : "star")
@@ -83,60 +92,95 @@ public struct ToolListRow: View {
 /// A tool as a tappable card, for the start screen.
 public struct ToolCard: View {
     private let metadata: ToolMetadata
+    private let isFavourite: Bool
+    private let shortcutHint: String?
+    private let onToggleFavourite: (() -> Void)?
     private let action: () -> Void
 
     @State private var isHovering = false
 
-    public init(metadata: ToolMetadata, action: @escaping () -> Void) {
+    public init(
+        metadata: ToolMetadata,
+        isFavourite: Bool = false,
+        shortcutHint: String? = nil,
+        onToggleFavourite: (() -> Void)? = nil,
+        action: @escaping () -> Void
+    ) {
         self.metadata = metadata
+        self.isFavourite = isFavourite
+        self.shortcutHint = shortcutHint
+        self.onToggleFavourite = onToggleFavourite
         self.action = action
     }
 
     public var body: some View {
         Button(action: action) {
-            VStack(alignment: .leading, spacing: AnvilSpacing.sm) {
-                HStack(spacing: AnvilSpacing.sm) {
-                    ToolIconBadge(
-                        systemImage: metadata.systemImage,
-                        tone: metadata.usesAI ? .ai : .accent,
-                        size: 28
-                    )
-                    Spacer(minLength: 0)
-                    if metadata.usesAI {
-                        StatusPill("KI", systemImage: "sparkles", tone: .ai)
-                    }
+            card
+        }
+        .buttonStyle(.plain)
+        // Der Stern liegt über der Karte statt in ihr: eine Schaltfläche in der
+        // Beschriftung einer anderen Schaltfläche bekommt den Klick nicht
+        // zuverlässig ab.
+        .overlay(alignment: .topTrailing) {
+            if let onToggleFavourite, isHovering || isFavourite {
+                Button(action: onToggleFavourite) {
+                    Image(systemName: isFavourite ? "star.fill" : "star")
                 }
+                .buttonStyle(AnvilIconButtonStyle(tone: isFavourite ? .warning : .neutral))
+                .anvilHelp(isFavourite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen")
+                .padding(AnvilSpacing.sm)
+            }
+        }
+        .onHover { isHovering = $0 }
+        .animation(AnvilMotion.quick, value: isHovering)
+    }
 
-                VStack(alignment: .leading, spacing: 2) {
+    private var card: some View {
+        VStack(alignment: .leading, spacing: AnvilSpacing.sm) {
+            HStack(spacing: AnvilSpacing.sm) {
+                ToolIconBadge(
+                    systemImage: metadata.systemImage,
+                    tone: metadata.usesAI ? .ai : .accent,
+                    size: AnvilSize.toolIconLarge
+                )
+                Spacer(minLength: 0)
+                if let shortcutHint {
+                    KeycapLabel(shortcutHint)
+                }
+            }
+
+            VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
+                HStack(spacing: AnvilSpacing.xs) {
                     Text(metadata.title)
                         .font(AnvilFont.body.weight(.semibold))
                         .foregroundStyle(AnvilColor.textPrimary)
                         .lineLimit(1)
-                    Text(metadata.subtitle)
-                        .font(AnvilFont.caption)
-                        .foregroundStyle(AnvilColor.textSecondary)
-                        .lineLimit(2)
-                        .multilineTextAlignment(.leading)
-                        .fixedSize(horizontal: false, vertical: true)
+                    if metadata.usesAI {
+                        StatusPill("KI", systemImage: "sparkles", tone: .ai)
+                    }
                 }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(AnvilSpacing.md)
-            .frame(height: 116, alignment: .top)
-            .background {
-                RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous)
-                    .fill(isHovering ? AnvilColor.field : AnvilColor.surface)
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous)
-                    .strokeBorder(
-                        isHovering ? AnvilColor.accent.opacity(0.4) : AnvilColor.border,
-                        lineWidth: 1
-                    )
+                Text(metadata.subtitle)
+                    .font(AnvilFont.caption)
+                    .foregroundStyle(AnvilColor.textSecondary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .buttonStyle(.plain)
-        .onHover { isHovering = $0 }
-        .animation(AnvilMotion.quick, value: isHovering)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(AnvilSpacing.md)
+        .frame(height: AnvilSize.toolCardHeight, alignment: .top)
+        .background {
+            RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous)
+                .fill(isHovering ? AnvilColor.field : AnvilColor.surface)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous)
+                .strokeBorder(
+                    isHovering ? AnvilColor.borderFocused : AnvilColor.border,
+                    lineWidth: AnvilSize.hairline
+                )
+        }
+        .contentShape(Rectangle())
     }
 }
