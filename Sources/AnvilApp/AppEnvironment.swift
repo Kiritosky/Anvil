@@ -102,6 +102,7 @@ public final class AppEnvironment {
             AIToolBundle.self,
             TextToolBundle.self,
             DevToolBundle.self,
+            NetToolBundle.self,
             EverydayToolBundle.self,
             ScreenshotToolBundle.self,
             SystemToolBundle.self
