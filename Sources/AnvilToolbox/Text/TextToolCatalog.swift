@@ -440,7 +440,7 @@ public enum TextToolCatalog {
             modes: [
                 TextToolMode(id: "stats", title: "Auswerten") { input in
                     let words = input.split(whereSeparator: \.isWhitespace)
-                    let lineCount = input.isEmpty ? 0 : input.components(separatedBy: .newlines).count
+                    let lineCount = TextLines.count(input)
                     let sentences = input.split(whereSeparator: { ".!?".contains($0) })
                         .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
                     let minutes = max(1, Int((Double(words.count) / 200.0).rounded(.up)))

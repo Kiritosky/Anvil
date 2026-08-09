@@ -32,7 +32,7 @@ public struct NetworkList: Sendable {
     /// Konfigurationsdatei kommt und dort beides als Kommentar gilt.
     public init(parsing text: String) {
         var entries: [Entry] = []
-        for (offset, rawLine) in text.split(separator: "\n", omittingEmptySubsequences: false).enumerated() {
+        for (offset, rawLine) in TextLines.split(text).enumerated() {
             let line = rawLine.trimmingCharacters(in: .whitespaces)
             guard !line.isEmpty, !line.hasPrefix("#"), !line.hasPrefix(";") else { continue }
             do {

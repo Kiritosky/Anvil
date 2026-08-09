@@ -287,6 +287,7 @@
 "CIDR rechnen, teilen, Adressen zuordnen" = "Work out CIDR, split it, place addresses";
 "CSV ansehen, sortieren, umwandeln" = "View CSV, sort it, convert it";
 "CSV, TSV oder mit Semikolon — das Trennzeichen erkennt Anvil selbst." = "CSV, TSV or semicolon-separated — Anvil works out the delimiter itself.";
+"Codeblock nicht geschlossen" = "Code block never closed";
 "camelCase, snake_case, kebab-case …" = "camelCase, snake_case, kebab-case…";
 "chmod-Zahlen haben drei Ziffern von 0 bis 7." = "chmod numbers have three digits from 0 to 7.";
 "chmod-Zahlen und rwx" = "chmod numbers and rwx";
@@ -748,6 +749,7 @@
 "Neu laden" = "Reload";
 "Neue Präfixlänge" = "New prefix length";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
+"Sprungmarke gibt es nicht" = "No such anchor";
 "Tabulator" = "Tab";
 "Text in irgendeiner Spalte" = "Text in any column";
 "neutral" = "neutral";
@@ -855,6 +857,7 @@
 "Tabellen" = "Tables";
 "Teilen" = "Split";
 "Teilnetze zeigen" = "Show subnets";
+"Verweis ohne Ziel" = "Link without a target";
 "Wildcard" = "Wildcard";
 "Zeigt, in welche der Netze oben diese Adresse fällt." = "Shows which of the networks above this address falls into.";
 "gekürzt" = "truncated";
@@ -1119,6 +1122,8 @@
 "Überall" = "Everywhere";
 "Übereinstimmung" = "match";
 "Überlastet oder in Wartung." = "Overloaded or in maintenance.";
+"Überschrift kommt doppelt vor" = "Heading occurs twice";
+"Überschriftstufe übersprungen" = "Heading level skipped";
 "Übersetzen" = "Translate";
 "Überspringen" = "Skip";
 "Übliche IPv4-Größen" = "Common IPv4 sizes";

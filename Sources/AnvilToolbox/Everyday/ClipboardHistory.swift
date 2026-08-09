@@ -36,7 +36,7 @@ public struct ClipboardEntry: Identifiable, Sendable, Hashable {
     }
 
     public var lineCount: Int {
-        text.components(separatedBy: .newlines).count
+        TextLines.count(text)
     }
 }
 

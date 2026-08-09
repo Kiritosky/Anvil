@@ -119,6 +119,12 @@ public struct CSVTable: Sendable {
     /// Anführungszeichen steht, und das weiß man erst, wenn man alles davor
     /// gelesen hat.
     static func records(in text: String, separatedBy separator: Character) -> [[String]] {
+        // Erst vereinheitlichen, und zwar bevor irgendein Zeichen angesehen
+        // wird: „\r\n" ist in Swift **ein** `Character`, keine zwei. Ein
+        // Vergleich gegen "\n" trifft ihn nie, und eine Datei mit
+        // Windows-Zeilenenden käme als ein einziges Feld heraus.
+        let text = TextLines.normalized(text)
+
         var records: [[String]] = []
         var record: [String] = []
         var field = ""
@@ -170,10 +176,6 @@ public struct CSVTable: Sendable {
                 isQuoted = true
             case separator:
                 endField()
-            case "\r":
-                // CRLF zählt als ein Umbruch, ein einzelnes CR auch.
-                if let next = iterator.next(), next != "\n" { pending = next }
-                endRecord()
             case "\n":
                 endRecord()
             default:
@@ -191,10 +193,7 @@ public struct CSVTable: Sendable {
     /// schlüge damit jedes Semikolon. Gewinnen soll das Zeichen, das in jeder
     /// Zeile **gleich oft** vorkommt, denn genau das macht eine Tabelle aus.
     public static func detectDelimiter(in text: String) -> Delimiter {
-        let lines = text
-            .split(separator: "\n", omittingEmptySubsequences: true)
-            .prefix(20)
-            .map(String.init)
+        let lines = TextLines.split(text, keepingEmpty: false).prefix(20)
         guard !lines.isEmpty else { return .comma }
 
         var best = Delimiter.comma

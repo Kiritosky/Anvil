@@ -339,6 +339,13 @@ struct NetworkListTests {
         #expect(list.entries.last?.message != nil)
     }
 
+    /// Eine Liste aus einer Windows-Datei ist eine Liste und keine Zeile.
+    @Test
+    func windowsLineEndingsSeparateNetworksToo() {
+        let list = NetworkList(parsing: "10.0.0.0/8\r\n192.168.0.0/16\r\n")
+        #expect(list.readableCount == 2)
+    }
+
     @Test
     func normalFormIsWhatGoesBackIntoTheConfiguration() {
         let list = NetworkList(parsing: "192.168.1.42/24\n2001:0db8:0000::1/32")
