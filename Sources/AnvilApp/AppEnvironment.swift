@@ -103,6 +103,7 @@ public final class AppEnvironment {
             TextToolBundle.self,
             DevToolBundle.self,
             MarkdownToolBundle.self,
+            TimeToolBundle.self,
             DataToolBundle.self,
             NetToolBundle.self,
             EverydayToolBundle.self,

@@ -30,6 +30,8 @@
 ", am %@. des Monats" = ", on day %@ of the month";
 ", im %@" = ", in %@";
 ". trifft auch Zeilenumbrüche" = ". matches newlines too";
+"Ab jetzt" = "From now";
+"Abstand" = "Distance";
 "Absätze" = "Paragraphs";
 "Adresse suchen" = "Find address";
 "Adressen" = "Addresses";
@@ -163,6 +165,7 @@
 "Anbieter-NAT (RFC 6598)" = "Carrier-grade NAT (RFC 6598)";
 "Andere Familie" = "Different family";
 "Anderes Repository wählen" = "Choose a different repository";
+"Anderswo" = "Elsewhere";
 "Angeheftet" = "Pinned";
 "Angeheftete Einträge zählen nicht mit und fallen nie heraus." = "Pinned entries do not count towards the limit and never drop out.";
 "Angelegt. Die Adresse steht im Location-Header." = "Created. The address is in the Location header.";
@@ -183,6 +186,7 @@
 "Apple Intelligence ist auf diesem Mac nicht eingeschaltet." = "Apple Intelligence is not turned on for this Mac.";
 "April" = "April";
 "Aprilscherz von 1998, steht bis heute in der Spezifikation." = "An April Fools' joke from 1998, still in the specification.";
+"Arbeitstage" = "Working days";
 "Argumente" = "Arguments";
 "Auch Floskeln" = "Verbal tics too";
 "Audio-Konverter fehlt." = "Audio converter is missing.";
@@ -253,6 +257,7 @@
 "Begriffe an das Modell geben" = "Pass the terms to the model";
 "Behält jedes inhaltliche Wort. Nur Verzögerungslaute, Versprecher, Grammatik und Zeichensetzung werden korrigiert." = "Keeps every word of substance. Only hesitation sounds, slips, grammar and punctuation are corrected.";
 "Beide Fassungen sind Wort für Wort gleich." = "Both versions are identical, word for word.";
+"Beide Felder füllen — 2026-08-09, 09.08.2026 oder ein Zeitstempel." = "Fill in both fields — 2026-08-09, 09.08.2026 or a timestamp.";
 "Beim Kopieren trennen mit" = "Separate with, when copying";
 "Beispiel-Tool" = "Example tool";
 "Belegt" = "Taken";
@@ -281,6 +286,7 @@
 "Bildschirmaufnahme braucht das Bildschirmfoto-Werkzeug. Die Bedienungshilfen braucht nur das Einfügen in fremde Textfelder — ohne sie landet Diktiertes in der Zwischenablage." = "Screen recording is what the screenshot tool needs. Accessibility is only needed to type into other apps' text fields — without it, dictation goes to the clipboard.";
 "Bildschirmausschnitt, Screenshot oder Datei" = "A screen region, a screenshot, or a file";
 "Bildschirmfoto" = "Screenshot";
+"Bis — 2026-12-24" = "To — 2026-12-24";
 "Blindtext" = "Placeholder text";
 "Braucht keine Eingabe — Länge rechts wählen." = "Needs no input — pick a length on the right.";
 "Braucht keine Eingabe — Variante rechts wählen." = "Needs no input — pick a variant on the right.";
@@ -292,6 +298,9 @@
 "CSV ansehen, sortieren, umwandeln" = "View CSV, sort it, convert it";
 "CSV, TSV oder mit Semikolon — das Trennzeichen erkennt Anvil selbst." = "CSV, TSV or semicolon-separated — Anvil works out the delimiter itself.";
 "Codeblock nicht geschlossen" = "Code block never closed";
+"Das ist kein Zeitpunkt" = "That is not a point in time";
+"Dauer" = "Duration";
+"Ein Unix-Zeitstempel, ein ISO-Datum oder 09.08.2026 — die Einheit erkennt Anvil selbst." = "A Unix timestamp, an ISO date or 09.08.2026 — Anvil works out the unit itself.";
 "Ganze Seite" = "Whole page";
 "camelCase, snake_case, kebab-case …" = "camelCase, snake_case, kebab-case…";
 "chmod-Zahlen haben drei Ziffern von 0 bis 7." = "chmod numbers have three digits from 0 to 7.";
@@ -331,11 +340,13 @@
 "Das On-Device-Modell hat die Antwort abgelehnt." = "The on-device model declined to answer.";
 "Das On-Device-Modell ist gerade nicht geladen. Versuch es in einem Moment noch einmal." = "The on-device model is not loaded right now. Try again in a moment.";
 "Das On-Device-Modell konnte nicht antworten." = "The on-device model could not answer.";
+"Das ist keine Dauer" = "That is not a duration";
 "Das sind weder drei Ziffern noch neun Zeichen wie rwxr-xr-x." = "That is neither three digits nor nine characters like rwxr-xr-x.";
 "Das Wesentliche aus langem Text" = "The essentials of a long text";
 "Datei wird transkribiert" = "Transcribing file";
 "Dateirechte" = "File permissions";
 "Datenordner" = "Data folder";
+"Dauern, Zeitstempel, Abstände" = "Durations, timestamps, distances";
 "Deckt endgültig ab. Kein Weichzeichner — der lässt sich zurückrechnen, eine Fläche nicht." = "Covers it for good. Not a blur — a blur can be undone, a solid block cannot.";
 "Deine eigene Anweisung an das Modell." = "Your own instruction to the model.";
 "Deine Tastenkürzel" = "Your shortcuts";
@@ -360,10 +371,12 @@
 "Der Verlauf liegt unverschlüsselt in ~/Library/Application Support/Anvil." = "The history is stored unencrypted in ~/Library/Application Support/Anvil.";
 "Der Vorgang wurde abgebrochen." = "The operation was cancelled.";
 "Der übliche Kompromiss." = "The usual compromise.";
+"Derselbe Augenblick, andere Uhr" = "The same moment, a different clock";
 "Detailgrad" = "Level of detail";
 "Deutsch" = "German";
 "Dezember" = "December";
 "Dezimal, Hex, Binär, Oktal" = "Decimal, hex, binary, octal";
+"Dezimalstunden" = "Decimal hours";
 "Dialekt" = "Flavour";
 "Die Adresse gibt es, diese Methode nicht." = "The address exists, this method does not.";
 "Die Anfrage ergibt keinen Sinn — Tippfehler im Body oder in den Parametern." = "The request makes no sense — a typo in the body or the parameters.";
@@ -435,6 +448,8 @@
 "Eine IPv4-Präfixlänge liegt zwischen 0 und 32." = "An IPv4 prefix length is between 0 and 32.";
 "Eine IPv6-Präfixlänge liegt zwischen 0 und 128." = "An IPv6 prefix length is between 0 and 128.";
 "Eine gerade Linie." = "A straight line.";
+"Erlaubt sind Zahlen mit einer Einheit — s, m, h, d, w — oder die Uhrzeit-Schreibweise." = "Numbers with a unit — s, m, h, d, w — or clock notation.";
+"Gilt für den Kopieren-Knopf und für die Dauer beim Abstand." = "Applies to the copy button and to the duration under Distance.";
 "Gliedern, prüfen, nach HTML" = "Outline it, check it, turn it into HTML";
 "Gliederung" = "Outline";
 "eine Zeile" = "one line";
@@ -463,6 +478,7 @@
 "Ergebnis kopieren" = "Copy result";
 "Ergebnis · %@" = "Result · %@";
 "Ergebnisse automatisch kopieren" = "Copy results automatically";
+"Erkannt als" = "Read as";
 "ergänzt" = "added";
 "Erkennen" = "Detect";
 "Erkennt auch kurze Begriffe und stärkere Abweichungen — mit mehr Fehlgriffen." = "Also catches short terms and bigger differences — and gets it wrong more often.";
@@ -484,6 +500,7 @@
 "Erste Zeile ist die Kopfzeile" = "First line is the header";
 "Erteilt" = "Granted";
 "Erteilt oder nicht" = "Granted or not";
+"Erwartet wird ein Unix-Zeitstempel oder ein Datum." = "A Unix timestamp or a date is expected.";
 "Erzeugen und aus Bildern lesen" = "Create them, and read them from images";
 "Es gibt noch kein Ergebnis zum Sichern." = "There is no result to save yet.";
 "Es gibt noch keinen Text zum Aufräumen." = "There is no text to clean up yet.";
@@ -580,12 +597,14 @@
 "Hat nicht geklappt" = "That didn’t work";
 "Header" = "Header";
 "Helligkeit" = "Brightness";
+"Heute als Von" = "Today as From";
 "Hex braucht eine gerade Anzahl Zeichen." = "Hex needs an even number of characters.";
 "Hex mit und ohne Raute, rgb(), rgba(), hsl(), hsla() und gängige Farbnamen auf Deutsch und Englisch." = "Hex with and without the hash, rgb(), rgba(), hsl(), hsla() and common colour names in German and English.";
 "Hier erscheint, was erkannt wurde." = "What was recognised appears here.";
 "Hinzufügen" = "Add";
 "HTML-Entities" = "HTML entities";
 "HTTP-Codes" = "HTTP codes";
+"Heute als Bis" = "Today as To";
 "Hinter dem Schrägstrich steht eine Präfixlänge oder eine Maske: %@" = "After the slash comes a prefix length or a mask: %@";
 "Hinter dem Schrägstrich steht eine Präfixlänge: %@" = "After the slash comes a prefix length: %@";
 "Hostbereich" = "Host range";
@@ -595,6 +614,10 @@
 "Ideen sammeln" = "Collect ideas";
 "Im Finder zeigen" = "Show in Finder";
 "Immer aktiv" = "Always on";
+"In Minuten" = "In minutes";
+"In Sekunden" = "In seconds";
+"In Stunden" = "In hours";
+"In Tagen" = "In days";
 "In alle passenden" = "Into every matching unit";
 "In dem Bild ist kein QR-Code zu finden." = "There is no QR code in that image.";
 "In dem Bild ist nichts, was sich als Text lesen ließe." = "There is nothing in that image that reads as text.";
@@ -612,6 +635,7 @@
 "installiert" = "installed";
 "Installiertes Werkzeug" = "Installed tool";
 "Italienisch" = "Italian";
+"Jahre" = "Years";
 "Januar" = "January";
 "Jede Aufnahmeart hat ihr eigenes Kürzel — in den Einstellungen unter „Tastenkürzel\"." = "Each kind of capture has its own shortcut — in Settings under “Shortcuts”.";
 "Jede davon lässt sich später in den Einstellungen nachholen oder zurücknehmen." = "Each of these can be granted or withdrawn later in Settings.";
@@ -621,6 +645,7 @@
 "Jedes Kürzel lässt sich ändern, abschalten, oder darauf umstellen, ob es nur in Anvil oder überall gilt." = "Every shortcut can be changed, switched off, or set to work only in Anvil or everywhere.";
 "Jetzt" = "Now";
 "JSON-Dateien in ~/Library/Application Support/Anvil/Tools." = "JSON files in ~/Library/Application Support/Anvil/Tools.";
+"Jetzt einsetzen" = "Insert now";
 "Juli" = "July";
 "Juni" = "June";
 "Kein Bild" = "No image";
@@ -653,6 +678,7 @@
 "KI" = "AI";
 "KI-Aufbereitung ist in den Optionen aus" = "AI clean-up is switched off in the options";
 "KI-Werkzeuge" = "AI Tools";
+"Kalenderwoche" = "Calendar week";
 "Keine Verweise" = "No links";
 "Keine Überschriften" = "No headings";
 "klein" = "lowercase";
@@ -677,6 +703,7 @@
 "Korrekturen" = "corrections";
 "Korrigiert anhand des Wortschatzes — richtig für Sätze." = "Corrects against a vocabulary — right for sentences.";
 "Kreist etwas ein." = "Circles something.";
+"Kurz" = "Short";
 "kurz" = "brief";
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der aufgeräumte Text geht ins Textfeld, in dem der Cursor steht — sonst in die Zwischenablage. ⎋ verwirft. Das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The cleaned-up text goes into the text field the caret sits in — otherwise to the clipboard. ⎋ discards. The main window stays closed.";
 "Kürzel drücken, sprechen, Kürzel noch einmal drücken. Der Text wird aufgeräumt und liegt danach in der Zwischenablage — das Hauptfenster bleibt zu." = "Press the shortcut, talk, press it again. The text is cleaned up and ends up on the clipboard — the main window stays closed.";
@@ -727,11 +754,15 @@
 "Merkbare Wortfolge" = "Memorable word chain";
 "Mikrofon" = "Microphone";
 "Mikrofon wird geöffnet" = "Opening the microphone";
+"Mikrosekunden" = "Microseconds";
+"Millisekunden" = "Milliseconds";
 "Min. Lesezeit" = "min. reading time";
 "Mindestens eins" = "One or more";
 "Minute" = "minute";
+"Minuten" = "Minutes";
 "Mit dem Modell aufräumen" = "Clean up with the model";
 "Mit KI" = "With AI";
+"Monate" = "Months";
 "mit-bindestrichen" = "with-hyphens";
 "mit_unterstrichen" = "with_underscores";
 "Mitschneiden" = "Recording";
@@ -754,6 +785,7 @@
 "Nachschlagen" = "Look up";
 "Nachsehen" = "Checking";
 "Name,Ort,Umsatz\nAnna,Bremen,1200\nBen,Kiel,980" = "Name,City,Revenue\nAnna,Bristol,1200\nBen,Leeds,980";
+"Nanosekunden" = "Nanoseconds";
 "Natürlich, nicht wörtlich" = "Natural, not literal";
 "Nebeneinander" = "Side by side";
 "Netz" = "Network";
@@ -788,9 +820,11 @@
 "Noch kein Netz" = "No network yet";
 "Noch kein Schlüssel hinterlegt." = "No key stored yet.";
 "Noch kein Text" = "No text yet";
+"Noch kein Zeitpunkt" = "No point in time yet";
 "Noch keine Aufnahme" = "No capture yet";
 "Noch keine Begriffe" = "No terms yet";
 "Noch keine Begriffe — anzulegen im Werkzeug „Diktat-Vokabular\"." = "No terms yet — add them in the Dictation Vocabulary tool.";
+"Noch keine Dauer" = "No duration yet";
 "Noch keine Eingabe" = "No input yet";
 "Noch keine Tabelle" = "No table yet";
 "Noch nicht gefragt" = "Not asked yet";
@@ -869,6 +903,8 @@
 "QR-Code" = "QR code";
 "Rahmen" = "Box";
 "Rahmt einen Bereich ein." = "Frames an area.";
+"Sekunde" = "Second";
+"Sekunden" = "Seconds";
 "Semikolon" = "Semicolon";
 "Setzt die Liste oben in den Text ein, mit Sprungmarken wie auf GitHub." = "Inserts the list at the top of the text, with anchors the way GitHub makes them.";
 "Spalte %lld" = "Column %lld";
@@ -953,11 +989,13 @@
 "Stoppen" = "Stop";
 "Strichstärke" = "Line width";
 "Stunde" = "hour";
+"Stunden" = "Hours";
 "Stärke" = "Strength";
 "Suchen" = "Search";
 "Syntaktisch in Ordnung, inhaltlich nicht." = "Syntactically fine, semantically not.";
 "System" = "System";
 "Tag" = "day";
+"Tage" = "Days";
 "Tasten drücken …" = "Press keys…";
 "Tastenkürzel" = "Shortcut";
 "Tauschen" = "Swap";
@@ -997,6 +1035,7 @@
 "Trag oben einen regulären Ausdruck ein — Treffer erscheinen sofort." = "Type a regular expression above — matches appear instantly.";
 "Treffer" = "Matches";
 "Trennzeichen" = "Delimiter";
+"Uhrzeit-Schreibweise" = "Clock notation";
 "Uhrzeiten sehen so aus: 14:30." = "Times look like this: 14:30.";
 "um %@ Uhr" = "at %@ o'clock";
 "Umdrehen" = "Reverse";
@@ -1038,6 +1077,8 @@
 "Von Hex" = "From hex";
 "Von null aus lässt sich keine Änderung berechnen." = "There is no change to calculate from zero.";
 "Von überall diktieren" = "Dictate from anywhere";
+"Von — 2026-08-09" = "From — 2026-08-09";
+"Vor jetzt" = "Before now";
 "Voreinstellung" = "Preset";
 "Vorher" = "Before";
 "Vorlagen" = "Templates";
@@ -1082,6 +1123,7 @@
 "Wird nur benutzt, wenn die Richtlinie es zulässt und oben kein Werkzeug eingeschaltet ist. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Used only when the policy allows it and no tool is switched on above. The key lives in the keychain, not in the settings.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Only used when the policy allows it. The key lives in the keychain, not in the settings file.";
 "WLAN-Zugang" = "Wi-Fi access";
+"Wochen" = "Weeks";
 "Wochentag" = "weekday";
 "Wohin gehen Anfragen?" = "Where do requests go?";
 "Wortdoppelungen zusammenfassen" = "Collapse repeated words";
@@ -1103,6 +1145,8 @@
 "Zeile %lld: %@" = "Line %lld: %@";
 "Zeilen" = "Lines";
 "Zeilen kommen von oben nach unten, gleich hohe von links nach rechts — zwei Spalten bleiben zwei Spalten." = "Lines come top to bottom, and left to right within a band — two columns stay two columns.";
+"Zeitrechner" = "Time calculator";
+"Zeitzone" = "Time zone";
 "Zerlegt das Netz in gleich große Teile. Gezeigt werden die ersten 64." = "Splits the network into equal parts. The first 64 are shown.";
 "wird gelesen …" = "reading …";
 "zeilenweise" = "line by line";
@@ -1131,6 +1175,7 @@
 "Zusammenfassung" = "Summary";
 "Zwei Fassungen gegenüberstellen" = "Put two versions side by side";
 "Zwei Zahlen bitte, zum Beispiel „19% von 250\"." = "Two numbers please, for example “19% von 250”.";
+"Zwei Zeitpunkte" = "Two points in time";
 "Zwischenablage" = "Clipboard";
 "Zwischenablage beobachten" = "Watch the clipboard";
 "Zwischenablage einfügen" = "Paste clipboard";
@@ -1143,6 +1188,7 @@
 "Öffentlich erreichbar" = "Publicly routable";
 "Öffnen" = "Open";
 "Öffnet die Suche über alle Werkzeuge" = "Opens the search across every tool";
+"Örtlich" = "Local";
 "Über Anvil" = "About Anvil";
 "Über ein Kommandozeilen-Werkzeug" = "Via a command-line tool";
 "Überall" = "Everywhere";
