@@ -87,6 +87,7 @@ SKIP = {
     # damit aus wie Anzeigetext — ist aber Format und wird nie übersetzt.
     "INSERT INTO %@ (%@) VALUES (%@);",
     "    %@: %@",
+    "@@ -%@ +%@ @@%@",                       # der Abschnittskopf eines Diffs
 }
 SKIP_PATTERNS = [
     re.compile(r"^[a-z0-9.]+$"),          # SF-Symbol-Namen

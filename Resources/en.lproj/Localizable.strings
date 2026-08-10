@@ -29,8 +29,10 @@
 ", %@" = ", %@";
 ", am %@. des Monats" = ", on day %@ of the month";
 ", im %@" = ", in %@";
+"--- a/datei.txt\n+++ b/datei.txt\n@@ -1,3 +1,3 @@" = "--- a/file.txt\n+++ b/file.txt\n@@ -1,3 +1,3 @@";
 ". trifft auch Zeilenumbrüche" = ". matches newlines too";
 "Ab jetzt" = "From now";
+"Abschnitt %lld passt nicht: Der Text drumherum steht so nicht in der Vorlage." = "Hunk %lld does not fit: the surrounding text is not in the source that way.";
 "Abstand" = "Distance";
 "Absätze" = "Paragraphs";
 "Adresse suchen" = "Find address";
@@ -170,6 +172,7 @@
 "Angeheftete Einträge zählen nicht mit und fallen nie heraus." = "Pinned entries do not count towards the limit and never drop out.";
 "Angelegt. Die Adresse steht im Location-Header." = "Created. The address is in the Location header.";
 "Angemeldet, aber nicht befugt." = "Signed in, but not allowed.";
+"Angewendet wird immer eine Datei — die Vorlage links ist ja auch nur eine." = "One file is applied at a time — the source on the left is only one file either.";
 "Anklicken übernimmt die Abstufung als Farbe." = "Click a shade to make it the colour.";
 "Anordnung: %@" = "Layout: %@";
 "Ansicht" = "View";
@@ -180,6 +183,7 @@
 "Anvil darf die Spracherkennung nicht benutzen." = "Anvil is not allowed to use speech recognition.";
 "Anvil fragt jede Berechtigung erst, wenn sie gebraucht wird. Hier steht, was davon erteilt ist." = "Anvil asks for each permission the first time it needs it. Here is what has been granted.";
 "Anvil tippt ⌘V in die App, in der du gerade warst." = "Anvil types ⌘V into the app you were just in.";
+"Anwenden" = "Apply";
 "Anzahl" = "How many";
 "Anzeige" = "Display";
 "API-Schlüssel" = "API key";
@@ -357,6 +361,7 @@
 "Der Bildschirm konnte nicht aufgenommen werden: %@" = "The screen could not be captured: %@";
 "Der Export ist fehlgeschlagen: %@" = "The export failed: %@";
 "Der Filter rechts trifft in keiner Spalte." = "The filter on the right matches in no column.";
+"Der Patch braucht den Text, auf den er angewendet werden soll — links unten." = "The patch needs the text it is applied to — bottom left.";
 "Der gelesene Text landet dann sofort in der Zwischenablage." = "The text goes straight to the clipboard.";
 "Der Schalter entscheidet, ob das Kürzel überall gilt. Feiner einstellen lässt sich das in den Einstellungen unter „Tastenkürzel\"." = "The switch decides whether the shortcut works everywhere. Finer control is in Settings under “Shortcuts”.";
 "Der Schlüssel konnte nicht kodiert werden." = "The key could not be encoded.";
@@ -367,6 +372,7 @@
 "Der Text lässt sich nicht kodieren." = "The text cannot be encoded.";
 "Der Text passt nicht in einen QR-Code — er ist zu lang." = "The text does not fit into a QR code — it is too long.";
 "Der Text wird auf diesem Mac erkannt, nichts geht ins Netz." = "The text is recognised on this Mac; nothing goes online.";
+"Der Text, auf den der Patch angewendet wird." = "The text the patch is applied to.";
 "Der Verlauf liegt nur im Arbeitsspeicher und ist beim nächsten Start wieder leer." = "The history lives in memory only and is empty again after a restart.";
 "Der Verlauf liegt unverschlüsselt in ~/Library/Application Support/Anvil." = "The history is stored unencrypted in ~/Library/Application Support/Anvil.";
 "Der Vorgang wurde abgebrochen." = "The operation was cancelled.";
@@ -394,9 +400,11 @@
 "Die Spracherkennung konnte nicht gestartet werden: %@" = "Speech recognition could not be started: %@";
 "Die Tastenkombination %@ ist schon von einer anderen App belegt." = "The shortcut %@ is already taken by another app.";
 "Die Verzögerung gilt nur für den ganzen Bildschirm — beim Ausschnitt wartest du ohnehin selbst." = "The delay only applies to a full-screen shot — with a region you are the one taking the time.";
+"Die Zeilennummer im Kopf ist ein Hinweis, keine Zusage. Anvil sucht um sie herum nach dem passenden Umfeld — und meldet einen Fehler, statt an der falschen Stelle zu schneiden." = "The line number in the header is a hint, not a promise. Anvil searches around it for the matching surroundings — and reports an error rather than cutting in the wrong place.";
 "Die Zieleinheit kenne ich nicht." = "I do not know that target unit.";
 "Die längsten Sätze" = "The longest sentences";
 "Die längsten Wörter" = "The longest words";
+"Diese Datei" = "This file";
 "Diese Klasse gibt es nicht." = "There is no such class.";
 "Diese Maske hat Lücken — Einsen und Nullen müssen zusammenhängen: %@" = "This mask has gaps — the ones and the zeros each have to be contiguous: %@";
 "Diese Sitzung" = "This session";
@@ -404,6 +412,7 @@
 "Dieser Anbieter ist noch nicht eingerichtet." = "This provider is not set up yet.";
 "Dieser Mac unterstützt das On-Device-Modell nicht." = "This Mac does not support the on-device model.";
 "Dieses Tool bringt keine eigenen Einstellungen mit." = "This tool has no settings of its own.";
+"Diff lesen, anwenden, umkehren" = "Read a diff, apply it, reverse it";
 "Diff neu laden" = "Reload diff";
 "Diktat" = "Dictation";
 "Diktat starten" = "Start dictation";
@@ -446,6 +455,7 @@
 "Ein JWT besteht aus drei mit Punkt getrennten Teilen." = "A JWT has three parts separated by dots.";
 "Ein Satz" = "One sentence";
 "Ein Schlüssel ist hinterlegt." = "A key is stored.";
+"Ein Unified Diff — mit oder ohne diff --git davor, mit oder ohne a/ und b/." = "A unified diff — with or without diff --git in front, with or without a/ and b/.";
 "Eindeutig lokal (RFC 4193)" = "Unique local (RFC 4193)";
 "Eine" = "One";
 "Eine IPv4-Präfixlänge liegt zwischen 0 und 32." = "An IPv4 prefix length is between 0 and 32.";
@@ -473,6 +483,7 @@
 "Ellipse" = "Ellipse";
 "Englisch" = "English";
 "Entfernen" = "Remove";
+"Entfernt" = "Removed";
 "entfernt" = "removed";
 "Entfernt zusätzlich Floskeln wie „halt\", „quasi\", „sozusagen\"." = "Also removes tics like “like”, “basically”, “sort of”.";
 "Entfernt „äh\", „ähm\", „hm\" und Wortdoppelungen." = "Removes “uh”, “um”, “hm” and repeated words.";
@@ -616,6 +627,7 @@
 "Hier fängt man beim Kürzen an" = "This is where cutting starts";
 "Hinter dem Schrägstrich steht eine Präfixlänge oder eine Maske: %@" = "After the slash comes a prefix length or a mask: %@";
 "Hinter dem Schrägstrich steht eine Präfixlänge: %@" = "After the slash comes a prefix length: %@";
+"Hinzugefügt" = "Added";
 "Hostbereich" = "Host range";
 "Hosts" = "Hosts";
 "IPv4 in IPv6 abgebildet" = "IPv4 mapped into IPv6";
@@ -673,6 +685,7 @@
 "Kein Treffer" = "No match";
 "Kein Unterschied" = "No difference";
 "Keine Adresse" = "Not an address";
+"Keine Datei gewählt" = "No file chosen";
 "Keine Einstellungen" = "No settings";
 "Keine Farbe erkannt" = "Not a colour";
 "Keine Korrektur. Für Code, Schlüssel und Nummern, wo jedes Zeichen zählt." = "No correction. For code, keys and numbers, where every character counts.";
@@ -777,6 +790,11 @@
 "Mit KI" = "With AI";
 "Mittel" = "Medium";
 "Monate" = "Months";
+"Noch kein Patch" = "No patch yet";
+"Noch keine Vorlage" = "No source yet";
+"Patch" = "Patch";
+"Suchfenster" = "Search window";
+"Was tun" = "What to do";
 "mit-bindestrichen" = "with-hyphens";
 "mit_unterstrichen" = "with_underscores";
 "Mitschneiden" = "Recording";
@@ -1064,6 +1082,7 @@
 "um %@ Uhr" = "at %@ o'clock";
 "Umdrehen" = "Reverse";
 "Umfang" = "Scope";
+"Umgekehrt" = "Reversed";
 "Umgezogen, für immer. Lesezeichen aktualisieren." = "Moved, for good. Update the bookmark.";
 "Umrechnen" = "Convert";
 "Umrechnen und Kontrast prüfen" = "Convert them, and check the contrast";
@@ -1093,6 +1112,7 @@
 "Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
 "Verweigert" = "Denied";
 "Verweise" = "Links and images";
+"gelöscht" = "deleted";
 "verwerfen" = "discard";
 "Verwerfen" = "Discard";
 "Verwerfen (⎋)" = "Discard (⎋)";
@@ -1107,6 +1127,7 @@
 "Vor jetzt" = "Before now";
 "Voreinstellung" = "Preset";
 "Vorher" = "Before";
+"Vorlage" = "Source";
 "Vorlagen" = "Templates";
 "Vorne einfügen" = "Insert at the top";
 "Vorübergehend woanders." = "Somewhere else for now.";
@@ -1137,6 +1158,7 @@
 "Wie 301, aber die Methode bleibt erhalten." = "Like 301, but the method is kept.";
 "Wie 302, aber die Methode bleibt erhalten." = "Like 302, but the method is kept.";
 "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird." = "How the model shapes the dictation before it is copied.";
+"Wie gesucht wird" = "How the search works";
 "Wie schwer ein Text zu lesen ist" = "How hard a text is to read";
 "wie das Original" = "same as the original";
 "wie im Code erkennbar" = "as the code suggests";
@@ -1231,6 +1253,7 @@
 "Überschriften" = "Headings";
 "Überschriftstufe übersprungen" = "Heading level skipped";
 "Übersetzen" = "Translate";
+"Übersicht" = "Overview";
 "Überspringen" = "Skip";
 "Übliche IPv4-Größen" = "Common IPv4 sizes";
 "— kein Text —" = "— no text —";
