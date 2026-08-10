@@ -190,6 +190,12 @@ Das hat zwei Gründe, und beide sind praktisch:
   ist, halten es in `@State` und rechnen in `onChange` neu — siehe
   `CSVToolView`, `MarkdownToolView`, `ReadabilityToolView`.
 
+Wo etwas nicht rückgängig zu machen ist, kommt eine dritte Regel dazu: **Erst
+der Plan, dann die Tat.** `RenamePlan` rechnet aus, was herauskäme, und sagt
+bei jedem Eintrag, was ihm im Weg steht; ausgeführt wird nur ein Plan ohne
+Beanstandung. Ein Werkzeug, das die Hälfte umbenennt und dann stehenbleibt,
+hinterlässt einen Zustand, den niemand mehr auseinandersortiert.
+
 ## Datenablage
 
 ```
