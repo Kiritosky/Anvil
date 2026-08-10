@@ -26,6 +26,12 @@ struct RootView: View {
             OnboardingView()
         }
         .anvilWindowFrame(autosaveName: "anvil.main")
+        // Ein Werkzeug legt etwas für ein anderes bereit; erst hier wird
+        // daraus ein Wechsel. Damit muss kein Werkzeug wissen, wie navigiert
+        // wird.
+        .onChange(of: environment.handoff.lastTarget) {
+            environment.followHandoff()
+        }
     }
 
     @ViewBuilder

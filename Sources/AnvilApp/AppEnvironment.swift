@@ -28,6 +28,8 @@ public final class AppEnvironment {
     public let screenshots: ScreenshotController
     /// Dictation from anywhere, driven by the global shortcut.
     public let quickDictation: QuickDictationController
+    /// Was gerade von einem Werkzeug zum nächsten unterwegs ist.
+    public let handoff = HandoffStore()
 
     /// The tool currently shown in the detail pane.
     public var selectedToolID: ToolIdentifier?
@@ -54,6 +56,7 @@ public final class AppEnvironment {
         context.register(registry)
         context.register(router)
         context.register(DraftStore())
+        context.register(handoff)
         self.context = context
 
         let customTools = CustomToolStore(registry: registry)
@@ -168,6 +171,17 @@ public final class AppEnvironment {
 
     public var selectedTool: ToolRegistration? {
         selectedToolID.flatMap { registry.tool(id: $0) }
+    }
+
+    /// Öffnet das Werkzeug, an das zuletzt etwas weitergereicht wurde.
+    ///
+    /// Das Weiterreichen selbst kennt die Shell nicht — ein Werkzeug legt
+    /// etwas bereit, und erst hier wird daraus ein Fensterwechsel. Sonst
+    /// müsste jedes Werkzeug wissen, wie man navigiert.
+    public func followHandoff() {
+        guard let target = handoff.lastTarget else { return }
+        handoff.clearTarget()
+        open(target)
     }
 
     /// Refreshes model availability. Called at launch and when settings change.

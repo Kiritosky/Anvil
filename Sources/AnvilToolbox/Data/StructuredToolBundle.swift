@@ -22,7 +22,8 @@ public enum StructuredToolBundle: ToolBundle {
             keywords: [
                 "json", "yaml", "yml", "toml", "umwandeln", "convert",
                 "konfiguration", "config", "formatieren"
-            ]
+            ],
+            acceptsText: true
         )
 
         return ToolRegistration(metadata: metadata) { context in

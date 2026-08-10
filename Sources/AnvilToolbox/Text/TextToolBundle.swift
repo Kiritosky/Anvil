@@ -32,7 +32,8 @@ public enum TextToolBundle: ToolBundle {
             keywords: [
                 "lesbarkeit", "readability", "flesch", "amstad", "silben",
                 "lesezeit", "satzlänge", "verständlich"
-            ]
+            ],
+            acceptsText: true
         )
 
         return ToolRegistration(metadata: metadata) { context in
@@ -48,7 +49,8 @@ public enum TextToolBundle: ToolBundle {
             subtitle: "Muster live gegen Text prüfen",
             systemImage: "asterisk",
             category: .coding,
-            keywords: ["regex", "regulärer ausdruck", "muster", "pattern", "suchen", "ersetzen"]
+            keywords: ["regex", "regulärer ausdruck", "muster", "pattern", "suchen", "ersetzen"],
+            acceptsText: true
         )
 
         return ToolRegistration(metadata: metadata) { context in
@@ -64,7 +66,8 @@ public enum TextToolBundle: ToolBundle {
             subtitle: "Zwei Fassungen gegenüberstellen",
             systemImage: "plusminus",
             category: .text,
-            keywords: ["diff", "vergleich", "unterschied", "compare", "änderungen"]
+            keywords: ["diff", "vergleich", "unterschied", "compare", "änderungen"],
+            acceptsText: true
         )
 
         return ToolRegistration(metadata: metadata) { context in

@@ -48,6 +48,13 @@ public struct ToolMetadata: Hashable, Sendable, Identifiable {
     public let requirements: Set<ToolRequirement>
     /// Shown in the sidebar next to the title, e.g. "Neu" or "Beta".
     public let badge: String?
+    /// Ob das Werkzeug mit Text anfangen kann, der von woanders kommt.
+    ///
+    /// Entscheidet, ob es im „Weitergeben an"-Menü anderer Werkzeuge auftaucht.
+    /// Standardmäßig aus: Ein Werkzeug, das Dateien einsammelt oder ein
+    /// Mikrofon aufmacht, kann mit einer Zeichenkette nichts anfangen, und ein
+    /// Menü voller Ziele, bei denen nichts passiert, ist schlimmer als keins.
+    public let acceptsText: Bool
 
     public init(
         id: ToolIdentifier,
@@ -57,7 +64,8 @@ public struct ToolMetadata: Hashable, Sendable, Identifiable {
         category: ToolCategory,
         keywords: [String] = [],
         requirements: Set<ToolRequirement> = [],
-        badge: String? = nil
+        badge: String? = nil,
+        acceptsText: Bool = false
     ) {
         // Display text is translated here, once, so that every consumer —
         // sidebar, search, Tool Store, window title — sees the same string and
@@ -70,6 +78,7 @@ public struct ToolMetadata: Hashable, Sendable, Identifiable {
         self.keywords = keywords.map { localized(runtime: $0) }
         self.requirements = requirements
         self.badge = badge.map { localized(runtime: $0) }
+        self.acceptsText = acceptsText
     }
 
     /// The haystack used by the command palette and sidebar filter.

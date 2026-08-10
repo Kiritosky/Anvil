@@ -739,6 +739,7 @@
 "Kein Tool passt zu „%@\"." = "No tool matches “%@”.";
 "Kein Treffer" = "No match";
 "Kein Unterschied" = "No difference";
+"Kein Ziel eingeschaltet" = "No target switched on";
 "Keine Adresse" = "Not an address";
 "Keine Datei gewählt" = "No file chosen";
 "Keine Einstellungen" = "No settings";
@@ -1218,6 +1219,7 @@
 "Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
 "Verweigert" = "Denied";
 "Verweise" = "Links and images";
+"Weitergeben an ein anderes Werkzeug" = "Pass on to another tool";
 "Werte" = "Values";
 "Wohin damit?" = "Where to?";
 "Zahl" = "Number";

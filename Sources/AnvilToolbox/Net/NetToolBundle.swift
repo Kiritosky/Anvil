@@ -26,7 +26,8 @@ public enum NetToolBundle: ToolBundle {
             keywords: [
                 "ip", "ipv4", "ipv6", "cidr", "subnetz", "subnet", "netzmaske",
                 "maske", "netmask", "wildcard", "broadcast", "präfix", "prefix"
-            ]
+            ],
+            acceptsText: true
         )
 
         return ToolRegistration(metadata: metadata) { context in

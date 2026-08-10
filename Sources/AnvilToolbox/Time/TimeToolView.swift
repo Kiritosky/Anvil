@@ -69,6 +69,13 @@ public struct TimeToolView: View {
 
     private func restore() {
         now = Date()
+        if let handed = context.handoff.take(for: metadata.id) {
+            // Was hereinkommt, ist meist ein Zeitstempel aus einem Log — und
+            // der gehört ins Zeitstempel-Feld, nicht ins Dauer-Feld.
+            timestampInput = handed.trimmingCharacters(in: .whitespacesAndNewlines)
+            mode = .timestamp
+            return
+        }
         guard let draft = context.drafts.draft(for: metadata.id) else { return }
         durationInput = draft.input
         timestampInput = draft.extra("timestamp")

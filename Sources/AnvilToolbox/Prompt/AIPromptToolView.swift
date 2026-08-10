@@ -64,9 +64,13 @@ public struct AIPromptToolView: View {
     /// sich beim Öffnen ohnehin frisch; dort wäre ein alter Diff schlimmer als
     /// ein leeres Feld.
     private func restore() {
-        guard tool.inputSource != .gitDiff,
-              let draft = context.drafts.draft(for: metadata.id)
-        else { return }
+        guard tool.inputSource != .gitDiff else { return }
+        // Hereingereichtes sticht den eigenen Entwurf.
+        if let handed = context.handoff.take(for: metadata.id) {
+            input = handed
+            return
+        }
+        guard let draft = context.drafts.draft(for: metadata.id) else { return }
         input = draft.input
     }
 
@@ -189,6 +193,7 @@ public struct AIPromptToolView: View {
             if isRunning {
                 ProgressView().controlSize(.small).scaleEffect(0.6)
             }
+            HandoffMenu(context: context, from: metadata.id, text: output)
             CopyButton(text: output)
         }
     }

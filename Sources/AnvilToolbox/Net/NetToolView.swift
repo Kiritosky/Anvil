@@ -49,6 +49,10 @@ public struct NetToolView: View {
     // MARK: - Zurückholen und merken
 
     private func restore() {
+        if let handed = context.handoff.take(for: metadata.id) {
+            input = handed
+            return
+        }
         guard let draft = context.drafts.draft(for: metadata.id) else { return }
         input = draft.input
         probe = draft.extra("probe")
@@ -110,7 +114,14 @@ public struct NetToolView: View {
                 overview
             }
         } accessory: {
-            CopyButton(text: list.single.map(reportText) ?? list.report)
+            HStack(spacing: AnvilSpacing.xs) {
+                HandoffMenu(
+                    context: context,
+                    from: metadata.id,
+                    text: list.single.map(reportText) ?? list.report
+                )
+                CopyButton(text: list.single.map(reportText) ?? list.report)
+            }
         }
     }
 

@@ -95,7 +95,8 @@ public struct TextTool: Sendable {
             subtitle: subtitle,
             systemImage: systemImage,
             category: category,
-            keywords: keywords + modes.map(\.title)
+            keywords: keywords + modes.map(\.title),
+            acceptsText: true
         )
     }
 

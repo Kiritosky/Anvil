@@ -47,6 +47,10 @@ public struct ReadabilityToolView: View {
     }
 
     private func restore() {
+        if let handed = context.handoff.take(for: metadata.id) {
+            input = handed
+            return
+        }
         guard let draft = context.drafts.draft(for: metadata.id) else { return }
         input = draft.input
     }
@@ -99,7 +103,10 @@ public struct ReadabilityToolView: View {
                 scoreAndSentences
             }
         } accessory: {
-            CopyButton(text: report)
+            HStack(spacing: AnvilSpacing.xs) {
+                HandoffMenu(context: context, from: metadata.id, text: report)
+                CopyButton(text: report)
+            }
         }
     }
 

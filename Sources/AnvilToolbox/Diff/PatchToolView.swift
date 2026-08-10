@@ -77,6 +77,15 @@ public struct PatchToolView: View {
     }
 
     private func restore() {
+        if let handed = context.handoff.take(for: metadata.id) {
+            // Ein Patch bringt seinen Kopf mit; alles andere ist die Vorlage.
+            if handed.contains("@@ ") {
+                patchText = handed
+            } else {
+                sourceText = handed
+            }
+            return
+        }
         guard let draft = context.drafts.draft(for: metadata.id) else { return }
         patchText = draft.input
         sourceText = draft.extra("source")
@@ -167,7 +176,10 @@ public struct PatchToolView: View {
                 }
             }
         } accessory: {
-            CopyButton(text: outputText)
+            HStack(spacing: AnvilSpacing.xs) {
+                HandoffMenu(context: context, from: metadata.id, text: outputText)
+                CopyButton(text: outputText)
+            }
         }
     }
 

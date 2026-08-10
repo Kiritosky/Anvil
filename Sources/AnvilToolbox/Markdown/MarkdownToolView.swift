@@ -77,6 +77,11 @@ public struct MarkdownToolView: View {
     }
 
     private func restore() {
+        // Hereingereichtes sticht den eigenen Entwurf.
+        if let handed = context.handoff.take(for: metadata.id) {
+            input = handed
+            return
+        }
         guard let draft = context.drafts.draft(for: metadata.id) else { return }
         input = draft.input
     }
@@ -150,7 +155,10 @@ public struct MarkdownToolView: View {
                 }
             }
         } accessory: {
-            CopyButton(text: outputText)
+            HStack(spacing: AnvilSpacing.xs) {
+                HandoffMenu(context: context, from: metadata.id, text: outputText)
+                CopyButton(text: outputText)
+            }
         }
     }
 

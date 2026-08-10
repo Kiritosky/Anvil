@@ -22,7 +22,8 @@ public enum MarkdownToolBundle: ToolBundle {
             keywords: [
                 "markdown", "md", "html", "readme", "überschrift", "heading",
                 "inhaltsverzeichnis", "toc", "link", "lesezeit"
-            ]
+            ],
+            acceptsText: true
         )
 
         return ToolRegistration(metadata: metadata) { context in

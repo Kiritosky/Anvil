@@ -22,7 +22,8 @@ public enum DataToolBundle: ToolBundle {
             keywords: [
                 "csv", "tsv", "tabelle", "table", "spalte", "column", "excel",
                 "trennzeichen", "delimiter", "semikolon", "json", "markdown", "sql"
-            ]
+            ],
+            acceptsText: true
         )
 
         return ToolRegistration(metadata: metadata) { context in

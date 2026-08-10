@@ -22,7 +22,8 @@ public enum TimeToolBundle: ToolBundle {
             keywords: [
                 "zeit", "dauer", "duration", "timestamp", "zeitstempel", "unix",
                 "epoch", "iso 8601", "kalenderwoche", "arbeitstage", "zeitzone"
-            ]
+            ],
+            acceptsText: true
         )
 
         return ToolRegistration(metadata: metadata) { context in

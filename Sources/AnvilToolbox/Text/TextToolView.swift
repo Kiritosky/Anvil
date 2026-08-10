@@ -95,6 +95,14 @@ public struct TextToolView: View {
     /// nur übernommen, wenn es sie noch gibt: Werkzeuge bekommen neue
     /// Varianten und verlieren alte.
     private func restore() {
+        // Was ein anderes Werkzeug hereingereicht hat, sticht den eigenen
+        // Entwurf: Wer gerade „weitergeben an" gedrückt hat, will das sehen
+        // und nicht, was hier vor einer Woche stand.
+        if let handed = context.handoff.take(for: tool.id) {
+            input = handed
+            run()
+            return
+        }
         if let draft = context.drafts.draft(for: tool.id) {
             input = draft.input
             if let modeID = draft.modeID, tool.modes.contains(where: { $0.id == modeID }) {
@@ -258,6 +266,7 @@ public struct TextToolView: View {
             .anvilHelp("Ergebnis als neue Eingabe verwenden")
             .disabled(output.isEmpty)
 
+            HandoffMenu(context: context, from: tool.id, text: output)
             CopyButton(text: output)
         }
     }

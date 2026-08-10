@@ -71,7 +71,10 @@ public struct AIPromptTool: Codable, Sendable, Identifiable {
             systemImage: systemImage,
             category: category,
             keywords: keywords,
-            requirements: inputSource == .gitDiff ? [.languageModel, .git] : [.languageModel]
+            requirements: inputSource == .gitDiff ? [.languageModel, .git] : [.languageModel],
+            // Ein Werkzeug, das seinen Text aus einem Git-Diff zieht, hat
+            // kein Eingabefeld, in das etwas hineingereicht werden könnte.
+            acceptsText: inputSource != .gitDiff
         )
     }
 

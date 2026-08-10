@@ -72,6 +72,13 @@ public struct StructuredToolView: View {
     }
 
     private func restore() {
+        if let handed = context.handoff.take(for: metadata.id) {
+            input = handed
+            // Ein hereingereichter Text bringt sein eigenes Format mit; eine
+            // Wahl von vorhin wäre jetzt die falsche.
+            chosenInput = nil
+            return
+        }
         guard let draft = context.drafts.draft(for: metadata.id) else { return }
         input = draft.input
     }
@@ -198,7 +205,10 @@ public struct StructuredToolView: View {
                 AnvilTextView(outputText, isMonospaced: true)
             }
         } accessory: {
-            CopyButton(text: outputText)
+            HStack(spacing: AnvilSpacing.xs) {
+                HandoffMenu(context: context, from: metadata.id, text: outputText)
+                CopyButton(text: outputText)
+            }
         }
     }
 

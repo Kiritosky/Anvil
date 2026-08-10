@@ -101,6 +101,13 @@ public struct CSVToolView: View {
     // MARK: - Zurückholen und merken
 
     private func restore() {
+        if let handed = context.handoff.take(for: metadata.id) {
+            input = handed
+            // Eine hereingereichte Tabelle bringt ihr eigenes Trennzeichen
+            // mit.
+            chosenDelimiter = nil
+            return
+        }
         guard let draft = context.drafts.draft(for: metadata.id) else { return }
         input = draft.input
         needle = draft.extra("needle")
@@ -193,7 +200,10 @@ public struct CSVToolView: View {
                 AnvilTextView(outputText, isMonospaced: true)
             }
         } accessory: {
-            CopyButton(text: outputText)
+            HStack(spacing: AnvilSpacing.xs) {
+                HandoffMenu(context: context, from: metadata.id, text: outputText)
+                CopyButton(text: outputText)
+            }
         }
     }
 

@@ -22,7 +22,8 @@ public enum DiffToolBundle: ToolBundle {
             keywords: [
                 "diff", "patch", "unified", "hunk", "abschnitt", "anwenden",
                 "apply", "umkehren", "revert", "git"
-            ]
+            ],
+            acceptsText: true
         )
 
         return ToolRegistration(metadata: metadata) { context in
