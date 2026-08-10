@@ -105,6 +105,7 @@ public final class AppEnvironment {
             MarkdownToolBundle.self,
             TimeToolBundle.self,
             DataToolBundle.self,
+            StructuredToolBundle.self,
             DiffToolBundle.self,
             NetToolBundle.self,
             SampleDataToolBundle.self,

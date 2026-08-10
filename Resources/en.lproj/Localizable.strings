@@ -327,6 +327,7 @@
 "Cron" = "Cron";
 "Da ist kein Text zum Anschauen." = "There is no text to look at.";
 "Da ist noch nichts." = "There is nothing here yet.";
+"Da steht nichts." = "There is nothing there.";
 "Da steht noch keine Adresse." = "There is no address there yet.";
 "Dafür fehlt noch die Bedienungshilfen-Berechtigung — bis dahin nur Zwischenablage." = "The Accessibility permission is still missing — clipboard only until then.";
 "Dafür fehlt noch die Bedienungshilfen-Berechtigung." = "The Accessibility permission is still missing for this.";
@@ -336,6 +337,7 @@
 "Das Bild konnte nicht erzeugt werden." = "The image could not be created.";
 "Das Bildschirmfoto konnte nicht gesichert werden: %@" = "The screenshot could not be saved: %@";
 "Das Feld %@ ist leer." = "The %@ field is empty.";
+"Das ist kein Wert: %@" = "That is not a value: %@";
 "Das ist kein gültiges Base64." = "That is not valid Base64.";
 "Das ist keine IPv4-Adresse: %@" = "That is not an IPv4 address: %@";
 "Das ist keine IPv6-Adresse: %@" = "That is not an IPv6 address: %@";
@@ -351,6 +353,7 @@
 "Das On-Device-Modell ist gerade nicht geladen. Versuch es in einem Moment noch einmal." = "The on-device model is not loaded right now. Try again in a moment.";
 "Das On-Device-Modell konnte nicht antworten." = "The on-device model could not answer.";
 "Das ist keine Dauer" = "That is not a duration";
+"Das ist weder eine Tabelle noch eine Zuweisung: %@" = "That is neither a table nor an assignment: %@";
 "Das sind weder drei Ziffern noch neun Zeichen wie rwxr-xr-x." = "That is neither three digits nor nine characters like rwxr-xr-x.";
 "Das Wesentliche aus langem Text" = "The essentials of a long text";
 "Datei wird transkribiert" = "Transcribing file";
@@ -397,6 +400,7 @@
 "Dialekt" = "Flavour";
 "Die Adresse gibt es, diese Methode nicht." = "The address exists, this method does not.";
 "Die Anfrage ergibt keinen Sinn — Tippfehler im Body oder in den Parametern." = "The request makes no sense — a typo in the body or the parameters.";
+"Die Anführungszeichen gehen nicht zu." = "The quotes are never closed.";
 "Die Antwort von %@ war nicht lesbar." = "The response from %@ could not be read.";
 "Die Antwort von Anthropic war nicht lesbar." = "The response from Anthropic could not be read.";
 "Die Aufnahme konnte nicht fortgesetzt werden: %@" = "Recording could not be resumed: %@";
@@ -413,6 +417,8 @@
 "Die Verzögerung gilt nur für den ganzen Bildschirm — beim Ausschnitt wartest du ohnehin selbst." = "The delay only applies to a full-screen shot — with a region you are the one taking the time.";
 "Die Zeilennummer im Kopf ist ein Hinweis, keine Zusage. Anvil sucht um sie herum nach dem passenden Umfeld — und meldet einen Fehler, statt an der falschen Stelle zu schneiden." = "The line number in the header is a hint, not a promise. Anvil searches around it for the matching surroundings — and reports an error rather than cutting in the wrong place.";
 "Die Zieleinheit kenne ich nicht." = "I do not know that target unit.";
+"Die eckige Klammer geht nicht zu." = "The square bracket is never closed.";
+"Die geschweifte Klammer geht nicht zu." = "The curly brace is never closed.";
 "Die längsten Sätze" = "The longest sentences";
 "Die längsten Wörter" = "The longest words";
 "Diese Datei" = "This file";
@@ -420,6 +426,7 @@
 "Diese Maske hat Lücken — Einsen und Nullen müssen zusammenhängen: %@" = "This mask has gaps — the ones and the zeros each have to be contiguous: %@";
 "Diese Sitzung" = "This session";
 "Dieselbe Kombination benutzt auch „%@\"." = "“%@” uses the same combination.";
+"Diesen Schlüssel gibt es schon: %@" = "That key already exists: %@";
 "Dieser Anbieter ist noch nicht eingerichtet." = "This provider is not set up yet.";
 "Dieser Mac unterstützt das On-Device-Modell nicht." = "This Mac does not support the on-device model.";
 "Dieses Tool bringt keine eigenen Einstellungen mit." = "This tool has no settings of its own.";
@@ -445,6 +452,7 @@
 "Durchgefallen" = "Failed";
 "Durchscheinende Fläche, wie ein Textmarker." = "A translucent area, like a highlighter.";
 "E-Mail" = "Email";
+"Ebenen" = "Levels";
 "Eigene" = "Mine";
 "Eigene Anweisung" = "Custom instruction";
 "Eigene Begriffe, die richtig geschrieben werden" = "Your own terms, spelled the way you write them";
@@ -467,12 +475,17 @@
 "Ein ganzer Bildschirm, sofort." = "One whole display, at once.";
 "Ein JWT besteht aus drei mit Punkt getrennten Teilen." = "A JWT has three parts separated by dots.";
 "Ein Satz" = "One sentence";
+"Ein Schlüssel darf nicht leer sein." = "A key must not be empty.";
 "Ein Schlüssel ist hinterlegt." = "A key is stored.";
+"Ein Schlüssel steht in Anführungszeichen." = "A key belongs in quotes.";
 "Ein Unified Diff — mit oder ohne diff --git davor, mit oder ohne a/ und b/." = "A unified diff — with or without diff --git in front, with or without a/ and b/.";
 "Eindeutig lokal (RFC 4193)" = "Unique local (RFC 4193)";
 "Eine" = "One";
 "Eine IPv4-Präfixlänge liegt zwischen 0 und 32." = "An IPv4 prefix length is between 0 and 32.";
 "Eine IPv6-Präfixlänge liegt zwischen 0 und 128." = "An IPv6 prefix length is between 0 and 128.";
+"Eine Klammer am Anfang ist JSON, eine Zeile in eckigen Klammern TOML, sonst YAML." = "A brace or bracket at the start means JSON, a line in square brackets means TOML, otherwise YAML.";
+"Eine Tabelle endet mit ]: %@" = "A table ends with ]: %@";
+"Eine Tabellenreihe endet mit ]]: %@" = "A table row ends with ]]: %@";
 "Eine gerade Linie." = "A straight line.";
 "Erlaubt sind Zahlen mit einer Einheit — s, m, h, d, w — oder die Uhrzeit-Schreibweise." = "Numbers with a unit — s, m, h, d, w — or clock notation.";
 "Gilt für den Kopieren-Knopf und für die Dauer beim Abstand." = "Applies to the copy button and to the duration under Distance.";
@@ -497,6 +510,8 @@
 "Englisch" = "English";
 "Entfernen" = "Remove";
 "Entfernt" = "Removed";
+"Hinter dem Gleichheitszeichen fehlt der Wert." = "The value after the equals sign is missing.";
+"Hinter dem Schlüssel fehlt der Doppelpunkt." = "The colon after the key is missing.";
 "entfernt" = "removed";
 "Entfernt zusätzlich Floskeln wie „halt\", „quasi\", „sozusagen\"." = "Also removes tics like “like”, “basically”, “sort of”.";
 "Entfernt „äh\", „ähm\", „hm\" und Wortdoppelungen." = "Removes “uh”, “um”, “hm” and repeated words.";
@@ -643,6 +658,7 @@
 "Hier fängt man beim Kürzen an" = "This is where cutting starts";
 "Hinter dem Schrägstrich steht eine Präfixlänge oder eine Maske: %@" = "After the slash comes a prefix length or a mask: %@";
 "Hinter dem Schrägstrich steht eine Präfixlänge: %@" = "After the slash comes a prefix length: %@";
+"Hinter dem Wert steht noch etwas." = "There is something after the value.";
 "Hinzugefügt" = "Added";
 "Hostbereich" = "Host range";
 "Hosts" = "Hosts";
@@ -667,11 +683,16 @@
 "In Textfelder einfügen" = "Insert into text fields";
 "In Zwischenablage kopieren" = "Copy to clipboard";
 "In einer IPv6-Adresse darf höchstens einmal :: stehen: %@" = "An IPv6 address may contain :: at most once: %@";
+"In einer Tabelle gehört zu jedem Schlüssel ein Wert: %@" = "In a table every key needs a value: %@";
+"In einer Zuordnung gehört zu jedem Schlüssel ein Wert: %@" = "In a mapping every key needs a value: %@";
 "In zwei Durchgängen über Zwischennamen. Nur so lassen sich zwei Namen tauschen, ohne dass der erste Schritt die zweite Datei überschreibt." = "In two passes via interim names. Only that way can two names swap without the first step overwriting the second file.";
+"Ineinander umwandeln" = "Convert between them";
 "Inhalt" = "Content";
 "Inhalte, die eine App als vertraulich kennzeichnet — etwa aus einem Passwortmanager — werden nie mitgeschnitten." = "Content an app marks as confidential — from a password manager, say — is never recorded.";
 "Inhaltsverzeichnis" = "Table of contents";
 "Ist gesichert" = "Already saved";
+"JSON, YAML oder TOML einwerfen — das Format erkennt Anvil selbst." = "Drop in JSON, YAML or TOML — Anvil works out the format itself.";
+"JSON, YAML, TOML" = "JSON, YAML, TOML";
 "Lösen" = "Unpin";
 "Mit der Wahltaste in größeren Schritten" = "Hold Option for larger steps";
 "installiert" = "installed";
@@ -784,10 +805,12 @@
 "Land" = "Country";
 "Lesezeit" = "Reading time";
 "Links" = "Links";
+"Nach \\u stehen vier Hexziffern." = "Four hex digits follow \\u.";
 "Name doppelt im Stapel" = "Name occurs twice in the batch";
 "Name schon vergeben" = "Name already taken";
 "Name wäre leer" = "Name would be empty";
 "Neue Endung" = "New extension";
+"Nicht ausgelegt werden: YAML-Anker und -Verweise (& und *) und Typangaben (!!); Datum und Uhrzeit aus TOML bleiben Text, weil JSON dafür nichts hat. Verloren geht davon nichts — es bleibt stehen, wie es dasteht." = "Not interpreted: YAML anchors and aliases (& and *) and tags (!!); dates and times from TOML stay text, because JSON has nothing for them. None of it is lost — it stays exactly as written.";
 "Noch keine Dateien" = "No files yet";
 "Ort" = "City";
 "PLZ" = "Postcode";
@@ -871,6 +894,7 @@
 "Neu laden" = "Reload";
 "Neue Präfixlänge" = "New prefix length";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
+"Noch nichts da" = "Nothing here yet";
 "Rechts einstellen, wie viele es sein sollen." = "Set how many on the right.";
 "Rückgängig" = "Undo";
 "Satz" = "Sentence";
@@ -1169,6 +1193,7 @@
 "Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
 "Verweigert" = "Denied";
 "Verweise" = "Links and images";
+"Werte" = "Values";
 "Zahl" = "Number";
 "Zurückgenommen." = "Undone.";
 "gelöscht" = "deleted";
@@ -1294,11 +1319,13 @@
 "Zwei Fassungen gegenüberstellen" = "Put two versions side by side";
 "Zwei Zahlen bitte, zum Beispiel „19% von 250\"." = "Two numbers please, for example “19% von 250”.";
 "Zwei Zeitpunkte" = "Two points in time";
+"Zwischen zwei Einträgen gehört ein Komma." = "A comma belongs between two entries.";
 "Zwischenablage" = "Clipboard";
 "Zwischenablage beobachten" = "Watch the clipboard";
 "Zwischenablage einfügen" = "Paste clipboard";
 "Zwischenablage-Verlauf, Farben, Einheiten, JSON, Cron, QR-Codes — und KI-Werkzeuge fürs Schreiben und für Code." = "Clipboard history, colours, units, JSON, cron, QR codes — and AI tools for writing and for code.";
 "im Weg" = "in the way";
+"name: Anvil\nwerkzeuge:\n  - Tabellen\n  - Netzrechner" = "name: Anvil\ntools:\n  - Tables\n  - Network calculator";
 "ohne Leerzeichen" = "without spaces";
 "von 100" = "out of 100";
 "Ähnlich" = "Similar";
