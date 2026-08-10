@@ -73,7 +73,7 @@ SKIP = {
     "Anvil",
     "Apple Intelligence (on-device)",
     "Base64", "Hex", "IBAN", "JSON", "JWT", "SQL", "URL", "UUID", "PostgreSQL",
-    "Markdown", "CSV", "TSV", "HTML", "UTC", "ISO 8601", "YAML", "TOML",
+    "Markdown", "CSV", "TSV", "HTML", "UTC", "ISO 8601", "YAML", "TOML", "PDF",
     "MD5", "SHA-1", "SHA-256", "SHA-512",
     # Bildformate heißen in jeder Sprache gleich.
     "PNG", "JPEG", "HEIC", "TIFF",

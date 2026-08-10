@@ -9,7 +9,9 @@
 "# Überschrift\n\nText mit einem [Link](https://example.com)." = "# Heading\n\nText with a [link](https://example.com).";
 "#3A7BD5" = "#3A7BD5";
 "#FFFFFF" = "#FFFFFF";
+"%@ Dateien geschrieben." = "%@ files written.";
 "%@ Dateien umbenannt." = "%@ files renamed.";
+"%@ Seiten geschrieben." = "%@ pages written.";
 "%@ hat abgebrochen." = "%@ stopped.";
 "%@ hat nichts zurückgegeben." = "%@ returned nothing.";
 "%@ ist mit Fehler %lld beendet worden." = "%@ exited with error %lld.";
@@ -32,6 +34,7 @@
 ", im %@" = ", in %@";
 "--- a/datei.txt\n+++ b/datei.txt\n@@ -1,3 +1,3 @@" = "--- a/file.txt\n+++ b/file.txt\n@@ -1,3 +1,3 @@";
 ". trifft auch Zeilenumbrüche" = ". matches newlines too";
+"1-3, 5, 8- — wie im Druckdialog. Leer heißt alle. Was es nicht gibt, fällt weg." = "1-3, 5, 8- — as in the print dialog. Empty means all. Anything that does not exist falls away.";
 "Ab jetzt" = "From now";
 "Abschnitt %lld passt nicht: Der Text drumherum steht so nicht in der Vorlage." = "Hunk %lld does not fit: the surrounding text is not in the source that way.";
 "Abstand" = "Distance";
@@ -336,6 +339,7 @@
 "Das Bild konnte nicht als PNG gesichert werden." = "The image could not be saved as a PNG.";
 "Das Bild konnte nicht erzeugt werden." = "The image could not be created.";
 "Das Bildschirmfoto konnte nicht gesichert werden: %@" = "The screenshot could not be saved: %@";
+"Das Dokument hat keine Seite." = "The document has no pages.";
 "Das Feld %@ ist leer." = "The %@ field is empty.";
 "Das ist kein Wert: %@" = "That is not a value: %@";
 "Das ist kein gültiges Base64." = "That is not valid Base64.";
@@ -356,7 +360,9 @@
 "Das ist weder eine Tabelle noch eine Zuweisung: %@" = "That is neither a table nor an assignment: %@";
 "Das sind weder drei Ziffern noch neun Zeichen wie rwxr-xr-x." = "That is neither three digits nor nine characters like rwxr-xr-x.";
 "Das Wesentliche aus langem Text" = "The essentials of a long text";
+"Das war kein PDF." = "That was not a PDF.";
 "Datei wird transkribiert" = "Transcribing file";
+"Dateien ins Fenster ziehen — oder einen Ordner wählen." = "Drag files into the window — or choose a folder.";
 "Dateien oder einen Ordner ins Fenster ziehen." = "Drag files or a folder into the window.";
 "Dateirechte" = "File permissions";
 "Datenordner" = "Data folder";
@@ -445,6 +451,7 @@
 "Doppelt belegt" = "Assigned twice";
 "Doppelte entfernen" = "Remove duplicates";
 "Doppelungen" = "repeats";
+"Drehen" = "Rotate";
 "Drei Absätze" = "Three paragraphs";
 "drei Sätze" = "three sentences";
 "Drück auf Aufnehmen und sprich einfach los — ⌘⇧R geht auch. Alternativ eine vorhandene Audiodatei öffnen." = "Hit Record and just start talking — ⌘⇧R works too. Or open an audio file you already have.";
@@ -478,6 +485,7 @@
 "Ein Schlüssel darf nicht leer sein." = "A key must not be empty.";
 "Ein Schlüssel ist hinterlegt." = "A key is stored.";
 "Ein Schlüssel steht in Anführungszeichen." = "A key belongs in quotes.";
+"Ein Teil hat mindestens eine Seite." = "A part has at least one page.";
 "Ein Unified Diff — mit oder ohne diff --git davor, mit oder ohne a/ und b/." = "A unified diff — with or without diff --git in front, with or without a/ and b/.";
 "Eindeutig lokal (RFC 4193)" = "Unique local (RFC 4193)";
 "Eine" = "One";
@@ -541,6 +549,7 @@
 "Erst das Apple-Modell. Nur wenn das nicht kann, geht es an den externen Anbieter." = "Apple’s model first. The remote provider is used only when it cannot do the job.";
 "Erst der externe Anbieter, das Apple-Modell als Rückfallebene." = "Remote provider first, Apple’s model as the fallback.";
 "Erst oben einschalten." = "Switch it on above first.";
+"Erste Datei" = "First file";
 "Erste Zeile ist die Kopfzeile" = "First line is the header";
 "Erteilt" = "Granted";
 "Erteilt oder nicht" = "Granted or not";
@@ -549,6 +558,7 @@
 "Es gibt noch kein Ergebnis zum Sichern." = "There is no result to save yet.";
 "Es gibt noch keinen Text zum Aufräumen." = "There is no text to clean up yet.";
 "Es ist kein Audioeingang verfügbar. Prüfe unter Systemeinstellungen › Ton, ob ein Mikrofon ausgewählt ist." = "No audio input is available. Check that a microphone is selected in System Settings › Sound.";
+"Es ist keine Seite ausgewählt." = "No page is selected.";
 "Es läuft bereits eine Transkription." = "A transcription is already running.";
 "Escapen" = "Escape";
 "Escapen, entpacken, Parameter lesen" = "Escape, unescape, read parameters";
@@ -596,6 +606,7 @@
 "Für eine belastbare Zahl noch zu kurz" = "Still too short for a solid number";
 "Gemessen werden Satz- und Wortlängen, sonst nichts. Ein Text aus lauter kurzen Sätzen kann unverständlich sein und trotzdem gut abschneiden — der Wert taugt zum Vergleichen zweier Fassungen, nicht als Urteil." = "Only sentence and word lengths are measured, nothing else. A text made of nothing but short sentences can be incomprehensible and still score well — the number is good for comparing two drafts, not for passing judgement.";
 "Genau eine Adresse — ein einzelner Host, kein Netz mit Hostbereich." = "Exactly one address — a single host, not a network with a host range.";
+"Geschrieben wird immer eine neue Datei. Die Vorlage bleibt, wie sie ist — auch dann, wenn beim Schreiben etwas schiefgeht." = "A new file is always written. The original stays as it is — even if the writing goes wrong.";
 "freundlich" = "friendly";
 "freundlich-knapp" = "friendly and brief";
 "Funktioniert auch, während eine andere App vorne ist." = "Works while another app is in front, too.";
@@ -703,6 +714,7 @@
 "Januar" = "January";
 "Jede Aufnahmeart hat ihr eigenes Kürzel — in den Einstellungen unter „Tastenkürzel\"." = "Each kind of capture has its own shortcut — in Settings under “Shortcuts”.";
 "Jede davon lässt sich später in den Einstellungen nachholen oder zurücknehmen." = "Each of these can be granted or withdrawn later in Settings.";
+"Jeder Teil wird eine eigene Datei, durchnummeriert." = "Each part becomes its own file, numbered.";
 "jede Minute" = "every minute";
 "jede Stunde" = "every hour";
 "Jeder abgeschlossene Durchlauf landet hier." = "Every completed run ends up here.";
@@ -734,6 +746,7 @@
 "Keine Korrektur. Für Code, Schlüssel und Nummern, wo jedes Zeichen zählt." = "No correction. For code, keys and numbers, where every character counts.";
 "Keine Query-Parameter." = "No query parameters.";
 "Keine Zeile passt" = "No row matches";
+"Keine der Dateien hat eine Seite." = "None of the files has a page.";
 "kein Text" = "no text";
 "keine Schalter" = "no flags";
 "Keine Tools gefunden" = "No tools found";
@@ -756,6 +769,7 @@
 "Kodieren" = "Encode";
 "Kodieren und dekodieren" = "Encode and decode";
 "Komma" = "Comma";
+"Konnte nicht schreiben: %@" = "Could not write: %@";
 "kollegial (du)" = "collegial";
 "Kollidiert mit dem, was schon da ist." = "Collides with what is already there.";
 "Komfortabel" = "Comfortable";
@@ -894,6 +908,8 @@
 "Neu laden" = "Reload";
 "Neue Präfixlänge" = "New prefix length";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
+"Nicht zu öffnen: %@" = "Cannot be opened: %@";
+"Noch keine PDFs" = "No PDFs yet";
 "Noch nichts da" = "Nothing here yet";
 "Rechts einstellen, wie viele es sein sollen." = "Set how many on the right.";
 "Rückgängig" = "Undo";
@@ -941,6 +957,7 @@
 "Noch nichts zu vergleichen" = "Nothing to compare yet";
 "Normalform" = "Normal form";
 "Nur dieses Netzsegment" = "This link only";
+"So bliebe keine Seite übrig." = "That would leave no page at all.";
 "Tabellenname" = "Table name";
 "nicht belegt" = "not assigned";
 "normal" = "normal";
@@ -984,6 +1001,7 @@
 "Optionen" = "Options";
 "Optionen ausblenden" = "Hide options";
 "Optionen einblenden" = "Show options";
+"Ordner mit PDFs wählen" = "Choose a folder with PDFs";
 "Ordner wählen" = "Choose folder";
 "Ordner öffnen" = "Open folder";
 "Parameter auflisten" = "List parameters";
@@ -1014,6 +1032,11 @@
 "Schwer" = "Hard";
 "Sehr leicht" = "Very easy";
 "Sehr schwer" = "Very hard";
+"Seiten" = "Pages";
+"Seiten behalten" = "Keep pages";
+"Seiten je Teil" = "Pages per part";
+"Seiten löschen" = "Delete pages";
+"Seitenzahlen sehen so aus: 1-3, 5, 8- — das hier nicht: %@" = "Page numbers look like this: 1-3, 5, 8- — this does not: %@";
 "Sekunde" = "Second";
 "Sekunden" = "Seconds";
 "Semikolon" = "Semicolon";
@@ -1127,6 +1150,7 @@
 "Text aus Bild" = "Text from image";
 "Text einfügen — oder eine Datei ins Fenster ziehen." = "Paste some text — or drag a file into the window.";
 "Text gleich mitlesen" = "Read the text right away";
+"Text herausziehen" = "Extract text";
 "Text hier einfügen …" = "Paste text here…";
 "Text in der Aufnahme" = "Text in the capture";
 "Text lesen" = "Read the text";
@@ -1137,6 +1161,7 @@
 "Text vom Bildschirm kopieren  %@" = "Copy text off the screen  %@";
 "Text, der einfacher werden soll …" = "Text that should become simpler…";
 "Text, gegen den das Muster laufen soll …" = "Text for the pattern to run against…";
+"Textschicht" = "Text layer";
 "Textstatistik" = "Text statistics";
 "Textvergleich" = "Text comparison";
 "Titel" = "Title case";
@@ -1194,8 +1219,11 @@
 "Verweigert" = "Denied";
 "Verweise" = "Links and images";
 "Werte" = "Values";
+"Wohin damit?" = "Where to?";
 "Zahl" = "Number";
 "Zurückgenommen." = "Undone.";
+"Zusammengeführt" = "Merged";
+"ausgewählt" = "selected";
 "gelöscht" = "deleted";
 "verwerfen" = "discard";
 "Verwerfen" = "Discard";
@@ -1259,6 +1287,7 @@
 "Wird nur benutzt, wenn die Richtlinie es zulässt und oben kein Werkzeug eingeschaltet ist. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Used only when the policy allows it and no tool is switched on above. The key lives in the keychain, not in the settings.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Only used when the policy allows it. The key lives in the keychain, not in the settings file.";
 "WLAN-Zugang" = "Wi-Fi access";
+"Wird auf die vorhandene Drehung aufgeschlagen." = "Added to the rotation that is already there.";
 "Wirkt auf den Namen ohne Endung. Ein unfertiger regulärer Ausdruck lässt den Namen einfach, wie er ist." = "Applies to the name without its extension. An unfinished regular expression simply leaves the name as it is.";
 "Wissenschaft, Verwaltung" = "Academia, administration";
 "Wochen" = "Weeks";
@@ -1269,6 +1298,7 @@
 "Wortgetreu säubern" = "Clean up verbatim";
 "Wortgrenze" = "Word boundary";
 "Wortzeichen" = "Word character";
+"Wovon Anvil die Finger lässt" = "What Anvil leaves alone";
 "Wähle ein Git-Repository — Anvil liest die vorgemerkten Änderungen (`git diff --staged`)." = "Pick a Git repository — Anvil reads the staged changes (`git diff --staged`).";
 "Wähle rechts eine Variante." = "Pick a variant on the right.";
 "Wörter" = "words";
@@ -1316,6 +1346,8 @@
 "Zurückwandeln" = "Unescape";
 "Zusammenfassen" = "Summarise";
 "Zusammenfassung" = "Summary";
+"Zusammenführen" = "Merge";
+"Zusammenführen, teilen, drehen, auslesen" = "Merge, split, rotate, read out";
 "Zwei Fassungen gegenüberstellen" = "Put two versions side by side";
 "Zwei Zahlen bitte, zum Beispiel „19% von 250\"." = "Two numbers please, for example “19% von 250”.";
 "Zwei Zeitpunkte" = "Two points in time";

@@ -190,8 +190,16 @@ Das hat zwei Gründe, und beide sind praktisch:
   ist, halten es in `@State` und rechnen in `onChange` neu — siehe
   `CSVToolView`, `MarkdownToolView`, `ReadabilityToolView`.
 
-Wo etwas nicht rückgängig zu machen ist, kommt eine dritte Regel dazu: **Erst
-der Plan, dann die Tat.** `RenamePlan` rechnet aus, was herauskäme, und sagt
+Wo mehrere Formate dasselbe meinen, kommt eine dritte Regel dazu: **eine Mitte
+statt vieler Wege.** JSON, YAML und TOML gehen alle durch `StructuredValue`;
+für drei Formate braucht es so drei Leser und drei Schreiber statt sechs
+Umwandlungen. Dass Objekte darin eine Liste von Paaren sind und kein
+Wörterbuch, ist kein Detail: Ein Wörterbuch verliert die Reihenfolge, und eine
+Konfigurationsdatei, deren Schlüssel nach dem Umwandeln durcheinandergeraten,
+ist im Diff nicht mehr zu lesen.
+
+Wo etwas nicht rückgängig zu machen ist, kommt eine vierte dazu: **Erst der
+Plan, dann die Tat.** `RenamePlan` rechnet aus, was herauskäme, und sagt
 bei jedem Eintrag, was ihm im Weg steht; ausgeführt wird nur ein Plan ohne
 Beanstandung. Ein Werkzeug, das die Hälfte umbenennt und dann stehenbleibt,
 hinterlässt einen Zustand, den niemand mehr auseinandersortiert.

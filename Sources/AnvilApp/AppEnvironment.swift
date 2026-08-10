@@ -110,6 +110,7 @@ public final class AppEnvironment {
             NetToolBundle.self,
             SampleDataToolBundle.self,
             FileToolBundle.self,
+            PDFToolBundle.self,
             EverydayToolBundle.self,
             ScreenshotToolBundle.self,
             SystemToolBundle.self
