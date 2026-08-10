@@ -130,7 +130,9 @@ struct StructuredYAMLTests {
     /// Ein `#` in Anführungszeichen ist kein Kommentar.
     @Test
     func aHashInsideQuotesStays() throws {
-        let value = try StructuredValue.yaml(parsing: #"farbe: "#3A7BD5""#)
+        // Zwei Rauten als Begrenzer: in #"…"# beendet die Folge "# die
+        // Zeichenkette, und genau die steht hier mitten im Text.
+        let value = try StructuredValue.yaml(parsing: ##"farbe: "#3A7BD5""##)
         #expect(value.pairs?[0].value == .string("#3A7BD5"))
     }
 
