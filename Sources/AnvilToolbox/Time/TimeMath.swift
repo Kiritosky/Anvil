@@ -137,7 +137,7 @@ public enum TimeMath {
             let hours = whole / 3600
             let minutes = (whole % 3600) / 60
             let rest = whole % 60
-            return sign + String(format: "%d:%02d:%02d", hours, minutes, rest)
+            return sign + String(format: "%ld:%02ld:%02ld", hours, minutes, rest)
 
         case .decimalHours:
             let hours = total / 3600

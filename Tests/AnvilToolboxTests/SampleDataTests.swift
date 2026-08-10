@@ -92,6 +92,17 @@ struct SampleIBANTests {
         )
     }
 
+    /// Eine zehnstellige Kontonummer passt in keinen 32-Bit-Wert. Mit `%d`
+    /// statt `%ld` kam sie abgeschnitten und mitunter negativ heraus — und
+    /// die IBAN war 23 Zeichen lang.
+    @Test
+    func aTenDigitAccountNumberIsNotTruncated() {
+        let iban = SampleData.germanIBAN(bank: 99_999_999, account: 9_999_999_999)
+        #expect(iban == "DE85999999999999999999")
+        #expect(iban.count == 22)
+        #expect(!iban.contains("-"))
+    }
+
     @Test
     func everyGeneratedIBANPassesTheMod97Check() {
         let data = SampleData(count: 50, fields: [.iban], seed: 3)

@@ -144,7 +144,7 @@ public struct SampleData: Sendable {
         let suffix = companySuffixes.randomElement(using: &generator) ?? "GmbH"
         let street = roads.randomElement(using: &generator) ?? "Hauptstraße"
         let houseNumber = Int.random(in: 1...199, using: &generator)
-        let postalCode = String(format: "%05d", Int.random(in: 1000...99999, using: &generator))
+        let postalCode = String(format: "%05ld", Int.random(in: 1000...99999, using: &generator))
         let amount = Double(Int.random(in: 100...500_000, using: &generator)) / 100
         let day = Int.random(in: 1...28, using: &generator)
         let month = Int.random(in: 1...12, using: &generator)
@@ -170,7 +170,7 @@ public struct SampleData: Sendable {
             case .country: region == .german ? localized("Deutschland") : localized("Vereinigtes Königreich")
             case .phone: region == .german ? "+49 \(area) \(phone)" : "+44 \(area) \(phone)"
             case .iban: Self.germanIBAN(bank: bank, account: account)
-            case .date: String(format: "%04d-%02d-%02d", year, month, day)
+            case .date: String(format: "%04ld-%02ld-%02ld", year, month, day)
             case .uuid: Self.uuid(using: &generator)
             case .sentence: sentence
             case .amount: String(format: "%.2f", amount).replacingOccurrences(of: ".", with: ",")
@@ -201,7 +201,11 @@ public struct SampleData: Sendable {
     /// braucht man gerade dort, wo eine Prüfung läuft — sonst prüft der Test
     /// nur, dass die Prüfung ablehnt.
     public static func germanIBAN(bank: Int, account: Int) -> String {
-        let bban = String(format: "%08d%010d", bank, account)
+        // `%ld`, nicht `%d`: `%d` nimmt einen 32-Bit-Wert, und eine
+        // zehnstellige Kontonummer passt da nicht hinein. Sie käme
+        // abgeschnitten und mitunter negativ wieder heraus — die IBAN wäre
+        // dann 23 Zeichen lang statt 22.
+        let bban = String(format: "%08ld%010ld", bank, account)
         // DE00 ans Ende, D → 13, E → 14, dann Rest 98 − (Zahl mod 97).
         let rearranged = bban + "131400"
         let check = 98 - mod97(rearranged)

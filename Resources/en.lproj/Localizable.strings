@@ -9,6 +9,7 @@
 "# Überschrift\n\nText mit einem [Link](https://example.com)." = "# Heading\n\nText with a [link](https://example.com).";
 "#3A7BD5" = "#3A7BD5";
 "#FFFFFF" = "#FFFFFF";
+"%@ Dateien umbenannt." = "%@ files renamed.";
 "%@ hat abgebrochen." = "%@ stopped.";
 "%@ hat nichts zurückgegeben." = "%@ returned nothing.";
 "%@ ist mit Fehler %lld beendet worden." = "%@ exited with error %lld.";
@@ -255,6 +256,7 @@
 "Bedienung" = "Behaviour";
 "Bedienungshilfen" = "Accessibility";
 "Befehl" = "Command";
+"Beginnt bei" = "Starts at";
 "Begriff" = "Term";
 "Begriff berücksichtigen" = "Apply this term";
 "Begriffe" = "Terms";
@@ -292,6 +294,7 @@
 "Bildschirmausschnitt, Screenshot oder Datei" = "A screen region, a screenshot, or a file";
 "Bildschirmfoto" = "Screenshot";
 "Bis — 2026-12-24" = "To — 2026-12-24";
+"Bisher" = "Before";
 "Blindtext" = "Placeholder text";
 "Braucht keine Eingabe — Länge rechts wählen." = "Needs no input — pick a length on the right.";
 "Braucht keine Eingabe — Variante rechts wählen." = "Needs no input — pick a variant on the right.";
@@ -349,6 +352,7 @@
 "Das sind weder drei Ziffern noch neun Zeichen wie rwxr-xr-x." = "That is neither three digits nor nine characters like rwxr-xr-x.";
 "Das Wesentliche aus langem Text" = "The essentials of a long text";
 "Datei wird transkribiert" = "Transcribing file";
+"Dateien oder einen Ordner ins Fenster ziehen." = "Drag files or a folder into the window.";
 "Dateirechte" = "File permissions";
 "Datenordner" = "Data folder";
 "Datum" = "Date";
@@ -449,6 +453,8 @@
 "Eigener Endpunkt" = "Custom endpoint";
 "Eigentümer" = "Owner";
 "Ein Teilnetz kann nicht größer sein als das Netz, aus dem es kommt." = "A subnet cannot be larger than the network it comes from.";
+"Erst muss jeder Eintrag in Ordnung sein. Ausgeführt wird nur ein Plan ohne Beanstandung." = "Every entry has to be sound first. Only a plan without objections is carried out.";
+"Hinweis" = "Note";
 "ein Absatz" = "one paragraph";
 "Ein Absatz" = "One paragraph";
 "Ein Cron-Ausdruck hat fünf Felder: Minute, Stunde, Tag, Monat, Wochentag." = "A cron expression has five fields: minute, hour, day, month, weekday.";
@@ -512,6 +518,7 @@
 "Erneut zeigen" = "Show again";
 "Ersatztext" = "Replacement";
 "Ersetzen" = "Replace";
+"Ersetzen durch" = "Replace with";
 "Ersetzt" = "Replaced";
 "Ersetzt nur eingetragene Schreibweisen sowie Groß- und Kleinschreibung." = "Only replaces listed spellings and fixes upper and lower case.";
 "Erst das Apple-Modell. Nur wenn das nicht kann, geht es an den externen Anbieter." = "Apple’s model first. The remote provider is used only when it cannot do the job.";
@@ -606,6 +613,7 @@
 "Globale Tastenkürzel konnten nicht eingerichtet werden." = "Global shortcuts could not be set up.";
 "GROSS" = "UPPERCASE";
 "Groß (25 %)" = "Large (25%)";
+"Groß- und Kleinschreibung egal" = "Ignore case";
 "Groß-/Kleinschreibung egal" = "Ignore case";
 "Großzügig" = "Generous";
 "Gruppe" = "Group";
@@ -640,6 +648,7 @@
 "Ich höre zu" = "Listening";
 "Ideen sammeln" = "Collect ideas";
 "Im Finder zeigen" = "Show in Finder";
+"Im Stapel, mit Vorschau" = "In bulk, with a preview";
 "Immer aktiv" = "Always on";
 "In Minuten" = "In minutes";
 "In Sekunden" = "In seconds";
@@ -656,6 +665,7 @@
 "In Textfelder einfügen" = "Insert into text fields";
 "In Zwischenablage kopieren" = "Copy to clipboard";
 "In einer IPv6-Adresse darf höchstens einmal :: stehen: %@" = "An IPv6 address may contain :: at most once: %@";
+"In zwei Durchgängen über Zwischennamen. Nur so lassen sich zwei Namen tauschen, ohne dass der erste Schritt die zweite Datei überschreibt." = "In two passes via interim names. Only that way can two names swap without the first step overwriting the second file.";
 "Inhalt" = "Content";
 "Inhalte, die eine App als vertraulich kennzeichnet — etwa aus einem Passwortmanager — werden nie mitgeschnitten." = "Content an app marks as confidential — from a password manager, say — is never recorded.";
 "Inhaltsverzeichnis" = "Table of contents";
@@ -740,6 +750,7 @@
 "Kürzel drücken, sprechen, noch einmal drücken" = "Press the shortcut, speak, press it again";
 "Kürzel drücken, sprechen, noch einmal drücken. Der aufgeräumte Text landet dort, wo der Cursor steht." = "Press the shortcut, speak, press it again. The cleaned-up text lands where the cursor is.";
 "Kürzel entfernen" = "Remove shortcut";
+"Leerzeichen ersetzen durch" = "Replace spaces with";
 "kürzer" = "shorter";
 "Kürzt auf das Wesentliche, behält aber alle Aussagen." = "Trims to the essentials while keeping every statement.";
 "Lange Wörter" = "Long words";
@@ -767,9 +778,16 @@
 "Land" = "Country";
 "Lesezeit" = "Reading time";
 "Links" = "Links";
+"Name doppelt im Stapel" = "Name occurs twice in the batch";
+"Name schon vergeben" = "Name already taken";
+"Name wäre leer" = "Name would be empty";
+"Neue Endung" = "New extension";
+"Noch keine Dateien" = "No files yet";
 "Ort" = "City";
 "PLZ" = "Postcode";
+"Schrittweite" = "Step";
 "Startwert" = "Seed";
+"Stellen" = "Digits";
 "locker" = "casual";
 "locker (du)" = "casual";
 "Los geht's" = "Let's go";
@@ -848,6 +866,7 @@
 "Neue Präfixlänge" = "New prefix length";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
 "Rechts einstellen, wie viele es sein sollen." = "Set how many on the right.";
+"Rückgängig" = "Undo";
 "Satz" = "Sentence";
 "Silben" = "Syllables";
 "Sprachraum" = "Language area";
@@ -897,6 +916,7 @@
 "normal" = "normal";
 "November" = "November";
 "Nummerieren" = "Number";
+"Nummerierung" = "Numbering";
 "Nur Auffälliges" = "Unusual only";
 "Nur dieser Rechner" = "This machine only";
 "nur Betreffzeile" = "subject line only";
@@ -934,6 +954,7 @@
 "Optionen" = "Options";
 "Optionen ausblenden" = "Hide options";
 "Optionen einblenden" = "Show options";
+"Ordner wählen" = "Choose folder";
 "Ordner öffnen" = "Open folder";
 "Parameter auflisten" = "List parameters";
 "Passt nicht in einen Code" = "Does not fit into a code";
@@ -957,6 +978,7 @@
 "QR-Code" = "QR code";
 "Rahmen" = "Box";
 "Rahmt einen Bereich ein." = "Frames an area.";
+"Regulärer Ausdruck" = "Regular expression";
 "Sachtext, Bericht" = "Non-fiction, report";
 "Schuljahre" = "School years";
 "Schwer" = "Hard";
@@ -1053,6 +1075,7 @@
 "Stunden" = "Hours";
 "Stärke" = "Strength";
 "Suchen" = "Search";
+"Suchen und ersetzen" = "Search and replace";
 "Syntaktisch in Ordnung, inhaltlich nicht." = "Syntactically fine, semantically not.";
 "System" = "System";
 "Sätze" = "Sentences";
@@ -1077,6 +1100,7 @@
 "Text hier einfügen …" = "Paste text here…";
 "Text in der Aufnahme" = "Text in the capture";
 "Text lesen" = "Read the text";
+"Text oder Muster" = "Text or pattern";
 "Text statt Bild kopieren" = "Copy the text instead of the image";
 "Text und Hexadezimal" = "Text and hexadecimal";
 "Text vom Bildschirm kopieren" = "Copy text off the screen";
@@ -1103,6 +1127,7 @@
 "Trennzeichen" = "Delimiter";
 "Uhrzeit-Schreibweise" = "Clock notation";
 "Uhrzeiten sehen so aus: 14:30." = "Times look like this: 14:30.";
+"Umbenennen" = "Rename";
 "um %@ Uhr" = "at %@ o'clock";
 "Umdrehen" = "Reverse";
 "Umfang" = "Scope";
@@ -1122,6 +1147,7 @@
 "Ursprünglicher Text …" = "Original text…";
 "UTF-8-Bytes" = "UTF-8 bytes";
 "Unter hundert Wörtern schlägt jeder einzelne lange Satz voll durch." = "Below a hundred words, every single long sentence swings the result.";
+"Unverändert" = "Unchanged";
 "Variante" = "Variant";
 "Varianten zu einer Frage" = "Options for a question";
 "Vereinigtes Königreich" = "United Kingdom";
@@ -1138,6 +1164,7 @@
 "Verweigert" = "Denied";
 "Verweise" = "Links and images";
 "Zahl" = "Number";
+"Zurückgenommen." = "Undone.";
 "gelöscht" = "deleted";
 "verwerfen" = "discard";
 "Verwerfen" = "Discard";
@@ -1184,6 +1211,7 @@
 "Werkzeugkasten für den Alltag und fürs Entwickeln.\n\nSprache, Text und Bild laufen auf diesem Mac. Externe Anbieter sind möglich, aber nie Voraussetzung.\n\nGNU GPL v3" = "A toolbox for everyday work and for building things.\n\nSpeech, text and images run on this Mac. External providers are possible, but never required.\n\nGNU GPL v3";
 "Wie 301, aber die Methode bleibt erhalten." = "Like 301, but the method is kept.";
 "Wie 302, aber die Methode bleibt erhalten." = "Like 302, but the method is kept.";
+"Wie ausgeführt wird" = "How it is carried out";
 "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird." = "How the model shapes the dictation before it is copied.";
 "Wie gesucht wird" = "How the search works";
 "Wie schwer ein Text zu lesen ist" = "How hard a text is to read";
@@ -1200,10 +1228,12 @@
 "Wird nur benutzt, wenn die Richtlinie es zulässt und oben kein Werkzeug eingeschaltet ist. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Used only when the policy allows it and no tool is switched on above. The key lives in the keychain, not in the settings.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Only used when the policy allows it. The key lives in the keychain, not in the settings file.";
 "WLAN-Zugang" = "Wi-Fi access";
+"Wirkt auf den Namen ohne Endung. Ein unfertiger regulärer Ausdruck lässt den Namen einfach, wie er ist." = "Applies to the name without its extension. An unfinished regular expression simply leaves the name as it is.";
 "Wissenschaft, Verwaltung" = "Academia, administration";
 "Wochen" = "Weeks";
 "Wochentag" = "weekday";
 "Wohin gehen Anfragen?" = "Where do requests go?";
+"Wortanfänge groß" = "Capitalise Words";
 "Wortdoppelungen zusammenfassen" = "Collapse repeated words";
 "Wortgetreu säubern" = "Clean up verbatim";
 "Wortgrenze" = "Word boundary";
@@ -1218,6 +1248,7 @@
 "Zehn" = "Ten";
 "Zehn auf einmal" = "Ten at once";
 "Zeichen" = "characters";
+"Zeichen nicht erlaubt" = "Character not allowed";
 "Zeichen rein" = "characters in";
 "Zeichengenau" = "Character exact";
 "Zeigt auf die Stelle, um die es geht." = "Points at the thing you mean.";
@@ -1261,6 +1292,7 @@
 "Zwischenablage beobachten" = "Watch the clipboard";
 "Zwischenablage einfügen" = "Paste clipboard";
 "Zwischenablage-Verlauf, Farben, Einheiten, JSON, Cron, QR-Codes — und KI-Werkzeuge fürs Schreiben und für Code." = "Clipboard history, colours, units, JSON, cron, QR codes — and AI tools for writing and for code.";
+"im Weg" = "in the way";
 "ohne Leerzeichen" = "without spaces";
 "von 100" = "out of 100";
 "Ähnlich" = "Similar";
@@ -1283,6 +1315,7 @@
 "Übersicht" = "Overview";
 "Überspringen" = "Skip";
 "Übliche IPv4-Größen" = "Common IPv4 sizes";
+"ändern sich" = "will change";
 "— kein Text —" = "— no text —";
 "— nichts erkannt —" = "— nothing recognised —";
 "„%@\" enthält keinen lesbaren Text." = "“%@” contains no readable text.";
