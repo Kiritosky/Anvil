@@ -240,19 +240,14 @@ public struct RenameToolView: View {
 
         InspectorSection("Nummerierung", systemImage: "number") {
             OptionRow("Beginnt bei") {
-                Stepper(value: $rules.counterStart, in: 0...99_999) {
-                    Text(verbatim: "\(rules.counterStart)").font(AnvilFont.mono)
-                }
+                AnvilStepper(value: $rules.counterStart, in: 0...99_999)
             }
             OptionRow("Schrittweite") {
-                Stepper(value: $rules.counterStep, in: 1...100) {
-                    Text(verbatim: "\(rules.counterStep)").font(AnvilFont.mono)
-                }
+                AnvilStepper(value: $rules.counterStep, in: 1...100)
             }
             OptionRow("Stellen") {
-                Stepper(value: $rules.counterWidth, in: 1...8) {
-                    Text(verbatim: RenamePlan.number(rules.counterStart, width: rules.counterWidth))
-                        .font(AnvilFont.mono)
+                AnvilStepper(value: $rules.counterWidth, in: 1...8) { width in
+                    RenamePlan.number(rules.counterStart, width: width)
                 }
             }
         }

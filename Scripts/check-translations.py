@@ -25,6 +25,7 @@ PATTERNS = [
     rf"\blocalized\(\s*{STR}",
     rf"\bText\(\s*{STR}\s*\)",
     rf"\.help\(\s*{STR}\s*\)",
+    rf"\.anvilHelp\(\s*{STR}\s*\)",
     rf"\bToggle\(\s*{STR}\s*,",
     rf"\bButton\(\s*{STR}\s*\)",
     rf"\bTextField\(\s*{STR}\s*,",

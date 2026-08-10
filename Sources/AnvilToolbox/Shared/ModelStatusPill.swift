@@ -18,7 +18,7 @@ public struct ModelStatusPill: View {
                 systemImage: router.activeRunsOnDevice ? "laptopcomputer" : "cloud",
                 tone: tone(for: router)
             )
-            .anvilHelp(router.statusSummary)
+            .anvilHelp(verbatim: router.statusSummary)
         }
     }
 

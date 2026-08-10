@@ -174,6 +174,7 @@
 "Angelegt. Die Adresse steht im Location-Header." = "Created. The address is in the Location header.";
 "Angemeldet, aber nicht befugt." = "Signed in, but not allowed.";
 "Angewendet wird immer eine Datei — die Vorlage links ist ja auch nur eine." = "One file is applied at a time — the source on the left is only one file either.";
+"Anheften" = "Pin";
 "Anklicken übernimmt die Abstufung als Farbe." = "Click a shade to make it the colour.";
 "Anordnung: %@" = "Layout: %@";
 "Ansicht" = "View";
@@ -226,6 +227,7 @@
 "Aus Stichworten eine Nachricht" = "A message from a few notes";
 "Aus Zwischenablage" = "From the clipboard";
 "Aus Zwischenablage laden" = "Load from clipboard";
+"Aus der Liste nehmen" = "Remove from the list";
 "Aus „das das\" wird „das\". Beabsichtigte Doppelungen wie „sehr sehr\" bleiben." = "“the the” becomes “the”. Deliberate doubling like “very very” is kept.";
 "Aus: der Text liegt immer nur in der Zwischenablage." = "Off: the text always goes to the clipboard only.";
 "Aus: der Text liegt nur in der Zwischenablage." = "Off: the text only goes to the clipboard.";
@@ -669,6 +671,9 @@
 "Inhalt" = "Content";
 "Inhalte, die eine App als vertraulich kennzeichnet — etwa aus einem Passwortmanager — werden nie mitgeschnitten." = "Content an app marks as confidential — from a password manager, say — is never recorded.";
 "Inhaltsverzeichnis" = "Table of contents";
+"Ist gesichert" = "Already saved";
+"Lösen" = "Unpin";
+"Mit der Wahltaste in größeren Schritten" = "Hold Option for larger steps";
 "installiert" = "installed";
 "Installiertes Werkzeug" = "Installed tool";
 "Italienisch" = "Italian";
@@ -751,6 +756,7 @@
 "Kürzel drücken, sprechen, noch einmal drücken. Der aufgeräumte Text landet dort, wo der Cursor steht." = "Press the shortcut, speak, press it again. The cleaned-up text lands where the cursor is.";
 "Kürzel entfernen" = "Remove shortcut";
 "Leerzeichen ersetzen durch" = "Replace spaces with";
+"Liste leeren" = "Clear the list";
 "kürzer" = "shorter";
 "Kürzt auf das Wesentliche, behält aber alle Aussagen." = "Trims to the essentials while keeping every statement.";
 "Lange Wörter" = "Long words";

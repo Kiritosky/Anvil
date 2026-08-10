@@ -12,9 +12,17 @@ extension View {
             .accessibilityLabel(text)
     }
 
-    /// The same, for text that has already been translated — a title out of a
-    /// model, or a sentence assembled at runtime.
-    public func anvilHelp(_ text: String) -> some View {
+    /// Dasselbe für Text, der schon übersetzt ist — ein Titel aus einem
+    /// Modell, ein zur Laufzeit zusammengesetzter Satz.
+    ///
+    /// Der Name muss `verbatim` heißen und darf **nicht** dieselbe
+    /// Überladung ohne Etikett sein. Sonst gewinnt bei einem Literal diese
+    /// hier: Der Standardtyp eines Zeichenketten-Literals ist `String`, also
+    /// zieht Swift bei zwei gleich benannten Überladungen die mit `String`
+    /// vor — und jeder Tooltip in der App stünde ohne Nachschlagen da, auf
+    /// Deutsch, in jeder Sprache. Genau dieselbe Falle umgeht `Text` mit
+    /// `Text(verbatim:)`.
+    public func anvilHelp(verbatim text: String) -> some View {
         help(text)
             .accessibilityLabel(Text(verbatim: text))
     }

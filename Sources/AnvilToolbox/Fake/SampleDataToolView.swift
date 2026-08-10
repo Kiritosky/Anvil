@@ -121,10 +121,7 @@ public struct SampleDataToolView: View {
             footnote: "Mehr als tausend Zeilen zeigt niemand mehr an, gebraucht werden sie trotzdem."
         ) {
             OptionRow("Zeilen") {
-                Stepper(value: $count, in: 1...10_000, step: stepSize) {
-                    Text(verbatim: "\(count)")
-                        .font(AnvilFont.mono)
-                }
+                AnvilStepper(value: $count, in: 1...10_000, step: stepSize)
             }
         }
 
@@ -134,10 +131,7 @@ public struct SampleDataToolView: View {
             footnote: "Derselbe Startwert ergibt dieselbe Tabelle — auf jedem Rechner, zu jeder Zeit. Genau deshalb steht er hier und ist nicht versteckt."
         ) {
             OptionRow("Zahl") {
-                Stepper(value: seedValue, in: 1...9_999_999) {
-                    Text(verbatim: "\(seed)")
-                        .font(AnvilFont.mono)
-                }
+                AnvilStepper(value: seedValue, in: 1...9_999_999)
             }
         }
 

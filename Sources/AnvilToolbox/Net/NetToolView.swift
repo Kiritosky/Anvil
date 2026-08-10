@@ -327,10 +327,7 @@ public struct NetToolView: View {
                 .font(AnvilFont.body)
 
             OptionRow("Neue Präfixlänge") {
-                Stepper(value: $splitPrefix, in: 0...maximumPrefixLength) {
-                    Text(verbatim: "/\(splitPrefix)")
-                        .font(AnvilFont.mono)
-                }
+                AnvilStepper(value: $splitPrefix, in: 0...maximumPrefixLength) { "/\($0)" }
             }
             .disabled(!isSplitting)
         }
