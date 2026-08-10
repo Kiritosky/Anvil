@@ -374,6 +374,7 @@
 "Derselbe Augenblick, andere Uhr" = "The same moment, a different clock";
 "Detailgrad" = "Level of detail";
 "Deutsch" = "German";
+"Deutsch rechnet nach Amstad, Englisch nach Flesch. Dieselbe Formel für beide gäbe für jeden deutschen Text zu schlechte Werte." = "German uses Amstad's formula, English uses Flesch's. One formula for both would score every German text too harshly.";
 "Dezember" = "December";
 "Dezimal, Hex, Binär, Oktal" = "Decimal, hex, binary, octal";
 "Dezimalstunden" = "Decimal hours";
@@ -394,6 +395,8 @@
 "Die Tastenkombination %@ ist schon von einer anderen App belegt." = "The shortcut %@ is already taken by another app.";
 "Die Verzögerung gilt nur für den ganzen Bildschirm — beim Ausschnitt wartest du ohnehin selbst." = "The delay only applies to a full-screen shot — with a region you are the one taking the time.";
 "Die Zieleinheit kenne ich nicht." = "I do not know that target unit.";
+"Die längsten Sätze" = "The longest sentences";
+"Die längsten Wörter" = "The longest words";
 "Diese Klasse gibt es nicht." = "There is no such class.";
 "Diese Maske hat Lücken — Einsen und Nullen müssen zusammenhängen: %@" = "This mask has gaps — the ones and the zeros each have to be contiguous: %@";
 "Diese Sitzung" = "This session";
@@ -464,6 +467,7 @@
 "Einordnung" = "Kind";
 "Einstellungen" = "Settings";
 "Einstellungen öffnen" = "Open Settings";
+"Einstufung" = "Rating";
 "Einträge" = "entries";
 "Einträge pro Tool" = "Entries per tool";
 "Ellipse" = "Ellipse";
@@ -511,6 +515,7 @@
 "Etwas ist abgestürzt und niemand hat es abgefangen." = "Something crashed and nobody caught it.";
 "Extern bevorzugt" = "Prefer remote";
 "Externer Anbieter" = "Remote provider";
+"Fachtext, Studium" = "Specialist text, university";
 "Falscher Content-Type." = "Wrong content type.";
 "Fang mit einer Zahl an, zum Beispiel „5 km in mi\"." = "Start with a number, for example “5 km in mi”.";
 "Farbe" = "Colour";
@@ -529,6 +534,7 @@
 "Fenster aufnehmen" = "Capture a window";
 "Fensterschatten behalten" = "Keep the window shadow";
 "Fertig" = "Done";
+"Flesch" = "Flesch";
 "fertig" = "done";
 "Fest" = "Fixed";
 "Filter" = "Filter";
@@ -546,6 +552,8 @@
 "Französisch" = "French";
 "Für Beispiele reserviert" = "Reserved for documentation";
 "Für Messungen reserviert" = "Reserved for benchmarking";
+"Für eine belastbare Zahl noch zu kurz" = "Still too short for a solid number";
+"Gemessen werden Satz- und Wortlängen, sonst nichts. Ein Text aus lauter kurzen Sätzen kann unverständlich sein und trotzdem gut abschneiden — der Wert taugt zum Vergleichen zweier Fassungen, nicht als Urteil." = "Only sentence and word lengths are measured, nothing else. A text made of nothing but short sentences can be incomprehensible and still score well — the number is good for comparing two drafts, not for passing judgement.";
 "Genau eine Adresse — ein einzelner Host, kein Netz mit Hostbereich." = "Exactly one address — a single host, not a network with a host range.";
 "freundlich" = "friendly";
 "freundlich-knapp" = "friendly and brief";
@@ -605,6 +613,7 @@
 "HTML-Entities" = "HTML entities";
 "HTTP-Codes" = "HTTP codes";
 "Heute als Bis" = "Today as To";
+"Hier fängt man beim Kürzen an" = "This is where cutting starts";
 "Hinter dem Schrägstrich steht eine Präfixlänge oder eine Maske: %@" = "After the slash comes a prefix length or a mask: %@";
 "Hinter dem Schrägstrich steht eine Präfixlänge: %@" = "After the slash comes a prefix length: %@";
 "Hostbereich" = "Host range";
@@ -712,6 +721,7 @@
 "Kürzel entfernen" = "Remove shortcut";
 "kürzer" = "shorter";
 "Kürzt auf das Wesentliche, behält aber alle Aussagen." = "Trims to the essentials while keeping every statement.";
+"Lange Wörter" = "Long words";
 "Leer" = "Empty";
 "Leer lassen für jetzt — oder eine Uhrzeit wie 14:30 eintragen." = "Leave empty for now — or enter a time like 14:30.";
 "Leer lassen, um nur zu suchen. $1, $2 … setzen die Klammergruppen ein." = "Leave empty to search only. $1, $2 … insert the capture groups.";
@@ -721,7 +731,9 @@
 "Legt das Audio unter Anvil › Recordings ab, damit du es später erneut transkribieren kannst." = "Stores the audio in Anvil › Recordings so you can transcribe it again later.";
 "Legt das Ergebnis eines Tools sofort in die Zwischenablage." = "Puts a tool’s result straight on the clipboard.";
 "Legt das Ergebnis nach jedem Durchlauf in die Zwischenablage. Live mitlaufende Umwandlungen sind ausgenommen." = "Puts the result on the clipboard after every run. Live conversions are excluded.";
+"Leicht" = "Easy";
 "Lesbarkeit" = "readability";
+"Lesbarkeit misst Satz- und Wortlängen. Ab etwa hundert Wörtern wird die Zahl belastbar." = "Readability measures sentence and word lengths. From about a hundred words on, the number becomes meaningful.";
 "Letzte Adresse" = "Last address";
 "Letzte Markierung zurücknehmen" = "Undo the last mark";
 "Liegt außerhalb" = "Outside the network";
@@ -731,6 +743,7 @@
 "Links etwas einfügen — das Ergebnis erscheint sofort." = "Paste something on the left — the result appears instantly.";
 "Liste" = "List";
 "LM Studio (lokal)" = "LM Studio (local)";
+"Lesezeit" = "Reading time";
 "Links" = "Links";
 "locker" = "casual";
 "locker (du)" = "casual";
@@ -762,6 +775,7 @@
 "Minuten" = "Minutes";
 "Mit dem Modell aufräumen" = "Clean up with the model";
 "Mit KI" = "With AI";
+"Mittel" = "Medium";
 "Monate" = "Months";
 "mit-bindestrichen" = "with-hyphens";
 "mit_unterstrichen" = "with_underscores";
@@ -797,6 +811,7 @@
 "Neu laden" = "Reload";
 "Neue Präfixlänge" = "New prefix length";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
+"Silben" = "Syllables";
 "Sprungmarke gibt es nicht" = "No such anchor";
 "Tabulator" = "Tab";
 "Text in irgendeiner Spalte" = "Text in any column";
@@ -903,10 +918,16 @@
 "QR-Code" = "QR code";
 "Rahmen" = "Box";
 "Rahmt einen Bereich ein." = "Frames an area.";
+"Sachtext, Bericht" = "Non-fiction, report";
+"Schuljahre" = "School years";
+"Schwer" = "Hard";
+"Sehr leicht" = "Very easy";
+"Sehr schwer" = "Very hard";
 "Sekunde" = "Second";
 "Sekunden" = "Seconds";
 "Semikolon" = "Semicolon";
 "Setzt die Liste oben in den Text ein, mit Sprungmarken wie auf GitHub." = "Inserts the list at the top of the text, with anchors the way GitHub makes them.";
+"Silben je Wort" = "Syllables per word";
 "Spalte %lld" = "Column %lld";
 "Spalten" = "Columns";
 "Strich" = "Pipe";
@@ -994,6 +1015,7 @@
 "Suchen" = "Search";
 "Syntaktisch in Ordnung, inhaltlich nicht." = "Syntactically fine, semantically not.";
 "System" = "System";
+"Sätze" = "Sentences";
 "Tag" = "day";
 "Tage" = "Days";
 "Tasten drücken …" = "Press keys…";
@@ -1005,8 +1027,10 @@
 "Testfälle zu vorhandenem Code" = "Test cases for existing code";
 "Tests schreiben" = "Write tests";
 "Testtext" = "Test text";
+"Text" = "Text";
 "Text & Daten" = "Text & Data";
 "Text aus Bild" = "Text from image";
+"Text einfügen — oder eine Datei ins Fenster ziehen." = "Paste some text — or drag a file into the window.";
 "Text gleich mitlesen" = "Read the text right away";
 "Text hier einfügen …" = "Paste text here…";
 "Text in der Aufnahme" = "Text in the capture";
@@ -1054,6 +1078,7 @@
 "URL-taugliche Kurzform" = "URL-friendly short form";
 "Ursprünglicher Text …" = "Original text…";
 "UTF-8-Bytes" = "UTF-8 bytes";
+"Unter hundert Wörtern schlägt jeder einzelne lange Satz voll durch." = "Below a hundred words, every single long sentence swings the result.";
 "Variante" = "Variant";
 "Varianten zu einer Frage" = "Options for a question";
 "Vergisst den gemerkten Pfad — nötig, wenn du das Werkzeug gerade erst installiert hast." = "Forgets the remembered path — needed if you have only just installed the tool.";
@@ -1064,6 +1089,7 @@
 "Verhörer, mit Komma getrennt" = "Misrecognitions, comma separated";
 "Verkleinern" = "Minify";
 "Verlauf" = "History";
+"Verstehen alle" = "Everyone understands it";
 "Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
 "Verweigert" = "Denied";
 "Verweise" = "Links and images";
@@ -1089,6 +1115,7 @@
 "Was Anvil braucht" = "What Anvil needs";
 "Was auf diesem Mac läuft, bleibt auf diesem Mac." = "What runs on this Mac stays on this Mac.";
 "Was benennt werden soll, plus Kontext …" = "What needs a name, plus context…";
+"Was die Zahl kann" = "What the number can do";
 "Was dieses Tool macht" = "What this tool does";
 "Was macht dieser Code — und warum" = "What this code does — and why";
 "Was optional ist, macht Anvil nur bequemer — der Rest schaltet ein Werkzeug ganz ab." = "What is optional only makes Anvil more convenient — the rest switches a tool off entirely.";
@@ -1110,6 +1137,7 @@
 "Wie 301, aber die Methode bleibt erhalten." = "Like 301, but the method is kept.";
 "Wie 302, aber die Methode bleibt erhalten." = "Like 302, but the method is kept.";
 "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird." = "How the model shapes the dictation before it is copied.";
+"Wie schwer ein Text zu lesen ist" = "How hard a text is to read";
 "wie das Original" = "same as the original";
 "wie im Code erkennbar" = "as the code suggests";
 "Wie spät ist es wo" = "What time it is where";
@@ -1123,6 +1151,7 @@
 "Wird nur benutzt, wenn die Richtlinie es zulässt und oben kein Werkzeug eingeschaltet ist. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Used only when the policy allows it and no tool is switched on above. The key lives in the keychain, not in the settings.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Only used when the policy allows it. The key lives in the keychain, not in the settings file.";
 "WLAN-Zugang" = "Wi-Fi access";
+"Wissenschaft, Verwaltung" = "Academia, administration";
 "Wochen" = "Weeks";
 "Wochentag" = "weekday";
 "Wohin gehen Anfragen?" = "Where do requests go?";
@@ -1133,7 +1162,9 @@
 "Wähle ein Git-Repository — Anvil liest die vorgemerkten Änderungen (`git diff --staged`)." = "Pick a Git repository — Anvil reads the staged changes (`git diff --staged`).";
 "Wähle rechts eine Variante." = "Pick a variant on the right.";
 "Wörter" = "words";
+"Wörter je Satz" = "Words per sentence";
 "Wörter, Zeichen, Lesezeit" = "Words, characters, reading time";
+"Zahlen" = "Numbers";
 "Zahlensysteme" = "Number bases";
 "Zehn" = "Ten";
 "Zehn auf einmal" = "Ten at once";
@@ -1146,6 +1177,7 @@
 "Zeilen" = "Lines";
 "Zeilen kommen von oben nach unten, gleich hohe von links nach rechts — zwei Spalten bleiben zwei Spalten." = "Lines come top to bottom, and left to right within a band — two columns stay two columns.";
 "Zeitrechner" = "Time calculator";
+"Zeitung, Erzählung" = "Newspaper, narrative";
 "Zeitzone" = "Time zone";
 "Zerlegt das Netz in gleich große Teile. Gezeigt werden die ersten 64." = "Splits the network into equal parts. The first 64 are shown.";
 "wird gelesen …" = "reading …";
@@ -1181,6 +1213,7 @@
 "Zwischenablage einfügen" = "Paste clipboard";
 "Zwischenablage-Verlauf, Farben, Einheiten, JSON, Cron, QR-Codes — und KI-Werkzeuge fürs Schreiben und für Code." = "Clipboard history, colours, units, JSON, cron, QR codes — and AI tools for writing and for code.";
 "ohne Leerzeichen" = "without spaces";
+"von 100" = "out of 100";
 "Ähnlich" = "Similar";
 "Ältere Durchläufe werden verworfen, sobald die Grenze erreicht ist." = "Older runs are dropped once the limit is reached.";
 "Ändern lässt sich das in den Einstellungen unter „Tastenkürzel\"." = "Change it in Settings under “Shortcuts”.";

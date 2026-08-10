@@ -18,7 +18,26 @@ public enum TextToolBundle: ToolBundle {
         }
         // Two tools do not fit the one-input/one-output shape: a regex needs a
         // pattern *and* a subject, a comparison needs two texts.
-        return converters + [regexTester, textComparison]
+        return converters + [regexTester, textComparison, readability]
+    }
+
+    @MainActor
+    private static var readability: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "text.readability",
+            title: "Lesbarkeit",
+            subtitle: "Wie schwer ein Text zu lesen ist",
+            systemImage: "gauge.medium",
+            category: .text,
+            keywords: [
+                "lesbarkeit", "readability", "flesch", "amstad", "silben",
+                "lesezeit", "satzlänge", "verständlich"
+            ]
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            ReadabilityToolView(context: context, metadata: metadata)
+        }
     }
 
     @MainActor
