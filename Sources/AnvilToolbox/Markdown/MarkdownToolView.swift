@@ -47,6 +47,8 @@ public struct MarkdownToolView: View {
     /// Einmal gelesen statt bei jedem Zugriff — die Statuszeile, der
     /// Inspector und die Ergebnisspalte fragen alle dasselbe Dokument.
     @State private var document = MarkdownDocument("")
+    /// Mehrere Dateien auf einmal. Leer heißt: eine einzelne Eingabe.
+    @State private var batch = MarkdownBatch([])
     @State private var dropError: AnvilError?
     @State private var orientation: WorkbenchOrientation = .horizontal
 
@@ -64,9 +66,21 @@ public struct MarkdownToolView: View {
             WorkbenchOrientationPicker(orientation: $orientation)
         }
         .anvilErrorBanner($dropError)
-        .anvilFileDrop(.text, error: $dropError) { dropped in
-            guard case let .text(text, _) = dropped else { return }
-            input = text
+        .anvilFilesDrop(.text, error: $dropError) { dropped in
+            let files = dropped.compactMap { file -> (name: String, text: String)? in
+                guard case let .text(text, url) = file else { return nil }
+                return (url?.lastPathComponent ?? localized("Ohne Namen"), text)
+            }
+            guard !files.isEmpty else { return }
+
+            // Eine Datei bleibt eine Eingabe — der Stapel lohnt erst ab zwei,
+            // und die Einzelansicht kann mehr.
+            if files.count == 1 {
+                batch = MarkdownBatch([])
+                input = files[0].text
+            } else {
+                batch = MarkdownBatch(files)
+            }
         }
         .onAppear {
             restore()
@@ -97,6 +111,13 @@ public struct MarkdownToolView: View {
     // MARK: - Das Dokument
 
     private var outputText: String {
+        // Im Stapel gibt der Kopieren-Knopf den Bericht heraus — die Ansicht
+        // zeigt ja auch keine einzelne Datei.
+        if !batch.isEmpty {
+            return batch.problemCount > 0
+                ? batch.report + "\n\n" + batch.problemReport
+                : batch.report
+        }
         switch output {
         case .outline: return document.tableOfContents
         case .links: return document.links.map { "\($0.text)\t\($0.target)" }.joined(separator: "\n")
@@ -139,8 +160,14 @@ public struct MarkdownToolView: View {
 
     @ViewBuilder
     private var resultPane: some View {
-        AnvilPane(.resolved(output.title), systemImage: output.systemImage, tone: .neutral) {
-            if input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        AnvilPane(
+            batch.isEmpty ? .resolved(output.title) : "Stapel",
+            systemImage: batch.isEmpty ? output.systemImage : "doc.on.doc",
+            tone: .neutral
+        ) {
+            if !batch.isEmpty {
+                batchTable
+            } else if input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 EmptyStateView(
                     title: "Noch kein Text",
                     message: "Markdown einwerfen oder eine Datei ins Fenster ziehen.",
@@ -156,9 +183,86 @@ public struct MarkdownToolView: View {
             }
         } accessory: {
             HStack(spacing: AnvilSpacing.xs) {
+                if !batch.isEmpty {
+                    Button { batch = MarkdownBatch([]) } label: {
+                        Image(systemName: "xmark")
+                    }
+                    .buttonStyle(AnvilIconButtonStyle())
+                    .anvilHelp("Stapel schließen")
+                }
                 HandoffMenu(context: context, from: metadata.id, text: outputText)
                 CopyButton(text: outputText)
             }
+        }
+    }
+
+    // MARK: Der Stapel
+
+    private static let batchColumns = [
+        localized("Datei"),
+        localized("Wörter"),
+        localized("Überschriften"),
+        localized("Links"),
+        localized("Beanstandungen")
+    ]
+
+    @ViewBuilder
+    private var batchTable: some View {
+        VStack(spacing: 0) {
+            DataGrid(
+                header: Self.batchColumns,
+                rows: batch.entries.map { entry in
+                    let statistics = entry.document.statistics
+                    return [
+                        entry.name,
+                        "\(statistics.words)",
+                        "\(statistics.headings)",
+                        "\(statistics.links)",
+                        "\(entry.problemCount)"
+                    ]
+                }
+            )
+
+            if batch.problemCount > 0 {
+                AnvilSection(
+                    "Was zwischen den Dateien nicht stimmt",
+                    subtitle: "Verweise auf Dateien und Sprungmarken, die es nicht gibt"
+                ) {
+                    ScrollView(.vertical) {
+                        VStack(alignment: .leading, spacing: AnvilSpacing.xs) {
+                            ForEach(batch.entries) { entry in
+                                ForEach(entry.crossProblems) { problem in
+                                    crossRow(file: entry.name, problem: problem)
+                                }
+                            }
+                        }
+                    }
+                    .frame(maxHeight: AnvilSize.secondaryListHeight)
+                }
+                .padding(AnvilSpacing.md)
+            }
+        }
+    }
+
+    private func crossRow(file: String, problem: MarkdownBatch.CrossProblem) -> some View {
+        HStack(spacing: AnvilSpacing.sm) {
+            StatusPill(.resolved(problem.kind.title), tone: .warning)
+            Text(verbatim: "\(file):\(problem.line)")
+                .font(AnvilFont.monoSmall)
+                .foregroundStyle(AnvilColor.textTertiary)
+            Text(verbatim: problem.target)
+                .font(AnvilFont.mono)
+                .foregroundStyle(AnvilColor.textPrimary)
+                .lineLimit(1)
+                .textSelection(.enabled)
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, AnvilSpacing.sm)
+        .padding(.vertical, AnvilSpacing.xs)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
+                .fill(AnvilColor.surface)
         }
     }
 
@@ -289,7 +393,27 @@ public struct MarkdownToolView: View {
         }
     }
 
+    @ViewBuilder
     private var statusBar: some View {
+        if !batch.isEmpty {
+            ToolStatusBar {
+                StatusMetric("\(batch.entries.count)", label: "Dateien", systemImage: "doc.on.doc")
+                StatusMetric("\(batch.wordCount)", label: "Wörter", systemImage: "text.word.spacing")
+                StatusMetric(
+                    "\(batch.problemCount)",
+                    label: "Beanstandungen",
+                    systemImage: batch.problemCount == 0 ? "checkmark" : "exclamationmark.triangle",
+                    tone: batch.problemCount == 0 ? .success : .warning
+                )
+            } trailing: {
+                StatusPill("Stapel", systemImage: "doc.on.doc", tone: .accent)
+            }
+        } else {
+            singleStatusBar
+        }
+    }
+
+    private var singleStatusBar: some View {
         let statistics = document.statistics
         return ToolStatusBar {
             StatusMetric("\(statistics.words)", label: "Wörter", systemImage: "text.word.spacing")

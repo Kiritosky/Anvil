@@ -258,6 +258,7 @@
 "Automatisch wählt das Zeichen, das in jeder Zeile gleich oft vorkommt." = "Automatic picks the character that occurs the same number of times in every line.";
 "Basis-URL der API, z. B. http://localhost:11434/v1" = "Base URL of the API, e.g. http://localhost:11434/v1";
 "Bausteine" = "Building blocks";
+"Beanstandungen" = "Objections";
 "Bedienung" = "Behaviour";
 "Bedienungshilfen" = "Accessibility";
 "Befehl" = "Command";
@@ -361,6 +362,7 @@
 "Das sind weder drei Ziffern noch neun Zeichen wie rwxr-xr-x." = "That is neither three digits nor nine characters like rwxr-xr-x.";
 "Das Wesentliche aus langem Text" = "The essentials of a long text";
 "Das war kein PDF." = "That was not a PDF.";
+"Datei gibt es nicht" = "No such file";
 "Datei wird transkribiert" = "Transcribing file";
 "Dateien ins Fenster ziehen — oder einen Ordner wählen." = "Drag files into the window — or choose a folder.";
 "Dateien oder einen Ordner ins Fenster ziehen." = "Drag files or a folder into the window.";
@@ -827,9 +829,13 @@
 "Neue Endung" = "New extension";
 "Nicht ausgelegt werden: YAML-Anker und -Verweise (& und *) und Typangaben (!!); Datum und Uhrzeit aus TOML bleiben Text, weil JSON dafür nichts hat. Verloren geht davon nichts — es bleibt stehen, wie es dasteht." = "Not interpreted: YAML anchors and aliases (& and *) and tags (!!); dates and times from TOML stay text, because JSON has nothing for them. None of it is lost — it stays exactly as written.";
 "Noch keine Dateien" = "No files yet";
+"Ohne Namen" = "Unnamed";
 "Ort" = "City";
 "PLZ" = "Postcode";
 "Schrittweite" = "Step";
+"Sprungmarke in der Datei gibt es nicht" = "No such anchor in that file";
+"Stapel" = "Batch";
+"Stapel schließen" = "Close the batch";
 "Startwert" = "Seed";
 "Stellen" = "Digits";
 "locker" = "casual";
@@ -1219,6 +1225,8 @@
 "Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
 "Verweigert" = "Denied";
 "Verweise" = "Links and images";
+"Verweise auf Dateien und Sprungmarken, die es nicht gibt" = "Links to files and anchors that do not exist";
+"Was zwischen den Dateien nicht stimmt" = "What is wrong between the files";
 "Weitergeben an ein anderes Werkzeug" = "Pass on to another tool";
 "Werte" = "Values";
 "Wohin damit?" = "Where to?";
