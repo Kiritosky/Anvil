@@ -107,6 +107,7 @@ public final class AppEnvironment {
             DataToolBundle.self,
             DiffToolBundle.self,
             NetToolBundle.self,
+            SampleDataToolBundle.self,
             EverydayToolBundle.self,
             ScreenshotToolBundle.self,
             SystemToolBundle.self

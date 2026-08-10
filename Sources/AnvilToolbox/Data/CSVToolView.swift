@@ -199,86 +199,14 @@ public struct CSVToolView: View {
 
     // MARK: Das Gitter
 
-    /// Kopfzeile und Daten stehen im selben Rollbereich, damit sie beim
-    /// seitlichen Rollen zusammenbleiben; `pinnedViews` hält den Kopf beim
-    /// senkrechten Rollen oben fest.
     private var grid: some View {
-        ScrollView([.horizontal, .vertical]) {
-            LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
-                Section {
-                    ForEach(Array(shown.rows.enumerated()), id: \.offset) { index, row in
-                        dataRow(number: index + 1, row: row)
-                    }
-                } header: {
-                    headerRow
-                }
-            }
-        }
-    }
-
-    private var headerRow: some View {
-        HStack(spacing: 0) {
-            Text(verbatim: "#")
-                .font(AnvilFont.label)
-                .foregroundStyle(AnvilColor.textTertiary)
-                .frame(width: AnvilSize.tableRowNumberWidth, alignment: .trailing)
-                .padding(.trailing, AnvilSpacing.sm)
-
-            ForEach(Array(shown.header.enumerated()), id: \.offset) { index, name in
-                Button {
-                    withAnimation(AnvilMotion.quick) { sort(by: index) }
-                } label: {
-                    HStack(spacing: AnvilSpacing.xs) {
-                        Text(.resolved(name))
-                            .font(AnvilFont.rowTitle)
-                            .lineLimit(1)
-                        if sortColumn == index {
-                            Image(systemName: isAscending ? "chevron.up" : "chevron.down")
-                                .font(.system(size: 8, weight: .bold))
-                        }
-                        Spacer(minLength: 0)
-                    }
-                    .foregroundStyle(sortColumn == index ? AnvilColor.accent : AnvilColor.textSecondary)
-                    .frame(width: AnvilSize.tableColumnWidth, alignment: .leading)
-                    .padding(.horizontal, AnvilSpacing.sm)
-                    .frame(height: AnvilSize.tableRowHeight)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .padding(.vertical, AnvilSpacing.xs)
-        .background(AnvilColor.surface)
-        .overlay(alignment: .bottom) {
-            Rectangle()
-                .fill(AnvilColor.border)
-                .frame(height: AnvilSize.hairline)
-        }
-    }
-
-    private func dataRow(number: Int, row: [String]) -> some View {
-        HStack(spacing: 0) {
-            Text(verbatim: "\(number)")
-                .font(AnvilFont.monoSmall)
-                .foregroundStyle(AnvilColor.textTertiary)
-                .frame(width: AnvilSize.tableRowNumberWidth, alignment: .trailing)
-                .padding(.trailing, AnvilSpacing.sm)
-
-            ForEach(Array(shown.header.indices), id: \.self) { index in
-                Text(verbatim: row.indices.contains(index) ? row[index] : "")
-                    .font(AnvilFont.monoSmall)
-                    .foregroundStyle(AnvilColor.textPrimary)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-                    .textSelection(.enabled)
-                    .frame(width: AnvilSize.tableColumnWidth, alignment: .leading)
-                    .padding(.horizontal, AnvilSpacing.sm)
-            }
-        }
-        .frame(height: AnvilSize.tableRowHeight)
-        // Jede zweite Zeile getönt: über zehn Spalten hinweg verliert man ohne
-        // die Führung die Zeile.
-        .background(number.isMultiple(of: 2) ? AnvilColor.surface : Color.clear)
+        DataGrid(
+            header: shown.header,
+            rows: shown.rows,
+            sortedColumn: sortColumn,
+            isAscending: isAscending,
+            onSort: sort(by:)
+        )
     }
 
     private func sort(by column: Int) {

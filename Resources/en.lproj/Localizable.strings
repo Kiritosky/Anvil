@@ -278,6 +278,7 @@
 "Beschreibung in ein Kommando" = "A description turned into a command";
 "Beschreibung rein, Ausdruck raus" = "Description in, expression out";
 "Bessere Namen für Dinge im Code" = "Better names for things in code";
+"Betrag" = "Amount";
 "Betreff + kurzer Text" = "subject + short body";
 "Bild" = "Image";
 "Bild in die Zwischenablage" = "Image to the clipboard";
@@ -350,6 +351,7 @@
 "Datei wird transkribiert" = "Transcribing file";
 "Dateirechte" = "File permissions";
 "Datenordner" = "Data folder";
+"Datum" = "Date";
 "Dauern, Zeitstempel, Abstände" = "Durations, timestamps, distances";
 "Deckt endgültig ab. Kein Weichzeichner — der lässt sich zurückrechnen, eine Fläche nicht." = "Covers it for good. Not a blur — a blur can be undone, a solid block cannot.";
 "Deine eigene Anweisung an das Modell." = "Your own instruction to the model.";
@@ -378,9 +380,11 @@
 "Der Vorgang wurde abgebrochen." = "The operation was cancelled.";
 "Der übliche Kompromiss." = "The usual compromise.";
 "Derselbe Augenblick, andere Uhr" = "The same moment, a different clock";
+"Derselbe Startwert ergibt dieselbe Tabelle — auf jedem Rechner, zu jeder Zeit. Genau deshalb steht er hier und ist nicht versteckt." = "The same seed gives the same table — on any machine, at any time. That is exactly why it is shown here rather than hidden.";
 "Detailgrad" = "Level of detail";
 "Deutsch" = "German";
 "Deutsch rechnet nach Amstad, Englisch nach Flesch. Dieselbe Formel für beide gäbe für jeden deutschen Text zu schlechte Werte." = "German uses Amstad's formula, English uses Flesch's. One formula for both would score every German text too harshly.";
+"Deutschland" = "Germany";
 "Dezember" = "December";
 "Dezimal, Hex, Binär, Oktal" = "Decimal, hex, binary, octal";
 "Dezimalstunden" = "Decimal hours";
@@ -395,6 +399,7 @@
 "Die Datei konnte nicht gelesen werden: %@" = "The file could not be read: %@";
 "Die Einheit hinter der Zahl kenne ich nicht." = "I do not know the unit after the number.";
 "Die Gliederung steigt lückenlos, jede Überschrift ist eindeutig, und alle Sprungmarken gibt es." = "The outline rises without gaps, every heading is unique, and every anchor exists.";
+"Die Reihenfolge folgt der Liste, nicht der Reihenfolge des Anklickens." = "The order follows the list, not the order you clicked them in.";
 "Die Schrittweite in %@ muss eine Zahl über null sein." = "The step in %@ has to be a number above zero.";
 "Die Sprachdaten konnten nicht geladen werden: %@" = "The language assets could not be loaded: %@";
 "Die Spracherkennung konnte nicht gestartet werden: %@" = "Speech recognition could not be started: %@";
@@ -550,6 +555,7 @@
 "Fest" = "Fixed";
 "Filter" = "Filter";
 "Filtern" = "Filter";
+"Firma" = "Company";
 "Fließtext" = "Prose";
 "Form" = "Shape";
 "Format" = "Format";
@@ -656,6 +662,7 @@
 "installiert" = "installed";
 "Installiertes Werkzeug" = "Installed tool";
 "Italienisch" = "Italian";
+"Ja/Nein" = "Yes/No";
 "Jahre" = "Years";
 "Januar" = "January";
 "Jede Aufnahmeart hat ihr eigenes Kürzel — in den Einstellungen unter „Tastenkürzel\"." = "Each kind of capture has its own shortcut — in Settings under “Shortcuts”.";
@@ -695,6 +702,7 @@
 "keine Schalter" = "no flags";
 "Keine Tools gefunden" = "No tools found";
 "Keine Treffer" = "No matches";
+"Keine Zeilen" = "No rows";
 "Kennt der Server nicht." = "The server does not know it.";
 "Kennungen erzeugen" = "Generate identifiers";
 "KI" = "AI";
@@ -756,8 +764,12 @@
 "Links etwas einfügen — das Ergebnis erscheint sofort." = "Paste something on the left — the result appears instantly.";
 "Liste" = "List";
 "LM Studio (lokal)" = "LM Studio (local)";
+"Land" = "Country";
 "Lesezeit" = "Reading time";
 "Links" = "Links";
+"Ort" = "City";
+"PLZ" = "Postcode";
+"Startwert" = "Seed";
 "locker" = "casual";
 "locker (du)" = "casual";
 "Los geht's" = "Let's go";
@@ -774,6 +786,7 @@
 "Maske" = "Mask";
 "Mauszeiger mit aufnehmen" = "Include the pointer";
 "MD5, SHA-1, SHA-256, SHA-512" = "MD5, SHA-1, SHA-256, SHA-512";
+"Mehr als tausend Zeilen zeigt niemand mehr an, gebraucht werden sie trotzdem." = "Nobody looks at more than a thousand rows, but they are still needed.";
 "Mehrfache Leerzeichen ignorieren" = "Ignore repeated spaces";
 "Meldet das Tastenkürzel systemweit an." = "Registers the shortcut system-wide.";
 "Menüleisten-Symbol" = "Menu bar item";
@@ -790,8 +803,13 @@
 "Mit KI" = "With AI";
 "Mittel" = "Medium";
 "Monate" = "Months";
+"Nachname" = "Last name";
+"Name" = "Name";
+"Namen, Adressen, IBAN — reproduzierbar" = "Names, addresses, IBANs — reproducible";
+"Neu würfeln" = "Roll again";
 "Noch kein Patch" = "No patch yet";
 "Noch keine Vorlage" = "No source yet";
+"Nummer" = "Number";
 "Patch" = "Patch";
 "Suchfenster" = "Search window";
 "Was tun" = "What to do";
@@ -829,7 +847,10 @@
 "Neu laden" = "Reload";
 "Neue Präfixlänge" = "New prefix length";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
+"Rechts einstellen, wie viele es sein sollen." = "Set how many on the right.";
+"Satz" = "Sentence";
 "Silben" = "Syllables";
+"Sprachraum" = "Language area";
 "Sprungmarke gibt es nicht" = "No such anchor";
 "Tabulator" = "Tab";
 "Text in irgendeiner Spalte" = "Text in any column";
@@ -948,6 +969,7 @@
 "Silben je Wort" = "Syllables per word";
 "Spalte %lld" = "Column %lld";
 "Spalten" = "Columns";
+"Straße" = "Street";
 "Strich" = "Pipe";
 "Tabelle" = "Table";
 "Tabellen" = "Tables";
@@ -1041,7 +1063,9 @@
 "Tauschen" = "Swap";
 "Teiler verschieben" = "Move divider";
 "Teilnetze" = "Subnets";
+"Telefon" = "Phone";
 "Termin" = "Event";
+"Testdaten" = "Sample data";
 "Testfälle zu vorhandenem Code" = "Test cases for existing code";
 "Tests schreiben" = "Write tests";
 "Testtext" = "Test text";
@@ -1100,6 +1124,7 @@
 "Unter hundert Wörtern schlägt jeder einzelne lange Satz voll durch." = "Below a hundred words, every single long sentence swings the result.";
 "Variante" = "Variant";
 "Varianten zu einer Frage" = "Options for a question";
+"Vereinigtes Königreich" = "United Kingdom";
 "Vergisst den gemerkten Pfad — nötig, wenn du das Werkzeug gerade erst installiert hast." = "Forgets the remembered path — needed if you have only just installed the tool.";
 "Vergleich" = "Comparison";
 "Verglichen wird Wort für Wort, nicht Zeile für Zeile — bei umformuliertem Text ist das deutlich lesbarer." = "Compared word by word rather than line by line — far more readable for rewritten text.";
@@ -1112,6 +1137,7 @@
 "Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
 "Verweigert" = "Denied";
 "Verweise" = "Links and images";
+"Zahl" = "Number";
 "gelöscht" = "deleted";
 "verwerfen" = "discard";
 "Verwerfen" = "Discard";
@@ -1129,6 +1155,7 @@
 "Vorher" = "Before";
 "Vorlage" = "Source";
 "Vorlagen" = "Templates";
+"Vorname" = "First name";
 "Vorne einfügen" = "Insert at the top";
 "Vorübergehend woanders." = "Somewhere else for now.";
 "Wandelt die Aufnahme in Text um. Läuft auf diesem Mac." = "Turns the recording into text. Runs on this Mac.";
