@@ -175,6 +175,21 @@ Drei Wege, ein Tool zu bauen:
    KI-Tools und die selbstgeschriebenen aus dem Tools-Ordner sind derselbe Typ.
 3. **Eigene View** — für alles, was mehr braucht, etwa das Speech Studio.
 
+Der dritte Weg folgt einem eigenen Muster, sobald echte Rechnerei dahinter
+steht: **Modell und Ansicht sind getrennte Dateien**. Im Modell steht alles,
+was ohne Bildschirm läuft und sich deshalb prüfen lässt — `IPNetwork`,
+`CSVTable`, `MarkdownDocument`, `TimeMath`, `Readability`. Die View liest nur
+noch ab.
+
+Das hat zwei Gründe, und beide sind praktisch:
+
+- **Prüfbarkeit.** Eine Rechnung, die in einer View steht, lässt sich nur
+  prüfen, indem man die App startet. Getrennt genügt `swift test`.
+- **Kosten.** Eine berechnete Eigenschaft, die bei jedem Zugriff neu zerlegt,
+  läuft in SwiftUI mehrmals je gezeichnetem Bild. Views, deren Modell teuer
+  ist, halten es in `@State` und rechnen in `onChange` neu — siehe
+  `CSVToolView`, `MarkdownToolView`, `ReadabilityToolView`.
+
 ## Datenablage
 
 ```
