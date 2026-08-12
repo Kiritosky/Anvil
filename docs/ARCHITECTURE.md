@@ -178,8 +178,8 @@ Drei Wege, ein Tool zu bauen:
 Der dritte Weg folgt einem eigenen Muster, sobald echte Rechnerei dahinter
 steht: **Modell und Ansicht sind getrennte Dateien**. Im Modell steht alles,
 was ohne Bildschirm läuft und sich deshalb prüfen lässt — `IPNetwork`,
-`CSVTable`, `MarkdownDocument`, `TimeMath`, `Readability`, `GitStatus`. Die View liest nur
-noch ab.
+`CSVTable`, `MarkdownDocument`, `TimeMath`, `Readability`, `GitStatus`.
+Die View liest nur noch ab.
 
 Das hat zwei Gründe, und beide sind praktisch:
 
@@ -206,7 +206,16 @@ Wer stattdessen die lesbare Ausgabe zerlegt, baut etwas, das auf einem Rechner
 mit deutschem `git` anders funktioniert als auf dem eigenen. Alles, was länger
 dauern kann, läuft dabei über `ProcessRunner` mit Zeitgrenze und ohne Shell.
 
-Wo etwas nicht rückgängig zu machen ist, kommt eine fünfte dazu: **Erst der
+Wo eine Arbeit sich wiederholt, kommt eine fünfte dazu: **Was einmal geht,
+geht auch hundertmal.** Fast jedes Werkzeug, das eine Datei annimmt, nimmt
+auch einen Stapel — `MarkdownBatch`, `ImageBatch`, `StructuredBatch`,
+`ReplacePlan`, `RenamePlan`, `GitOverview`. Der Stapel ist dabei nie eine
+Schleife über die Einzelansicht, sondern ein eigener Typ: Erst über mehrere
+Dateien hinweg lassen sich Fragen beantworten, die eine einzelne nicht kennt —
+ein Verweis von einer Datei in die andere, ein Name, den zwei bekommen sollen,
+ein Repository, in dem als einzigem noch etwas liegt.
+
+Wo etwas nicht rückgängig zu machen ist, kommt eine sechste dazu: **Erst der
 Plan, dann die Tat.** `RenamePlan` rechnet aus, was herauskäme, und sagt
 bei jedem Eintrag, was ihm im Weg steht; ausgeführt wird nur ein Plan ohne
 Beanstandung. Ein Werkzeug, das die Hälfte umbenennt und dann stehenbleibt,
