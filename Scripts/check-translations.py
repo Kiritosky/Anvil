@@ -61,6 +61,9 @@ PATTERNS = [
     # Ein Literal am Zeilenende hinter einem Doppelpunkt: der Zweig eines
     # mehrzeiligen `?:` und alles, was als Argument so umbrochen wurde.
     rf":\s*{STR}$",
+    # Ein Literal allein auf einer Zeile: so stehen Anzeigetexte in Listen
+    # und Tupeln da, wo kein Aufrufname davorsteht.
+    rf"^\s*{STR},?$",
     # Enum-artige Rückgaben: case .recording: "Ich höre zu"
     rf"^\s*case \.\w+: {STR}$",
     # Rückgaben aus berechneten LocalizedStringKey-Eigenschaften
@@ -110,6 +113,10 @@ SKIP = {
     "swift, md, json",                       # Dateiendungen als Beispiel
     "RGB", "HSL", "CSS", "SwiftUI",          # Format- und Rahmenwerknamen
     "code-%lld",                             # ein Dateiname, kein Anzeigetext
+    "AXSearchField",                         # Kennung aus den Bedienungshilfen
+    # Ein Fehler für Entwickler, kein Anzeigetext: Er steht in einem
+    # `fatalError` und wird nie jemandem gezeigt, der die App nur benutzt.
+    "ToolContext is missing a service of type %@. ",
     "static let %@ = %@",                    # Swift-Quelltext, keine Anzeige
     # Ein Beispiel aus einer Stilvorlage: Namen und Schreibweisen, keine Sprache.
     "--marke: #3A7BD5;\\nHintergrund #FFFFFF\\nrgb(58, 123, 213)",
@@ -132,20 +139,60 @@ SKIP_PATTERNS = [
     re.compile(r"^(?:rgb|hsl)a?\("),      # Farbsyntax
     re.compile(r"^\s*class="),            # HTML-Bruchstücke
     re.compile(r"[⇧⌘⌥⌃⇪]"),               # Tastenkombinationen
+    re.compile(r"^/|^%@/"),               # Pfade und Suchorte
+    re.compile(r"^[A-Za-z]+/[A-Za-z_+-]+$"),  # Zeitzonen wie Europe/Berlin
+    re.compile(r"^<"),                    # HTML-Bausteine
+    re.compile(r"^%\("),                  # Formate für `git for-each-ref`
+    re.compile(r"^(?:NS)?Color\("),       # Quelltext, den ein Werkzeug ausgibt
 ]
 
 
-def to_key(text: str) -> str:
-    """Macht aus einem Swift-Literal den Schlüssel, den Foundation nachschlägt."""
-    def replace(match: re.Match) -> str:
-        expression = match.group(1)
-        # Ein Index innerhalb eines Subscripts liefert einen Teilstring, keine
-        # Zahl — "\(text[index..<next])" ist also %@, nicht %lld.
-        if "[" in expression:
-            return "%@"
-        return "%lld" if INTEGER_EXPRESSION.search(expression) else "%@"
+def placeholder(expression: str) -> str:
+    """Was Foundation für eine Interpolation einsetzt."""
+    # Ein Index innerhalb eines Subscripts liefert einen Teilstring, keine
+    # Zahl — "\(text[index..<next])" ist also %@, nicht %lld.
+    if "[" in expression:
+        return "%@"
+    return "%lld" if INTEGER_EXPRESSION.search(expression) else "%@"
 
-    return re.sub(r"\\\(([^()]*(?:\([^()]*\)[^()]*)*)\)", replace, text)
+
+def to_key(text: str) -> str:
+    """Macht aus einem Swift-Literal den Schlüssel, den Foundation nachschlägt.
+
+    Die Klammern werden gezählt statt mit einem Ausdruck gesucht: Ein regulärer
+    Ausdruck kann beliebig tiefe Verschachtelung nicht, und genau die kommt vor
+    — `\\(Int((wert * 100).rounded()))`. Blieb so etwas stehen, verglich dieses
+    Skript einen Schlüssel, den es zur Laufzeit nie gibt.
+    """
+    result: list[str] = []
+    index = 0
+    while index < len(text):
+        if not text.startswith("\\(", index):
+            result.append(text[index])
+            index += 1
+            continue
+
+        depth = 0
+        cursor = index + 1
+        while cursor < len(text):
+            if text[cursor] == "(":
+                depth += 1
+            elif text[cursor] == ")":
+                depth -= 1
+                if depth == 0:
+                    break
+            cursor += 1
+
+        # Eine Klammer, die nie zugeht, gibt es in gültigem Swift nicht — dann
+        # ist es keine Interpolation.
+        if cursor >= len(text):
+            result.append(text[index])
+            index += 1
+            continue
+
+        result.append(placeholder(text[index + 2:cursor]))
+        index = cursor + 1
+    return "".join(result)
 
 
 def collect_keys() -> dict[str, set[str]]:

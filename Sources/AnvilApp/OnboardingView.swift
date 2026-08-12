@@ -305,8 +305,13 @@ struct OnboardingView: View {
         ),
         (
             "Werkzeuge für den Rest",
-            "Zwischenablage-Verlauf, Farben, Einheiten, JSON, Cron, QR-Codes — und KI-Werkzeuge fürs Schreiben und für Code.",
+            "Zwischenablage-Verlauf, Farben, Einheiten, JSON, Cron, QR-Codes, Git-Repositories — und KI-Werkzeuge fürs Schreiben und für Code.",
             "wrench.and.screwdriver"
+        ),
+        (
+            "Alles auch im Stapel",
+            "Umbenennen, ersetzen, umwandeln, prüfen — über hundert Dateien so wie über eine. Was geschrieben würde, steht vorher da.",
+            "square.grid.2x2"
         )
     ]
 

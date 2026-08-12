@@ -62,6 +62,7 @@
 "Alle schreiben" = "Write all";
 "Alle sichern" = "Save all";
 "Alle Werkzeuge" = "All tools";
+"Alles auch im Stapel" = "Everything in batches too";
 "Alles außer dem Zusammenführen bezieht sich auf die erste Datei." = "Everything except merging applies to the first file.";
 "Alles davon liegt unverschlüsselt in deinem Benutzerordner und geht nie ins Netz. „Alles löschen\" lässt die eigenen Werkzeuge stehen — die sind keine Ablage, sondern Arbeit." = "All of it sits unencrypted in your user folder and never goes online. \"Delete everything\" leaves your own tools alone — those are work, not storage.";
 "Alles Gespeicherte löschen?" = "Delete everything stored?";
@@ -228,6 +229,7 @@
 "Suchtiefe" = "Search depth";
 "Trag rechts ein, wonach gesucht wird. Bis dahin wird keine Datei angefasst." = "Enter what to search for on the right. Until then no file is touched.";
 "Transkribieren" = "Transcribe";
+"Umbenennen, ersetzen, umwandeln, prüfen — über hundert Dateien so wie über eine. Was geschrieben würde, steht vorher da." = "Rename, replace, convert, check — a hundred files the way you do one. What would be written is there to read first.";
 "Umwandeln" = "Convert";
 "Unter 60 % sieht man es, über 90 % bringt es kaum noch etwas." = "Below 60% you can see it, above 90% it barely helps.";
 "Vergrößert wird nie — das macht die Datei größer, ohne einen einzigen Bildpunkt hinzuzufügen." = "It never enlarges — that makes the file bigger without adding a single pixel.";
@@ -1506,11 +1508,11 @@
 "Zwischenablage" = "Clipboard";
 "Zwischenablage beobachten" = "Watch the clipboard";
 "Zwischenablage einfügen" = "Paste clipboard";
-"Zwischenablage-Verlauf, Farben, Einheiten, JSON, Cron, QR-Codes — und KI-Werkzeuge fürs Schreiben und für Code." = "Clipboard history, colours, units, JSON, cron, QR codes — and AI tools for writing and for code.";
 "im Weg" = "in the way";
 "name: Anvil\nwerkzeuge:\n  - Tabellen\n  - Netzrechner" = "name: Anvil\ntools:\n  - Tables\n  - Network calculator";
 "ohne Leerzeichen" = "without spaces";
 "von 100" = "out of 100";
+"Zwischenablage-Verlauf, Farben, Einheiten, JSON, Cron, QR-Codes, Git-Repositories — und KI-Werkzeuge fürs Schreiben und für Code." = "Clipboard history, colours, units, JSON, cron, QR codes, Git repositories — and AI tools for writing and for code.";
 "Ähnlich" = "Similar";
 "Ältere Durchläufe werden verworfen, sobald die Grenze erreicht ist." = "Older runs are dropped once the limit is reached.";
 "Ändern lässt sich das in den Einstellungen unter „Tastenkürzel\"." = "Change it in Settings under “Shortcuts”.";
