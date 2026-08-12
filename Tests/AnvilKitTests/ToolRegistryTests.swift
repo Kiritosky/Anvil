@@ -136,6 +136,74 @@ struct ToolRegistryTests {
         #expect(registry.recentTools.isEmpty)
     }
 
+    // MARK: - Schnellzugriff
+
+    @Test @MainActor
+    func favouritesComeBeforeRecents() {
+        let registry = makeRegistry()
+        registry.register(makeTool("a", title: "Alpha"))
+        registry.register(makeTool("b", title: "Beta"))
+        registry.markUsed("b")
+        registry.toggleFavourite("a")
+
+        #expect(registry.quickAccessTools.map(\.id) == ["a", "b"])
+        #expect(registry.quickAccessShortcuts["a"] == "⌘1")
+        #expect(registry.quickAccessShortcuts["b"] == "⌘2")
+    }
+
+    /// Ein Favorit, der auch zuletzt benutzt wurde, bekommt eine Taste, nicht
+    /// zwei — sonst rutschte alles dahinter um eine Stelle.
+    @Test @MainActor
+    func aToolAppearsOnlyOnce() {
+        let registry = makeRegistry()
+        registry.register(makeTool("a", title: "Alpha"))
+        registry.register(makeTool("b", title: "Beta"))
+        registry.toggleFavourite("a")
+        registry.markUsed("a")
+        registry.markUsed("b")
+
+        #expect(registry.quickAccessTools.map(\.id) == ["a", "b"])
+    }
+
+    @Test @MainActor
+    func neverMoreThanNine() {
+        let registry = makeRegistry()
+        for index in 0..<12 {
+            registry.register(makeTool("t\(index)", title: "T\(index)"))
+            registry.toggleFavourite(ToolIdentifier("t\(index)"))
+        }
+
+        #expect(registry.quickAccessTools.count == ToolRegistry.quickAccessLimit)
+        #expect(registry.quickAccessShortcuts.count == ToolRegistry.quickAccessLimit)
+        // Was hinten abgeschnitten wird, ist auch nirgends angeschrieben.
+        #expect(registry.quickAccessShortcuts[ToolIdentifier("t11")] == nil)
+    }
+
+    /// Ein abgeschaltetes Werkzeug darf keine Taste belegen — sonst öffnete
+    /// ⌘1 nichts und ⌘2 wäre nicht das, was danebensteht.
+    @Test @MainActor
+    func aDisabledToolFreesItsKey() {
+        let registry = makeRegistry()
+        registry.register(makeTool("a", title: "Alpha"))
+        registry.register(makeTool("b", title: "Beta"))
+        registry.toggleFavourite("a")
+        registry.toggleFavourite("b")
+        #expect(registry.quickAccessShortcuts["b"] == "⌘2")
+
+        registry.activation.setEnabled(false, for: "a")
+        #expect(registry.quickAccessTools.map(\.id) == ["b"])
+        #expect(registry.quickAccessShortcuts["b"] == "⌘1")
+    }
+
+    @Test @MainActor
+    func nothingPinnedAndNothingUsedIsNoShortcutAtAll() {
+        let registry = makeRegistry()
+        registry.register(makeTool("a", title: "Alpha"))
+
+        #expect(registry.quickAccessTools.isEmpty)
+        #expect(registry.quickAccessShortcuts.isEmpty)
+    }
+
     @Test @MainActor
     func categoriesOnlyIncludeOnesWithActiveTools() {
         let registry = makeRegistry()

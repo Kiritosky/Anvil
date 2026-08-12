@@ -93,7 +93,9 @@ struct SidebarView: View {
     }
 
     private func section(_ title: String, systemImage: String, tools: [ToolMetadata]) -> some View {
-        VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
+        // Die Belegung gilt für die ganze Liste; einmal nachschlagen reicht.
+        let shortcuts = registry.quickAccessShortcuts
+        return VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
             HStack(spacing: AnvilSpacing.xs) {
                 Image(systemName: systemImage)
                     .font(.system(size: 9, weight: .bold))
@@ -112,6 +114,7 @@ struct SidebarView: View {
                         isSelected: environment.selectedToolID == tool.id,
                         isFavourite: registry.isFavourite(tool.id),
                         showsSubtitle: false,
+                        shortcutHint: shortcuts[tool.id],
                         onToggleFavourite: { registry.toggleFavourite(tool.id) }
                     )
                 }

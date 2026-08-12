@@ -121,6 +121,20 @@ struct AnvilCommands: Commands {
         return KeyboardShortcut(key, modifiers: shortcut.eventModifiers)
     }
 
+    /// Die Zifferntasten für den Schnellzugriff.
+    ///
+    /// Als Literale und nicht aus der Zahl gerechnet: `Character("\(n)")`
+    /// stürzt ab, sobald die Zeichenkette einmal nicht genau ein Zeichen lang
+    /// ist, und diese Liste sagt zugleich, wo Schluss ist.
+    private static let digitKeys: [KeyEquivalent] = [
+        "1", "2", "3", "4", "5", "6", "7", "8", "9"
+    ]
+
+    private var quickAccessTools: [ToolMetadata] {
+        // Nie mehr Werkzeuge als Tasten, egal was die Registry sagt.
+        Array(environment.registry.quickAccessTools.prefix(Self.digitKeys.count))
+    }
+
     var body: some Commands {
         // Every action the user set to "only in Anvil" becomes a menu item —
         // which is also how SwiftUI is told about the key combination, since a
@@ -133,6 +147,33 @@ struct AnvilCommands: Commands {
                 }
                 .keyboardShortcut(menuShortcut(for: setting))
             }
+        }
+
+        // Ein Werkzeug ohne Umweg über Suche oder Seitenleiste. Das Menü ist
+        // dabei nicht die Zierde, sondern die Voraussetzung: Ein Kürzel, das
+        // an keinem Menüpunkt hängt, gibt es unter macOS nicht.
+        CommandMenu("Gehe zu") {
+            let tools = quickAccessTools
+            ForEach(Array(tools.enumerated()), id: \.element.id) { pair in
+                Button(pair.element.title) {
+                    environment.open(pair.element.id)
+                }
+                .keyboardShortcut(Self.digitKeys[pair.offset], modifiers: .command)
+            }
+
+            if tools.isEmpty {
+                // Ein leeres Menü sieht kaputt aus. Diese Zeile erklärt, wie
+                // es sich füllt.
+                Button("Favoriten landen hier auf ⌘1 bis ⌘9") {}
+                    .disabled(true)
+            }
+
+            Divider()
+
+            Button("Alle Werkzeuge") {
+                environment.selectedToolID = nil
+            }
+            .keyboardShortcut("0", modifiers: .command)
         }
 
         CommandGroup(after: .newItem) {

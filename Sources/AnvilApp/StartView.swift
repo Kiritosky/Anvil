@@ -171,6 +171,14 @@ struct StartView: View {
                 title: "Werkzeug in eigenem Fenster",
                 systemImage: "macwindow.on.rectangle",
                 keys: "⇧⌘N"
+            ),
+            // Solange nichts im Schnellzugriff liegt, steht hier „nicht
+            // belegt" — und das stimmt dann auch.
+            Capability(
+                id: "quickAccess",
+                title: "Favoriten auf Zifferntasten",
+                systemImage: "number",
+                keys: registry.quickAccessTools.isEmpty ? nil : "⌘1…9"
             )
         ]
     }
@@ -212,11 +220,15 @@ struct StartView: View {
     }
 
     private func cardGrid(_ tools: [ToolMetadata]) -> some View {
-        LazyVGrid(columns: cardColumns, alignment: .leading, spacing: AnvilSpacing.md) {
+        // Einmal nachschlagen statt einmal je Karte: die Belegung ist für die
+        // ganze Seite dieselbe.
+        let shortcuts = registry.quickAccessShortcuts
+        return LazyVGrid(columns: cardColumns, alignment: .leading, spacing: AnvilSpacing.md) {
             ForEach(tools) { tool in
                 ToolCard(
                     metadata: tool,
                     isFavourite: registry.isFavourite(tool.id),
+                    shortcutHint: shortcuts[tool.id],
                     onToggleFavourite: { registry.toggleFavourite(tool.id) }
                 ) {
                     environment.open(tool.id)
@@ -227,12 +239,14 @@ struct StartView: View {
     }
 
     private func rowGrid(_ tools: [ToolMetadata]) -> some View {
-        LazyVGrid(columns: rowColumns, alignment: .leading, spacing: AnvilSpacing.xxs) {
+        let shortcuts = registry.quickAccessShortcuts
+        return LazyVGrid(columns: rowColumns, alignment: .leading, spacing: AnvilSpacing.xxs) {
             ForEach(tools) { tool in
                 Button { environment.open(tool.id) } label: {
                     ToolListRow(
                         metadata: tool,
                         isFavourite: registry.isFavourite(tool.id),
+                        shortcutHint: shortcuts[tool.id],
                         onToggleFavourite: { registry.toggleFavourite(tool.id) }
                     )
                 }

@@ -251,4 +251,41 @@ public final class ToolRegistry {
         current.insert(id.rawValue, at: 0)
         settings[.recentTools] = Array(current.prefix(8))
     }
+
+    // MARK: - Schnellzugriff
+
+    /// Wie viele Werkzeuge auf einer Zifferntaste liegen können.
+    ///
+    /// Neun, weil ⌘0 in der App zurück zur Übersicht führt — so wie in einem
+    /// Browser die Null die Ausgangsgröße herstellt.
+    public static let quickAccessLimit = 9
+
+    /// Die Werkzeuge auf ⌘1…9, in genau dieser Reihenfolge.
+    ///
+    /// Erst die Favoriten, dann die zuletzt benutzten. Die Favoriten stehen
+    /// vorn, weil ihre Reihenfolge der Benutzer selbst bestimmt hat — die
+    /// Zuletzt-Liste ordnet sich dagegen bei jeder Benutzung um, und eine
+    /// Taste, die gestern etwas anderes geöffnet hat als heute, ist keine
+    /// Abkürzung, sondern eine Falle. Wer sich auf ⌘1 verlassen will, macht
+    /// das Werkzeug zum Favoriten; bis dahin ist die Belegung ein Angebot.
+    public var quickAccessTools: [ToolMetadata] {
+        var result: [ToolMetadata] = []
+        var seen: Set<ToolIdentifier> = []
+        for tool in favouriteTools + recentTools {
+            guard result.count < Self.quickAccessLimit else { break }
+            guard seen.insert(tool.id).inserted else { continue }
+            result.append(tool)
+        }
+        return result
+    }
+
+    /// Welches Werkzeug auf welcher Taste liegt — zum Anschreiben in der
+    /// Oberfläche, damit niemand raten muss.
+    public var quickAccessShortcuts: [ToolIdentifier: String] {
+        var result: [ToolIdentifier: String] = [:]
+        for (index, tool) in quickAccessTools.enumerated() {
+            result[tool.id] = "⌘\(index + 1)"
+        }
+        return result
+    }
 }

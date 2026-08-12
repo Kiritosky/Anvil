@@ -41,6 +41,7 @@
 "Absätze" = "Paragraphs";
 "Adresse suchen" = "Find address";
 "Adressen" = "Addresses";
+"Alle Werkzeuge" = "All tools";
 "Aufnahme wird transkribiert" = "Transcribing recording";
 "Aufnahmeort" = "Location";
 "Aufnahmezeit" = "Date taken";
@@ -73,9 +74,12 @@
 "Drück auf Aufnehmen und sprich einfach los — ⌘⇧R geht auch. Oder zieh Audiodateien ins Fenster, auch mehrere auf einmal." = "Hit Record and just start talking — ⌘⇧R works too. Or drag audio files into the window, several at a time.";
 "Eingaben behalten" = "Keep inputs";
 "Es ist abgeschaltet oder gibt es nicht mehr. Im Tool-Store lässt es sich wieder einschalten." = "It is switched off or no longer exists. The Tool Store can switch it back on.";
+"Favoriten auf Zifferntasten" = "Favourites on number keys";
+"Favoriten landen hier auf ⌘1 bis ⌘9" = "Favourites land here on ⌘1 through ⌘9";
 "FEHLER" = "ERROR";
 "Format, Größe, Metadaten" = "Format, size, metadata";
 "Für %@ gibt es auf diesem Mac keinen Kodierer." = "There is no encoder for %@ on this Mac.";
+"Gehe zu" = "Go to";
 "Gemerktes verwerfen" = "Discard what was kept";
 "Güte" = "Quality";
 "Halbe Größe" = "Half size";

@@ -32,6 +32,8 @@ PATTERNS = [
     rf"\bSecureField\(\s*{STR}\s*,",
     rf"\bLabel\(\s*{STR}\s*,",
     rf"\bSection\(\s*{STR}\s*\)",
+    # Der Titel eines Menüs in der Menüleiste ist Anzeigetext wie jeder andere.
+    rf"\bCommandMenu\(\s*{STR}\s*\)",
     rf"\.confirmationDialog\(\s*{STR}",
     rf"\bAnvilButton\(\s*\n?\s*{STR}",
     rf"\bStatusPill\(\s*\n?\s*{STR}",
