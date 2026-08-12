@@ -52,6 +52,11 @@ Eintrag, und ein Verlauf, in dem `{`, `{ "a`, `{ "ab` steht, ist kein Verlauf.
 **Der Entwurf** merkt sich genau einen Stand pro Tool — den letzten — und gilt
 für alles mit einem Eingabefeld. Er ist kein Archiv, sondern die Antwort auf
 „ich mache gleich weiter".
+
+### Was sonst noch im Kern liegt
+
+| Typ | Aufgabe |
+| --- | --- |
 | `GlobalShortcut` | Tastenkombination für systemweite Kürzel |
 | `HotKeyCenter` | Registrierung über Carbon — ohne Bedienungshilfen-Recht |
 | `PasteService` | ⌘V in die vorherige App; das einzige Stück mit Accessibility |
