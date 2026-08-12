@@ -8,7 +8,26 @@ public enum FileToolBundle: ToolBundle {
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        [rename]
+        [rename, replace]
+    }
+
+    @MainActor
+    private static var replace: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "files.replace",
+            title: "In Dateien ersetzen",
+            subtitle: "Über viele Dateien, mit Vorschau",
+            systemImage: "text.badge.checkmark",
+            category: .coding,
+            keywords: [
+                "ersetzen", "replace", "suchen", "search", "sed", "stapel",
+                "batch", "regex", "dateien", "vorschau", "rückgängig"
+            ]
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            ReplaceToolView(context: context, metadata: metadata)
+        }
     }
 
     @MainActor

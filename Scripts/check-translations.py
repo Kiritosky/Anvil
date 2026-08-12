@@ -77,7 +77,7 @@ PATTERNS = [
 INTEGER_EXPRESSION = re.compile(
     r"[Cc]ount\b|statusCode|Int\(|\bindex\b|\+ 1\b|\.line\b|\.level\b"
     r"|\bdays\b|\bfailures\b|\bshare\b|\bdistinct\b|\bempty\b"
-    r"|\.ahead\b|\.behind\b"
+    r"|\.ahead\b|\.behind\b|\.changed[A-Z]\w*"
 )
 
 # Was absichtlich unübersetzt bleibt.
@@ -107,6 +107,7 @@ SKIP = {
     "Aufgabe: %@",
     # Ein Befehl fürs Terminal. Übersetzt wäre er keiner mehr.
     "cd %@ && git branch -d %@",
+    "swift, md, json",                       # Dateiendungen als Beispiel
 }
 SKIP_PATTERNS = [
     re.compile(r"^[a-z0-9.]+$"),          # SF-Symbol-Namen
