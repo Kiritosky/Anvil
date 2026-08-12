@@ -94,6 +94,42 @@ struct GeneralSettingsView: View {
         }
     }
 
+    /// Was gerade auf der Platte liegt. Wird beim Öffnen und nach jedem
+    /// Löschen neu gezählt — schätzen wäre hier das Gegenteil von Auskunft.
+    @State private var stored: [StoredData] = []
+    /// Was gleich gelöscht würde, sobald bestätigt ist.
+    @State private var pending: StoredData.Kind?
+    @State private var isClearingEverything = false
+
+    private func rescan() {
+        stored = DataInventory.scan()
+    }
+
+    private var isStorageEmpty: Bool { DataInventory.totalBytes(stored) == 0 }
+
+    private var totalSummary: String {
+        let total = DataInventory.totalBytes(stored)
+        guard total > 0 else { return localized("Es liegt nichts da.") }
+        let size = StoredData.size(total)
+        return localized("Zusammen \(size).")
+    }
+
+    private func remove(_ kind: StoredData.Kind) {
+        try? DataInventory.empty(kind)
+        // Der Verlauf hat außerdem einen Zwischenspeicher, der sonst
+        // weiterzeigt, was es nicht mehr gibt.
+        if kind == .history { environment.context.history.forgetEverything() }
+        if kind == .drafts { environment.context.drafts.forgetEverything() }
+        rescan()
+    }
+
+    private func removeEverything() {
+        try? DataInventory.emptyEverything()
+        environment.context.history.forgetEverything()
+        environment.context.drafts.forgetEverything()
+        rescan()
+    }
+
     var body: some View {
         SettingsPage("Allgemein", description: "Verhalten der App insgesamt.") {
             SettingsGroup("Bedienung") {
@@ -166,6 +202,33 @@ struct GeneralSettingsView: View {
                 }
             }
 
+            SettingsGroup(
+                "Datenablage",
+                footnote: "Alles davon liegt unverschlüsselt in deinem Benutzerordner und geht nie ins Netz. „Alles löschen\" lässt die eigenen Werkzeuge stehen — die sind keine Ablage, sondern Arbeit."
+            ) {
+                ForEach(stored) { item in
+                    SettingsRow(
+                        .resolved(item.kind.title),
+                        help: .resolved("\(item.summary) · \(item.kind.explanation)"),
+                        systemImage: item.kind.systemImage
+                    ) {
+                        AnvilButton("Löschen", role: .secondary) { pending = item.kind }
+                            .disabled(item.isEmpty)
+                    }
+                }
+
+                SettingsRow(
+                    "Alles löschen",
+                    help: .resolved(totalSummary),
+                    systemImage: "trash"
+                ) {
+                    AnvilButton("Alles löschen", role: .destructive) {
+                        isClearingEverything = true
+                    }
+                    .disabled(isStorageEmpty)
+                }
+            }
+
             SettingsGroup("Tools") {
                 SettingsRow(
                     "Tool-Store",
@@ -188,6 +251,37 @@ struct GeneralSettingsView: View {
                     }
                 }
             }
+        }
+        .onAppear(perform: rescan)
+        // Gefragt wird beim Löschen, nicht beim Einschalten: Ein Knopf, der
+        // ohne Rückfrage Aufnahmen wegwirft, ist einer zu viel.
+        .confirmationDialog(
+            "Wirklich löschen?",
+            isPresented: Binding(get: { pending != nil }, set: { if !$0 { pending = nil } }),
+            titleVisibility: .visible
+        ) {
+            Button("Löschen", role: .destructive) {
+                if let pending { remove(pending) }
+                pending = nil
+            }
+            Button("Abbrechen", role: .cancel) { pending = nil }
+        } message: {
+            if let pending {
+                Text(.resolved(pending.explanation))
+            }
+        }
+        .confirmationDialog(
+            "Alles Gespeicherte löschen?",
+            isPresented: $isClearingEverything,
+            titleVisibility: .visible
+        ) {
+            Button("Alles löschen", role: .destructive) {
+                removeEverything()
+                isClearingEverything = false
+            }
+            Button("Abbrechen", role: .cancel) { isClearingEverything = false }
+        } message: {
+            Text("Verlauf, gemerkte Eingaben, Aufnahmen, Bildschirmfotos und Exporte. Die eigenen Werkzeuge bleiben.")
         }
     }
 

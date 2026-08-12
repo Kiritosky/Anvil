@@ -50,6 +50,7 @@
 "Ab jetzt" = "From now";
 "abgelöst" = "detached";
 "abgelöster HEAD" = "detached HEAD";
+"Abgeschlossene Durchläufe der Diktat- und KI-Werkzeuge." = "Completed runs of the dictation and AI tools.";
 "Abschnitt %lld passt nicht: Der Text drumherum steht so nicht in der Vorlage." = "Hunk %lld does not fit: the surrounding text is not in the source that way.";
 "Abstand" = "Distance";
 "Absätze" = "Paragraphs";
@@ -60,6 +61,9 @@
 "Alle schreiben" = "Write all";
 "Alle Werkzeuge" = "All tools";
 "Alles außer dem Zusammenführen bezieht sich auf die erste Datei." = "Everything except merging applies to the first file.";
+"Alles davon liegt unverschlüsselt in deinem Benutzerordner und geht nie ins Netz. „Alles löschen\" lässt die eigenen Werkzeuge stehen — die sind keine Ablage, sondern Arbeit." = "All of it sits unencrypted in your user folder and never goes online. \"Delete everything\" leaves your own tools alone — those are work, not storage.";
+"Alles Gespeicherte löschen?" = "Delete everything stored?";
+"Alles löschen" = "Delete everything";
 "alles sauber" = "all clean";
 "Alte Zweige" = "Stale branches";
 "alte Zweige" = "stale branches";
@@ -67,7 +71,9 @@
 "Anvil sucht nur nach Repositories und öffnet keines. Gelesen wird, was git ohnehin verrät." = "Anvil only looks for repositories, it never opens one. It reads what git tells anyone who asks.";
 "Art" = "Kind";
 "Auffällig" = "Needs a look";
+"Aufgenommenes Audio, sofern behalten." = "Recorded audio, where it was kept.";
 "Aufnahme wird transkribiert" = "Transcribing recording";
+"Aufnahmen vom Bildschirm, sofern behalten." = "Screen captures, where they were kept.";
 "Aufnahmeort" = "Location";
 "Aufnahmezeit" = "Date taken";
 "Aufräum-Befehle kopieren" = "Copy cleanup commands";
@@ -81,6 +87,7 @@
 "Bilder" = "Images";
 "Bilder werden umgewandelt" = "Converting images";
 "Bildschirmfoto %@" = "Screenshot %@";
+"Bildschirmfotos" = "Screenshots";
 "Damit kann dieses Werkzeug nichts anfangen — Textdateien und Bilder gehen." = "This tool cannot do anything with that — text files and images work.";
 "Das Bild ließ sich nicht lesen." = "The image could not be read.";
 "Das Bild ließ sich nicht schreiben." = "The image could not be written.";
@@ -95,6 +102,8 @@
 "Dateien" = "Files";
 "Dateien ins Fenster ziehen" = "Drag files into the window";
 "Dateien oder einen Ordner ins Fenster ziehen. Unterordner kommen mit." = "Drag files or a folder into the window. Subfolders come along.";
+"Datenablage" = "Stored data";
+"Deine eigenen Werkzeuge als JSON-Dateien." = "Your own tools as JSON files.";
 "Der gezogene Text ließ sich nicht lesen." = "The dropped text could not be read.";
 "Deutlich kleiner als JPEG bei gleicher Güte — außerhalb von Apple aber nicht überall lesbar." = "Much smaller than JPEG at the same quality — but not readable everywhere outside Apple.";
 "Die Datei ist größer als %@ MB — das ist kein Text mehr, den man bearbeitet." = "The file is larger than %@ MB — that is no longer text anyone edits.";
@@ -104,6 +113,7 @@
 "Diese Dateien werden nicht angefasst." = "These files are left untouched.";
 "Diese Ordner sehen aus wie ein Repository, git kommt aber nicht hinein." = "These folders look like a repository, but git cannot get in.";
 "Drück auf Aufnehmen und sprich einfach los — ⌘⇧R geht auch. Oder zieh Audiodateien ins Fenster, auch mehrere auf einmal." = "Hit Record and just start talking — ⌘⇧R works too. Or drag audio files into the window, several at a time.";
+"Eigene Werkzeuge" = "Your own tools";
 "Eine Klammer am Anfang ist JSON, eine Zeile in eckigen Klammern TOML, sonst YAML. Bei einer Datei entscheidet die Endung." = "A brace at the start means JSON, a line in square brackets means TOML, otherwise YAML. For a file, the extension decides.";
 "Einen Moment — die Repositories werden der Reihe nach gelesen." = "One moment — the repositories are being read one after another.";
 "Eingaben behalten" = "Keep inputs";
@@ -112,6 +122,8 @@
 "Es gibt nichts umzuwandeln. Erst muss eine Datei dabei sein, die sich lesen lässt." = "There is nothing to convert. There has to be a file that can be read first.";
 "Es gibt nichts zu ersetzen. Erst muss ein Treffer da sein." = "There is nothing to replace. There has to be a match first.";
 "Es ist abgeschaltet oder gibt es nicht mehr. Im Tool-Store lässt es sich wieder einschalten." = "It is switched off or no longer exists. The Tool Store can switch it back on.";
+"Es liegt nichts da." = "There is nothing here.";
+"Exporte" = "Exports";
 "Favoriten auf Zifferntasten" = "Favourites on number keys";
 "Favoriten landen hier auf ⌘1 bis ⌘9" = "Favourites land here on ⌘1 through ⌘9";
 "FEHLER" = "ERROR";
@@ -121,6 +133,7 @@
 "Gegenstück" = "Counterpart";
 "Gegenstück weg" = "Counterpart gone";
 "Gehe zu" = "Go to";
+"Gemerkte Eingaben" = "Kept inputs";
 "Gemerktes verwerfen" = "Discard what was kept";
 "Geschrieben wird neben die Quelle, mit neuer Endung. Die Quelldateien bleiben, wie sie sind — und was am Ziel schon liegt, wird nicht überschrieben." = "Files are written next to the source with a new extension. The sources stay as they are — and whatever is already at the target is never overwritten.";
 "Gewählt" = "Chosen";
@@ -155,6 +168,7 @@
 "keine Textdatei" = "not a text file";
 "Klein, verlustbehaftet, keine Transparenz. Was jedes Formular nimmt." = "Small, lossy, no transparency. What every form accepts.";
 "Konflikt" = "Conflict";
+"leer" = "empty";
 "Links etwas einfügen — oder Dateien ins Fenster ziehen, auch viele." = "Paste something on the left — or drag files into the window, many at a time.";
 "Links etwas einfügen — oder eine Datei ins Fenster ziehen." = "Paste something on the left — or drag a file into the window.";
 "Längste Kante" = "Longest edge";
@@ -195,6 +209,7 @@
 "Umwandeln" = "Convert";
 "Unter 60 % sieht man es, über 90 % bringt es kaum noch etwas." = "Below 60% you can see it, above 90% it barely helps.";
 "Vergrößert wird nie — das macht die Datei größer, ohne einen einzigen Bildpunkt hinzuzufügen." = "It never enlarges — that makes the file bigger without adding a single pixel.";
+"Verlauf, gemerkte Eingaben, Aufnahmen, Bildschirmfotos und Exporte. Die eigenen Werkzeuge bleiben." = "History, kept inputs, recordings, screenshots and exports. Your own tools stay.";
 "Verlustfrei und groß. Für die Weitergabe an Druck und Bildbearbeitung." = "Lossless and large. For handing on to print and image editing.";
 "Verlustfrei, kann Transparenz. Für Bildschirmfotos und Grafiken." = "Lossless, supports transparency. For screenshots and graphics.";
 "Viertel" = "Quarter";
@@ -202,6 +217,8 @@
 "Vor dem Schreiben wird jede Datei noch einmal gelesen. Was sich seit der Vorschau geändert hat, bleibt unangetastet — ein Editor, der zwischendurch gespeichert hat, überschreibt niemanden." = "Every file is read once more before writing. Anything that changed since the preview stays untouched — an editor that saved in between overwrites nobody.";
 "Voraus" = "Ahead";
 "Vorschau" = "Preview";
+"Was du selbst aus einem Werkzeug herausgeschrieben hast." = "What you exported from a tool yourself.";
+"Was zuletzt in einem Werkzeug stand." = "What was last in a tool.";
 "werden geschrieben" = "will be written";
 "Werkzeug in eigenem Fenster" = "Tool in its own window";
 "Werkzeug nicht verfügbar" = "Tool unavailable";
@@ -209,6 +226,7 @@
 "Wird geholt" = "Fetching";
 "Wird gerechnet …" = "Computing …";
 "Wird zu" = "Becomes";
+"Wirklich löschen?" = "Really delete?";
 "Wo" = "Where";
 "Wo noch Arbeit liegt" = "Where work is still lying around";
 "Zeigen" = "Show";
@@ -217,6 +235,7 @@
 "Zieh den Ordner hinein, in dem deine Projekte liegen. Anvil sucht darin nach Repositories." = "Drag in the folder your projects live in. Anvil looks for repositories inside it.";
 "Zieh ein Bild ins Fenster oder hol eines aus der Zwischenablage." = "Drag an image into the window or take one from the clipboard.";
 "zu groß" = "too large";
+"Zusammen %@." = "%@ in total.";
 "Zweig" = "Branch";
 "Zwischenablage %lld" = "Clipboard %lld";
 "^ und $ je Zeile" = "^ and $ per line";

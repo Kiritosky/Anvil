@@ -96,6 +96,23 @@ public final class HistoryStore {
         persist([], for: toolID)
     }
 
+    /// Vergisst alles — auf der Platte und im Speicher.
+    ///
+    /// Beides gehört zusammen: Wer nur die Dateien löscht, hat den Verlauf
+    /// noch im Fenster stehen, bis die App neu startet — und wer nur den
+    /// Zwischenspeicher leert, sieht ihn beim nächsten Start wieder.
+    public func forgetEverything() {
+        cache = [:]
+        let manager = FileManager.default
+        let contents = (try? manager.contentsOfDirectory(
+            at: directory,
+            includingPropertiesForKeys: nil
+        )) ?? []
+        for url in contents where url.pathExtension == "json" {
+            try? manager.removeItem(at: url)
+        }
+    }
+
     // MARK: - Disk
 
     private func url(for toolID: ToolIdentifier) -> URL {
