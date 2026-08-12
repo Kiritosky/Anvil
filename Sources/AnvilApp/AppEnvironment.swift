@@ -99,27 +99,11 @@ public final class AppEnvironment {
     }
 
     /// The tool bundles the app ships with, in sidebar order.
+    ///
+    /// Welche das sind, weiß ``Toolbox`` — dort lässt sich der Werkzeugkasten
+    /// als Ganzes prüfen, ohne die App zu starten.
     private func registerBundles() {
-        let bundles: [any ToolBundle.Type] = [
-            SpeechToolBundle.self,
-            AIToolBundle.self,
-            TextToolBundle.self,
-            DevToolBundle.self,
-            MarkdownToolBundle.self,
-            TimeToolBundle.self,
-            DataToolBundle.self,
-            StructuredToolBundle.self,
-            DiffToolBundle.self,
-            GitToolBundle.self,
-            NetToolBundle.self,
-            SampleDataToolBundle.self,
-            FileToolBundle.self,
-            PDFToolBundle.self,
-            EverydayToolBundle.self,
-            ScreenshotToolBundle.self,
-            SystemToolBundle.self
-        ]
-        for bundle in bundles {
+        for bundle in Toolbox.bundles {
             registry.register(bundle: bundle)
         }
     }
