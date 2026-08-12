@@ -43,16 +43,16 @@ struct ToolboxTests {
     func noBundleIdentifierIsUsedTwice() {
         var seen: Set<String> = []
         for bundle in Toolbox.bundles {
-            #expect(seen.insert(bundle.bundleIdentifier).inserted, bundle.bundleIdentifier)
+            #expect(seen.insert(bundle.bundleIdentifier).inserted, "\(bundle.bundleIdentifier)")
         }
     }
 
     @Test
     func everyToolSaysWhatItIs() {
         for tool in metadata {
-            #expect(!tool.title.isEmpty, tool.id.rawValue)
-            #expect(!tool.subtitle.isEmpty, tool.id.rawValue)
-            #expect(!tool.systemImage.isEmpty, tool.id.rawValue)
+            #expect(!tool.title.isEmpty, "\(tool.id.rawValue)")
+            #expect(!tool.subtitle.isEmpty, "\(tool.id.rawValue)")
+            #expect(!tool.systemImage.isEmpty, "\(tool.id.rawValue)")
         }
     }
 
@@ -87,7 +87,7 @@ struct ToolboxTests {
     @Test
     func everyToolCanBeFound() {
         for tool in metadata {
-            #expect(tool.searchCorpus.count > tool.id.rawValue.count, tool.id.rawValue)
+            #expect(tool.searchCorpus.count > tool.id.rawValue.count, "\(tool.id.rawValue)")
         }
     }
 
@@ -99,7 +99,7 @@ struct ToolboxTests {
         let ai = metadata.filter { $0.id.rawValue.hasPrefix("ai.") }
         #expect(!ai.isEmpty)
         for tool in ai {
-            #expect(tool.usesAI, tool.id.rawValue)
+            #expect(tool.usesAI, "\(tool.id.rawValue)")
         }
     }
 
@@ -116,7 +116,7 @@ struct ToolboxTests {
     /// dort steht und mit dem Text nichts anfängt, wäre eine Sackgasse.
     @Test
     func someToolsAcceptText() {
-        #expect(metadata.contains(where: \.acceptsText))
+        #expect(metadata.contains { $0.acceptsText })
     }
 
     /// Die Probe aufs Exempel: Nach der Registrierung müssen genau so viele
