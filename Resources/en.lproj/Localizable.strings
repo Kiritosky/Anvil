@@ -21,6 +21,7 @@
 "%@ wird von der Spracherkennung auf diesem Mac nicht unterstützt." = "%@ is not supported by speech recognition on this Mac.";
 "%@ · lokal" = "%@ · local";
 "%lld % kleiner" = "%lld % smaller";
+"%lld Codes geschrieben." = "%lld codes written.";
 "%lld Commits" = "%lld commits";
 "%lld Dateien geschrieben." = "%lld files written.";
 "%lld Dateien · %@" = "%lld files · %@";
@@ -59,6 +60,7 @@
 "Alle %lld Repositories geholt." = "Fetched all %lld repositories.";
 "Alle holen" = "Fetch all";
 "Alle schreiben" = "Write all";
+"Alle sichern" = "Save all";
 "Alle Werkzeuge" = "All tools";
 "Alles außer dem Zusammenführen bezieht sich auf die erste Datei." = "Everything except merging applies to the first file.";
 "Alles davon liegt unverschlüsselt in deinem Benutzerordner und geht nie ins Netz. „Alles löschen\" lässt die eigenen Werkzeuge stehen — die sind keine Ablage, sondern Arbeit." = "All of it sits unencrypted in your user folder and never goes online. \"Delete everything\" leaves your own tools alone — those are work, not storage.";
@@ -90,6 +92,7 @@
 "Bilder werden umgewandelt" = "Converting images";
 "Bildschirmfoto %@" = "Screenshot %@";
 "Bildschirmfotos" = "Screenshots";
+"Codes" = "Codes";
 "Damit kann dieses Werkzeug nichts anfangen — Textdateien und Bilder gehen." = "This tool cannot do anything with that — text files and images work.";
 "Das Bild ließ sich nicht lesen." = "The image could not be read.";
 "Das Bild ließ sich nicht schreiben." = "The image could not be written.";
@@ -121,6 +124,8 @@
 "Eigene Werkzeuge" = "Your own tools";
 "Eine Farbe je Zeile. Namen davor stören nicht — auch nicht die Schreibweise aus einer Stilvorlage." = "One colour per line. Names in front are fine — so is the notation from a stylesheet.";
 "Eine Klammer am Anfang ist JSON, eine Zeile in eckigen Klammern TOML, sonst YAML. Bei einer Datei entscheidet die Endung." = "A brace at the start means JSON, a line in square brackets means TOML, otherwise YAML. For a file, the extension decides.";
+"Eine Zeile je Code. Steht ein Tabulator darin, ist davor der Dateiname und dahinter der Inhalt." = "One line per code. If there is a tab in it, the file name comes first and the content after.";
+"Eine Zeile, ein Code" = "One line, one code";
 "Einen Moment — die Repositories werden der Reihe nach gelesen." = "One moment — the repositories are being read one after another.";
 "Eingaben behalten" = "Keep inputs";
 "Erkannt" = "Detected";
@@ -128,6 +133,7 @@
 "Ersetzt wird zeilenweise — ein Ausdruck über mehrere Zeilen greift nicht. Ein unfertiger Ausdruck lässt die Zeile einfach, wie sie ist." = "Replacement works line by line — an expression spanning several lines will not match. An unfinished expression simply leaves the line as it is.";
 "Es gibt nichts umzuwandeln. Erst muss eine Datei dabei sein, die sich lesen lässt." = "There is nothing to convert. There has to be a file that can be read first.";
 "Es gibt nichts zu ersetzen. Erst muss ein Treffer da sein." = "There is nothing to replace. There has to be a match first.";
+"Es gibt nichts zu schreiben. Erst muss eine Zeile dabei sein, aus der ein Code wird." = "There is nothing to write. There has to be a line that turns into a code first.";
 "Es ist abgeschaltet oder gibt es nicht mehr. Im Tool-Store lässt es sich wieder einschalten." = "It is switched off or no longer exists. The Tool Store can switch it back on.";
 "Es liegt nichts da." = "There is nothing here.";
 "Exporte" = "Exports";
@@ -158,6 +164,7 @@
 "Hier geht eine Datei hinein — gezogener Text ist keine." = "A file goes in here — dragged text is not one.";
 "Hierhin sichern" = "Save here";
 "Hinterher" = "Behind";
+"Im Stapel wird jede Zeile ein eigener Code. Geschrieben wird in einen Ordner, den du wählst; nichts wird überschrieben." = "In a batch every line becomes its own code. They are written into a folder you choose; nothing is overwritten.";
 "Im Tool-Store lässt sich jedes einzeln wieder anschalten." = "The Tool Store can switch each one back on.";
 "In Dateien ersetzen" = "Replace in files";
 "In den Bildern ist nichts, was sich als Text lesen ließe." = "There is nothing in these images that reads as text.";
@@ -237,6 +244,7 @@
 "werden geschrieben" = "will be written";
 "Werkzeug in eigenem Fenster" = "Tool in its own window";
 "Werkzeug nicht verfügbar" = "Tool unavailable";
+"Wie viele" = "How many";
 "Wie viele Ebenen unter dem Ordner gesucht wird. Ein gefundenes Repository wird nicht weiter durchsucht." = "How many levels below the folder are searched. A repository that is found is not searched any further.";
 "Wird geholt" = "Fetching";
 "Wird gerechnet …" = "Computing …";
@@ -250,6 +258,7 @@
 "Zieh den Ordner hinein, in dem deine Projekte liegen. Anvil sucht darin nach Repositories." = "Drag in the folder your projects live in. Anvil looks for repositories inside it.";
 "Zieh ein Bild ins Fenster oder hol eines aus der Zwischenablage." = "Drag an image into the window or take one from the clipboard.";
 "zu groß" = "too large";
+"zu lang" = "too long";
 "Zusammen %@." = "%@ in total.";
 "Zweig" = "Branch";
 "Zwischenablage %lld" = "Clipboard %lld";

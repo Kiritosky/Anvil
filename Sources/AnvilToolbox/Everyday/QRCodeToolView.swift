@@ -13,6 +13,13 @@ public struct QRCodeToolView: View {
     @State private var error: AnvilError?
     @State private var exportedURL: URL?
 
+    /// Eine Zeile, ein Code.
+    ///
+    /// Als Schalter und nicht am Zeilenumbruch erkannt: Eine Visitenkarte hat
+    /// selbst Zeilen, und die würde sonst zu fünf halben Codes.
+    @State private var isBatch = false
+    @State private var note: String?
+
     public init(context: ToolContext, metadata: ToolMetadata) {
         self.context = context
         self.metadata = metadata
@@ -26,8 +33,19 @@ public struct QRCodeToolView: View {
         } inspector: {
             inspector
         } actions: {
-            AnvilButton("Aus der Zwischenablage lesen", systemImage: "qrcode.viewfinder") {
-                readFromPasteboard()
+            if isBatch {
+                AnvilButton(
+                    "Alle sichern",
+                    systemImage: "square.and.arrow.down",
+                    role: .primary
+                ) {
+                    writeBatch()
+                }
+                .disabled(!batch.isReady)
+            } else {
+                AnvilButton("Aus der Zwischenablage lesen", systemImage: "qrcode.viewfinder") {
+                    readFromPasteboard()
+                }
             }
         }
         .anvilErrorBanner($error)
@@ -57,6 +75,27 @@ public struct QRCodeToolView: View {
         )
     }
 
+    // MARK: - Der Stapel
+
+    private var batch: QRCodeBatch {
+        isBatch ? QRCodeBatch(text) : .empty
+    }
+
+    /// Schreibt alle Codes in einen Ordner, den der Benutzer wählt.
+    private func writeBatch() {
+        guard let folder = SavePanel.directory(prompt: localized("Ordner wählen")) else { return }
+        note = nil
+        do {
+            let outcome = try batch.write(to: folder) { content in
+                try QRCode.image(for: content, correction: correction).pngData()
+            }
+            exportedURL = outcome.created.first
+            note = localized("\(outcome.written) Codes geschrieben.")
+        } catch {
+            self.error = AnvilError.wrapping(error)
+        }
+    }
+
     // MARK: - Content
 
     private var content: some View {
@@ -80,7 +119,42 @@ public struct QRCodeToolView: View {
         }
     }
 
+    @ViewBuilder
     private var codePane: some View {
+        if isBatch {
+            batchPane
+        } else {
+            singlePane
+        }
+
+        if let note {
+            AnvilBanner(title: .resolved(note), tone: .success, onDismiss: { self.note = nil })
+                .padding(AnvilSpacing.md)
+        }
+    }
+
+    private var batchPane: some View {
+        AnvilPane("Stapel", systemImage: "square.grid.2x2", tone: .neutral) {
+            if batch.isEmpty {
+                EmptyStateView(
+                    title: "Noch keine Liste",
+                    message: "Eine Zeile je Code. Steht ein Tabulator darin, ist davor der Dateiname und dahinter der Inhalt.",
+                    systemImage: "list.bullet"
+                )
+            } else {
+                DataGrid(
+                    header: QRCodeBatch.reportColumns,
+                    rows: batch.entries.map { batch.row($0) }
+                )
+            }
+        } accessory: {
+            if !batch.isEmpty {
+                CopyButton(text: batch.report)
+            }
+        }
+    }
+
+    private var singlePane: some View {
         AnvilPane("Code", systemImage: "qrcode") {
             switch rendered {
             case .empty:
@@ -121,10 +195,23 @@ public struct QRCodeToolView: View {
         }
     }
 
+    @ViewBuilder
     private var statusBar: some View {
         ToolStatusBar {
-            StatusMetric("\(text.count)", label: "Zeichen", systemImage: "character")
-            StatusMetric("\(Data(text.utf8).count)", label: "Bytes", systemImage: "number")
+            if isBatch {
+                StatusMetric("\(batch.writing.count)", label: "Codes", systemImage: "qrcode")
+                if !batch.blocked.isEmpty {
+                    StatusMetric(
+                        "\(batch.blocked.count)",
+                        label: "im Weg",
+                        systemImage: "exclamationmark.triangle",
+                        tone: .warning
+                    )
+                }
+            } else {
+                StatusMetric("\(text.count)", label: "Zeichen", systemImage: "character")
+                StatusMetric("\(Data(text.utf8).count)", label: "Bytes", systemImage: "number")
+            }
         } trailing: {
             if let exportedURL {
                 Button { NSWorkspace.shared.activateFileViewerSelecting([exportedURL]) } label: {
@@ -140,6 +227,15 @@ public struct QRCodeToolView: View {
 
     @ViewBuilder
     private var inspector: some View {
+        InspectorSection(
+            "Wie viele",
+            systemImage: "square.grid.2x2",
+            footnote: "Im Stapel wird jede Zeile ein eigener Code. Geschrieben wird in einen Ordner, den du wählst; nichts wird überschrieben."
+        ) {
+            Toggle("Eine Zeile, ein Code", isOn: $isBatch)
+                .font(AnvilFont.body)
+        }
+
         InspectorSection(
             "Fehlerkorrektur",
             systemImage: "shield",

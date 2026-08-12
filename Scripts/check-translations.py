@@ -77,7 +77,7 @@ PATTERNS = [
 INTEGER_EXPRESSION = re.compile(
     r"[Cc]ount\b|statusCode|Int\(|\bindex\b|\+ 1\b|\.line\b|\.level\b"
     r"|\bdays\b|\bfailures\b|\bshare\b|\bdistinct\b|\bempty\b"
-    r"|\.ahead\b|\.behind\b|\.changed[A-Z]\w*"
+    r"|\.ahead\b|\.behind\b|\.changed[A-Z]\w*|\bwritten\b"
 )
 
 # Was absichtlich unübersetzt bleibt.
@@ -109,6 +109,7 @@ SKIP = {
     "cd %@ && git branch -d %@",
     "swift, md, json",                       # Dateiendungen als Beispiel
     "RGB", "HSL", "CSS", "SwiftUI",          # Format- und Rahmenwerknamen
+    "code-%lld",                             # ein Dateiname, kein Anzeigetext
     "static let %@ = %@",                    # Swift-Quelltext, keine Anzeige
     # Ein Beispiel aus einer Stilvorlage: Namen und Schreibweisen, keine Sprache.
     "--marke: #3A7BD5;\\nHintergrund #FFFFFF\\nrgb(58, 123, 213)",
