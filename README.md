@@ -40,7 +40,9 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
   Schreibtisch, benannt nach seinem Inhalt.
 - **Nichts Vertrauliches auf der Platte.** Werkzeuge merken sich, was zuletzt
   drinstand — außer es sieht nach einem Schlüssel aus, und außer bei JWT,
-  Prüfsummen, Base64 und Hex. Ergebnisse werden nie gespeichert.
+  Prüfsummen, Base64 und Hex. Ergebnisse werden nie gespeichert. Was
+  trotzdem liegen bleibt, steht in den Einstellungen unter „Datenablage": mit
+  Größe, einzeln löschbar und auf einen Schlag.
 - **Erweiterbar von Anfang an.** Tools sind Registrierungen, keine
   Sonderfälle. Reine Prompt-Tools kommen ohne Neukompilieren als JSON-Datei
   dazu, und im Tool-Store lässt sich jedes Tool ein- und ausschalten.
@@ -54,7 +56,7 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
 | Text & Daten | JSON, Base64, URL, JWT, Prüfsummen (auch von Dateien), UUID, Zeitstempel, Schreibweise, Zeilen, Slug, Hex, HTML, Statistik, Regex-Tester, Textvergleich, Lesbarkeit |
 | Markdown | Gliederung, Verweise, Prüfung auf übersprungene Stufen und tote Sprungmarken, Ausgabe als HTML |
 | Coding | Zahlensysteme, Zeichen (Unicode), Dateirechte, HTTP-Codes, Cron, Tabellen (CSV/TSV), JSON ↔ YAML ↔ TOML (einzeln oder im Stapel), Netzrechner (IPv4/IPv6), Patch (Diff lesen und anwenden), Repositories (alle Git-Ordner auf einmal), In Dateien ersetzen (im Stapel, mit Vorschau), Testdaten |
-| Alltag | Bildschirmfoto, Zwischenablage-Verlauf, Farben, QR-Code, Text aus Bild, Bild umwandeln, PDF (zusammenführen, teilen, drehen), Passwörter, Einheiten, Prozent, Zeitzonen, Blindtext, Zeitrechner, Umbenennen im Stapel |
+| Alltag | Bildschirmfoto, Zwischenablage-Verlauf, Farben, Farblisten (Doppelgänger finden, CSS ausgeben), QR-Code, Text aus Bild, Bild umwandeln, PDF (zusammenführen, teilen, drehen), Passwörter, Einheiten, Prozent, Zeitzonen, Blindtext, Zeitrechner, Umbenennen im Stapel |
 | System | Tool-Store |
 
 Alles ohne KI-Bedarf läuft deterministisch und ohne Netz; die KI-Werkzeuge
