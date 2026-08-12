@@ -8,9 +8,10 @@ import Foundation
 /// zwanzigmal derselbe Handgriff, und beim zwölften Mal vertippt man sich im
 /// Dateinamen.
 ///
-/// Wie überall im Stapel gilt: erst der Plan, dann die Tat. Namen, die
-/// zweimal vorkämen, sagt der Plan vorher — nach dem Schreiben wäre die erste
-/// Datei weg.
+/// Wie überall im Stapel gilt: erst der Plan, dann die Tat. Der Plan zeigt zu
+/// jeder Zeile den Dateinamen, den sie bekäme — auch die Nummer, die zwei
+/// gleiche Zeilen auseinanderhält. Ohne die wäre nach dem Schreiben eine der
+/// beiden weg.
 public struct QRCodeBatch: Sendable {
     /// Was einem Eintrag im Weg steht.
     public enum Problem: String, Sendable, Hashable {
