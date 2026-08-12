@@ -7,32 +7,8 @@ public struct StructuredToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
 
-    /// Welches Format gemeint ist.
-    /// Nicht `private`: die Erkennung wird geprüft, und dafür muss der
-    /// Typ ihres Ergebnisses sichtbar sein.
-    enum Format: String, Hashable, CaseIterable, Identifiable {
-        case json
-        case yaml
-        case toml
-
-        var id: String { rawValue }
-
-        var title: String {
-            switch self {
-            case .json: "JSON"
-            case .yaml: "YAML"
-            case .toml: "TOML"
-            }
-        }
-
-        var systemImage: String {
-            switch self {
-            case .json: "curlybraces"
-            case .yaml: "list.bullet.indent"
-            case .toml: "square.split.1x2"
-            }
-        }
-    }
+    /// Der Formattyp liegt im Modell: Der Stapel braucht ihn genauso.
+    typealias Format = StructuredFormat
 
     @State private var input = ""
     @State private var chosenInput: Format?
@@ -42,6 +18,12 @@ public struct StructuredToolView: View {
     @State private var detected: Format = .json
     @State private var dropError: AnvilError?
     @State private var orientation: WorkbenchOrientation = .horizontal
+
+    /// Der Stapel. Leer heißt: Es geht um den Text im Feld.
+    @State private var batch = StructuredBatch.empty
+    /// Was der letzte Durchgang angelegt hat, zum Zurücknehmen.
+    @State private var created: [URL] = []
+    @State private var note: String?
 
     public init(context: ToolContext, metadata: ToolMetadata) {
         self.context = context
@@ -55,12 +37,21 @@ public struct StructuredToolView: View {
             inspector
         } actions: {
             WorkbenchOrientationPicker(orientation: $orientation)
+
+            if !batch.isEmpty {
+                if !created.isEmpty {
+                    AnvilButton("Rückgängig", systemImage: "arrow.uturn.backward") { revertBatch() }
+                }
+
+                AnvilButton("Alle schreiben", systemImage: "square.and.arrow.down", role: .primary) {
+                    writeBatch()
+                }
+                .disabled(!batch.isReady)
+            }
         }
         .anvilErrorBanner($dropError)
-        .anvilFileDrop(.text, error: $dropError) { dropped in
-            guard case let .text(text, _) = dropped else { return }
-            input = text
-            chosenInput = nil
+        .anvilFilesDrop(.text, error: $dropError) { dropped in
+            open(dropped)
         }
         .onAppear {
             restore()
@@ -69,6 +60,58 @@ public struct StructuredToolView: View {
         .onDisappear(perform: remember)
         .onChange(of: input) { read() }
         .onChange(of: chosenInput) { read() }
+        .onChange(of: output) { replan() }
+    }
+
+    // MARK: - Hereingezogenes
+
+    private func open(_ dropped: [DroppedFile]) {
+        // Eine Datei bleibt eine Eingabe — der Stapel lohnt erst ab zwei, und
+        // die Einzelansicht kann mehr.
+        if dropped.count == 1, case let .text(text, _) = dropped[0] {
+            batch = .empty
+            created = []
+            note = nil
+            input = text
+            chosenInput = nil
+            return
+        }
+
+        // Für den Stapel braucht es Pfade: Geschrieben wird neben die Quelle,
+        // und ein Text ohne Herkunft hat keine.
+        let urls = dropped.compactMap(\.url)
+        guard urls.count > 1 else { return }
+        created = []
+        note = nil
+        batch = StructuredBatch(urls: urls, target: output)
+    }
+
+    private func replan() {
+        guard !batch.isEmpty else { return }
+        batch = StructuredBatch(urls: batch.entries.map(\.url), target: output)
+    }
+
+    private func writeBatch() {
+        note = nil
+        do {
+            let outcome = try batch.execute()
+            created = outcome.created
+            note = localized("\(outcome.written) Dateien geschrieben.")
+            replan()
+        } catch {
+            dropError = AnvilError.wrapping(error)
+        }
+    }
+
+    private func revertBatch() {
+        do {
+            try StructuredBatch.revert(created)
+            created = []
+            note = localized("Zurückgenommen.")
+            replan()
+        } catch {
+            dropError = AnvilError.wrapping(error)
+        }
     }
 
     private func restore() {
@@ -94,7 +137,7 @@ public struct StructuredToolView: View {
     // MARK: - Lesen
 
     private func read() {
-        detected = Self.detect(input)
+        detected = Format.detect(input)
         let format = chosenInput ?? detected
 
         guard !input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
@@ -104,11 +147,7 @@ public struct StructuredToolView: View {
         }
 
         do {
-            switch format {
-            case .json: value = try StructuredValue.json(parsing: input)
-            case .yaml: value = try StructuredValue.yaml(parsing: input)
-            case .toml: value = try StructuredValue.toml(parsing: input)
-            }
+            value = try format.read(input)
             error = nil
         } catch {
             value = nil
@@ -116,46 +155,9 @@ public struct StructuredToolView: View {
         }
     }
 
-    /// Rät das Format am Anfang des Textes.
-    ///
-    /// Drei Anhaltspunkte, in dieser Reihenfolge: Eine geschweifte oder eckige
-    /// Klammer am Anfang ist JSON. Eine Zeile in eckigen Klammern oder ein
-    /// Gleichheitszeichen vor dem ersten Doppelpunkt ist TOML. Sonst YAML —
-    /// das Format, das am wenigsten verlangt.
-    static func detect(_ text: String) -> Format {
-        let lines = TextLines.split(text, keepingEmpty: false)
-            .map { $0.trimmingCharacters(in: .whitespaces) }
-            .filter { !$0.isEmpty && !$0.hasPrefix("#") }
-        guard let first = lines.first else { return .json }
-
-        if first.hasPrefix("{") { return .json }
-        if first.hasPrefix("[") {
-            // `[server.http]` ist eine TOML-Tabelle, `[1, 2]` eine
-            // JSON-Liste. Unterscheiden lässt sich das nur am Inhalt der
-            // Klammer: in einer Tabelle steht ein Schlüssel und sonst nichts.
-            let inner = first.dropFirst().drop { $0 == "[" }.prefix { $0 != "]" }
-            let looksLikeTable = !inner.isEmpty && inner.allSatisfy {
-                $0.isLetter || $0.isNumber || $0 == "_" || $0 == "-" || $0 == "." || $0 == "\""
-            }
-            return looksLikeTable ? .toml : .json
-        }
-        for line in lines.prefix(20) {
-            if line.hasPrefix("[") { return .toml }
-            guard let equals = line.firstIndex(of: "=") else { continue }
-            // `a = 1` ist TOML, `a: 1` ist YAML. Es zählt, was zuerst kommt.
-            guard let colon = line.firstIndex(of: ":") else { return .toml }
-            if equals < colon { return .toml }
-        }
-        return .yaml
-    }
-
     private var outputText: String {
         guard let value else { return "" }
-        switch output {
-        case .json: return value.jsonText
-        case .yaml: return value.yamlText
-        case .toml: return value.tomlText
-        }
+        return output.write(value)
     }
 
     // MARK: - Content
@@ -188,8 +190,17 @@ public struct StructuredToolView: View {
 
     @ViewBuilder
     private var resultPane: some View {
-        AnvilPane(.resolved(output.title), systemImage: output.systemImage, tone: .neutral) {
-            if let error {
+        AnvilPane(
+            batch.isEmpty ? .resolved(output.title) : "Stapel",
+            systemImage: batch.isEmpty ? output.systemImage : "doc.on.doc",
+            tone: .neutral
+        ) {
+            if !batch.isEmpty {
+                DataGrid(
+                    header: StructuredBatch.reportColumns,
+                    rows: batch.entries.map { batch.row($0) }
+                )
+            } else if let error {
                 VStack {
                     AnvilBanner(error: error)
                     Spacer(minLength: 0)
@@ -198,7 +209,7 @@ public struct StructuredToolView: View {
             } else if value == nil {
                 EmptyStateView(
                     title: "Noch nichts da",
-                    message: "JSON, YAML oder TOML einwerfen — das Format erkennt Anvil selbst.",
+                    message: "JSON, YAML oder TOML einwerfen — das Format erkennt Anvil selbst. Mehrere Dateien auf einmal werden zum Stapel.",
                     systemImage: "arrow.left.arrow.right"
                 )
             } else {
@@ -206,24 +217,66 @@ public struct StructuredToolView: View {
             }
         } accessory: {
             HStack(spacing: AnvilSpacing.xs) {
-                HandoffMenu(context: context, from: metadata.id, text: outputText)
-                CopyButton(text: outputText)
+                if batch.isEmpty {
+                    HandoffMenu(context: context, from: metadata.id, text: outputText)
+                    CopyButton(text: outputText)
+                } else {
+                    Button { batch = .empty } label: {
+                        Image(systemName: "trash")
+                    }
+                    .buttonStyle(AnvilIconButtonStyle())
+                    .anvilHelp("Stapel schließen")
+
+                    CopyButton(text: batch.report)
+                }
             }
+        }
+
+        if let note {
+            AnvilBanner(title: .resolved(note), tone: .success, onDismiss: { self.note = nil })
+                .padding(AnvilSpacing.md)
         }
     }
 
+    @ViewBuilder
     private var statusBar: some View {
-        ToolStatusBar {
-            if let value {
-                StatusMetric("\(value.count)", label: "Werte", systemImage: "number")
-                StatusMetric("\(value.depth)", label: "Ebenen", systemImage: "list.bullet.indent")
+        if batch.isEmpty {
+            ToolStatusBar {
+                if let value {
+                    StatusMetric("\(value.count)", label: "Werte", systemImage: "number")
+                    StatusMetric("\(value.depth)", label: "Ebenen", systemImage: "list.bullet.indent")
+                }
+            } trailing: {
+                StatusPill(
+                    .resolved((chosenInput ?? detected).title),
+                    systemImage: chosenInput == nil ? "wand.and.rays" : "text.cursor",
+                    tone: .neutral
+                )
             }
-        } trailing: {
-            StatusPill(
-                .resolved((chosenInput ?? detected).title),
-                systemImage: chosenInput == nil ? "wand.and.rays" : "text.cursor",
-                tone: .neutral
-            )
+        } else {
+            ToolStatusBar {
+                StatusMetric("\(batch.entries.count)", label: "Dateien", systemImage: "doc.on.doc")
+                StatusMetric(
+                    "\(batch.writing.count)",
+                    label: "werden geschrieben",
+                    systemImage: "square.and.arrow.down",
+                    tone: .accent
+                )
+                if !batch.blocked.isEmpty {
+                    StatusMetric(
+                        "\(batch.blocked.count)",
+                        label: "im Weg",
+                        systemImage: "exclamationmark.triangle",
+                        tone: .warning
+                    )
+                }
+            } trailing: {
+                StatusPill(
+                    .resolved(output.title),
+                    systemImage: "arrow.right",
+                    tone: .neutral
+                )
+            }
         }
     }
 
@@ -234,10 +287,22 @@ public struct StructuredToolView: View {
 
     @ViewBuilder
     private var inspector: some View {
+        if !batch.isEmpty {
+            InspectorSection(
+                "Stapel",
+                systemImage: "doc.on.doc",
+                footnote: "Geschrieben wird neben die Quelle, mit neuer Endung. Die Quelldateien bleiben, wie sie sind — und was am Ziel schon liegt, wird nicht überschrieben."
+            ) {
+                KeyValueList(batch.blocked.prefix(20).map { entry in
+                    KeyValueList.Item(entry.name, entry.problem?.detail ?? "", tone: .warning)
+                })
+            }
+        }
+
         InspectorSection(
             "Eingabe",
             systemImage: "arrow.down.doc",
-            footnote: "Eine Klammer am Anfang ist JSON, eine Zeile in eckigen Klammern TOML, sonst YAML."
+            footnote: "Eine Klammer am Anfang ist JSON, eine Zeile in eckigen Klammern TOML, sonst YAML. Bei einer Datei entscheidet die Endung."
         ) {
             ChipPicker(
                 selection: $chosenInput,

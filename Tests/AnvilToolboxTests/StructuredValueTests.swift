@@ -405,18 +405,18 @@ struct StructuredTOMLWritingTests {
 struct StructuredDetectionTests {
     @Test
     func theShapeOfTheFirstLineDecides() {
-        #expect(StructuredToolView.detect(#"{"a": 1}"#) == .json)
-        #expect(StructuredToolView.detect("[1, 2, 3]") == .json)
-        #expect(StructuredToolView.detect("[server]\nport = 80") == .toml)
-        #expect(StructuredToolView.detect("a = 1") == .toml)
-        #expect(StructuredToolView.detect("a: 1") == .yaml)
-        #expect(StructuredToolView.detect("- eins\n- zwei") == .yaml)
+        #expect(StructuredFormat.detect(#"{"a": 1}"#) == .json)
+        #expect(StructuredFormat.detect("[1, 2, 3]") == .json)
+        #expect(StructuredFormat.detect("[server]\nport = 80") == .toml)
+        #expect(StructuredFormat.detect("a = 1") == .toml)
+        #expect(StructuredFormat.detect("a: 1") == .yaml)
+        #expect(StructuredFormat.detect("- eins\n- zwei") == .yaml)
     }
 
     /// Ein Kommentar oben ändert nichts daran, was darunter steht.
     @Test
     func commentsAreSkippedWhenGuessing() {
-        #expect(StructuredToolView.detect("# Notiz\nport = 80") == .toml)
-        #expect(StructuredToolView.detect("# Notiz\nport: 80") == .yaml)
+        #expect(StructuredFormat.detect("# Notiz\nport = 80") == .toml)
+        #expect(StructuredFormat.detect("# Notiz\nport: 80") == .yaml)
     }
 }
