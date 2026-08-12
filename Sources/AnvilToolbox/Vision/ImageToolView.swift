@@ -245,15 +245,13 @@ public struct ImageToolView: View {
                 systemImage: "dial.medium",
                 footnote: "Unter 60 % sieht man es, über 90 % bringt es kaum noch etwas."
             ) {
-                Slider(
+                AnvilSlider(
                     value: settings.bind(.imageQuality),
                     in: 0.3...1.0,
                     step: 0.05,
+                    format: AnvilSlider.percent,
                     onEditingChanged: { isEditing in if !isEditing { convert() } }
                 )
-                Text(verbatim: "\(Int(settings[.imageQuality] * 100)) %")
-                    .font(AnvilFont.caption.monospacedDigit())
-                    .foregroundStyle(AnvilColor.textTertiary)
             }
         }
 

@@ -113,6 +113,7 @@ SKIP = {
     "swift, md, json",                       # Dateiendungen als Beispiel
     "RGB", "HSL", "CSS", "SwiftUI",          # Format- und Rahmenwerknamen
     "code-%lld",                             # ein Dateiname, kein Anzeigetext
+    "user.%@",                               # eine Werkzeugkennung
     "AXSearchField",                         # Kennung aus den Bedienungshilfen
     # Ein Fehler für Entwickler, kein Anzeigetext: Er steht in einem
     # `fatalError` und wird nie jemandem gezeigt, der die App nur benutzt.

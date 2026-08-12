@@ -85,6 +85,9 @@ public enum AnvilSize {
     /// not clicked.
     public static let tableRowHeight: CGFloat = 24
     /// A plain border: the line between a surface and what is next to it.
+    /// Die Zahl neben einem Regler. Breit genug für „100 %".
+    public static let sliderValueWidth: CGFloat = 44
+
     public static let hairline: CGFloat = 1
     /// A separator standing between two controls in a row — shorter than the
     /// row so it reads as a divider and not as a frame.
