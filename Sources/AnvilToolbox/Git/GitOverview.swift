@@ -125,4 +125,32 @@ public struct GitOverview: Sendable {
         let rows = filtered(filter).map { Self.row($0).joined(separator: "\t") }
         return ([header] + rows).joined(separator: "\n")
     }
+
+    /// Die Befehle, mit denen sich die alten Zweige entfernen ließen — eine
+    /// Zeile je Repository, zum Einfügen ins Terminal.
+    ///
+    /// Anvil führt sie nicht aus, und das ist keine Bequemlichkeit: Ein
+    /// Werkzeug, das ungefragt Zweige löscht, müsste sich seiner Sache
+    /// sicherer sein, als es sein kann. `git branch -d` ist dabei die zweite
+    /// Sicherung — im Gegensatz zu `-D` weigert es sich, einen Zweig zu
+    /// löschen, dessen Commits nirgendwo sonst stehen.
+    public func cleanupCommands(_ filter: Filter = .all) -> String {
+        filtered(filter).compactMap { repository -> String? in
+            let names = repository.staleBranches.map(\.name)
+            guard !names.isEmpty else { return nil }
+            let branches = names.map(Self.quoted).joined(separator: " ")
+            return "cd \(Self.quoted(repository.url.path)) && git branch -d \(branches)"
+        }
+        .joined(separator: "\n")
+    }
+
+    /// Ein Argument, das die Shell unverändert durchreicht.
+    ///
+    /// Einfache Anführungszeichen schützen alles außer sich selbst; ein
+    /// eigenes davon wird beendet, als Literal eingefügt und wieder
+    /// aufgemacht. Ein Ordner namens `Annas' Projekte` ist selten, aber der
+    /// Befehl, der daran zerbricht, wäre eine böse Überraschung.
+    static func quoted(_ text: String) -> String {
+        "'" + text.replacingOccurrences(of: "'", with: "'\\''") + "'"
+    }
 }

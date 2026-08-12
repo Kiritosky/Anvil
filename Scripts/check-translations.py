@@ -105,6 +105,8 @@ SKIP = {
     "%@@%@.example",                         # eine erfundene Adresse
     # Steht in einer Anweisung an das Sprachmodell, nicht auf dem Bildschirm.
     "Aufgabe: %@",
+    # Ein Befehl fürs Terminal. Übersetzt wäre er keiner mehr.
+    "cd %@ && git branch -d %@",
 }
 SKIP_PATTERNS = [
     re.compile(r"^[a-z0-9.]+$"),          # SF-Symbol-Namen

@@ -178,7 +178,7 @@ Drei Wege, ein Tool zu bauen:
 Der dritte Weg folgt einem eigenen Muster, sobald echte Rechnerei dahinter
 steht: **Modell und Ansicht sind getrennte Dateien**. Im Modell steht alles,
 was ohne Bildschirm läuft und sich deshalb prüfen lässt — `IPNetwork`,
-`CSVTable`, `MarkdownDocument`, `TimeMath`, `Readability`. Die View liest nur
+`CSVTable`, `MarkdownDocument`, `TimeMath`, `Readability`, `GitStatus`. Die View liest nur
 noch ab.
 
 Das hat zwei Gründe, und beide sind praktisch:
@@ -198,7 +198,15 @@ Wörterbuch, ist kein Detail: Ein Wörterbuch verliert die Reihenfolge, und eine
 Konfigurationsdatei, deren Schlüssel nach dem Umwandeln durcheinandergeraten,
 ist im Diff nicht mehr zu lesen.
 
-Wo etwas nicht rückgängig zu machen ist, kommt eine vierte dazu: **Erst der
+Wo ein fremdes Programm die Antwort kennt, kommt eine vierte dazu: **die
+Maschinenausgabe lesen, nie die für Menschen.** `GitStatus` und `GitBranch`
+zerlegen `--porcelain` und `for-each-ref` — die beiden Formen, die `git`
+ausdrücklich als stabil zusichert und die in keiner Sprache übersetzt werden.
+Wer stattdessen die lesbare Ausgabe zerlegt, baut etwas, das auf einem Rechner
+mit deutschem `git` anders funktioniert als auf dem eigenen. Alles, was länger
+dauern kann, läuft dabei über `ProcessRunner` mit Zeitgrenze und ohne Shell.
+
+Wo etwas nicht rückgängig zu machen ist, kommt eine fünfte dazu: **Erst der
 Plan, dann die Tat.** `RenamePlan` rechnet aus, was herauskäme, und sagt
 bei jedem Eintrag, was ihm im Weg steht; ausgeführt wird nur ein Plan ohne
 Beanstandung. Ein Werkzeug, das die Hälfte umbenennt und dann stehenbleibt,

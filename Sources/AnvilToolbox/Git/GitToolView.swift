@@ -480,6 +480,27 @@ public struct GitToolView: View {
             )
         }
 
+        if overview.staleBranchCount > 0 {
+            InspectorSection(
+                "Alte Zweige",
+                systemImage: "arrow.triangle.branch",
+                footnote: "Anvil löscht nichts. Der Befehl geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert."
+            ) {
+                KeyValueList(overview.filtered(filter).compactMap { repository in
+                    repository.staleBranches.isEmpty
+                        ? nil
+                        : KeyValueList.Item(
+                            repository.name,
+                            repository.staleBranches.map(\.name).joined(separator: ", ")
+                        )
+                })
+
+                AnvilButton("Aufräum-Befehle kopieren", systemImage: "doc.on.clipboard") {
+                    context.pasteboard.copy(overview.cleanupCommands(filter))
+                }
+            }
+        }
+
         if !overview.failed.isEmpty {
             InspectorSection(
                 "Nicht gelesen",

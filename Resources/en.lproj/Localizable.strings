@@ -61,12 +61,14 @@
 "alles sauber" = "all clean";
 "Alte Zweige" = "Stale branches";
 "alte Zweige" = "stale branches";
+"Anvil löscht nichts. Der Befehl geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command goes to the clipboard — you run it where you can see what happens.";
 "Anvil sucht nur nach Repositories und öffnet keines. Gelesen wird, was git ohnehin verrät." = "Anvil only looks for repositories, it never opens one. It reads what git tells anyone who asks.";
 "Art" = "Kind";
 "Auffällig" = "Needs a look";
 "Aufnahme wird transkribiert" = "Transcribing recording";
 "Aufnahmeort" = "Location";
 "Aufnahmezeit" = "Date taken";
+"Aufräum-Befehle kopieren" = "Copy cleanup commands";
 "Ausschnitt %lld" = "Selection %lld";
 "Bei großen Bildern dauert das einen Moment." = "With large images this takes a moment.";
 "Bei großen Dateien dauert das einen Moment." = "With large files this takes a moment.";

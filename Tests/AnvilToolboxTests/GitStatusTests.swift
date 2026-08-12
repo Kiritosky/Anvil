@@ -322,6 +322,78 @@ struct GitOverviewTests {
         #expect(lines[1].hasPrefix("geaendert\t"))
     }
 
+    // MARK: - Aufräum-Befehle
+
+    private func stale(_ name: String) -> GitBranch {
+        GitBranch(name: name, upstream: "origin/\(name)", isGone: true)
+    }
+
+    @Test
+    func onlyRepositoriesWithStaleBranchesGetACommand() {
+        let overview = GitOverview([
+            repository("mit", porcelain: "## main...origin/main", branches: [stale("alt")]),
+            repository("ohne", porcelain: "## main...origin/main")
+        ])
+        let lines = overview.cleanupCommands().split(separator: "\n")
+        #expect(lines.count == 1)
+        #expect(lines[0].contains("/Code/mit"))
+        #expect(lines[0].hasSuffix("git branch -d 'alt'"))
+    }
+
+    /// `-D` würde auch löschen, was nirgendwo sonst steht. `-d` weigert sich —
+    /// und genau das ist hier die zweite Sicherung.
+    @Test
+    func theCommandNeverForces() {
+        let overview = GitOverview([
+            repository("a", porcelain: "## main", branches: [stale("alt")])
+        ])
+        #expect(!overview.cleanupCommands().contains("-D"))
+        #expect(!overview.cleanupCommands().contains("--force"))
+    }
+
+    @Test
+    func allStaleBranchesOfARepositoryAreInOneLine() {
+        let overview = GitOverview([
+            repository("a", porcelain: "## main", branches: [stale("eins"), stale("zwei")])
+        ])
+        let commands = overview.cleanupCommands()
+        #expect(commands.split(separator: "\n").count == 1)
+        #expect(commands.contains("'eins' 'zwei'"))
+    }
+
+    /// Ein Ordner mit Leerzeichen ist der Regelfall auf einem Mac.
+    @Test
+    func aPathWithSpacesSurvivesTheShell() {
+        let repository = GitRepository(
+            url: URL(fileURLWithPath: "/Users/anna/Meine Projekte/app"),
+            status: GitStatus(porcelain: "## main"),
+            branches: [stale("alt")]
+        )
+        let command = GitOverview([repository]).cleanupCommands()
+        #expect(command.contains("cd '/Users/anna/Meine Projekte/app'"))
+    }
+
+    @Test
+    func anApostropheDoesNotBreakOutOfTheQuotes() {
+        #expect(GitOverview.quoted("Annas' Projekte") == "'Annas'\\'' Projekte'")
+    }
+
+    @Test
+    func theCommandsFollowTheFilter() {
+        let overview = GitOverview([
+            repository("sauber", porcelain: "## main...origin/main", branches: [stale("alt")]),
+            repository("geaendert", porcelain: "## main...origin/main\n M a.txt", branches: [stale("alt")])
+        ])
+        #expect(overview.cleanupCommands(.dirty).split(separator: "\n").count == 1)
+        #expect(overview.cleanupCommands().split(separator: "\n").count == 2)
+    }
+
+    @Test
+    func nothingStaleIsNoCommand() {
+        #expect(overview.cleanupCommands().isEmpty)
+        #expect(GitOverview.empty.cleanupCommands().isEmpty)
+    }
+
     @Test
     func nothingInIsAnEmptyOverview() {
         #expect(GitOverview.empty.isEmpty)
