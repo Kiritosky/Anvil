@@ -15,9 +15,10 @@ public enum EverydayToolBundle: ToolBundle {
                 TextToolView(tool: tool, context: context)
             }
         }
-        // Three do not fit the one-input/one-output shape: a live list, a
-        // colour with a swatch, and an image.
-        return [clipboard, color, qrCode] + converters
+        // Vier passen nicht in die Form „eine Eingabe, eine Ausgabe": eine
+        // Liste, die mitläuft, eine Farbe mit Muster, eine ganze Farbliste
+        // und ein Bild.
+        return [clipboard, color, colorPalette, qrCode] + converters
     }
 
     @MainActor
@@ -55,6 +56,26 @@ public enum EverydayToolBundle: ToolBundle {
 
         return ToolRegistration(metadata: metadata) { context in
             ColorToolView(context: context, metadata: metadata)
+        }
+    }
+
+    @MainActor
+    private static var colorPalette: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "everyday.palette",
+            title: "Farbliste",
+            subtitle: "Ganze Paletten prüfen und ausgeben",
+            systemImage: "swatchpalette",
+            category: .everyday,
+            keywords: [
+                "palette", "farbliste", "farben", "colors", "css", "variablen",
+                "styleguide", "doppelt", "kontrast", "swiftui"
+            ],
+            acceptsText: true
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            ColorPaletteToolView(context: context, metadata: metadata)
         }
     }
 

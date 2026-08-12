@@ -108,6 +108,10 @@ SKIP = {
     # Ein Befehl fürs Terminal. Übersetzt wäre er keiner mehr.
     "cd %@ && git branch -d %@",
     "swift, md, json",                       # Dateiendungen als Beispiel
+    "RGB", "HSL", "CSS", "SwiftUI",          # Format- und Rahmenwerknamen
+    "static let %@ = %@",                    # Swift-Quelltext, keine Anzeige
+    # Ein Beispiel aus einer Stilvorlage: Namen und Schreibweisen, keine Sprache.
+    "--marke: #3A7BD5;\\nHintergrund #FFFFFF\\nrgb(58, 123, 213)",
 }
 SKIP_PATTERNS = [
     re.compile(r"^[a-z0-9.]+$"),          # SF-Symbol-Namen
