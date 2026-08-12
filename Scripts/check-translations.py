@@ -114,6 +114,7 @@ SKIP = {
     "RGB", "HSL", "CSS", "SwiftUI",          # Format- und Rahmenwerknamen
     "code-%lld",                             # ein Dateiname, kein Anzeigetext
     "user.%@",                               # eine Werkzeugkennung
+    "rm %@",                                 # ein Befehl fürs Terminal
     "AXSearchField",                         # Kennung aus den Bedienungshilfen
     # Ein Fehler für Entwickler, kein Anzeigetext: Er steht in einem
     # `fatalError` und wird nie jemandem gezeigt, der die App nur benutzt.

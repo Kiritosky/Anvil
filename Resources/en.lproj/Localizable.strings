@@ -9,6 +9,7 @@
 "# Überschrift\n\nText mit einem [Link](https://example.com)." = "# Heading\n\nText with a [link](https://example.com).";
 "#3A7BD5" = "#3A7BD5";
 "#FFFFFF" = "#FFFFFF";
+"%@ belegt" = "%@ taken up";
 "%@ Dateien geschrieben." = "%@ files written.";
 "%@ Dateien umbenannt." = "%@ files renamed.";
 "%@ größer" = "%@ larger";
@@ -25,6 +26,7 @@
 "%lld Commits" = "%lld commits";
 "%lld Dateien geschrieben." = "%lld files written.";
 "%lld Dateien · %@" = "%lld files · %@";
+"%lld gleiche" = "%lld the same";
 "%lld Seiten geschrieben." = "%lld pages written.";
 "%lld Stellen in %lld Dateien ersetzt." = "Replaced %lld occurrences in %lld files.";
 "%lld verschiedene" = "%lld distinct";
@@ -49,6 +51,7 @@
 ". trifft auch Zeilenumbrüche" = ". matches newlines too";
 "1-3, 5, 8- — wie im Druckdialog. Leer heißt alle. Was es nicht gibt, fällt weg." = "1-3, 5, 8- — as in the print dialog. Empty means all. Anything that does not exist falls away.";
 "Ab jetzt" = "From now";
+"Ab welcher Größe" = "From what size";
 "abgelöst" = "detached";
 "abgelöster HEAD" = "detached HEAD";
 "Abgeschlossene Durchläufe der Diktat- und KI-Werkzeuge." = "Completed runs of the dictation and AI tools.";
@@ -58,6 +61,7 @@
 "Adresse suchen" = "Find address";
 "Adressen" = "Addresses";
 "Alle %lld Repositories geholt." = "Fetched all %lld repositories.";
+"Alle Dubletten" = "All duplicates";
 "Alle holen" = "Fetch all";
 "Alle schreiben" = "Write all";
 "Alle sichern" = "Save all";
@@ -71,6 +75,8 @@
 "Alte Zweige" = "Stale branches";
 "alte Zweige" = "stale branches";
 "Angelegt als %@. Es steht jetzt unter „Eigene Tools\" — %lld eigene insgesamt." = "Created as %@. It now sits under \"Your own tools\" — %lld of your own in total.";
+"Angesehen" = "Looked at";
+"Anvil löscht nichts. Der Befehl behält je Gruppe die erste Datei und geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command keeps the first file of each group and goes to the clipboard — you run it where you can see what happens.";
 "Anvil löscht nichts. Der Befehl geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command goes to the clipboard — you run it where you can see what happens.";
 "Anvil sucht nur nach Repositories und öffnet keines. Gelesen wird, was git ohnehin verrät." = "Anvil only looks for repositories, it never opens one. It reads what git tells anyone who asks.";
 "Anweisung" = "Instruction";
@@ -136,6 +142,7 @@
 "diff, notiz, release" = "diff, note, release";
 "Doppelgänger" = "Look-alikes";
 "Drück auf Aufnehmen und sprich einfach los — ⌘⇧R geht auch. Oder zieh Audiodateien ins Fenster, auch mehrere auf einmal." = "Hit Record and just start talking — ⌘⇧R works too. Or drag audio files into the window, several at a time.";
+"Dubletten" = "Duplicates";
 "Eigene Werkzeuge" = "Your own tools";
 "Eigenes Werkzeug" = "Your own tool";
 "Ein Titel fehlt" = "A title is missing";
@@ -150,6 +157,7 @@
 "Erkannt" = "Detected";
 "Erkannt werden #RGB, #RRGGBB, rgb(), rgba(), hsl(), hsla() und eine Handvoll Namen." = "Recognised are #RGB, #RRGGBB, rgb(), rgba(), hsl(), hsla() and a handful of names.";
 "Ersetzt wird zeilenweise — ein Ausdruck über mehrere Zeilen greift nicht. Ein unfertiger Ausdruck lässt die Zeile einfach, wie sie ist." = "Replacement works line by line — an expression spanning several lines will not match. An unfinished expression simply leaves the line as it is.";
+"Erst nach Größe gruppieren, dann nur innerhalb der Gruppen die Prüfsumme rechnen. Zwei Dateien unterschiedlicher Größe können nie gleich sein — dadurch wird fast nichts gelesen." = "First group by size, then compute checksums only within those groups. Two files of different sizes can never be equal — so almost nothing gets read.";
 "Es gibt nichts umzuwandeln. Erst muss eine Datei dabei sein, die sich lesen lässt." = "There is nothing to convert. There has to be a file that can be read first.";
 "Es gibt nichts zu ersetzen. Erst muss ein Treffer da sein." = "There is nothing to replace. There has to be a match first.";
 "Es gibt nichts zu schreiben. Erst muss eine Zeile dabei sein, aus der ein Code wird." = "There is nothing to write. There has to be a line that turns into a code first.";
@@ -171,11 +179,13 @@
 "Gehe zu" = "Go to";
 "Gemerkte Eingaben" = "Kept inputs";
 "Gemerktes verwerfen" = "Discard what was kept";
+"Gerechnet wird nur, wo zwei Dateien gleich groß sind." = "Checksums are only computed where two files have the same size.";
 "Geschrieben wird neben die Quelle, mit neuer Endung. Die Quelldateien bleiben, wie sie sind — und was am Ziel schon liegt, wird nicht überschrieben." = "Files are written next to the source with a new extension. The sources stay as they are — and whatever is already at the target is never overwritten.";
 "Gewählt" = "Chosen";
 "Geändert" = "Changed";
 "geändert" = "changed";
 "git kam nicht durch" = "git did not get through";
+"Gleiche" = "Same";
 "Güte" = "Quality";
 "Halbe Größe" = "Half size";
 "Hier gehen nur Bilder hinein." = "Only images go in here.";
@@ -189,6 +199,7 @@
 "In den Bildern ist nichts, was sich als Text lesen ließe." = "There is nothing in these images that reads as text.";
 "In den gewählten Bildern steckt nichts Auffälliges." = "There is nothing notable in the chosen images.";
 "In diesem Bild steckt nichts Auffälliges." = "There is nothing notable in this image.";
+"In diesem Ordner liegt keine Datei zweimal." = "No file in this folder is here twice.";
 "In diesem Ordner liegt nichts, was zum Filter passt." = "Nothing in this folder matches the filter.";
 "In keiner der Dateien steht, wonach du suchst." = "None of the files contain what you are looking for.";
 "In neuem Fenster öffnen" = "Open in a new window";
@@ -206,6 +217,7 @@
 "keine Textdatei" = "not a text file";
 "Kennung" = "Identifier";
 "Klein, verlustbehaftet, keine Transparenz. Was jedes Formular nimmt." = "Small, lossy, no transparency. What every form accepts.";
+"Kleine Dateien liegen naturgemäß oft doppelt — Symbole, leere Vorlagen, Konfigurationsschnipsel. Sie kosten nichts und verstopfen die Liste." = "Small files are duplicated by nature — icons, empty templates, snippets of configuration. They cost nothing and clog the list.";
 "knapp, normal, ausführlich" = "brief, normal, detailed";
 "Konflikt" = "Conflict";
 "leer" = "empty";
@@ -213,19 +225,23 @@
 "Links etwas einfügen — oder Dateien ins Fenster ziehen, auch viele." = "Paste something on the left — or drag files into the window, many at a time.";
 "Links etwas einfügen — oder eine Datei ins Fenster ziehen." = "Paste something on the left — or drag a file into the window.";
 "Längste Kante" = "Longest edge";
+"Lösch-Befehle kopieren" = "Copy removal commands";
 "Löscht alle behaltenen Eingaben von der Platte." = "Deletes every kept input from disk.";
 "MD5, SHA-1, SHA-256, SHA-512 — auch von Dateien" = "MD5, SHA-1, SHA-256, SHA-512 — files too";
 "Merken" = "Keeping";
 "Metadaten" = "Metadata";
+"Mindestens (KB)" = "At least (KB)";
 "Mit Komma getrennt, ohne Punkt. Leer heißt: alle Dateien." = "Comma-separated, without the dot. Empty means: all files.";
 "Möglichkeiten" = "Options";
 "Neu einlesen" = "Read again";
+"Neu suchen" = "Search again";
 "Nicht erkannt" = "Not recognised";
 "nicht erkannt" = "not recognised";
 "Nicht gelesen" = "Not read";
 "Nicht gepusht" = "Not pushed";
 "nicht gepusht" = "not pushed";
 "Nichts dabei" = "Nothing there";
+"Nichts doppelt" = "Nothing duplicated";
 "Nichts gesucht" = "Nothing searched for";
 "Nichts konnte gesichert werden: %@" = "Nothing could be saved: %@";
 "Nichts zu zeigen" = "Nothing to show";
@@ -254,6 +270,7 @@
 "schon in diesem Format" = "already in this format";
 "Sichern nach „%@\" ist fehlgeschlagen: %@" = "Saving to “%@” failed: %@";
 "Sobald ein Ordner gelesen ist, steht hier die Übersicht." = "Once a folder has been read, the overview appears here.";
+"Sobald etwas doppelt liegt, steht es hier als Tabelle." = "As soon as something is duplicated, it appears here as a table.";
 "Suchtiefe" = "Search depth";
 "Symbol" = "Symbol";
 "Temperatur" = "Temperature";
@@ -267,11 +284,13 @@
 "Verlauf, gemerkte Eingaben, Aufnahmen, Bildschirmfotos und Exporte. Die eigenen Werkzeuge bleiben." = "History, kept inputs, recordings, screenshots and exports. Your own tools stay.";
 "Verlustfrei und groß. Für die Weitergabe an Druck und Bildbearbeitung." = "Lossless and large. For handing on to print and image editing.";
 "Verlustfrei, kann Transparenz. Für Bildschirmfotos und Grafiken." = "Lossless, supports transparency. For screenshots and graphics.";
+"Versteckte Ordner bleiben draußen. Was in .git oder .build doppelt liegt, gehört einem Programm und nicht dir." = "Hidden folders stay out. What is duplicated inside .git or .build belongs to a program, not to you.";
 "Viertel" = "Quarter";
 "vor %lld Tagen" = "%lld days ago";
 "Vor dem Schreiben wird jede Datei noch einmal gelesen. Was sich seit der Vorschau geändert hat, bleibt unangetastet — ein Editor, der zwischendurch gespeichert hat, überschreibt niemanden." = "Every file is read once more before writing. Anything that changed since the preview stays untouched — an editor that saved in between overwrites nobody.";
 "Voraus" = "Ahead";
 "Vorschau" = "Preview";
+"Was doppelt auf der Platte liegt" = "What is on the disk twice";
 "Was du selbst aus einem Werkzeug herausgeschrieben hast." = "What you exported from a tool yourself.";
 "Was noch fehlt" = "What is still missing";
 "Was zuletzt in einem Werkzeug stand." = "What was last in a tool.";
@@ -283,6 +302,7 @@
 "Wie viele Ebenen unter dem Ordner gesucht wird. Ein gefundenes Repository wird nicht weiter durchsucht." = "How many levels below the folder are searched. A repository that is found is not searched any further.";
 "Wird geholt" = "Fetching";
 "Wird gerechnet …" = "Computing …";
+"Wird gesucht" = "Searching";
 "Wird im Prompt für %@ eingesetzt." = "Substituted for %@ in the prompt.";
 "Wird zu" = "Becomes";
 "Wirklich löschen?" = "Really delete?";
@@ -293,6 +313,7 @@
 "Zieh Bilder ins Fenster — auch einen ganzen Schwung auf einmal." = "Drag images into the window — a whole batch at once is fine.";
 "Zieh den Ordner hinein, in dem deine Projekte liegen. Anvil sucht darin nach Repositories." = "Drag in the folder your projects live in. Anvil looks for repositories inside it.";
 "Zieh ein Bild ins Fenster oder hol eines aus der Zwischenablage." = "Drag an image into the window or take one from the clipboard.";
+"Zieh einen Ordner hinein. Anvil sieht sich alles darunter an — erst die Größe, dann den Inhalt." = "Drag a folder in. Anvil looks at everything below it — first the size, then the content.";
 "zu groß" = "too large";
 "zu lang" = "too long";
 "Zusammen %@." = "%@ in total.";

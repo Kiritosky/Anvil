@@ -138,19 +138,9 @@ public struct GitOverview: Sendable {
         filtered(filter).compactMap { repository -> String? in
             let names = repository.staleBranches.map(\.name)
             guard !names.isEmpty else { return nil }
-            let branches = names.map(Self.quoted).joined(separator: " ")
-            return "cd \(Self.quoted(repository.url.path)) && git branch -d \(branches)"
+            let branches = names.map(Shell.quoted).joined(separator: " ")
+            return "cd \(Shell.quoted(repository.url.path)) && git branch -d \(branches)"
         }
         .joined(separator: "\n")
-    }
-
-    /// Ein Argument, das die Shell unverändert durchreicht.
-    ///
-    /// Einfache Anführungszeichen schützen alles außer sich selbst; ein
-    /// eigenes davon wird beendet, als Literal eingefügt und wieder
-    /// aufgemacht. Ein Ordner namens `Annas' Projekte` ist selten, aber der
-    /// Befehl, der daran zerbricht, wäre eine böse Überraschung.
-    static func quoted(_ text: String) -> String {
-        "'" + text.replacingOccurrences(of: "'", with: "'\\''") + "'"
     }
 }

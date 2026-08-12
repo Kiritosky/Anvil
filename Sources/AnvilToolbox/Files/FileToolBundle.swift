@@ -8,7 +8,26 @@ public enum FileToolBundle: ToolBundle {
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        [rename, replace]
+        [rename, replace, duplicates]
+    }
+
+    @MainActor
+    private static var duplicates: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "files.duplicates",
+            title: "Dubletten",
+            subtitle: "Was doppelt auf der Platte liegt",
+            systemImage: "square.on.square",
+            category: .everyday,
+            keywords: [
+                "dubletten", "doppelt", "duplikate", "duplicates", "platz",
+                "speicher", "aufräumen", "prüfsumme", "gleich"
+            ]
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            DuplicateToolView(context: context, metadata: metadata)
+        }
     }
 
     @MainActor

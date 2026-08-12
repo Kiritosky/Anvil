@@ -375,7 +375,7 @@ struct GitOverviewTests {
 
     @Test
     func anApostropheDoesNotBreakOutOfTheQuotes() {
-        #expect(GitOverview.quoted("Annas' Projekte") == "'Annas'\\'' Projekte'")
+        #expect(Shell.quoted("Annas' Projekte") == "'Annas'\\'' Projekte'")
     }
 
     @Test
