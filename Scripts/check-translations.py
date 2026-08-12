@@ -58,6 +58,9 @@ PATTERNS = [
     rf"\bdescription:\s*{STR}",
     rf"\binputPlaceholder:\s*{STR}",
     rf"\bdefaultValue:\s*{STR}",
+    # Ein Literal am Zeilenende hinter einem Doppelpunkt: der Zweig eines
+    # mehrzeiligen `?:` und alles, was als Argument so umbrochen wurde.
+    rf":\s*{STR}$",
     # Enum-artige Rückgaben: case .recording: "Ich höre zu"
     rf"^\s*case \.\w+: {STR}$",
     # Rückgaben aus berechneten LocalizedStringKey-Eigenschaften
@@ -100,6 +103,8 @@ SKIP = {
     "@@ -%@ +%@ @@%@",                       # der Abschnittskopf eines Diffs
     "%@- [%@](#%@)",                         # eine Zeile im Inhaltsverzeichnis
     "%@@%@.example",                         # eine erfundene Adresse
+    # Steht in einer Anweisung an das Sprachmodell, nicht auf dem Bildschirm.
+    "Aufgabe: %@",
 }
 SKIP_PATTERNS = [
     re.compile(r"^[a-z0-9.]+$"),          # SF-Symbol-Namen
@@ -113,6 +118,12 @@ SKIP_PATTERNS = [
     re.compile(r"^\{"),                   # JSON-Beispiele
     re.compile(r"^\d"),                   # Zahlenbeispiele
     re.compile(r"^z\. B\."),
+    re.compile(r"^x-apple\."),            # Adressen der Systemeinstellungen
+    re.compile(r"^F\d+$"),                # Funktionstasten
+    re.compile(r"^IPv[46]$"),             # Protokollnamen
+    re.compile(r"^(?:rgb|hsl)a?\("),      # Farbsyntax
+    re.compile(r"^\s*class="),            # HTML-Bruchstücke
+    re.compile(r"[⇧⌘⌥⌃⇪]"),               # Tastenkombinationen
 ]
 
 

@@ -19,6 +19,7 @@ public struct GitToolView: View {
     @State private var filter: GitOverview.Filter = .all
     @State private var depth = RepositoryScan.defaultDepth
     @State private var isWorking = false
+    @State private var isFetching = false
     @State private var scanned = 0
     @State private var total = 0
     @State private var hasNoGit = false
@@ -100,7 +101,14 @@ public struct GitToolView: View {
             return
         }
 
-        let folders = RepositoryScan.repositories(under: folder, maxDepth: depth)
+        // Die Suche selbst geht über das Dateisystem und kann bei einem
+        // Ordner mit hunderten Projekten spürbar dauern. Auf dem Hauptthread
+        // stünde so lange das Fenster.
+        let wanted = depth
+        let folders = await Task.detached {
+            RepositoryScan.repositories(under: folder, maxDepth: wanted)
+        }.value
+
         total = folders.count
         scanned = 0
         overview = .empty
@@ -126,6 +134,7 @@ public struct GitToolView: View {
 
         Task {
             isWorking = true
+            isFetching = true
             note = nil
             total = targets.count
             scanned = 0
@@ -139,7 +148,10 @@ public struct GitToolView: View {
                 }
                 scanned += 1
             }
+            isFetching = false
 
+            // Danach neu lesen: Erst jetzt weiß jedes Repository, welche
+            // Zweige es auf dem Server noch gibt.
             if let root {
                 await scan(root)
             }
@@ -188,13 +200,17 @@ public struct GitToolView: View {
                         AnvilButton("Ordner wählen", systemImage: "folder") { chooseFolder() }
                     }
                 )
+            } else if shown.isEmpty, isWorking {
+                EmptyStateView(
+                    title: "Wird gelesen",
+                    message: "Einen Moment — die Repositories werden der Reihe nach gelesen.",
+                    systemImage: "hourglass"
+                )
             } else if shown.isEmpty {
                 EmptyStateView(
-                    title: isWorking ? "Wird gelesen" : "Nichts dabei",
-                    message: isWorking
-                        ? "Einen Moment — die Repositories werden der Reihe nach gelesen."
-                        : "In diesem Ordner liegt nichts, was zum Filter passt.",
-                    systemImage: isWorking ? "hourglass" : "magnifyingglass"
+                    title: "Nichts dabei",
+                    message: "In diesem Ordner liegt nichts, was zum Filter passt.",
+                    systemImage: "magnifyingglass"
                 )
             } else {
                 ScrollView {
@@ -222,13 +238,18 @@ public struct GitToolView: View {
             }
         } accessory: {
             if isWorking, total > 0 {
-                ProgressStrip(
-                    "Repositories",
-                    progress: Double(scanned) / Double(total),
-                    tone: .accent
-                )
+                if isFetching {
+                    ProgressStrip("Wird geholt", progress: share, tone: .accent)
+                } else {
+                    ProgressStrip("Wird gelesen", progress: share, tone: .accent)
+                }
             }
         }
+    }
+
+    /// Wie weit der laufende Durchgang ist.
+    private var share: Double {
+        total > 0 ? Double(scanned) / Double(total) : 0
     }
 
     @ViewBuilder

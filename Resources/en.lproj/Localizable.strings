@@ -57,6 +57,7 @@
 "Alle %lld Repositories geholt." = "Fetched all %lld repositories.";
 "Alle holen" = "Fetch all";
 "Alle Werkzeuge" = "All tools";
+"Alles außer dem Zusammenführen bezieht sich auf die erste Datei." = "Everything except merging applies to the first file.";
 "alles sauber" = "all clean";
 "Alte Zweige" = "Stale branches";
 "alte Zweige" = "stale branches";
@@ -94,6 +95,7 @@
 "Die Zeichenfläche ließ sich nicht anlegen." = "The drawing surface could not be created.";
 "Diese Ordner sehen aus wie ein Repository, git kommt aber nicht hinein." = "These folders look like a repository, but git cannot get in.";
 "Drück auf Aufnehmen und sprich einfach los — ⌘⇧R geht auch. Oder zieh Audiodateien ins Fenster, auch mehrere auf einmal." = "Hit Record and just start talking — ⌘⇧R works too. Or drag audio files into the window, several at a time.";
+"Einen Moment — die Repositories werden der Reihe nach gelesen." = "One moment — the repositories are being read one after another.";
 "Eingaben behalten" = "Keep inputs";
 "Es ist abgeschaltet oder gibt es nicht mehr. Im Tool-Store lässt es sich wieder einschalten." = "It is switched off or no longer exists. The Tool Store can switch it back on.";
 "Favoriten auf Zifferntasten" = "Favourites on number keys";
@@ -121,6 +123,7 @@
 "In den Bildern ist nichts, was sich als Text lesen ließe." = "There is nothing in these images that reads as text.";
 "In den gewählten Bildern steckt nichts Auffälliges." = "There is nothing notable in the chosen images.";
 "In diesem Bild steckt nichts Auffälliges." = "There is nothing notable in this image.";
+"In diesem Ordner liegt nichts, was zum Filter passt." = "Nothing in this folder matches the filter.";
 "In neuem Fenster öffnen" = "Open in a new window";
 "Installiere die Command Line Tools mit „xcode-select --install\" — danach findet Anvil es von selbst." = "Install the Command Line Tools with \"xcode-select --install\" — Anvil finds it by itself afterwards.";
 "Jedes Bild wird neu gezeichnet und neu kodiert. EXIF, Aufnahmeort und Gerätename bleiben dabei zurück — nicht als Schalter, sondern als Folge." = "Every image is redrawn and re-encoded. EXIF, location and device name are left behind in the process — not as a switch, but as a consequence.";
@@ -129,6 +132,7 @@
 "Kein git gefunden" = "No git found";
 "Kein Werkzeug eingeschaltet" = "No tool switched on";
 "Keine Bilder" = "No images";
+"Keine Kollisionen." = "No collisions.";
 "Klein, verlustbehaftet, keine Transparenz. Was jedes Formular nimmt." = "Small, lossy, no transparency. What every form accepts.";
 "Konflikt" = "Conflict";
 "Links etwas einfügen — oder Dateien ins Fenster ziehen, auch viele." = "Paste something on the left — or drag files into the window, many at a time.";
@@ -142,6 +146,7 @@
 "Nicht gelesen" = "Not read";
 "Nicht gepusht" = "Not pushed";
 "nicht gepusht" = "not pushed";
+"Nichts dabei" = "Nothing there";
 "Nichts konnte gesichert werden: %@" = "Nothing could be saved: %@";
 "Nichts zu zeigen" = "Nothing to show";
 "Nie gemerkt wird, was nach einem Geheimnis aussieht — Schlüssel, Tokens, Zugangsdaten — und was in Werkzeugen steht, deren Zweck Geheimnisse sind: JWT, Prüfsummen, Base64, Hex. Ergebnisse werden grundsätzlich nicht gespeichert." = "Never kept: anything that looks like a secret — keys, tokens, credentials — and anything in tools whose purpose is secrets: JWT, checksums, Base64, hex. Results are never stored at all.";
@@ -173,6 +178,7 @@
 "Werkzeug in eigenem Fenster" = "Tool in its own window";
 "Werkzeug nicht verfügbar" = "Tool unavailable";
 "Wie viele Ebenen unter dem Ordner gesucht wird. Ein gefundenes Repository wird nicht weiter durchsucht." = "How many levels below the folder are searched. A repository that is found is not searched any further.";
+"Wird geholt" = "Fetching";
 "Wird gerechnet …" = "Computing …";
 "Wo" = "Where";
 "Wo noch Arbeit liegt" = "Where work is still lying around";
