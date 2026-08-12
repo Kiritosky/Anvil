@@ -110,6 +110,7 @@ public final class AppEnvironment {
             DataToolBundle.self,
             StructuredToolBundle.self,
             DiffToolBundle.self,
+            GitToolBundle.self,
             NetToolBundle.self,
             SampleDataToolBundle.self,
             FileToolBundle.self,

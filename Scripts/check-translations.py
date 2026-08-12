@@ -65,9 +65,16 @@ PATTERNS = [
 ]
 
 # Interpolationen, die eine Zahl einsetzen — Foundation erzeugt dafür %lld.
+#
+# Ohne Compiler lässt sich der Typ nicht ausrechnen, also wird er am Namen
+# erkannt. Die Liste ist gepflegt und nicht geraten: Steht ein neuer Name für
+# eine Zahl nicht drin, erwartet dieses Skript „%@", während die App zur
+# Laufzeit „%lld" nachschlägt — und der Text bliebe still unübersetzt. Genau
+# deshalb gehört jeder neue Zähler hier hinein.
 INTEGER_EXPRESSION = re.compile(
-    r"\.count\b|^count$|statusCode|Int\(|wordCount\(|recordingCount|WordCount"
-    r"|\bindex\b|\+ 1\b|\.line\b|\.level\b"
+    r"[Cc]ount\b|statusCode|Int\(|\bindex\b|\+ 1\b|\.line\b|\.level\b"
+    r"|\bdays\b|\bfailures\b|\bshare\b|\bdistinct\b|\bempty\b"
+    r"|\.ahead\b|\.behind\b"
 )
 
 # Was absichtlich unübersetzt bleibt.
@@ -91,13 +98,18 @@ SKIP = {
     "INSERT INTO %@ (%@) VALUES (%@);",
     "    %@: %@",
     "@@ -%@ +%@ @@%@",                       # der Abschnittskopf eines Diffs
+    "%@- [%@](#%@)",                         # eine Zeile im Inhaltsverzeichnis
+    "%@@%@.example",                         # eine erfundene Adresse
 }
 SKIP_PATTERNS = [
     re.compile(r"^[a-z0-9.]+$"),          # SF-Symbol-Namen
     re.compile(r"^Privacy_"),             # Kennungen von Systemeinstellungs-Seiten
     re.compile(r"^https?://"),            # Beispiel-URLs
     re.compile(r"…$"),                    # Platzhalter wie "sk-…", "git diff …"
-    re.compile(r"^%[@l]"),                # reine Formatstrings
+    # Ein Schlüssel, der *nur* aus Platzhaltern besteht. Ein Text, der bloß mit
+    # einem Platzhalter anfängt, ist dagegen Anzeigetext wie jeder andere —
+    # „%lld von %lld ließen sich nicht holen." gehört übersetzt.
+    re.compile(r"^(?:%(?:@|lld)\s*)+$"),
     re.compile(r"^\{"),                   # JSON-Beispiele
     re.compile(r"^\d"),                   # Zahlenbeispiele
     re.compile(r"^z\. B\."),
@@ -124,9 +136,18 @@ def collect_keys() -> dict[str, set[str]]:
         for pattern in PATTERNS:
             for match in re.finditer(pattern, text, re.M):
                 literal = match.group(1)
-                if len(literal) < 2 or not re.search(r"[A-Za-zÄÖÜäöü]", literal):
+                key = to_key(literal)
+                # Geprüft wird der fertige Schlüssel, nicht das Literal davor:
+                # In „\(Int(progress * 100)) %" stecken Buchstaben, im
+                # Schlüssel „%lld %" keine mehr — und was aus Platzhaltern und
+                # Zeichen besteht, ist Format und kein Anzeigetext.
+                #
+                # Die Platzhalter selbst müssen dafür weg: In „%lld" und „\n"
+                # stecken Buchstaben, die niemand liest.
+                naked = re.sub(r"%(?:@|lld)|\\.", "", key)
+                if len(literal) < 2 or not re.search(r"[A-Za-zÄÖÜäöü]", naked):
                     continue
-                keys.setdefault(to_key(literal), set()).add(path.name)
+                keys.setdefault(key, set()).add(path.name)
     return keys
 
 

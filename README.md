@@ -53,7 +53,7 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
 | KI-Werkzeuge | 15 Prompt-Tools: Commit-Message, Code-Review, Tests, Regex, Shell, Übersetzen, E-Mail … |
 | Text & Daten | JSON, Base64, URL, JWT, Prüfsummen (auch von Dateien), UUID, Zeitstempel, Schreibweise, Zeilen, Slug, Hex, HTML, Statistik, Regex-Tester, Textvergleich, Lesbarkeit |
 | Markdown | Gliederung, Verweise, Prüfung auf übersprungene Stufen und tote Sprungmarken, Ausgabe als HTML |
-| Coding | Zahlensysteme, Zeichen (Unicode), Dateirechte, HTTP-Codes, Cron, Tabellen (CSV/TSV), JSON ↔ YAML ↔ TOML, Netzrechner (IPv4/IPv6), Patch (Diff lesen und anwenden), Testdaten |
+| Coding | Zahlensysteme, Zeichen (Unicode), Dateirechte, HTTP-Codes, Cron, Tabellen (CSV/TSV), JSON ↔ YAML ↔ TOML, Netzrechner (IPv4/IPv6), Patch (Diff lesen und anwenden), Repositories (alle Git-Ordner auf einmal), Testdaten |
 | Alltag | Bildschirmfoto, Zwischenablage-Verlauf, Farben, QR-Code, Text aus Bild, Bild umwandeln, PDF (zusammenführen, teilen, drehen), Passwörter, Einheiten, Prozent, Zeitzonen, Blindtext, Zeitrechner, Umbenennen im Stapel |
 | System | Tool-Store |
 

@@ -66,10 +66,18 @@ struct CommandPalette: View {
             .frame(height: 180)
         } else {
             ScrollView {
+                // Wer die Palette benutzt, sucht ohnehin den kurzen Weg —
+                // hier ist die Stelle, an der man erfährt, dass es für dieses
+                // Werkzeug noch einen kürzeren gibt.
+                let shortcuts = environment.registry.quickAccessShortcuts
                 LazyVStack(spacing: AnvilSpacing.xxs) {
                     ForEach(Array(results.enumerated()), id: \.element.id) { index, tool in
                         Button { environment.open(tool.id); dismiss() } label: {
-                            ToolListRow(metadata: tool, isSelected: index == highlighted)
+                            ToolListRow(
+                                metadata: tool,
+                                isSelected: index == highlighted,
+                                shortcutHint: shortcuts[tool.id]
+                            )
                         }
                         .buttonStyle(.plain)
                     }
