@@ -8,7 +8,26 @@ public enum FileToolBundle: ToolBundle {
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        [rename, replace, duplicates]
+        [rename, replace, duplicates, compare]
+    }
+
+    @MainActor
+    private static var compare: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "files.compare",
+            title: "Ordner vergleichen",
+            subtitle: "Was fehlt wo, und was ist anders",
+            systemImage: "arrow.left.arrow.right",
+            category: .everyday,
+            keywords: [
+                "vergleichen", "compare", "diff", "ordner", "sicherung",
+                "backup", "sync", "abgleich", "fehlt"
+            ]
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            FolderCompareToolView(context: context, metadata: metadata)
+        }
     }
 
     @MainActor

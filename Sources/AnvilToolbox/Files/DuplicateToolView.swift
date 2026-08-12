@@ -52,9 +52,7 @@ public struct DuplicateToolView: View {
     // MARK: - Suchen
 
     private func open(_ folder: URL) {
-        var isDirectory: ObjCBool = false
-        FileManager.default.fileExists(atPath: folder.path, isDirectory: &isDirectory)
-        root = isDirectory.boolValue ? folder : folder.deletingLastPathComponent()
+        root = FileWalk.isDirectory(folder) ? folder : folder.deletingLastPathComponent()
         search()
     }
 
@@ -74,35 +72,13 @@ public struct DuplicateToolView: View {
             // Sowohl das Einsammeln als auch das Rechnen geht über die Platte.
             // Auf dem Hauptthread stünde so lange das Fenster.
             scan = await Task.detached {
-                let files = Self.collect(root, minimum: minimum)
+                let files = FileWalk.files(in: root, minimumBytes: minimum)
+                    .map { DuplicateScan.File(url: $0.url, size: $0.size) }
                 return DuplicateScan.scan(files) { url in
                     try FileDigest.hex(SHA256.self, of: url)
                 }
             }.value
         }
-    }
-
-    /// Alle Dateien unter dem Ordner, groß genug, um zu zählen.
-    ///
-    /// Versteckte Dateien bleiben draußen: Was in `.git` oder `.build` doppelt
-    /// liegt, gehört einem Programm und nicht dem Benutzer.
-    private static func collect(_ folder: URL, minimum: Int) -> [DuplicateScan.File] {
-        let manager = FileManager.default
-        guard let walker = manager.enumerator(
-            at: folder,
-            includingPropertiesForKeys: [.isRegularFileKey, .fileSizeKey],
-            options: [.skipsHiddenFiles, .skipsPackageDescendants]
-        ) else { return [] }
-
-        var result: [DuplicateScan.File] = []
-        for case let url as URL in walker {
-            let values = try? url.resourceValues(forKeys: [.isRegularFileKey, .fileSizeKey])
-            guard values?.isRegularFile == true, let size = values?.fileSize, size >= minimum else {
-                continue
-            }
-            result.append(DuplicateScan.File(url: url, size: size))
-        }
-        return result
     }
 
     private func reveal(_ url: URL) {

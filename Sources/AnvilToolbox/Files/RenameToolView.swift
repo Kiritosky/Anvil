@@ -60,7 +60,7 @@ public struct RenameToolView: View {
                 continue
             }
             if isDirectory.boolValue {
-                collected += Self.contents(of: url)
+                collected += FileWalk.shallow(url)
             } else {
                 collected.append(url)
             }
@@ -79,19 +79,11 @@ public struct RenameToolView: View {
     private func readExistingNames() {
         var names: Set<String> = []
         for folder in Set(files.map { $0.deletingLastPathComponent() }) {
-            for url in Self.contents(of: folder) {
+            for url in FileWalk.shallow(folder) {
                 names.insert(url.lastPathComponent)
             }
         }
         existingNames = names
-    }
-
-    private static func contents(of folder: URL) -> [URL] {
-        (try? FileManager.default.contentsOfDirectory(
-            at: folder,
-            includingPropertiesForKeys: nil,
-            options: [.skipsHiddenFiles]
-        )) ?? []
     }
 
     private func replan() {

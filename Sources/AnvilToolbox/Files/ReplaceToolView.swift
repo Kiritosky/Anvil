@@ -62,7 +62,7 @@ public struct ReplaceToolView: View {
                 continue
             }
             if isDirectory.boolValue {
-                collected += Self.contents(of: url)
+                collected += FileWalk.urls(in: url)
             } else {
                 collected.append(url)
             }
@@ -73,30 +73,6 @@ public struct ReplaceToolView: View {
             files.append(url)
         }
         reread()
-    }
-
-    /// Ein Ordner wird vollständig aufgeklappt.
-    ///
-    /// Versteckte Dateien und `.git` bleiben draußen: Wer einen Projektordner
-    /// hineinzieht, meint seinen Quelltext und nicht die Innereien des
-    /// Repositories.
-    private static func contents(of folder: URL) -> [URL] {
-        let manager = FileManager.default
-        guard let walker = manager.enumerator(
-            at: folder,
-            includingPropertiesForKeys: [.isRegularFileKey],
-            options: [.skipsHiddenFiles, .skipsPackageDescendants]
-        ) else { return [] }
-
-        var result: [URL] = []
-        for case let url as URL in walker {
-            var isDirectory: ObjCBool = false
-            guard manager.fileExists(atPath: url.path, isDirectory: &isDirectory),
-                  !isDirectory.boolValue
-            else { continue }
-            result.append(url)
-        }
-        return result
     }
 
     private func chooseFolder() {
