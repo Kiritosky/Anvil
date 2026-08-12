@@ -7,6 +7,13 @@ Vier Wege, vom billigsten zum aufwendigsten. Nimm den ersten, der reicht.
 Eine JSON-Datei in `~/Library/Application Support/Anvil/Tools/`. Anvil legt beim
 ersten Start eine `beispiel-tool.json` als Vorlage an.
 
+**Der kürzeste Weg dahin führt durch die App:** Das Werkzeug „Eigenes Werkzeug"
+fragt nach Titel, Anweisung und einer Wahlmöglichkeit, zeigt die Datei daneben,
+während sie entsteht, und legt sie an. Es sagt außerdem vorher, was fehlt — eine
+Kennung, die es schon gibt, etwa, oder eine Wahl, die in der Anweisung gar nicht
+vorkommt. Wer die Datei einmal gesehen hat, schreibt die nächste von Hand; dafür
+steht sie hier.
+
 ```json
 {
   "id": "user.protokoll",

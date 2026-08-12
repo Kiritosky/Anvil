@@ -45,7 +45,8 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
   Größe, einzeln löschbar und auf einen Schlag.
 - **Erweiterbar von Anfang an.** Tools sind Registrierungen, keine
   Sonderfälle. Reine Prompt-Tools kommen ohne Neukompilieren als JSON-Datei
-  dazu, und im Tool-Store lässt sich jedes Tool ein- und ausschalten.
+  dazu — anzulegen in der App selbst, unter „Eigenes Werkzeug", mit der Datei
+  live daneben. Im Tool-Store lässt sich jedes Tool ein- und ausschalten.
 
 ## Was drin ist
 
