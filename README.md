@@ -56,8 +56,8 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
 | KI-Werkzeuge | 15 Prompt-Tools: Commit-Message, Code-Review, Tests, Regex, Shell, Übersetzen, E-Mail … — dazu „Eigenes Werkzeug", das aus einem Prompt ein weiteres macht |
 | Text & Daten | JSON, Base64, URL, JWT, Prüfsummen (auch von Dateien), UUID, Zeitstempel, Schreibweise, Zeilen, Slug, Hex, HTML, Statistik, Regex-Tester, Textvergleich, Lesbarkeit |
 | Markdown | Gliederung, Verweise, Prüfung auf übersprungene Stufen und tote Sprungmarken, Ausgabe als HTML |
-| Coding | Zahlensysteme, Zeichen (Unicode), Dateirechte, HTTP-Codes, Cron, Tabellen (CSV/TSV), JSON ↔ YAML ↔ TOML (einzeln oder im Stapel), Netzrechner (IPv4/IPv6), Patch (Diff lesen und anwenden), Repositories (alle Git-Ordner auf einmal, samt letztem Commit), In Dateien ersetzen (im Stapel, mit Vorschau), Testdaten |
-| Alltag | Bildschirmfoto, Zwischenablage-Verlauf, Farben, Farblisten (Doppelgänger finden, CSS ausgeben), QR-Code (einzeln oder eine ganze Liste), Text aus Bild, Bild umwandeln, PDF (zusammenführen, teilen, drehen), Passwörter, Einheiten, Prozent, Zeitzonen, Blindtext, Zeitrechner, Umbenennen im Stapel, Dubletten finden, Ordner vergleichen, Archive (hineinsehen, stapelweise ein- und auspacken) |
+| Coding | Zahlensysteme, Zeichen (Unicode), Dateirechte, HTTP-Codes, Cron, Tabellen (CSV/TSV), JSON ↔ YAML ↔ TOML (einzeln oder im Stapel), Netzrechner (IPv4/IPv6), Patch (Diff lesen und anwenden), Repositories (alle Git-Ordner auf einmal, samt letztem Commit), Umgebungsdateien (.env vergleichen, ohne einen Wert zu zeigen), In Dateien ersetzen (im Stapel, mit Vorschau), Testdaten |
+| Alltag | Bildschirmfoto, Zwischenablage-Verlauf, Farben, Farblisten (Doppelgänger finden, CSS ausgeben), QR-Code (einzeln oder eine ganze Liste), Text aus Bild, Bild umwandeln, PDF (zusammenführen, teilen, drehen), Passwörter, Einheiten, Prozent, Zeitzonen, Blindtext, Zeitrechner, Umbenennen im Stapel, Dubletten finden, Ordner vergleichen, Archive (hineinsehen, stapelweise ein- und auspacken), Speicherplatz (wo der Platz hingeht) |
 | System | Tool-Store |
 
 Alles ohne KI-Bedarf läuft deterministisch und ohne Netz; die KI-Werkzeuge
