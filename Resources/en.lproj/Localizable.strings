@@ -32,6 +32,8 @@
 "%lld Dateien · %@" = "%lld files · %@";
 "%lld Dateien, %@ ausgepackt" = "%lld files, %@ unpacked";
 "%lld gleiche" = "%lld the same";
+"%lld nur hier: %@" = "%lld only here: %@";
+"%lld Schlüssel" = "%lld keys";
 "%lld Seiten geschrieben." = "%lld pages written.";
 "%lld Stellen in %lld Dateien ersetzt." = "Replaced %lld occurrences in %lld files.";
 "%lld verschiedene" = "%lld distinct";
@@ -49,6 +51,7 @@
 "%lld Werkzeuge sind eingeschaltet. Im Tool-Store lässt sich jedes einzeln abschalten." = "%lld tools are switched on. Each can be switched off in the Tool Store.";
 "%lld Werkzeuge · ⌘K öffnet die Suche" = "%lld tools · press ⌘K to search";
 "%lld Wörter" = "%lld words";
+"%lld Zeilen ohne Zuweisung" = "%lld lines without an assignment";
 ", %@" = ", %@";
 ", am %@. des Monats" = ", on day %@ of the month";
 ", im %@" = ", in %@";
@@ -79,6 +82,7 @@
 "Alles Gespeicherte löschen?" = "Delete everything stored?";
 "Alles löschen" = "Delete everything";
 "alles sauber" = "all clean";
+"Alles, was hier stehen könnte, ist in Ordnung." = "Everything that could show up here is in order.";
 "Alte Zweige" = "Stale branches";
 "alte Zweige" = "stale branches";
 "Angelegt als %@. Es steht jetzt unter „Eigene Tools\" — %lld eigene insgesamt." = "Created as %@. It now sits under \"Your own tools\" — %lld of your own in total.";
@@ -573,6 +577,7 @@
 "Dafür fehlt noch die Bedienungshilfen-Berechtigung — bis dahin nur Zwischenablage." = "The Accessibility permission is still missing — clipboard only until then.";
 "Dafür fehlt noch die Bedienungshilfen-Berechtigung." = "The Accessibility permission is still missing for this.";
 "Danach" = "After";
+"Darin stand keine Zuweisung." = "There was no assignment in it.";
 "Das Audioformat des Mikrofons lässt sich nicht in das Format der Spracherkennung umwandeln." = "The microphone’s audio format cannot be converted to the format speech recognition needs.";
 "Das Bild konnte nicht als PNG gesichert werden." = "The image could not be saved as a PNG.";
 "Das Bild konnte nicht erzeugt werden." = "The image could not be created.";
@@ -630,6 +635,7 @@
 "Der Text passt nicht in einen QR-Code — er ist zu lang." = "The text does not fit into a QR code — it is too long.";
 "Der Text wird auf diesem Mac erkannt, nichts geht ins Netz." = "The text is recognised on this Mac; nothing goes online.";
 "Der Text, auf den der Patch angewendet wird." = "The text the patch is applied to.";
+"Der Vergleich liegt in der Zwischenablage — ohne Werte." = "The comparison is on the clipboard — without values.";
 "Der Verlauf liegt nur im Arbeitsspeicher und ist beim nächsten Start wieder leer." = "The history lives in memory only and is empty again after a restart.";
 "Der Verlauf liegt unverschlüsselt in ~/Library/Application Support/Anvil." = "The history is stored unencrypted in ~/Library/Application Support/Anvil.";
 "Der Vorgang wurde abgebrochen." = "The operation was cancelled.";
@@ -653,7 +659,9 @@
 "Die Aufnahme konnte nicht gestartet werden: %@" = "Recording could not be started: %@";
 "Die Aufnahmedatei konnte nicht angelegt werden: %@" = "The recording file could not be created: %@";
 "Die Datei konnte nicht gelesen werden: %@" = "The file could not be read: %@";
+"Die Dateien werden einmal gelesen. Ändert sich eine, zieh sie erneut hinein." = "The files are read once. If one changes, drag it in again.";
 "Die Einheit hinter der Zahl kenne ich nicht." = "I do not know the unit after the number.";
+"Die fehlenden Schlüssel liegen in der Zwischenablage — ohne Werte." = "The missing keys are on the clipboard — without values.";
 "Die Gliederung steigt lückenlos, jede Überschrift ist eindeutig, und alle Sprungmarken gibt es." = "The outline rises without gaps, every heading is unique, and every anchor exists.";
 "Die größten Dateien" = "The largest files";
 "Die häufigsten Endungen — meistens die schnellste Antwort auf die Frage, was für ein Archiv das ist." = "The most common extensions — usually the quickest answer to what kind of archive this is.";
@@ -718,6 +726,7 @@
 "Eigentümer" = "Owner";
 "Ein Teilnetz kann nicht größer sein als das Netz, aus dem es kommt." = "A subnet cannot be larger than the network it comes from.";
 "Erst muss jeder Eintrag in Ordnung sein. Ausgeführt wird nur ein Plan ohne Beanstandung." = "Every entry has to be sound first. Only a plan without objections is carried out.";
+"Fehlende Zeilen kopieren" = "Copy missing lines";
 "Hinweis" = "Note";
 "ein Absatz" = "one paragraph";
 "Ein Absatz" = "One paragraph";
@@ -743,6 +752,7 @@
 "Eine Tabellenreihe endet mit ]]: %@" = "A table row ends with ]]: %@";
 "Eine gerade Linie." = "A straight line.";
 "Erlaubt sind Zahlen mit einer Einheit — s, m, h, d, w — oder die Uhrzeit-Schreibweise." = "Numbers with a unit — s, m, h, d, w — or clock notation.";
+"Fehlt irgendwo" = "Missing somewhere";
 "Gilt für den Kopieren-Knopf und für die Dauer beim Abstand." = "Applies to the copy button and to the duration under Distance.";
 "Gliedern, prüfen, nach HTML" = "Outline it, check it, turn it into HTML";
 "Gliederung" = "Outline";
@@ -829,6 +839,8 @@
 "Fehlerkorrektur" = "Error correction";
 "Fehlermeldung oder Stacktrace …" = "Error message or stack trace…";
 "fehlgeschlagen" = "failed";
+"fehlt" = "missing";
+"fehlt irgendwo" = "missing somewhere";
 "Fenster" = "Window";
 "Fenster anklicken" = "Click a window";
 "Fenster anklicken. Wird ohne Hintergrund aufgenommen." = "Click a window. Captured without its background.";
@@ -881,6 +893,7 @@
 "Genauer Modellname beim Anbieter." = "The provider’s exact model name.";
 "Gepackt und entpackt wird mit `ditto` — demselben Werkzeug, das der Finder benutzt. Rechte, Symlinks und Ressourcenzweige bleiben dabei erhalten; ein Archiv aus Anvil kommt auf einem Mac an wie eines aus dem Finder." = "Packing and unpacking use `ditto` — the same tool the Finder uses. Permissions, symlinks and resource forks survive; an archive from Anvil arrives on a Mac just like one from the Finder.";
 "gesamt" = "total";
+"gesetzt" = "set";
 "Gesichert" = "Saved";
 "Gesicherte Aufnahmen liegen unter Anvil › Screenshots." = "Saved shots live under Anvil › Screenshots.";
 "gestern" = "yesterday";
@@ -950,7 +963,9 @@
 "In der Zwischenablage" = "On the clipboard";
 "In der Zwischenablage liegt kein Bild." = "There is no image on the clipboard.";
 "In die Zwischenablage kopieren" = "Copy to clipboard";
+"In diesem Ordner liegt keine .env-Datei." = "There is no .env file in this folder.";
 "In diesem Repository gibt es keine Änderungen." = "There are no changes in this repository.";
+"In einer .env-Datei stehen Zugangsdaten. Anvil liest sie, vergleicht sie im Speicher und zeigt nur, ob etwas dasteht und ob es überall dasselbe ist. Nichts davon wird abgelegt, und in der Zwischenablage landet kein Wert." = "A .env file holds credentials. Anvil reads them, compares them in memory and only shows whether something is there and whether it is the same everywhere. None of it is stored, and no value ever reaches the clipboard.";
 "In Textfelder einfügen" = "Insert into text fields";
 "In Zwischenablage kopieren" = "Copy to clipboard";
 "In einer IPv6-Adresse darf höchstens einmal :: stehen: %@" = "An IPv6 address may contain :: at most once: %@";
@@ -974,6 +989,7 @@
 "Jahre" = "Years";
 "Januar" = "January";
 "Jede Aufnahmeart hat ihr eigenes Kürzel — in den Einstellungen unter „Tastenkürzel\"." = "Each kind of capture has its own shortcut — in Settings under “Shortcuts”.";
+"Jede Datei bekommt eine eigene Spalte." = "Every file gets a column of its own.";
 "Jede davon lässt sich später in den Einstellungen nachholen oder zurücknehmen." = "Each of these can be granted or withdrawn later in Settings.";
 "Jeder Teil wird eine eigene Datei, durchnummeriert." = "Each part becomes its own file, numbered.";
 "jede Minute" = "every minute";
@@ -1023,6 +1039,7 @@
 "KI-Werkzeuge" = "AI Tools";
 "Kalenderwoche" = "Calendar week";
 "Keine Verweise" = "No links";
+"Keine Zuweisung" = "No assignment";
 "Keine Überschriften" = "No headings";
 "klein" = "lowercase";
 "Klein (7 %)" = "Small (7%)";
@@ -1189,6 +1206,8 @@
 "Nicht zu öffnen: %@" = "Cannot be opened: %@";
 "nichts" = "nothing";
 "Nichts ausgewählt" = "Nothing selected";
+"Nichts geladen" = "Nothing loaded";
+"Nichts in dieser Auswahl" = "Nothing in this selection";
 "Noch keine PDFs" = "No PDFs yet";
 "Noch nichts da" = "Nothing here yet";
 "Rechts einstellen, wie viele es sein sollen." = "Set how many on the right.";
@@ -1223,6 +1242,7 @@
 "Noch keine Aufnahme" = "No capture yet";
 "Noch keine Begriffe" = "No terms yet";
 "Noch keine Begriffe — anzulegen im Werkzeug „Diktat-Vokabular\"." = "No terms yet — add them in the Dictation Vocabulary tool.";
+"Noch keine Datei" = "No file yet";
 "Noch keine Dauer" = "No duration yet";
 "Noch keine Eingabe" = "No input yet";
 "Noch keine Tabelle" = "No table yet";
@@ -1283,6 +1303,7 @@
 "Optionen" = "Options";
 "Optionen ausblenden" = "Hide options";
 "Optionen einblenden" = "Show options";
+"Ordner durchsehen" = "Look through a folder";
 "Ordner mit PDFs wählen" = "Choose a folder with PDFs";
 "Ordner wählen" = "Choose folder";
 "Ordner öffnen" = "Open folder";
@@ -1312,6 +1333,8 @@
 "Regulärer Ausdruck" = "Regular expression";
 "Sachtext, Bericht" = "Non-fiction, report";
 "samstags" = "Saturdays";
+"Schlüssel" = "Key";
+"Schon einmal vergeben" = "Already assigned above";
 "schreiben" = "write";
 "Schuljahre" = "School years";
 "Schwer" = "Hard";
@@ -1473,6 +1496,7 @@
 "um %@ Uhr" = "at %@ o'clock";
 "Umdrehen" = "Reverse";
 "Umfang" = "Scope";
+"Umgebungsdateien" = "Environment files";
 "Umgekehrt" = "Reversed";
 "Umgezogen, für immer. Lesezeichen aktualisieren." = "Moved, for good. Update the bookmark.";
 "Umrechnen" = "Convert";
@@ -1483,6 +1507,7 @@
 "Unter 3:1 — für Text nicht zu gebrauchen." = "Below 3:1 — no use for text.";
 "Untereinander" = "Stacked";
 "Unterschiede" = "Differences";
+"unterschiedlich" = "different";
 "unverändert" = "unchanged";
 "URL-sicher kodieren" = "URL-safe encode";
 "URL-taugliche Kurzform" = "URL-friendly short form";
@@ -1517,6 +1542,8 @@
 "Zusammengeführt" = "Merged";
 "ausgewählt" = "selected";
 "gelöscht" = "deleted";
+"Unterschiedlich" = "Different";
+"Vergleich kopieren" = "Copy comparison";
 "verwerfen" = "discard";
 "Verwerfen" = "Discard";
 "Verwerfen (⎋)" = "Discard (⎋)";
@@ -1537,6 +1564,7 @@
 "Vorne einfügen" = "Insert at the top";
 "Vorübergehend woanders." = "Somewhere else for now.";
 "Wandelt die Aufnahme in Text um. Läuft auf diesem Mac." = "Turns the recording into text. Runs on this Mac.";
+"Warum keine Werte" = "Why no values";
 "Was 418 eigentlich heißt" = "What 418 actually means";
 "Was Anvil braucht" = "What Anvil needs";
 "Was auf diesem Mac läuft, bleibt auf diesem Mac." = "What runs on this Mac stays on this Mac.";
@@ -1549,6 +1577,7 @@
 "Was soll das Modell mit dem Text machen?" = "What should the model do with the text?";
 "Was soll der Befehl tun?" = "What should the command do?";
 "Was soll die Abfrage liefern?" = "What should the query return?";
+"Was wo fehlt, ohne Werte zu zeigen" = "What is missing where, without showing values";
 "Weder Links noch Bilder im Text." = "Neither links nor images in the text.";
 "Weder Unix-Zeit noch ein erkennbares Datum." = "Neither Unix time nor a recognisable date.";
 "weg" = "removed";
@@ -1562,6 +1591,8 @@
 "Werkzeuge ein- und ausschalten" = "Switch tools on and off";
 "Werkzeuge für den Rest" = "Tools for everything else";
 "Werkzeugkasten für den Alltag und fürs Entwickeln.\n\nSprache, Text und Bild laufen auf diesem Mac. Externe Anbieter sind möglich, aber nie Voraussetzung.\n\nGNU GPL v3" = "A toolbox for everyday work and for building things.\n\nSpeech, text and images run on this Mac. External providers are possible, but never required.\n\nGNU GPL v3";
+"Wert" = "Value";
+"Werte bleiben hier" = "Values stay here";
 "Wie 301, aber die Methode bleibt erhalten." = "Like 301, but the method is kept.";
 "Wie 302, aber die Methode bleibt erhalten." = "Like 302, but the method is kept.";
 "Wie ausgeführt wird" = "How it is carried out";
@@ -1590,6 +1621,7 @@
 "Wissenschaft, Verwaltung" = "Academia, administration";
 "Wochen" = "Weeks";
 "Wochentag" = "weekday";
+"Woher" = "Where from";
 "Wohin gehen Anfragen?" = "Where do requests go?";
 "Wortanfänge groß" = "Capitalise Words";
 "Wortdoppelungen zusammenfassen" = "Collapse repeated words";
@@ -1626,6 +1658,7 @@
 "Zeitzonen" = "Time zones";
 "Zieh Archive hinein, um hineinzusehen — oder Dateien und Ordner, um sie einzupacken. Beides geht stapelweise." = "Drag archives in to look inside — or files and folders to pack them. Both work in batches.";
 "Zieh ein Bild hierher, nimm eines aus der Zwischenablage, oder wähl einen Ausschnitt vom Bildschirm." = "Drop an image here, take one from the clipboard, or select a region of the screen.";
+"Zieh zwei oder mehr .env-Dateien hinein — die von hier und die vom Server. Anvil zeigt, welcher Schlüssel wo fehlt, ohne einen Wert anzuzeigen." = "Drag in two or more .env files — the one from here and the one from the server. Anvil shows which key is missing where, without showing a single value.";
 "Zieht Aufgaben, Zuständigkeiten und Entscheidungen heraus." = "Pulls out tasks, owners and decisions.";
 "Ziel" = "Destination";
 "Zielordner wählen" = "Choose destination folder";
@@ -1651,6 +1684,7 @@
 "Zusammenführen" = "Merge";
 "Zusammenführen, teilen, drehen, auslesen" = "Merge, split, rotate, read out";
 "Zwei Fassungen gegenüberstellen" = "Put two versions side by side";
+"Zwei oder mehr — je Datei eine Spalte. Der Ordner-Knopf nimmt alles mit, was dort .env heißt, samt .env.example und .env.local." = "Two or more — a column per file. The folder button takes everything called .env, including .env.example and .env.local.";
 "Zwei Zahlen bitte, zum Beispiel „19% von 250\"." = "Two numbers please, for example “19% von 250”.";
 "Zwei Zeitpunkte" = "Two points in time";
 "Zwischen zwei Einträgen gehört ein Komma." = "A comma belongs between two entries.";

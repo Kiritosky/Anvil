@@ -126,7 +126,7 @@ SKIP = {
     # übersetzt zeichnete das Symbol nichts mehr.
     "aspectratio", "asterisk", "book", "calendar", "camera", "checklist",
     "circle", "clock", "cloud", "command", "curlybraces", "cylinder",
-    "envelope", "equal", "eraser", "externaldrive", "eye", "folder",
+    "doc", "envelope", "equal", "eraser", "externaldrive", "eye", "folder",
     "gearshape", "globe", "highlighter", "hourglass", "house", "keyboard",
     "laptopcomputer", "link", "macwindow", "magnifyingglass", "mic", "network",
     "number", "oval", "paintpalette", "pencil", "photo", "plusminus", "qrcode",

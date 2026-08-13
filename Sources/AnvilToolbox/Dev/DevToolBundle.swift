@@ -12,6 +12,28 @@ public enum DevToolBundle: ToolBundle {
             ToolRegistration(metadata: tool.metadata) { context in
                 TextToolView(tool: tool, context: context)
             }
+        } + [environment]
+    }
+
+    /// Der eine Coding-Werkzeugkasten, der keine Textumwandlung ist: Er
+    /// vergleicht Dateien miteinander statt eine umzuformen.
+    @MainActor
+    private static var environment: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "dev.env",
+            title: "Umgebungsdateien",
+            subtitle: "Was wo fehlt, ohne Werte zu zeigen",
+            systemImage: "list.bullet.rectangle",
+            category: .coding,
+            keywords: [
+                "env", "umgebung", "environment", "dotenv", "variablen",
+                "vergleichen", "geheim", "secrets", "konfiguration", "config"
+            ],
+            badge: "Neu"
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            EnvToolView(context: context, metadata: metadata)
         }
     }
 }

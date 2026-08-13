@@ -44,11 +44,15 @@ enum FileWalk {
     }
 
     /// Was direkt in dem Ordner liegt, ohne Unterordner.
-    static func shallow(_ folder: URL) -> [URL] {
+    ///
+    /// - Parameter includingHidden: Versteckte Dateien kommen mit. Für die
+    ///   allermeisten Werkzeuge wäre das falsch — für eines, das `.env`
+    ///   sucht, ist es die ganze Aufgabe.
+    static func shallow(_ folder: URL, includingHidden: Bool = false) -> [URL] {
         (try? FileManager.default.contentsOfDirectory(
             at: folder,
             includingPropertiesForKeys: nil,
-            options: [.skipsHiddenFiles]
+            options: includingHidden ? [] : [.skipsHiddenFiles]
         )) ?? []
     }
 
