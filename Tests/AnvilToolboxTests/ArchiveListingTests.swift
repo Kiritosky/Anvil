@@ -169,11 +169,11 @@ struct ArchiveToolTests {
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: root) }
 
-        let first = ArchiveTool.uniqueFolder(in: root, named: "projekt")
+        let first = ExportFile.uniqueFolderURL(in: root, named: "projekt")
         #expect(first.lastPathComponent == "projekt")
 
         try FileManager.default.createDirectory(at: first, withIntermediateDirectories: true)
-        let second = ArchiveTool.uniqueFolder(in: root, named: "projekt")
+        let second = ExportFile.uniqueFolderURL(in: root, named: "projekt")
         #expect(second.lastPathComponent == "projekt 2")
     }
 

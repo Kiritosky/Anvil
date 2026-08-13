@@ -67,6 +67,28 @@ public enum ExportFile {
         return directory.appending(path: "\(base) \(stamp).\(pathExtension)")
     }
 
+    /// Dasselbe für einen Ordner, der angelegt werden soll.
+    ///
+    /// Ein eigener Weg statt ``uniqueURL(in:named:extension:)`` mit leerer
+    /// Endung: Ein Ordner heißt „Projekt 2" und nicht „Projekt 2." — und ein
+    /// Punkt am Ende ist genau die Sorte Namensfehler, die man erst im
+    /// Terminal bemerkt.
+    public static func uniqueFolderURL(in directory: URL, named name: String) -> URL {
+        let base = sanitize(name)
+        let manager = FileManager.default
+        let candidate = directory.appending(path: base)
+        guard manager.fileExists(atPath: candidate.path(percentEncoded: false)) else {
+            return candidate
+        }
+
+        for number in 2...999 {
+            let next = directory.appending(path: "\(base) \(number)")
+            if !manager.fileExists(atPath: next.path(percentEncoded: false)) { return next }
+        }
+
+        return directory.appending(path: "\(base) \(Int(Date().timeIntervalSince1970))")
+    }
+
     /// Legt eine Datei zum Herausziehen an und gibt zurück, wo sie liegt.
     ///
     /// Jeder Export bekommt einen eigenen Unterordner. Ohne den würde ein

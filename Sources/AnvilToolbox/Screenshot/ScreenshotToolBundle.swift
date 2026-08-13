@@ -10,6 +10,7 @@ public enum ScreenshotToolBundle: ToolBundle {
     public static let toolID: ToolIdentifier = "screen.shot"
     public static let recognizerToolID: ToolIdentifier = "vision.text"
     public static let imageToolID: ToolIdentifier = "vision.image"
+    public static let iconSetToolID: ToolIdentifier = "vision.iconset"
 
     public static let regionActionID: ShortcutActionID = "screenshot.region"
     public static let windowActionID: ShortcutActionID = "screenshot.window"
@@ -25,7 +26,29 @@ public enum ScreenshotToolBundle: ToolBundle {
         // One bundle rather than two: aufnehmen and auslesen are the same
         // subject, and a Tool Store full of one-tool groups is a list of
         // headings.
-        [screenshot, textRecognizer, imageConverter]
+        [screenshot, textRecognizer, imageConverter, iconSet]
+    }
+
+    /// App-Symbole gehören ins Bildbündel: Es ist dieselbe Arbeit wie
+    /// umwandeln — ein Bild hineingeben, viele herausholen.
+    @MainActor
+    private static var iconSet: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: iconSetToolID,
+            title: "App-Symbole",
+            subtitle: "Der ganze Satz aus einer Vorlage",
+            systemImage: "app.badge.checkmark",
+            category: .coding,
+            keywords: [
+                "icon", "symbol", "appicon", "appiconset", "xcode", "asset",
+                "größen", "satz", "png", "1024"
+            ],
+            badge: "Neu"
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            IconSetToolView(context: context, metadata: metadata)
+        }
     }
 
     @MainActor

@@ -59,7 +59,7 @@ public struct ArchiveTool: Sendable {
     @discardableResult
     public func unpack(_ archive: URL, into folder: URL) async throws -> URL {
         let name = archive.deletingPathExtension().lastPathComponent
-        let destination = Self.uniqueFolder(in: folder, named: name)
+        let destination = ExportFile.uniqueFolderURL(in: folder, named: name)
         try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
 
         do {
@@ -105,22 +105,4 @@ public struct ArchiveTool: Sendable {
         return destination
     }
 
-    // MARK: - Ordnernamen
-
-    /// Ein Ordnername, den es noch nicht gibt — durchnummeriert wie im Finder.
-    static func uniqueFolder(in directory: URL, named name: String) -> URL {
-        let base = ExportFile.sanitize(name)
-        let manager = FileManager.default
-        let candidate = directory.appending(path: base)
-        guard manager.fileExists(atPath: candidate.path(percentEncoded: false)) else {
-            return candidate
-        }
-
-        for number in 2...999 {
-            let next = directory.appending(path: "\(base) \(number)")
-            if !manager.fileExists(atPath: next.path(percentEncoded: false)) { return next }
-        }
-
-        return directory.appending(path: "\(base) \(Int(Date().timeIntervalSince1970))")
-    }
 }

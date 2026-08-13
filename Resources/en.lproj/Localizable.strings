@@ -30,6 +30,7 @@
 "%lld Archive entpackt." = "%lld archives unpacked.";
 "%lld Archive geschrieben." = "%lld archives written.";
 "%lld auffällige Pfade" = "%lld suspicious paths";
+"%lld Bildpunkte" = "%lld pixels";
 "%lld Codes geschrieben." = "%lld codes written.";
 "%lld Commits" = "%lld commits";
 "%lld Dateien geschrieben." = "%lld files written.";
@@ -49,6 +50,7 @@
 "%lld entfernt" = "%lld removed";
 "%lld ergänzt" = "%lld added";
 "%lld gespeicherte Durchläufe" = "%lld saved runs";
+"%lld Sätze geschrieben." = "%lld sets written.";
 "%lld Treffer" = "%lld matches";
 "%lld unverändert" = "%lld unchanged";
 "%lld von %lld Tools aktiv." = "%lld of %lld tools active.";
@@ -96,7 +98,9 @@
 "Anvil löscht nichts. Der Befehl behält je Gruppe die erste Datei und geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command keeps the first file of each group and goes to the clipboard — you run it where you can see what happens.";
 "Anvil löscht nichts. Der Befehl geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command goes to the clipboard — you run it where you can see what happens.";
 "Anvil sucht nur nach Repositories und öffnet keines. Gelesen wird, was git ohnehin verrät." = "Anvil only looks for repositories, it never opens one. It reads what git tells anyone who asks.";
+"Anvil vergrößert nie. Eine Vorlage unter der größten verlangten Kante ergibt einen Satz, in dem die oberen Größen fehlen — besser eine größere Vorlage." = "Anvil never scales up. A template below the largest required edge produces a set with the top sizes missing — better to use a larger template.";
 "Anweisung" = "Instruction";
+"App-Symbole" = "App icons";
 "Art" = "Kind";
 "auf Schwarz" = "on black";
 "auf Weiß" = "on white";
@@ -540,6 +544,7 @@
 "Bild" = "Image";
 "Bild in die Zwischenablage" = "Image to the clipboard";
 "Bild kopieren" = "Copy image";
+"Bildpunkte" = "Pixels";
 "Bildschirm" = "Display";
 "Bildschirm & Bilder" = "Screen & Images";
 "Bildschirm aufnehmen und auslesen" = "Capture and read the screen";
@@ -577,6 +582,7 @@
 "Codeblöcke" = "Code blocks";
 "Coding" = "Coding";
 "Commit-Message" = "Commit message";
+"Contents.json kopieren" = "Copy Contents.json";
 "Cron" = "Cron";
 "Da ist kein Text zum Anschauen." = "There is no text to look at.";
 "Da ist noch nichts." = "There is nothing here yet.";
@@ -631,8 +637,10 @@
 "Der Bildschirm konnte nicht aufgenommen werden: %@" = "The screen could not be captured: %@";
 "Der Export ist fehlgeschlagen: %@" = "The export failed: %@";
 "Der Filter rechts trifft in keiner Spalte." = "The filter on the right matches in no column.";
+"Der ganze Satz aus einer Vorlage" = "The whole set from one template";
 "Der Patch braucht den Text, auf den er angewendet werden soll — links unten." = "The patch needs the text it is applied to — bottom left.";
 "Der gelesene Text landet dann sofort in der Zwischenablage." = "The text goes straight to the clipboard.";
+"Der Satz" = "The set";
 "Der Schalter entscheidet, ob das Kürzel überall gilt. Feiner einstellen lässt sich das in den Einstellungen unter „Tastenkürzel\"." = "The switch decides whether the shortcut works everywhere. Finer control is in Settings under “Shortcuts”.";
 "Der Schlüssel konnte nicht kodiert werden." = "The key could not be encoded.";
 "Der schnelle braune Fuchs springt über den faulen Hund." = "The quick brown fox jumps over the lazy dog.";
@@ -734,6 +742,7 @@
 "Eigener Befehl" = "Custom command";
 "Eigener Endpunkt" = "Custom endpoint";
 "Eigentümer" = "Owner";
+"Ein Ordner `AppIcon.appiconset` mit allen PNG-Dateien und der `Contents.json`. In Xcode gehört er in einen Asset-Katalog — hineinziehen genügt." = "A folder `AppIcon.appiconset` with every PNG and the `Contents.json`. In Xcode it belongs in an asset catalogue — dragging it in is enough.";
 "Ein Teilnetz kann nicht größer sein als das Netz, aus dem es kommt." = "A subnet cannot be larger than the network it comes from.";
 "Erst muss jeder Eintrag in Ordnung sein. Ausgeführt wird nur ein Plan ohne Beanstandung." = "Every entry has to be sound first. Only a plan without objections is carried out.";
 "Fehlende Zeilen kopieren" = "Copy missing lines";
@@ -929,6 +938,8 @@
 "Gruppe %lld" = "Group %lld";
 "Gruppen" = "groups";
 "Größe" = "size";
+"Größen" = "Sizes";
+"größte Kante %lld" = "largest edge %lld";
 "Gültig bis %@" = "Valid until %@";
 "Gültiger JSON-Wert." = "Valid JSON value.";
 "Gültiges JSON-Array mit %lld Einträgen." = "Valid JSON array with %lld entries.";
@@ -994,6 +1005,7 @@
 "Inhaltsverzeichnis" = "Table of contents";
 "Ist gesichert" = "Already saved";
 "ja" = "yes";
+"Jede Größe wird aus der Vorlage neu gezeichnet, nicht aus der nächstgrößeren — sonst summierten sich die Rundungsfehler über zehn Schritte. Metadaten der Vorlage gehen dabei verloren, was hier keine Nebenwirkung ist, sondern richtig so." = "Every size is redrawn from the template, not from the next larger one — otherwise rounding errors would add up over ten steps. The template's metadata is lost in the process, which here is not a side effect but the right thing.";
 "JSON, YAML oder TOML einwerfen — das Format erkennt Anvil selbst." = "Drop in JSON, YAML or TOML — Anvil works out the format itself.";
 "JSON, YAML, TOML" = "JSON, YAML, TOML";
 "Lösen" = "Unpin";
@@ -1123,7 +1135,9 @@
 "Lesezeit" = "Reading time";
 "Links" = "Links";
 "Links Bilder hineinziehen, rechts Format und Größe wählen." = "Drag images in on the left, pick format and size on the right.";
+"macOS braucht zehn Einträge, iOS siebzehn. Gezeichnet werden weniger: Zwei Einträge derselben Bildpunktgröße bekommen dieselbe Datei." = "macOS needs ten entries, iOS seventeen. Fewer are drawn: two entries of the same pixel size get the same file.";
 "Manchmal ist die Antwort kein Ordner, sondern eine Endung, die überall verstreut liegt." = "Sometimes the answer is not a folder but an extension scattered everywhere.";
+"Maßstab" = "Scale";
 "Nach \\u stehen vier Hexziffern." = "Four hex digits follow \\u.";
 "Name doppelt im Stapel" = "Name occurs twice in the batch";
 "Name schon vergeben" = "Name already taken";
@@ -1360,6 +1374,7 @@
 "Regulärer Ausdruck" = "Regular expression";
 "Sachtext, Bericht" = "Non-fiction, report";
 "samstags" = "Saturdays";
+"Satz schreiben" = "Write the set";
 "Schlüssel" = "Key";
 "Schon einmal vergeben" = "Already assigned above";
 "schreiben" = "write";
@@ -1603,6 +1618,7 @@
 "Was die Zahl kann" = "What the number can do";
 "Was dieses Tool macht" = "What this tool does";
 "Was drin ist" = "What is inside";
+"Was geschrieben wird" = "What gets written";
 "Was gezählt wird" = "What is counted";
 "Was macht dieser Code — und warum" = "What this code does — and why";
 "Was optional ist, macht Anvil nur bequemer — der Rest schaltet ein Werkzeug ganz ab." = "What is optional only makes Anvil more convenient — the rest switches a tool off entirely.";
@@ -1631,6 +1647,7 @@
 "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird." = "How the model shapes the dictation before it is copied.";
 "Wie gepackt wird" = "How packing works";
 "Wie gesucht wird" = "How the search works";
+"Wie gezeichnet wird" = "How it is drawn";
 "Wie schwer ein Text zu lesen ist" = "How hard a text is to read";
 "wie das Original" = "same as the original";
 "wie im Code erkennbar" = "as the code suggests";
@@ -1655,6 +1672,7 @@
 "Wo der Platz hingeht, nach Größe sortiert" = "Where the space goes, sorted by size";
 "Wochen" = "Weeks";
 "Wochentag" = "weekday";
+"Wofür" = "What for";
 "Woher" = "Where from";
 "Wohin gehen Anfragen?" = "Where do requests go?";
 "Wortanfänge groß" = "Capitalise Words";
@@ -1693,6 +1711,7 @@
 "Zeitzonen" = "Time zones";
 "Zieh Archive hinein, um hineinzusehen — oder Dateien und Ordner, um sie einzupacken. Beides geht stapelweise." = "Drag archives in to look inside — or files and folders to pack them. Both work in batches.";
 "Zieh ein Bild hierher, nimm eines aus der Zwischenablage, oder wähl einen Ausschnitt vom Bildschirm." = "Drop an image here, take one from the clipboard, or select a region of the screen.";
+"Zieh ein quadratisches Bild hinein — am besten 1024 × 1024. Mehrere gehen auch, jedes wird ein eigener Satz." = "Drag in a square image — 1024 × 1024 is best. Several work too, each becomes a set of its own.";
 "Zieh einen Ordner hinein. Anvil rechnet zusammen, was darunter liegt, und sortiert nach Größe statt nach Alphabet." = "Drag a folder in. Anvil adds up what is below it and sorts by size instead of by alphabet.";
 "Zieh zwei oder mehr .env-Dateien hinein — die von hier und die vom Server. Anvil zeigt, welcher Schlüssel wo fehlt, ohne einen Wert anzuzeigen." = "Drag in two or more .env files — the one from here and the one from the server. Anvil shows which key is missing where, without showing a single value.";
 "Zieht Aufgaben, Zuständigkeiten und Entscheidungen heraus." = "Pulls out tasks, owners and decisions.";
@@ -1704,6 +1723,8 @@
 "Zu einer Zeile" = "Join into one line";
 "Zu Favoriten" = "Add to favourites";
 "Zu Favoriten hinzufügen" = "Add to favourites";
+"zu klein" = "too small";
+"Zu klein" = "Too small";
 "Zu schnell. Retry-After beachten." = "Too fast. Mind Retry-After.";
 "Zu viel geschickt." = "Sent too much.";
 "Zu viele Anfragen hintereinander. Kurz warten und noch einmal versuchen." = "Too many requests in a row. Wait a moment and try again.";

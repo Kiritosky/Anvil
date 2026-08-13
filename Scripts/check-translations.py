@@ -88,6 +88,10 @@ INTEGER_EXPRESSION = re.compile(
     r"[Cc]ount\b|statusCode|Int\(|\bindex\b|\+ 1\b|\.line\b|\.level\b"
     r"|\bdays\b|\bfailures\b|\bshare\b|\bdistinct\b|\bempty\b"
     r"|\.ahead\b|\.behind\b|\.changed[A-Z]\w*|\bwritten\b"
+    # Bildpunkte sind immer ganze Zahlen. `size` steht bewusst nicht hier:
+    # `StoredData.size(…)` liefert Text („2,3 MB"), und die Regel würde ihn
+    # fälschlich zur Zahl erklären.
+    r"|[Pp]ixelSize|\bpixels\b"
 )
 
 # Was absichtlich unübersetzt bleibt.
@@ -105,6 +109,10 @@ SKIP = {
     "Apple Foundation Models",
     "Claude Code", "Codex", "Gemini CLI",   # Produktnamen
     "-p",                                    # Beispielargument
+    # Namen, die aus Teilen zusammengesetzt werden: Dateinamen im
+    # Symbolsatz, die Schreibweise einer Kantenlänge, der Ordnername.
+    "%@x%@", "@%@x", "icon_%@%@.png", "%@.appiconset",
+    "iOS", "macOS", "iphone",                # Produkt- und Gerätenamen
     "\\t",                                   # das Trennzeichen selbst
     # SQL- und JSON-Syntax. Steht im Quelltext hinter einem `return` und sieht
     # damit aus wie Anzeigetext — ist aber Format und wird nie übersetzt.
