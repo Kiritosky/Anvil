@@ -223,6 +223,16 @@ enum FileDropReader {
             return .success(.file(url))
         }
 
+        // Ein Ordner ist weder Text noch Bild — und trotzdem genau das, was
+        // ein halbes Dutzend Werkzeuge haben will: Dubletten suchen, zwei
+        // Ordner vergleichen, Repositories durchsehen. Ohne diesen Zweig
+        // landete er im Text-Zweig, wo `Data(contentsOf:)` an einem Ordner
+        // scheitert — und wer einen Ordner hineinzog, sah eine Fehlermeldung
+        // statt seiner Dateien.
+        if isDirectory(url) {
+            return .success(.file(url))
+        }
+
         if kinds.contains(.image), type?.conforms(to: .image) == true {
             guard let image = NSImage(contentsOf: url) else {
                 return .failure(.invalidInput(
@@ -245,6 +255,15 @@ enum FileDropReader {
         }
 
         return .failure(.invalidInput(rejection(for: kinds)))
+    }
+
+    /// Ob der Pfad auf einen Ordner zeigt.
+    ///
+    /// Ein Paket — eine `.app`, ein `.rtfd` — ist auf der Platte auch ein
+    /// Ordner, im Finder aber ein Ding. Hier zählt die Platte: Wer eine App
+    /// in ein Werkzeug zieht, das Ordner durchsieht, meint ihren Inhalt.
+    static func isDirectory(_ url: URL) -> Bool {
+        (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
     }
 
     /// Was das Ziel überhaupt genommen hätte.
