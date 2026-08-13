@@ -230,6 +230,7 @@
 "Konflikt" = "Conflict";
 "leer" = "empty";
 "Leer lassen, wenn das Werkzeug keine braucht. Sonst muss der Platzhalter in der Anweisung vorkommen — nur dort tut die Wahl etwas." = "Leave empty if the tool needs none. Otherwise the placeholder has to appear in the instruction — that is the only place the choice does anything.";
+"Letzte Änderung" = "Last change";
 "Links etwas einfügen — oder Dateien ins Fenster ziehen, auch viele." = "Paste something on the left — or drag files into the window, many at a time.";
 "Links etwas einfügen — oder eine Datei ins Fenster ziehen." = "Paste something on the left — or drag a file into the window.";
 "Längste Kante" = "Longest edge";
@@ -466,6 +467,8 @@
 "ausführlicher" = "more detailed";
 "Ausführlichkeit" = "Verbosity";
 "Ausgabe" = "Output";
+"ausgeblendet" = "hidden";
+"ausgelassen" = "skipped";
 "Ausgewogen" = "Balanced";
 "Auslöseton" = "Shutter sound";
 "Ausschnitt" = "Region";
@@ -504,6 +507,7 @@
 "Berechtigungen" = "Permissions";
 "Bereich" = "Range";
 "Bereinigt" = "Cleaned";
+"bereit" = "ready";
 "Bereit" = "Ready";
 "Beschreib, was gefunden werden soll …" = "Describe what should be matched…";
 "Beschreibung in ein Kommando" = "A description turned into a command";
@@ -590,6 +594,7 @@
 "Dateien ins Fenster ziehen — oder einen Ordner wählen." = "Drag files into the window — or choose a folder.";
 "Dateien oder einen Ordner ins Fenster ziehen." = "Drag files or a folder into the window.";
 "Dateirechte" = "File permissions";
+"daten" = "data";
 "Datenordner" = "Data folder";
 "Datum" = "Date";
 "Dauern, Zeitstempel, Abstände" = "Durations, timestamps, distances";
@@ -652,6 +657,7 @@
 "Die geschweifte Klammer geht nicht zu." = "The curly brace is never closed.";
 "Die längsten Sätze" = "The longest sentences";
 "Die längsten Wörter" = "The longest words";
+"dienstags" = "Tuesdays";
 "Diese Datei" = "This file";
 "Diese Klasse gibt es nicht." = "There is no such class.";
 "Diese Maske hat Lücken — Einsen und Nullen müssen zusammenhängen: %@" = "This mask has gaps — the ones and the zeros each have to be contiguous: %@";
@@ -673,6 +679,8 @@
 "Doku-Kommentar" = "Doc comment";
 "Dokument" = "Document";
 "Dokumentation zu einer Funktion" = "Documentation for a function";
+"donnerstags" = "Thursdays";
+"doppelt" = "duplicate";
 "Doppelt belegt" = "Assigned twice";
 "Doppelte entfernen" = "Remove duplicates";
 "Doppelungen" = "repeats";
@@ -803,6 +811,7 @@
 "Fehler, Risiken, Verbesserungen" = "Bugs, risks, improvements";
 "Fehlerkorrektur" = "Error correction";
 "Fehlermeldung oder Stacktrace …" = "Error message or stack trace…";
+"fehlgeschlagen" = "failed";
 "Fenster" = "Window";
 "Fenster anklicken" = "Click a window";
 "Fenster anklicken. Wird ohne Hintergrund aufgenommen." = "Click a window. Captured without its background.";
@@ -826,6 +835,7 @@
 "Fragen" = "Ask";
 "Framework" = "Framework";
 "Französisch" = "French";
+"freitags" = "Fridays";
 "Für Beispiele reserviert" = "Reserved for documentation";
 "Für Messungen reserviert" = "Reserved for benchmarking";
 "Für eine belastbare Zahl noch zu kurz" = "Still too short for a solid number";
@@ -851,8 +861,10 @@
 "Gekürzt" = "Condensed";
 "Gelesen" = "Read";
 "Genauer Modellname beim Anbieter." = "The provider’s exact model name.";
+"gesamt" = "total";
 "Gesichert" = "Saved";
 "Gesicherte Aufnahmen liegen unter Anvil › Screenshots." = "Saved shots live under Anvil › Screenshots.";
+"gestern" = "yesterday";
 "Geänderter Text …" = "Changed text…";
 "Gibt es nicht — oder du darfst nicht wissen, dass es das gibt." = "Does not exist — or you are not allowed to know it does.";
 "Gilt für die Vollbildaufnahme — mit einem Dateinamen kann immer nur ein Bildschirm gemeint sein." = "Applies to the full-screen shot — one file name can only ever mean one display.";
@@ -883,6 +895,7 @@
 "Hat nicht geklappt" = "That didn’t work";
 "Header" = "Header";
 "Helligkeit" = "Brightness";
+"heute" = "today";
 "Heute als Von" = "Today as From";
 "Hex braucht eine gerade Anzahl Zeichen." = "Hex needs an even number of characters.";
 "Hex mit und ohne Raute, rgb(), rgba(), hsl(), hsla() und gängige Farbnamen auf Deutsch und Englisch." = "Hex with and without the hash, rgb(), rgba(), hsl(), hsla() and common colour names in German and English.";
@@ -895,6 +908,7 @@
 "Hinter dem Schrägstrich steht eine Präfixlänge oder eine Maske: %@" = "After the slash comes a prefix length or a mask: %@";
 "Hinter dem Schrägstrich steht eine Präfixlänge: %@" = "After the slash comes a prefix length: %@";
 "Hinter dem Wert steht noch etwas." = "There is something after the value.";
+"hinzu" = "added";
 "Hinzugefügt" = "Added";
 "Hostbereich" = "Host range";
 "Hosts" = "Hosts";
@@ -927,6 +941,7 @@
 "Inhalte, die eine App als vertraulich kennzeichnet — etwa aus einem Passwortmanager — werden nie mitgeschnitten." = "Content an app marks as confidential — from a password manager, say — is never recorded.";
 "Inhaltsverzeichnis" = "Table of contents";
 "Ist gesichert" = "Already saved";
+"ja" = "yes";
 "JSON, YAML oder TOML einwerfen — das Format erkennt Anvil selbst." = "Drop in JSON, YAML or TOML — Anvil works out the format itself.";
 "JSON, YAML, TOML" = "JSON, YAML, TOML";
 "Lösen" = "Unpin";
@@ -978,6 +993,7 @@
 "Keine Tools gefunden" = "No tools found";
 "Keine Treffer" = "No matches";
 "Keine Zeilen" = "No rows";
+"keins" = "none";
 "Kennt der Server nicht." = "The server does not know it.";
 "Kennungen erzeugen" = "Generate identifiers";
 "KI" = "AI";
@@ -1017,6 +1033,8 @@
 "Kürzel drücken, sprechen, noch einmal drücken. Der aufgeräumte Text landet dort, wo der Cursor steht." = "Press the shortcut, speak, press it again. The cleaned-up text lands where the cursor is.";
 "Kürzel entfernen" = "Remove shortcut";
 "Leerzeichen ersetzen durch" = "Replace spaces with";
+"lesen" = "read";
+"liest" = "reading";
 "Liste leeren" = "Clear the list";
 "kürzer" = "shorter";
 "Kürzt auf das Wesentliche, behält aber alle Aussagen." = "Trims to the essentials while keeping every statement.";
@@ -1035,6 +1053,7 @@
 "Lesbarkeit misst Satz- und Wortlängen. Ab etwa hundert Wörtern wird die Zahl belastbar." = "Readability measures sentence and word lengths. From about a hundred words on, the number becomes meaningful.";
 "Letzte Adresse" = "Last address";
 "Letzte Markierung zurücknehmen" = "Undo the last mark";
+"Letzter Commit" = "Last commit";
 "Liegt außerhalb" = "Outside the network";
 "Liegt im Netz" = "Inside the network";
 "Liest den Stand noch einmal aus." = "Reads the current state again.";
@@ -1093,7 +1112,9 @@
 "Mit dem Modell aufräumen" = "Clean up with the model";
 "Mit KI" = "With AI";
 "Mittel" = "Medium";
+"mittwochs" = "Wednesdays";
 "Monate" = "Months";
+"montags" = "Mondays";
 "Nachname" = "Last name";
 "Name" = "Name";
 "Namen, Adressen, IBAN — reproduzierbar" = "Names, addresses, IBANs — reproducible";
@@ -1122,6 +1143,7 @@
 "Nach Dezimal" = "To decimal";
 "Nach Hex" = "To hex";
 "Nach Oktal" = "To octal";
+"nachher" = "after";
 "Nachher" = "After";
 "Nachschlagen" = "Look up";
 "Nachsehen" = "Checking";
@@ -1129,16 +1151,19 @@
 "Nanosekunden" = "Nanoseconds";
 "Natürlich, nicht wörtlich" = "Natural, not literal";
 "Nebeneinander" = "Side by side";
+"nein" = "no";
 "Netz" = "Network";
 "Netze" = "Networks";
 "Netzrechner" = "Network calculator";
 "Netzwerk" = "Network";
+"neu" = "new";
 "Neu" = "New";
 "Neu erzeugen" = "Generate again";
 "Neu laden" = "Reload";
 "Neue Präfixlänge" = "New prefix length";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
 "Nicht zu öffnen: %@" = "Cannot be opened: %@";
+"nichts" = "nothing";
 "Noch keine PDFs" = "No PDFs yet";
 "Noch nichts da" = "Nothing here yet";
 "Rechts einstellen, wie viele es sein sollen." = "Set how many on the right.";
@@ -1258,6 +1283,8 @@
 "Rahmt einen Bereich ein." = "Frames an area.";
 "Regulärer Ausdruck" = "Regular expression";
 "Sachtext, Bericht" = "Non-fiction, report";
+"samstags" = "Saturdays";
+"schreiben" = "write";
 "Schuljahre" = "School years";
 "Schwer" = "Hard";
 "Sehr leicht" = "Very easy";
@@ -1329,6 +1356,7 @@
 "Sobald eine Aufnahme da ist, steht ihr Text hier." = "As soon as there is a capture, its text appears here.";
 "Sobald etwas diktiert ist, räumt Anvil Füllwörter weg — und mit „Aufräumen\" macht das Modell daraus %@." = "As soon as something is dictated, Anvil strips the filler words — and “Clean up” turns it into %@.";
 "Sonderzeichen escapen" = "Escape special characters";
+"sonntags" = "Sundays";
 "Sortieren, entdoppeln, nummerieren" = "Sort, deduplicate, number";
 "Spanisch" = "Spanish";
 "Speech Studio" = "Speech Studio";
@@ -1412,6 +1440,7 @@
 "Trennzeichen" = "Delimiter";
 "Uhrzeit-Schreibweise" = "Clock notation";
 "Uhrzeiten sehen so aus: 14:30." = "Times look like this: 14:30.";
+"umbenannt" = "renamed";
 "Umbenennen" = "Rename";
 "um %@ Uhr" = "at %@ o'clock";
 "Umdrehen" = "Reverse";
@@ -1449,6 +1478,8 @@
 "Verweigert" = "Denied";
 "Verweise" = "Links and images";
 "Verweise auf Dateien und Sprungmarken, die es nicht gibt" = "Links to files and anchors that do not exist";
+"vorgemerkt" = "staged";
+"vorher" = "before";
 "Was zwischen den Dateien nicht stimmt" = "What is wrong between the files";
 "Weitergeben an ein anderes Werkzeug" = "Pass on to another tool";
 "Werte" = "Values";
@@ -1491,6 +1522,7 @@
 "Was soll die Abfrage liefern?" = "What should the query return?";
 "Weder Links noch Bilder im Text." = "Neither links nor images in the text.";
 "Weder Unix-Zeit noch ein erkennbares Datum." = "Neither Unix time nor a recognisable date.";
+"weg" = "removed";
 "Weiter" = "Resume";
 "Weiter aufnehmen" = "Continue recording";
 "Weiter hinten hat niemand rechtzeitig geantwortet." = "Nobody further back answered in time.";
@@ -1632,5 +1664,4 @@
 "„%@\" wird von der Festplatte entfernt. Das lässt sich nicht rückgängig machen." = "“%@” will be removed from disk. This cannot be undone.";
 "„%@\" wurde nicht gefunden." = "“%@” was not found.";
 "„%@\" wurde nicht gefunden. Installiert? Danach in den Einstellungen erneut suchen lassen." = "“%@” was not found. Installed? Then let Settings search again.";
-
 "„Auffällig\" heißt: etwas ist nicht gepusht, nicht committet, oder ein Zweig kann weg. „Kann weg\" wiederum heißt: Das Gegenstück auf dem Server ist gelöscht und lokal liegt kein eigener Commit mehr darauf. Anvil löscht nichts — es sagt nur, wo etwas liegt." = "\"Needs a look\" means: something is unpushed, uncommitted, or a branch can go. \"Can go\" in turn means: the counterpart on the server is deleted and nothing of your own is left on it locally. Anvil deletes nothing — it only says where things are.";

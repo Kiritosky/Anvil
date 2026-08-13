@@ -62,6 +62,15 @@ public struct GitReader: Sendable {
         return GitBranch.list(output)
     }
 
+    /// Der letzte Commit — oder nichts, wenn es noch keinen gibt.
+    public func lastCommit(of repository: URL) async throws -> GitCommit? {
+        let output = try await git(
+            ["log", "-1", "--format=" + GitCommit.logFormat],
+            in: repository
+        )
+        return GitCommit.read(output)
+    }
+
     /// Alles über ein Repository, ohne zu werfen.
     ///
     /// Ein Repository, in dem `git` scheitert — kaputtes Verzeichnis, fremder
@@ -71,7 +80,15 @@ public struct GitReader: Sendable {
         do {
             let status = try await status(of: repository)
             let branches = (try? await branches(of: repository)) ?? []
-            return GitRepository(url: repository, status: status, branches: branches)
+            // Ein frisches Repository hat noch keinen Commit; `git log`
+            // scheitert dann, und das ist keine Störung, sondern die Auskunft.
+            let commit = try? await lastCommit(of: repository)
+            return GitRepository(
+                url: repository,
+                status: status,
+                branches: branches,
+                lastCommit: commit
+            )
         } catch {
             return GitRepository(
                 url: repository,

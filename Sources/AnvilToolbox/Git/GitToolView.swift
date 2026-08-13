@@ -71,9 +71,7 @@ public struct GitToolView: View {
     private func open(_ folder: URL) {
         // Wer eine Datei aus einem Repository hineinzieht, meint den Ordner
         // darum — nicht die Datei.
-        var isDirectory: ObjCBool = false
-        FileManager.default.fileExists(atPath: folder.path, isDirectory: &isDirectory)
-        root = isDirectory.boolValue ? folder : folder.deletingLastPathComponent()
+        root = FileWalk.isDirectory(folder) ? folder : folder.deletingLastPathComponent()
         rescan()
     }
 
@@ -315,7 +313,7 @@ public struct GitToolView: View {
                         DataGrid(
                             header: [
                                 localized("Zweig"),
-                                localized("Zuletzt"),
+                                localized("Letzter Commit"),
                                 localized("Voraus"),
                                 localized("Zurück"),
                                 localized("Hinweis")
@@ -365,6 +363,14 @@ public struct GitToolView: View {
                 "\(status.count(stage))",
                 tone: stage == .conflicted ? .danger : .neutral
             ))
+        }
+        if let commit = repository.lastCommit {
+            items.append(
+                KeyValueList.Item(localized("Letzter Commit"), commit.ageText())
+            )
+            items.append(
+                KeyValueList.Item(localized("Letzte Änderung"), commit.subject)
+            )
         }
         items.append(KeyValueList.Item(localized("Ordner"), repository.url.path))
         return items

@@ -122,9 +122,27 @@ SKIP = {
     "static let %@ = %@",                    # Swift-Quelltext, keine Anzeige
     # Ein Beispiel aus einer Stilvorlage: Namen und Schreibweisen, keine Sprache.
     "--marke: #3A7BD5;\\nHintergrund #FFFFFF\\nrgb(58, 123, 213)",
+    # SF-Symbol-Namen ohne Punkt. Sie sehen aus wie Wörter und sind Bezeichner;
+    # übersetzt zeichnete das Symbol nichts mehr.
+    "aspectratio", "asterisk", "book", "calendar", "camera", "checklist",
+    "circle", "clock", "cloud", "command", "curlybraces", "cylinder",
+    "envelope", "equal", "eraser", "externaldrive", "eye", "folder",
+    "gearshape", "globe", "highlighter", "hourglass", "house", "keyboard",
+    "laptopcomputer", "link", "macwindow", "magnifyingglass", "mic", "network",
+    "number", "oval", "paintpalette", "pencil", "photo", "plusminus", "qrcode",
+    "rectangle", "repeat", "ruler", "sparkle", "sparkles", "speedometer",
+    "tablecells", "terminal", "trash", "waveform",
+    # Datei- und Produktnamen heißen in jeder Sprache gleich.
+    "heic", "jpg", "pdf", "png", "tiff", "txt", "swift", "git",
+    "claude", "codex", "gemini",
+    "esc",                                   # die Taste heißt überall so
+    "ul", "false",                           # HTML und JSON in Beispielen
 }
 SKIP_PATTERNS = [
-    re.compile(r"^[a-z0-9.]+$"),          # SF-Symbol-Namen
+    # SF-Symbol-Namen. Mit Punkt, sonst wäre die Regel zu weit: „heute" und
+    # „leer" sind ebenfalls klein geschrieben und ohne Punkt — und beides ist
+    # Anzeigetext, der übersetzt gehört.
+    re.compile(r"^[a-z0-9]+(\.[a-z0-9]+)+$"),
     re.compile(r"^Privacy_"),             # Kennungen von Systemeinstellungs-Seiten
     re.compile(r"^https?://"),            # Beispiel-URLs
     re.compile(r"…$"),                    # Platzhalter wie "sk-…", "git diff …"

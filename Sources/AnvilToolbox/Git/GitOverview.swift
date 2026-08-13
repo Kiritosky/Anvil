@@ -6,16 +6,25 @@ public struct GitRepository: Sendable, Hashable, Identifiable {
     public let url: URL
     public let status: GitStatus
     public let branches: [GitBranch]
+    /// Wann hier zuletzt etwas passiert ist.
+    public let lastCommit: GitCommit?
     /// Was `git` gesagt hat, falls es nicht funktioniert hat.
     public let failure: String?
 
     public var id: String { url.path }
     public var name: String { url.lastPathComponent }
 
-    public init(url: URL, status: GitStatus, branches: [GitBranch] = [], failure: String? = nil) {
+    public init(
+        url: URL,
+        status: GitStatus,
+        branches: [GitBranch] = [],
+        lastCommit: GitCommit? = nil,
+        failure: String? = nil
+    ) {
         self.url = url
         self.status = status
         self.branches = branches
+        self.lastCommit = lastCommit
         self.failure = failure
     }
 
@@ -100,6 +109,7 @@ public struct GitOverview: Sendable {
     public static let reportColumns = [
         localized("Repository"),
         localized("Zweig"),
+        localized("Letzter Commit"),
         localized("Voraus"),
         localized("Zurück"),
         localized("Geändert"),
@@ -111,6 +121,7 @@ public struct GitOverview: Sendable {
         return [
             repository.name,
             status.branch ?? localized("abgelöst"),
+            repository.lastCommit?.ageText() ?? "—",
             "\(status.ahead)",
             "\(status.behind)",
             "\(status.changes.count)",

@@ -401,3 +401,80 @@ struct GitOverviewTests {
         #expect(GitOverview.empty.needingAttention.isEmpty)
     }
 }
+
+@Suite("Den letzten Commit lesen")
+struct GitCommitTests {
+    private func line(
+        hash: String = "a1b2c3d",
+        date: String = "2026-01-15T10:00:00Z",
+        author: String = "Anna",
+        subject: String = "Repariere die Zeitzone"
+    ) -> String {
+        [hash, date, author, subject].joined(separator: "\t")
+    }
+
+    @Test
+    func everyFieldIsRead() throws {
+        let commit = try #require(GitCommit.read(line()))
+        #expect(commit.hash == "a1b2c3d")
+        #expect(commit.author == "Anna")
+        #expect(commit.subject == "Repariere die Zeitzone")
+        #expect(commit.date != nil)
+    }
+
+    /// In einer Commit-Nachricht kommt alles vor. Was hinter dem vierten
+    /// Tabulator steht, gehört noch dazu.
+    @Test
+    func aTabInTheSubjectDoesNotCutItShort() throws {
+        let commit = try #require(GitCommit.read(line(subject: "Erst dies\tdann das")))
+        #expect(commit.subject == "Erst dies\tdann das")
+    }
+
+    @Test
+    func theAgeIsCountedFromTheCommit() throws {
+        let commit = try #require(GitCommit.read(line()))
+        let date = try #require(commit.date)
+        #expect(commit.age(now: date) == 0)
+        #expect(commit.age(now: date.addingTimeInterval(86_400 * 30)) == 30)
+    }
+
+    /// Heute und gestern haben eigene Worte — „vor 0 Tagen" sagt niemand.
+    @Test
+    func todayAndYesterdayAreSpelledOut() throws {
+        let commit = try #require(GitCommit.read(line()))
+        let date = try #require(commit.date)
+        #expect(commit.ageText(now: date) == localized("heute"))
+        #expect(commit.ageText(now: date.addingTimeInterval(86_400)) == localized("gestern"))
+        #expect(commit.ageText(now: date.addingTimeInterval(86_400 * 5)).contains("5"))
+    }
+
+    /// Ein Repository ohne Commit ist kein Fehler, sondern ein frisches.
+    @Test
+    func nonsenseIsNoCommit() {
+        #expect(GitCommit.read("") == nil)
+        #expect(GitCommit.read("kaputt") == nil)
+    }
+
+    @Test
+    func aCommitWithoutADateHasNoAge() throws {
+        let commit = try #require(GitCommit.read(line(date: "")))
+        #expect(commit.date == nil)
+        #expect(commit.age() == nil)
+        #expect(commit.ageText() == "—")
+    }
+
+    /// Die Übersicht zeigt das Alter in der Tabelle — sonst wäre die Spalte
+    /// nur eine weitere Zahl ohne Bedeutung.
+    @Test
+    func theOverviewShowsTheAge() throws {
+        let commit = try #require(GitCommit.read(line()))
+        let repository = GitRepository(
+            url: URL(fileURLWithPath: "/Code/anvil"),
+            status: GitStatus(porcelain: "## main...origin/main"),
+            lastCommit: commit
+        )
+        let row = GitOverview.row(repository)
+        #expect(row.count == GitOverview.reportColumns.count)
+        #expect(row.contains(commit.ageText()))
+    }
+}
