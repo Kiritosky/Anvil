@@ -58,9 +58,15 @@ public struct IconSet: Sendable {
         public var scaleText: String { "\(scale)x" }
 
         /// `icon_32x32@2x.png` — die übliche Schreibweise.
+        ///
+        /// Auf iOS steht das Gerät mit im Namen: iPhone und iPad verlangen
+        /// dieselbe Größe in derselben Auflösung, und ohne das Gerät hießen
+        /// zwei Dateien im selben Ordner gleich — die zweite überschriebe die
+        /// erste beim Schreiben.
         public var fileName: String {
             let suffix = scale > 1 ? "@\(scale)x" : ""
-            return "icon_\(sizeText)\(suffix).png"
+            let prefix = idiom == "mac" ? "icon" : "icon_\(idiom)"
+            return "\(prefix)_\(sizeText)\(suffix).png"
         }
 
         public var id: String { "\(idiom)-\(sizeText)-\(scaleText)" }

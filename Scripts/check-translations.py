@@ -111,7 +111,7 @@ SKIP = {
     "-p",                                    # Beispielargument
     # Namen, die aus Teilen zusammengesetzt werden: Dateinamen im
     # Symbolsatz, die Schreibweise einer Kantenlänge, der Ordnername.
-    "%@x%@", "@%@x", "icon_%@%@.png", "%@.appiconset",
+    "%@x%@", "@%@x", "icon", "icon_%@", "%@_%@%@.png", "%@.appiconset",
     "iOS", "macOS", "iphone",                # Produkt- und Gerätenamen
     "\\t",                                   # das Trennzeichen selbst
     # SQL- und JSON-Syntax. Steht im Quelltext hinter einem `return` und sieht

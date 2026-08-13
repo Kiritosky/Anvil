@@ -30,7 +30,7 @@ struct IconSetTests {
         let item = try #require(IconSet.iOSItems.first { $0.points == 83.5 })
         #expect(item.sizeText == "83.5x83.5")
         #expect(item.pixels == 167)
-        #expect(item.fileName == "icon_83.5x83.5@2x.png")
+        #expect(item.fileName == "icon_ipad_83.5x83.5@2x.png")
     }
 
     @Test
@@ -57,6 +57,21 @@ struct IconSetTests {
     func theLargestSizeIsTheOneToAskFor() {
         #expect(IconSet.largestPixelSize(for: .macOS) == 1024)
         #expect(IconSet.largestPixelSize(for: .iOS) == 1024)
+    }
+
+    /// iPhone und iPad verlangen dieselbe Größe in derselben Auflösung. Ohne
+    /// das Gerät im Namen überschriebe die zweite Datei die erste.
+    @Test
+    func theSameSizeOnTwoDevicesGetsTwoNames() throws {
+        let phone = try #require(
+            IconSet.iOSItems.first { $0.idiom == "iphone" && $0.points == 20 && $0.scale == 2 }
+        )
+        let pad = try #require(
+            IconSet.iOSItems.first { $0.idiom == "ipad" && $0.points == 20 && $0.scale == 2 }
+        )
+        #expect(phone.pixels == pad.pixels)
+        #expect(phone.fileName != pad.fileName)
+        #expect(phone.fileName == "icon_iphone_20x20@2x.png")
     }
 
     @Test
