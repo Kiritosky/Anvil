@@ -19,6 +19,8 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 STR = r'"((?:[^"\\]|\\.)*)"'
+# Dasselbe ohne Gruppe — für den Zweig eines `?:`, der nur davorstehen muss.
+STR_ANY = r'"(?:[^"\\]|\\.)*"'
 
 # Aufrufstellen, an denen ein Literal Anzeigetext ist.
 PATTERNS = [
@@ -61,6 +63,11 @@ PATTERNS = [
     # Ein Literal am Zeilenende hinter einem Doppelpunkt: der Zweig eines
     # mehrzeiligen `?:` und alles, was als Argument so umbrochen wurde.
     rf":\s*{STR}$",
+    # Beide Zweige eines einzeiligen `?:`. Ohne die beiden Regeln blieb
+    # `.anvilHelp(x ? "Hineingehen" : "Im Finder zeigen")` unbemerkt: Es steht
+    # kein Aufrufname davor und kein Zeilenende dahinter.
+    rf"\?\s*{STR}\s*:",
+    rf"\?\s*{STR_ANY}\s*:\s*{STR}",
     # Ein Literal allein auf einer Zeile: so stehen Anzeigetexte in Listen
     # und Tupeln da, wo kein Aufrufname davorsteht.
     rf"^\s*{STR},?$",
@@ -124,7 +131,8 @@ SKIP = {
     "--marke: #3A7BD5;\\nHintergrund #FFFFFF\\nrgb(58, 123, 213)",
     # SF-Symbol-Namen ohne Punkt. Sie sehen aus wie Wörter und sind Bezeichner;
     # übersetzt zeichnete das Symbol nichts mehr.
-    "aspectratio", "asterisk", "book", "calendar", "camera", "checklist",
+    "archivebox", "aspectratio", "asterisk", "book", "calendar", "camera",
+    "checklist", "checkmark",
     "circle", "clock", "cloud", "command", "curlybraces", "cylinder",
     "doc", "envelope", "equal", "eraser", "externaldrive", "eye", "folder",
     "gearshape", "globe", "highlighter", "hourglass", "house", "keyboard",
@@ -132,12 +140,15 @@ SKIP = {
     "number", "oval", "paintpalette", "pencil", "photo", "plusminus", "qrcode",
     "rectangle", "repeat", "ruler", "shippingbox", "sparkle", "sparkles",
     "speedometer",
-    "tablecells", "terminal", "trash", "waveform",
+    "pin", "star", "tablecells", "terminal", "trash", "tray", "waveform",
     # Datei- und Produktnamen heißen in jeder Sprache gleich.
     "heic", "jpg", "pdf", "png", "tiff", "txt", "zip", "swift", "git",
     "claude", "codex", "gemini",
     "esc",                                   # die Taste heißt überall so
-    "ul", "false",                           # HTML und JSON in Beispielen
+    "ul", "ol", "true", "false", " checked", # HTML und JSON in Beispielen
+    # Namen, die ein Werkzeug erzeugt: Kennungen, Dateinamen, CSS-Variablen.
+    # Übersetzt wären es andere Namen — und damit andere Dinge.
+    "wahl", "werkzeug", "farbe%@", "farbe-%@",
 }
 SKIP_PATTERNS = [
     # SF-Symbol-Namen. Mit Punkt, sonst wäre die Regel zu weit: „heute" und

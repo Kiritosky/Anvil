@@ -19,9 +19,13 @@
 "%@ hat nichts zurückgegeben." = "%@ returned nothing.";
 "%@ ist mit Fehler %lld beendet worden." = "%@ exited with error %lld.";
 "%@ konnte nicht gestartet werden: %@" = "%@ could not be started: %@";
+"%@ s" = "%@ s";
 "%@ und %@ lassen sich nicht ineinander umrechnen." = "%@ and %@ cannot be converted into one another.";
 "%@ wird von der Spracherkennung auf diesem Mac nicht unterstützt." = "%@ is not supported by speech recognition on this Mac.";
 "%@ · lokal" = "%@ · local";
+"%@h" = "%@h";
+"%@m" = "%@m";
+"%@s" = "%@s";
 "%lld % kleiner" = "%lld % smaller";
 "%lld Archive entpackt." = "%lld archives unpacked.";
 "%lld Archive geschrieben." = "%lld archives written.";
@@ -52,6 +56,7 @@
 "%lld Werkzeuge · ⌘K öffnet die Suche" = "%lld tools · press ⌘K to search";
 "%lld Wörter" = "%lld words";
 "%lld Zeilen ohne Zuweisung" = "%lld lines without an assignment";
+"%lldd" = "%lldd";
 ", %@" = ", %@";
 ", am %@. des Monats" = ", on day %@ of the month";
 ", im %@" = ", in %@";
@@ -442,6 +447,7 @@
 "Auf Vorgabe" = "Restore defaults";
 "Auf Vorgabe zurücksetzen" = "Back to the default";
 "Auffällige Pfade" = "Suspicious paths";
+"Aufgabe: Säubere das Diktat und korrigiere Grammatik und Zeichensetzung." = "Task: clean up the dictation and correct grammar and punctuation.";
 "Aufgaben" = "Tasks";
 "Aufnahme" = "Recording";
 "Aufnahme behalten" = "Keep the recording";
@@ -493,6 +499,7 @@
 "Ausschnitt, Fenster oder ganzer Bildschirm — mit Markierungen, und auf Wunsch gleich als Text." = "A region, a window or the whole screen — with marks, and as text if you like.";
 "Auswahl" = "Either";
 "Auswerten" = "Analyse";
+"auswärts" = "external";
 "Automatisch" = "Automatic";
 "Automatisch kopieren" = "Copy automatically";
 "Automatisch wählt das Zeichen, das in jeder Zeile gleich oft vorkommt." = "Automatic picks the character that occurs the same number of times in every line.";
@@ -945,6 +952,7 @@
 "Hinzugefügt" = "Added";
 "Hostbereich" = "Host range";
 "Hosts" = "Hosts";
+"im Dokument" = "in the document";
 "In diesem Archiv liegt keine Datei." = "There is no file in this archive.";
 "IPv4 in IPv6 abgebildet" = "IPv4 mapped into IPv6";
 "Ich höre zu" = "Listening";
@@ -971,6 +979,7 @@
 "In einer IPv6-Adresse darf höchstens einmal :: stehen: %@" = "An IPv6 address may contain :: at most once: %@";
 "In einer Tabelle gehört zu jedem Schlüssel ein Wert: %@" = "In a table every key needs a value: %@";
 "In einer Zuordnung gehört zu jedem Schlüssel ein Wert: %@" = "In a mapping every key needs a value: %@";
+"in Ordnung" = "all good";
 "In zwei Durchgängen über Zwischennamen. Nur so lassen sich zwei Namen tauschen, ohne dass der erste Schritt die zweite Datei überschreibt." = "In two passes via interim names. Only that way can two names swap without the first step overwriting the second file.";
 "Ineinander umwandeln" = "Convert between them";
 "Inhalt" = "Content";
@@ -1105,6 +1114,7 @@
 "Land" = "Country";
 "Lesezeit" = "Reading time";
 "Links" = "Links";
+"Links Bilder hineinziehen, rechts Format und Größe wählen." = "Drag images in on the left, pick format and size on the right.";
 "Nach \\u stehen vier Hexziffern." = "Four hex digits follow \\u.";
 "Name doppelt im Stapel" = "Name occurs twice in the batch";
 "Name schon vergeben" = "Name already taken";
@@ -1148,6 +1158,7 @@
 "Millisekunden" = "Milliseconds";
 "Min. Lesezeit" = "min. reading time";
 "Mindestens eins" = "One or more";
+"Mindestens zwei Kürzel sind doppelt belegt." = "At least two shortcuts are assigned twice.";
 "Minute" = "minute";
 "Minuten" = "Minutes";
 "Mit dem Modell aufräumen" = "Clean up with the model";
@@ -1260,6 +1271,7 @@
 "So bliebe keine Seite übrig." = "That would leave no page at all.";
 "Tabellenname" = "Table name";
 "nicht belegt" = "not assigned";
+"Noch nichts" = "Nothing yet";
 "normal" = "normal";
 "November" = "November";
 "Nummerieren" = "Number";
@@ -1425,6 +1437,7 @@
 "Startet den Modell-Durchlauf, sobald die Aufnahme endet." = "Starts the model run as soon as recording ends.";
 "Startet …" = "Starting…";
 "Status" = "Status";
+"Steckbrief" = "At a glance";
 "Stehen vor dem Prompt. Leer lassen für die Vorgabe des Werkzeugs." = "Placed before the prompt. Leave empty for the tool's own default.";
 "Steht der Cursor in einem Textfeld, tippt Anvil den Text dort hinein. Sonst bleibt er in der Zwischenablage." = "If the caret is in a text field, Anvil types the text there. Otherwise it stays on the clipboard.";
 "Stichpunkte" = "Bullet points";
@@ -1630,6 +1643,7 @@
 "Wortzeichen" = "Word character";
 "Wovon Anvil die Finger lässt" = "What Anvil leaves alone";
 "Wähl links ein Archiv. Was darin liegt, steht dann hier — ohne dass etwas ausgepackt wird." = "Pick an archive on the left. What is inside then shows up here — without anything being unpacked.";
+"Wähl links ein Bild, um das Ergebnis zu sehen." = "Pick an image on the left to see the result.";
 "Wähle ein Git-Repository — Anvil liest die vorgemerkten Änderungen (`git diff --staged`)." = "Pick a Git repository — Anvil reads the staged changes (`git diff --staged`).";
 "Wähle rechts eine Variante." = "Pick a variant on the right.";
 "Wörter" = "words";
@@ -1666,6 +1680,7 @@
 "Zielsprache" = "Target language";
 "Ziffer" = "Digit";
 "Zu einer Zeile" = "Join into one line";
+"Zu Favoriten" = "Add to favourites";
 "Zu Favoriten hinzufügen" = "Add to favourites";
 "Zu schnell. Retry-After beachten." = "Too fast. Mind Retry-After.";
 "Zu viel geschickt." = "Sent too much.";
@@ -1683,6 +1698,7 @@
 "Zusammenfassung" = "Summary";
 "Zusammenführen" = "Merge";
 "Zusammenführen, teilen, drehen, auslesen" = "Merge, split, rotate, read out";
+"Zusammengeführt wird in der Reihenfolge der Liste." = "Merging follows the order of the list.";
 "Zwei Fassungen gegenüberstellen" = "Put two versions side by side";
 "Zwei oder mehr — je Datei eine Spalte. Der Ordner-Knopf nimmt alles mit, was dort .env heißt, samt .env.example und .env.local." = "Two or more — a column per file. The folder button takes everything called .env, including .env.example and .env.local.";
 "Zwei Zahlen bitte, zum Beispiel „19% von 250\"." = "Two numbers please, for example “19% von 250”.";
