@@ -100,6 +100,10 @@ public enum AnvilSize {
     public static let activityDot: CGFloat = 8
     /// The waveform strip while recording.
     public static let meterHeight: CGFloat = 20
+    /// A bar that carries a share inside a list row — how much of the folder
+    /// this one takes up. Thin on purpose: it belongs to the row above it and
+    /// must not read as a control.
+    public static let barHeight: CGFloat = 6
     /// A pane that shows something rather than holding controls — the
     /// annotation preview, the level history.
     public static let previewHeight: CGFloat = 80

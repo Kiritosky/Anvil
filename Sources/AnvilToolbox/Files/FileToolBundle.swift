@@ -8,7 +8,27 @@ public enum FileToolBundle: ToolBundle {
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        [rename, replace, duplicates, compare, archive]
+        [rename, replace, duplicates, compare, archive, space]
+    }
+
+    @MainActor
+    private static var space: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "files.space",
+            title: "Speicherplatz",
+            subtitle: "Wo der Platz hingeht, nach Größe sortiert",
+            systemImage: "chart.bar",
+            category: .everyday,
+            keywords: [
+                "speicher", "platz", "größe", "belegt", "festplatte", "voll",
+                "aufräumen", "groß", "ordner", "disk", "space"
+            ],
+            badge: "Neu"
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            DiskUsageToolView(context: context, metadata: metadata)
+        }
     }
 
     /// Archive gehören hierher und nicht in ein eigenes Bündel: Es ist
