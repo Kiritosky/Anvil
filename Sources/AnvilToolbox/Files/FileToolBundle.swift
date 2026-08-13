@@ -8,7 +8,30 @@ public enum FileToolBundle: ToolBundle {
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        [rename, replace, duplicates, compare]
+        [rename, replace, duplicates, compare, archive]
+    }
+
+    /// Archive gehören hierher und nicht in ein eigenes Bündel: Es ist
+    /// dieselbe Arbeit wie umbenennen und vergleichen — Dateien anfassen,
+    /// ohne hineinzusehen.
+    @MainActor
+    private static var archive: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "files.archive",
+            title: "Archive",
+            subtitle: "Hineinsehen, ein- und auspacken",
+            systemImage: "archivebox",
+            category: .everyday,
+            keywords: [
+                "archiv", "zip", "entpacken", "auspacken", "einpacken", "packen",
+                "komprimieren", "unzip", "archive", "stapel", "batch"
+            ],
+            badge: "Neu"
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            ArchiveToolView(context: context, metadata: metadata)
+        }
     }
 
     @MainActor

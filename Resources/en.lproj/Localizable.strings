@@ -9,6 +9,7 @@
 "# Überschrift\n\nText mit einem [Link](https://example.com)." = "# Heading\n\nText with a [link](https://example.com).";
 "#3A7BD5" = "#3A7BD5";
 "#FFFFFF" = "#FFFFFF";
+"%@ ausgepackt" = "%@ unpacked";
 "%@ belegt" = "%@ taken up";
 "%@ Dateien geschrieben." = "%@ files written.";
 "%@ Dateien umbenannt." = "%@ files renamed.";
@@ -22,10 +23,14 @@
 "%@ wird von der Spracherkennung auf diesem Mac nicht unterstützt." = "%@ is not supported by speech recognition on this Mac.";
 "%@ · lokal" = "%@ · local";
 "%lld % kleiner" = "%lld % smaller";
+"%lld Archive entpackt." = "%lld archives unpacked.";
+"%lld Archive geschrieben." = "%lld archives written.";
+"%lld auffällige Pfade" = "%lld suspicious paths";
 "%lld Codes geschrieben." = "%lld codes written.";
 "%lld Commits" = "%lld commits";
 "%lld Dateien geschrieben." = "%lld files written.";
 "%lld Dateien · %@" = "%lld files · %@";
+"%lld Dateien, %@ ausgepackt" = "%lld files, %@ unpacked";
 "%lld gleiche" = "%lld the same";
 "%lld Seiten geschrieben." = "%lld pages written.";
 "%lld Stellen in %lld Dateien ersetzt." = "Replaced %lld occurrences in %lld files.";
@@ -56,6 +61,7 @@
 "abgelöster HEAD" = "detached HEAD";
 "Abgeschlossene Durchläufe der Diktat- und KI-Werkzeuge." = "Completed runs of the dictation and AI tools.";
 "Abschnitt %lld passt nicht: Der Text drumherum steht so nicht in der Vorlage." = "Hunk %lld does not fit: the surrounding text is not in the source that way.";
+"Absoluter Pfad" = "Absolute path";
 "Abstand" = "Distance";
 "Absätze" = "Paragraphs";
 "Adresse suchen" = "Find address";
@@ -420,6 +426,8 @@
 "April" = "April";
 "Aprilscherz von 1998, steht bis heute in der Spezifikation." = "An April Fools' joke from 1998, still in the specification.";
 "Arbeitstage" = "Working days";
+"Archive" = "Archives";
+"Archive, Dateien und Ordner dürfen zusammen in der Liste liegen. Entpacken nimmt sich die Archive, Einpacken alles andere." = "Archives, files and folders may sit in the list together. Unpack takes the archives, pack takes everything else.";
 "Argumente" = "Arguments";
 "Auch Floskeln" = "Verbal tics too";
 "Audio-Konverter fehlt." = "Audio converter is missing.";
@@ -429,6 +437,7 @@
 "Audioumwandlung fehlgeschlagen: %@" = "Audio conversion failed: %@";
 "Auf Vorgabe" = "Restore defaults";
 "Auf Vorgabe zurücksetzen" = "Back to the default";
+"Auffällige Pfade" = "Suspicious paths";
 "Aufgaben" = "Tasks";
 "Aufnahme" = "Recording";
 "Aufnahme behalten" = "Keep the recording";
@@ -469,6 +478,7 @@
 "Ausgabe" = "Output";
 "ausgeblendet" = "hidden";
 "ausgelassen" = "skipped";
+"Ausgepackte Größe. Was ein Archiv groß macht, sind fast immer drei Dateien und nicht dreitausend." = "Unpacked size. What makes an archive big is almost always three files, not three thousand.";
 "Ausgewogen" = "Balanced";
 "Auslöseton" = "Shutter sound";
 "Ausschnitt" = "Region";
@@ -645,6 +655,8 @@
 "Die Datei konnte nicht gelesen werden: %@" = "The file could not be read: %@";
 "Die Einheit hinter der Zahl kenne ich nicht." = "I do not know the unit after the number.";
 "Die Gliederung steigt lückenlos, jede Überschrift ist eindeutig, und alle Sprungmarken gibt es." = "The outline rises without gaps, every heading is unique, and every anchor exists.";
+"Die größten Dateien" = "The largest files";
+"Die häufigsten Endungen — meistens die schnellste Antwort auf die Frage, was für ein Archiv das ist." = "The most common extensions — usually the quickest answer to what kind of archive this is.";
 "Die Reihenfolge folgt der Liste, nicht der Reihenfolge des Anklickens." = "The order follows the list, not the order you clicked them in.";
 "Die Schrittweite in %@ muss eine Zahl über null sein." = "The step in %@ has to be a number above zero.";
 "Die Sprachdaten konnten nicht geladen werden: %@" = "The language assets could not be loaded: %@";
@@ -659,6 +671,7 @@
 "Die längsten Wörter" = "The longest words";
 "dienstags" = "Tuesdays";
 "Diese Datei" = "This file";
+"Diese Einträge zeigen aus dem Zielordner heraus. `ditto` weigert sich, sie so zu schreiben — wissen will man es trotzdem vorher." = "These entries point out of the destination folder. `ditto` refuses to write them that way — you still want to know beforehand.";
 "Diese Klasse gibt es nicht." = "There is no such class.";
 "Diese Maske hat Lücken — Einsen und Nullen müssen zusammenhängen: %@" = "This mask has gaps — the ones and the zeros each have to be contiguous: %@";
 "Diese Sitzung" = "This session";
@@ -666,6 +679,7 @@
 "Diesen Schlüssel gibt es schon: %@" = "That key already exists: %@";
 "Dieser Anbieter ist noch nicht eingerichtet." = "This provider is not set up yet.";
 "Dieser Mac unterstützt das On-Device-Modell nicht." = "This Mac does not support the on-device model.";
+"Dieses Archiv hat oben mehrere Einträge. Doppelklick im Finder verteilt sie über den Zielordner — Anvil legt deshalb immer einen eigenen an." = "This archive has several entries at the top. A double-click in the Finder spreads them across the destination folder — which is why Anvil always creates one of its own.";
 "Dieses Tool bringt keine eigenen Einstellungen mit." = "This tool has no settings of its own.";
 "Diff lesen, anwenden, umkehren" = "Read a diff, apply it, reverse it";
 "Diff neu laden" = "Reload diff";
@@ -742,11 +756,13 @@
 "Eingetragen" = "Listed";
 "Einheiten" = "Units";
 "Einordnung" = "Kind";
+"Einpacken" = "Pack";
 "Einstellungen" = "Settings";
 "Einstellungen öffnen" = "Open Settings";
 "Einstufung" = "Rating";
 "Einträge" = "entries";
 "Einträge pro Tool" = "Entries per tool";
+"einzupacken" = "to pack";
 "Ellipse" = "Ellipse";
 "Englisch" = "English";
 "Entfernen" = "Remove";
@@ -757,6 +773,7 @@
 "Entfernt zusätzlich Floskeln wie „halt\", „quasi\", „sozusagen\"." = "Also removes tics like “like”, “basically”, “sort of”.";
 "Entfernt „äh\", „ähm\", „hm\" und Wortdoppelungen." = "Removes “uh”, “um”, “hm” and repeated words.";
 "Entferntes zeigen" = "Show removals";
+"Entpacken" = "Unpack";
 "Ergebnis" = "Result";
 "Ergebnis als neue Eingabe verwenden" = "Use the result as the new input";
 "Ergebnis kopieren" = "Copy result";
@@ -836,6 +853,7 @@
 "Framework" = "Framework";
 "Französisch" = "French";
 "freitags" = "Fridays";
+"Führt aus dem Ordner heraus" = "Leads out of the folder";
 "Für Beispiele reserviert" = "Reserved for documentation";
 "Für Messungen reserviert" = "Reserved for benchmarking";
 "Für eine belastbare Zahl noch zu kurz" = "Still too short for a solid number";
@@ -861,6 +879,7 @@
 "Gekürzt" = "Condensed";
 "Gelesen" = "Read";
 "Genauer Modellname beim Anbieter." = "The provider’s exact model name.";
+"Gepackt und entpackt wird mit `ditto` — demselben Werkzeug, das der Finder benutzt. Rechte, Symlinks und Ressourcenzweige bleiben dabei erhalten; ein Archiv aus Anvil kommt auf einem Mac an wie eines aus dem Finder." = "Packing and unpacking use `ditto` — the same tool the Finder uses. Permissions, symlinks and resource forks survive; an archive from Anvil arrives on a Mac just like one from the Finder.";
 "gesamt" = "total";
 "Gesichert" = "Saved";
 "Gesicherte Aufnahmen liegen unter Anvil › Screenshots." = "Saved shots live under Anvil › Screenshots.";
@@ -900,6 +919,7 @@
 "Hex braucht eine gerade Anzahl Zeichen." = "Hex needs an even number of characters.";
 "Hex mit und ohne Raute, rgb(), rgba(), hsl(), hsla() und gängige Farbnamen auf Deutsch und Englisch." = "Hex with and without the hash, rgb(), rgba(), hsl(), hsla() and common colour names in German and English.";
 "Hier erscheint, was erkannt wurde." = "What was recognised appears here.";
+"Hineinsehen, ein- und auspacken" = "Look inside, pack and unpack";
 "Hinzufügen" = "Add";
 "HTML-Entities" = "HTML entities";
 "HTTP-Codes" = "HTTP codes";
@@ -912,6 +932,7 @@
 "Hinzugefügt" = "Added";
 "Hostbereich" = "Host range";
 "Hosts" = "Hosts";
+"In diesem Archiv liegt keine Datei." = "There is no file in this archive.";
 "IPv4 in IPv6 abgebildet" = "IPv4 mapped into IPv6";
 "Ich höre zu" = "Listening";
 "Ideen sammeln" = "Collect ideas";
@@ -968,6 +989,7 @@
 "Kein Diff geladen" = "No diff loaded";
 "Kein Eintrag enthält diesen Text." = "No entry contains that text.";
 "kein Fehlertext" = "no error text";
+"Kein gemeinsamer Ordner" = "No common folder";
 "Kein gültiges JSON: %@" = "Not valid JSON: %@";
 "Kein Kürzel vergeben." = "No shortcut assigned.";
 "Kein Modell" = "No model";
@@ -1032,9 +1054,11 @@
 "Kürzel drücken, sprechen, noch einmal drücken" = "Press the shortcut, speak, press it again";
 "Kürzel drücken, sprechen, noch einmal drücken. Der aufgeräumte Text landet dort, wo der Cursor steht." = "Press the shortcut, speak, press it again. The cleaned-up text lands where the cursor is.";
 "Kürzel entfernen" = "Remove shortcut";
+"Leeres Archiv" = "Empty archive";
 "Leerzeichen ersetzen durch" = "Replace spaces with";
 "lesen" = "read";
 "liest" = "reading";
+"Ließ sich nicht lesen" = "Could not be read";
 "Liste leeren" = "Clear the list";
 "kürzer" = "shorter";
 "Kürzt auf das Wesentliche, behält aber alle Aussagen." = "Trims to the essentials while keeping every statement.";
@@ -1164,6 +1188,7 @@
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
 "Nicht zu öffnen: %@" = "Cannot be opened: %@";
 "nichts" = "nothing";
+"Nichts ausgewählt" = "Nothing selected";
 "Noch keine PDFs" = "No PDFs yet";
 "Noch nichts da" = "Nothing here yet";
 "Rechts einstellen, wie viele es sein sollen." = "Set how many on the right.";
@@ -1238,6 +1263,7 @@
 "Oben zwei Fassungen einfügen — der Vergleich läuft mit." = "Paste two versions above — the comparison keeps up.";
 "Ohne Bindestriche" = "Without hyphens";
 "Ohne das schreibt das Modell unbekannte Namen gern wieder in ein Wort um, das es kennt." = "Without this the model likes to turn a name it does not know back into a word it does.";
+"ohne Endung" = "no extension";
 "Ohne Mikrofon kein Diktat; ohne Spracherkennung keine Umsetzung in Text." = "No microphone, no dictation; no speech recognition, no text.";
 "Ohne Mikrofon lässt sich nichts diktieren." = "No microphone, no dictation.";
 "Ohne Überschriften gibt es nichts zu gliedern — und keine Sprungmarken." = "Without headings there is nothing to outline — and no anchors.";
@@ -1246,6 +1272,7 @@
 "ohne Namen" = "unnamed";
 "Ohne Sonderzeichen" = "Without symbols";
 "Ohne Text gibt es nichts zu kodieren." = "Without text there is nothing to encode.";
+"Ohne Ziel landet alles neben dem Original. Jedes Archiv bekommt beim Auspacken einen eigenen Ordner — auch wenn schon einer darin liegt." = "Without a destination everything lands next to the original. Every archive gets a folder of its own when unpacked — even if there is already one inside.";
 "Ohne Zuordnung" = "Unassigned";
 "Oktober" = "October";
 "Ollama (lokal)" = "Ollama (local)";
@@ -1279,6 +1306,7 @@
 "Prüfsummen" = "Checksums";
 "Prüfung" = "Check";
 "QR-Code" = "QR code";
+"Quelle" = "Source";
 "Rahmen" = "Box";
 "Rahmt einen Bereich ein." = "Frames an area.";
 "Regulärer Ausdruck" = "Regular expression";
@@ -1515,6 +1543,7 @@
 "Was benennt werden soll, plus Kontext …" = "What needs a name, plus context…";
 "Was die Zahl kann" = "What the number can do";
 "Was dieses Tool macht" = "What this tool does";
+"Was drin ist" = "What is inside";
 "Was macht dieser Code — und warum" = "What this code does — and why";
 "Was optional ist, macht Anvil nur bequemer — der Rest schaltet ein Werkzeug ganz ab." = "What is optional only makes Anvil more convenient — the rest switches a tool off entirely.";
 "Was soll das Modell mit dem Text machen?" = "What should the model do with the text?";
@@ -1537,16 +1566,20 @@
 "Wie 302, aber die Methode bleibt erhalten." = "Like 302, but the method is kept.";
 "Wie ausgeführt wird" = "How it is carried out";
 "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird." = "How the model shapes the dictation before it is copied.";
+"Wie gepackt wird" = "How packing works";
 "Wie gesucht wird" = "How the search works";
 "Wie schwer ein Text zu lesen ist" = "How hard a text is to read";
 "wie das Original" = "same as the original";
 "wie im Code erkennbar" = "as the code suggests";
 "Wie spät ist es wo" = "What time it is where";
+"Wieder neben das Original" = "Back next to the original";
 "Willkommen bei Anvil" = "Welcome to Anvil";
 "Wird aufgeräumt" = "Cleaning up";
 "Wird beim ersten Mal automatisch gefragt." = "Asked automatically the first time.";
 "Wird beim ersten Start dieser Sprache heruntergeladen." = "Downloads the first time you use this language.";
+"wird eingepackt" = "will be packed";
 "Wird fürs Bildschirmfoto und für Text vom Bildschirm gebraucht." = "Needed for screenshots and for reading text off the screen.";
+"wird gelesen" = "being read";
 "Wird gelesen" = "Understood input";
 "Wird im Prompt für {{option:level}} eingesetzt." = "Substituted into the prompt for {{option:level}}.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt und oben kein Werkzeug eingeschaltet ist. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Used only when the policy allows it and no tool is switched on above. The key lives in the keychain, not in the settings.";
@@ -1564,6 +1597,7 @@
 "Wortgrenze" = "Word boundary";
 "Wortzeichen" = "Word character";
 "Wovon Anvil die Finger lässt" = "What Anvil leaves alone";
+"Wähl links ein Archiv. Was darin liegt, steht dann hier — ohne dass etwas ausgepackt wird." = "Pick an archive on the left. What is inside then shows up here — without anything being unpacked.";
 "Wähle ein Git-Repository — Anvil liest die vorgemerkten Änderungen (`git diff --staged`)." = "Pick a Git repository — Anvil reads the staged changes (`git diff --staged`).";
 "Wähle rechts eine Variante." = "Pick a variant on the right.";
 "Wörter" = "words";
@@ -1590,8 +1624,11 @@
 "zeilenweise" = "line by line";
 "Zeitstempel" = "Timestamps";
 "Zeitzonen" = "Time zones";
+"Zieh Archive hinein, um hineinzusehen — oder Dateien und Ordner, um sie einzupacken. Beides geht stapelweise." = "Drag archives in to look inside — or files and folders to pack them. Both work in batches.";
 "Zieh ein Bild hierher, nimm eines aus der Zwischenablage, oder wähl einen Ausschnitt vom Bildschirm." = "Drop an image here, take one from the clipboard, or select a region of the screen.";
 "Zieht Aufgaben, Zuständigkeiten und Entscheidungen heraus." = "Pulls out tasks, owners and decisions.";
+"Ziel" = "Destination";
+"Zielordner wählen" = "Choose destination folder";
 "Zielpuffer für die Audioumwandlung konnte nicht angelegt werden." = "The destination buffer for audio conversion could not be created.";
 "Zielsprache" = "Target language";
 "Ziffer" = "Digit";

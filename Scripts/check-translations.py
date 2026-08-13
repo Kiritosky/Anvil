@@ -130,10 +130,11 @@ SKIP = {
     "gearshape", "globe", "highlighter", "hourglass", "house", "keyboard",
     "laptopcomputer", "link", "macwindow", "magnifyingglass", "mic", "network",
     "number", "oval", "paintpalette", "pencil", "photo", "plusminus", "qrcode",
-    "rectangle", "repeat", "ruler", "sparkle", "sparkles", "speedometer",
+    "rectangle", "repeat", "ruler", "shippingbox", "sparkle", "sparkles",
+    "speedometer",
     "tablecells", "terminal", "trash", "waveform",
     # Datei- und Produktnamen heißen in jeder Sprache gleich.
-    "heic", "jpg", "pdf", "png", "tiff", "txt", "swift", "git",
+    "heic", "jpg", "pdf", "png", "tiff", "txt", "zip", "swift", "git",
     "claude", "codex", "gemini",
     "esc",                                   # die Taste heißt überall so
     "ul", "false",                           # HTML und JSON in Beispielen

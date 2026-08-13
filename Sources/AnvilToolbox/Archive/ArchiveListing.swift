@@ -38,9 +38,9 @@ public struct ArchiveEntry: Sendable, Hashable, Identifiable {
     public var depth: Int { max(components.count - 1, 0) }
 
     public var fileExtension: String {
-        let name = name
-        guard let dot = name.lastIndex(of: "."), dot != name.startIndex else { return "" }
-        return String(name[name.index(after: dot)...]).lowercased()
+        let last = name
+        guard let dot = last.lastIndex(of: "."), dot != last.startIndex else { return "" }
+        return String(last[last.index(after: dot)...]).lowercased()
     }
 
     /// Warum ein Eintrag beim Auspacken gefährlich wäre.
