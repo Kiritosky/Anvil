@@ -43,7 +43,7 @@ public struct FolderCompareToolView: View {
             }
         }
         .anvilErrorBanner($error)
-        .anvilFilesDrop(.any, error: $error) { dropped in
+        .anvilFilesDrop(.file, error: $error) { dropped in
             accept(dropped.compactMap(\.url))
         }
     }

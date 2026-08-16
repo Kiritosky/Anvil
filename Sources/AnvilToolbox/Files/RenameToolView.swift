@@ -42,7 +42,7 @@ public struct RenameToolView: View {
             .disabled(!plan.isReady || isWorking)
         }
         .anvilErrorBanner($error)
-        .anvilFilesDrop(.any, error: $error) { dropped in
+        .anvilFilesDrop(.file, error: $error) { dropped in
             add(dropped.compactMap(\.url))
         }
         .onChange(of: rules) { replan() }

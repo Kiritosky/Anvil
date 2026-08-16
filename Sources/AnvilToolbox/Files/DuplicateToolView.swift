@@ -42,7 +42,7 @@ public struct DuplicateToolView: View {
             }
         }
         .anvilErrorBanner($error)
-        .anvilFilesDrop(.any, error: $error) { dropped in
+        .anvilFilesDrop(.file, error: $error) { dropped in
             guard let folder = dropped.compactMap(\.url).first else { return }
             open(folder)
         }

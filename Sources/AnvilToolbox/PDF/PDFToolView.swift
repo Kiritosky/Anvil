@@ -83,7 +83,7 @@ public struct PDFToolView: View {
             .disabled(documents.isEmpty || isWorking)
         }
         .anvilErrorBanner($error)
-        .anvilFilesDrop(.any, error: $error) { dropped in
+        .anvilFilesDrop(.file, error: $error) { dropped in
             add(dropped.compactMap(\.url))
         }
         .onChange(of: operation) { extracted = "" }
