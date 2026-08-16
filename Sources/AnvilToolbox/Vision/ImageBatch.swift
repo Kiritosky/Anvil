@@ -88,33 +88,61 @@ public final class ImageBatch {
 
         let urls = entries.map(\.url)
 
-        // Datei für Datei statt alles in einem Rutsch: Der Fortschritt
-        // entsteht dann hier, wo er hingehört, statt über einen Rückruf aus
-        // einer abgesetzten Aufgabe zurück auf den Hauptaktor zu müssen. Das
-        // war der Weg, den Swift 6 zu Recht verbietet — und er war auch
-        // umständlicher.
-        for (index, url) in urls.enumerated() {
-            let result = await Task.detached(priority: .userInitiated) {
-                ImageConversion.convertAll(
-                    [url],
-                    to: format,
-                    scale: scale,
-                    longestEdge: longestEdge,
-                    quality: quality
-                )
+        // Schwungweise statt Datei für Datei: Ein Bild umzurechnen ist reine
+        // Rechenarbeit, und die liegt auf einem Kern, während sieben andere
+        // zusehen. Der Fortschritt entsteht trotzdem hier, wo er hingehört —
+        // nach jedem Schwung statt über einen Rückruf aus einer abgesetzten
+        // Aufgabe zurück auf den Hauptaktor. Das war der Weg, den Swift 6 zu
+        // Recht verbietet.
+        for start in stride(from: 0, to: urls.count, by: Self.batchSize) {
+            let end = min(start + Self.batchSize, urls.count)
+            let slice = Array(urls[start..<end])
+
+            let results = await Task.detached(priority: .userInitiated) {
+                await withTaskGroup(of: ImageConversion.BatchResult?.self) { group in
+                    for url in slice {
+                        group.addTask {
+                            ImageConversion.convertAll(
+                                [url],
+                                to: format,
+                                scale: scale,
+                                longestEdge: longestEdge,
+                                quality: quality
+                            ).first
+                        }
+                    }
+
+                    var collected: [ImageConversion.BatchResult] = []
+                    for await result in group {
+                        if let result { collected.append(result) }
+                    }
+                    return collected
+                }
             }.value
 
-            progress = Double(index + 1) / Double(urls.count)
+            progress = Double(end) / Double(urls.count)
 
             // Zugeordnet wird über die URL, nicht über den Index: während
-            // gerechnet wurde, kann etwas aus der Liste geflogen sein.
-            guard let outcome = result.first,
-                  let position = entries.firstIndex(where: { $0.url == outcome.url })
-            else { continue }
-            entries[position].output = outcome.output
-            entries[position].failure = outcome.failure
+            // gerechnet wurde, kann etwas aus der Liste geflogen sein — und
+            // die Gruppe liefert ohnehin in der Reihenfolge, in der sie fertig
+            // wird.
+            for outcome in results {
+                guard let position = entries.firstIndex(where: { $0.url == outcome.url }) else {
+                    continue
+                }
+                entries[position].output = outcome.output
+                entries[position].failure = outcome.failure
+            }
         }
     }
+
+    /// Wie viele Bilder gleichzeitig gerechnet werden.
+    ///
+    /// Nicht „so viele wie Kerne": Jedes offene Bild liegt entpackt im
+    /// Speicher, und acht Fotos aus einer Kamera sind schon ein knappes
+    /// Gigabyte. Vier ist der Punkt, an dem die Zeit spürbar sinkt, ohne dass
+    /// der Speicher es merkt.
+    static let batchSize = 4
 
     // MARK: - Sichern
 
