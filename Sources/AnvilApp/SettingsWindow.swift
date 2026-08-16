@@ -296,10 +296,6 @@ struct IntelligenceSettingsView: View {
 
     @State private var apiKey = ""
     @State private var keyStatus: String?
-    @State private var githubToken = ""
-    @State private var githubStatus: String?
-
-    private let github = GitHubAccount()
 
     private var router: AIRouter { injectedRouter ?? environment.router }
 
@@ -439,23 +435,12 @@ struct IntelligenceSettingsView: View {
                 }
             }
 
-            SettingsGroup(
-                "GitHub",
-                footnote: "Für Werkzeuge, die ein Repository holen — ohne Zugang gehen nur öffentliche. Ein persönliches Token mit dem Recht `repo` genügt; anzulegen unter github.com/settings/tokens. Es liegt im Schlüsselbund und geht beim Klonen über die Umgebung an git, nicht als Argument."
-            ) {
-                SettingsWideRow("Token", help: .resolvedIfPresent(githubStatus)) {
-                    HStack(spacing: AnvilSpacing.sm) {
-                        AnvilTextField(text: $githubToken, placeholder: "ghp_…", isSecure: true)
-                        AnvilButton("Verbinden", role: .secondary) { saveToken() }
-                        AnvilButton("Trennen", role: .destructive) { saveToken(clearing: true) }
-                    }
-                }
-            }
+            GitHubSettingsView(
+                settings: environment.settings,
+                pasteboard: environment.context.pasteboard
+            )
         }
-        .task {
-            loadKeyStatus()
-            loadTokenStatus()
-        }
+        .task { loadKeyStatus() }
     }
 
     // MARK: Bindings
@@ -499,21 +484,6 @@ struct IntelligenceSettingsView: View {
         apiKey = ""
         keyStatus = router.apiKey().map { _ in "Ein Schlüssel ist hinterlegt." }
             ?? "Noch kein Schlüssel hinterlegt."
-    }
-
-    private func loadTokenStatus() {
-        githubToken = ""
-        githubStatus = github.status
-    }
-
-    private func saveToken(clearing: Bool = false) {
-        do {
-            try github.connect(clearing ? nil : githubToken)
-            githubToken = ""
-            githubStatus = clearing ? localized("Getrennt.") : github.status
-        } catch {
-            githubStatus = AnvilError.wrapping(error).message
-        }
     }
 
     private func saveKey(clearing: Bool = false) {

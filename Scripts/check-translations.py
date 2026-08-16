@@ -159,6 +159,8 @@ SKIP = {
     "heic", "jpg", "pdf", "png", "tiff", "txt", "zip", "swift", "git",
     "claude", "codex", "gemini",
     "esc",                                   # die Taste heißt überall so
+    # Die Kennung des Device Flow, wörtlich aus der Norm.
+    "urn:ietf:params:oauth:grant-type:device_code",
     "ul", "ol", "true", "false", " checked", # HTML und JSON in Beispielen
     # Namen, die ein Werkzeug erzeugt: Kennungen, Dateinamen, CSS-Variablen.
     # Übersetzt wären es andere Namen — und damit andere Dinge.

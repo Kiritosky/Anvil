@@ -149,8 +149,17 @@ private final class OutputCollector: @unchecked Sendable {
     private var isFinished = false
 
     private let complete: (ProcessRunner.Result) -> Void
+    /// Wird nach jedem Block gerufen, mit allem, was bisher da ist.
+    ///
+    /// Für den Weg, der die Ausgabe laufend weitergibt statt am Ende: ein
+    /// Modell, das Wort für Wort antwortet, soll auch Wort für Wort ankommen.
+    private let onOutput: ((String) -> Void)?
 
-    init(complete: @escaping (ProcessRunner.Result) -> Void) {
+    init(
+        onOutput: ((String) -> Void)? = nil,
+        complete: @escaping (ProcessRunner.Result) -> Void
+    ) {
+        self.onOutput = onOutput
         self.complete = complete
     }
 
@@ -172,7 +181,12 @@ private final class OutputCollector: @unchecked Sendable {
 
         lock.lock()
         if isError { error.append(data) } else { out.append(data) }
+        let snapshot = isError || onOutput == nil
+            ? nil
+            : String(decoding: out, as: UTF8.self)
         lock.unlock()
+
+        if let snapshot { onOutput?(snapshot) }
     }
 
     func exited(with status: Int32) {
@@ -263,34 +277,40 @@ extension ProcessRunner {
             process.standardOutput = outPipe
             process.standardError = errPipe
 
-            let state = OutputCollector()
-            outPipe.fileHandleForReading.readabilityHandler = { handle in
-                let data = handle.availableData
-                guard !data.isEmpty else { return }
-                state.appendOut(data)
-                continuation.yield(state.outText)
-            }
-            errPipe.fileHandleForReading.readabilityHandler = { handle in
-                state.appendError(handle.availableData)
-            }
-
-            process.terminationHandler = { finished in
-                outPipe.fileHandleForReading.readabilityHandler = nil
-                errPipe.fileHandleForReading.readabilityHandler = nil
-                state.appendOut(outPipe.fileHandleForReading.readDataToEndOfFile())
-                state.appendError(errPipe.fileHandleForReading.readDataToEndOfFile())
-                guard state.finish() else { return }
-
-                guard finished.terminationStatus == 0 else {
+            // Derselbe Sammler wie beim einmaligen Aufruf: Fertig ist es,
+            // wenn beide Rohre am Ende sind und das Programm beendet ist.
+            let state = OutputCollector { text in
+                continuation.yield(text)
+            } complete: { result in
+                guard result.exitCode == 0 else {
+                    let statusCode = Int(result.exitCode)
                     continuation.finish(throwing: AnvilError.provider(
-                        localized("\(executable) ist mit Fehler \(Int(finished.terminationStatus)) beendet worden."),
-                        underlying: state.errorText.isEmpty ? nil : state.errorText
+                        localized("\(executable) ist mit Fehler \(statusCode) beendet worden."),
+                        underlying: result.standardError.isEmpty ? nil : result.standardError
                     ))
                     return
                 }
 
-                continuation.yield(state.outText)
+                continuation.yield(result.standardOutput)
                 continuation.finish()
+            }
+
+            outPipe.fileHandleForReading.readabilityHandler = { handle in
+                state.read(handle, isError: false)
+            }
+            errPipe.fileHandleForReading.readabilityHandler = { handle in
+                state.read(handle, isError: true)
+            }
+
+            process.terminationHandler = { finished in
+                state.exited(with: finished.terminationStatus)
+
+                DispatchQueue.global().asyncAfter(deadline: .now() + Self.gracePeriod) {
+                    state.giveUp(
+                        out: outPipe.fileHandleForReading,
+                        error: errPipe.fileHandleForReading
+                    )
+                }
             }
 
             continuation.onTermination = { _ in
@@ -300,7 +320,9 @@ extension ProcessRunner {
             do {
                 try process.run()
             } catch {
-                guard state.finish() else { return }
+                outPipe.fileHandleForReading.readabilityHandler = nil
+                errPipe.fileHandleForReading.readabilityHandler = nil
+                guard state.claim() else { return }
                 continuation.finish(throwing: AnvilError.unexpected(
                     localized("\(executable) konnte nicht gestartet werden: \(error.localizedDescription)")
                 ))

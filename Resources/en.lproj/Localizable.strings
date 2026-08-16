@@ -70,6 +70,7 @@
 "1-3, 5, 8- — wie im Druckdialog. Leer heißt alle. Was es nicht gibt, fällt weg." = "1-3, 5, 8- — as in the print dialog. Empty means all. Anything that does not exist falls away.";
 "Ab jetzt" = "From now";
 "Ab welcher Größe" = "From what size";
+"Abgebrochen." = "Cancelled.";
 "abgelöst" = "detached";
 "abgelöster HEAD" = "detached HEAD";
 "Abgeschlossene Durchläufe der Diktat- und KI-Werkzeuge." = "Completed runs of the dictation and AI tools.";
@@ -97,7 +98,9 @@
 "alte Zweige" = "stale branches";
 "Angelegt als %@. Es steht jetzt unter „Eigene Tools\" — %lld eigene insgesamt." = "Created as %@. It now sits under \"Your own tools\" — %lld of your own in total.";
 "Angelesen" = "Peeked at";
+"Angemeldet — private Repositories gehen auch." = "Signed in — private repositories work too.";
 "Angesehen" = "Looked at";
+"Anmeldung" = "Sign-in";
 "Anteil" = "Share";
 "Anteil am Code, nicht an allen Zeilen: Leerzeilen gehören niemandem." = "Share of the code, not of all lines: blank lines belong to nobody.";
 "Anteil an den geschriebenen Zeilen — Leerzeilen zählen hier nicht mit." = "Share of the written lines — blank lines do not count here.";
@@ -481,6 +484,7 @@
 "Aus der Zwischenablage lesen" = "Read from the clipboard";
 "Aus diesem Bild lässt sich nichts lesen." = "There is nothing readable in this image.";
 "Aus einer Beispielantwort werden Modelle" = "A sample response becomes models";
+"Aus einer eigenen OAuth-App unter github.com/settings/developers — mit eingeschaltetem Device Flow. Die Client-ID ist öffentlich und steht deshalb hier und nicht im Schlüsselbund." = "From your own OAuth app at github.com/settings/developers — with Device Flow switched on. The client ID is public, which is why it lives here and not in the keychain.";
 "Aus einer Liste von Objekten entsteht ein Typ, in dem jedes Feld steht, das in irgendeinem Element vorkam — was nicht überall vorkam, wird optional. Das ist genau die Auskunft, die ein einzelnes Beispiel nicht hergibt." = "A list of objects becomes one type holding every field that appeared in any element — whatever did not appear everywhere becomes optional. That is exactly what a single example cannot tell you.";
 "Aus Favoriten entfernen" = "Remove from favourites";
 "Aus Stichworten eine Nachricht" = "A message from a few notes";
@@ -573,6 +577,8 @@
 "Broadcast an alle" = "Broadcast to everyone";
 "Bytes" = "bytes";
 "CIDR rechnen, teilen, Adressen zuordnen" = "Work out CIDR, split it, place addresses";
+"Client-ID" = "Client ID";
+"Code eingeben" = "Enter the code";
 "CSV ansehen, sortieren, umwandeln" = "View CSV, sort it, convert it";
 "CSV, TSV oder mit Semikolon — das Trennzeichen erkennt Anvil selbst." = "CSV, TSV or semicolon-separated — Anvil works out the delimiter itself.";
 "Codeblock nicht geschlossen" = "Code block never closed";
@@ -587,6 +593,7 @@
 "Code" = "Code";
 "Code erklären" = "Explain code";
 "Code hier einfügen …" = "Paste code here…";
+"Code kopieren" = "Copy the code";
 "Code-Kommentar" = "Code comment";
 "Code-Points, Namen, UTF-8" = "Code points, names, UTF-8";
 "Code-Review" = "Code review";
@@ -648,6 +655,8 @@
 "Der %@ ist kein gültiges Base64." = "The %@ is not valid Base64.";
 "Der Anbieter hat mit HTTP %lld geantwortet." = "The provider responded with HTTP %lld.";
 "Der Bildschirm konnte nicht aufgenommen werden: %@" = "The screen could not be captured: %@";
+"Der Code ist abgelaufen. Fang die Anmeldung noch einmal an." = "The code has expired. Start the sign-in again.";
+"Der Code liegt schon in der Zwischenablage. Die Seite dazu ist offen." = "The code is already on the clipboard. The page for it is open.";
 "Der Export ist fehlgeschlagen: %@" = "The export failed: %@";
 "Der Filter rechts trifft in keiner Spalte." = "The filter on the right matches in no column.";
 "Der ganze Satz aus einer Vorlage" = "The whole set from one template";
@@ -683,6 +692,7 @@
 "Die Adresse ließ sich nicht bilden." = "The address could not be formed.";
 "Die Anfrage ergibt keinen Sinn — Tippfehler im Body oder in den Parametern." = "The request makes no sense — a typo in the body or the parameters.";
 "Die Anführungszeichen gehen nicht zu." = "The quotes are never closed.";
+"Die Anmeldung wurde bei GitHub abgelehnt." = "The sign-in was denied at GitHub.";
 "Die Antwort von %@ war nicht lesbar." = "The response from %@ could not be read.";
 "Die Antwort von Anthropic war nicht lesbar." = "The response from Anthropic could not be read.";
 "Die Aufnahme konnte nicht fortgesetzt werden: %@" = "Recording could not be resumed: %@";
@@ -923,7 +933,9 @@
 "Fünf Stichpunkte" = "Five bullet points";
 "Für %@ ist kein passendes Audioformat verfügbar." = "No suitable audio format is available for %@.";
 "Für Aufkleber und Ausdrucke, die etwas abbekommen." = "For stickers and printouts that take a beating.";
+"Für diese App ist der Device Flow bei GitHub nicht eingeschaltet." = "Device Flow is not switched on for this app at GitHub.";
 "Für diesen Anbieter fehlt der API-Schlüssel." = "This provider is missing its API key.";
+"Für Werkzeuge, die ein Repository holen — ohne Zugang gehen nur öffentliche. Anvil fragt nur nach dem Recht `repo`; das ist das kleinste, mit dem sich ein privates Repository klonen lässt." = "For tools that fetch a repository — without access only public ones work. Anvil asks for the `repo` scope and nothing else; it is the smallest one that can clone a private repository.";
 "Für Werkzeuge, die ein Repository holen — ohne Zugang gehen nur öffentliche. Ein persönliches Token mit dem Recht `repo` genügt; anzulegen unter github.com/settings/tokens. Es liegt im Schlüsselbund und geht beim Klonen über die Umgebung an git, nicht als Argument." = "For tools that fetch a repository — without access only public ones work. A personal token with the `repo` scope is enough; create one at github.com/settings/tokens. It lives in the keychain and reaches git through the environment when cloning, not as an argument.";
 "Für „%@\" gibt es in dieser Ansicht nichts. Setze den Filter zurück oder such nach etwas anderem." = "Nothing matches “%@” in this view. Reset the filter or search for something else.";
 "Gab es, gibt es absichtlich nicht mehr." = "It existed, and is deliberately gone.";
@@ -956,10 +968,14 @@
 "Ging nicht" = "Didn’t work";
 "GitHub" = "GitHub";
 "GitHub hat den Zugang abgelehnt. Stimmt das Token noch?" = "GitHub refused access. Is the token still valid?";
+"GitHub hat die Anmeldung nicht angefangen." = "GitHub did not start the sign-in.";
 "GitHub hat keine Liste geschickt." = "GitHub did not send a list.";
 "GitHub hat mit %lld geantwortet." = "GitHub answered with %lld.";
+"GitHub hat nichts Verwertbares geschickt." = "GitHub sent nothing usable.";
 "GitHub kennt das nicht — oder das Token darf es nicht sehen." = "GitHub does not know this — or the token is not allowed to see it.";
+"GitHub kennt diese Client-ID nicht — oder der Device Flow ist für sie nicht eingeschaltet." = "GitHub does not know this client ID — or Device Flow is not switched on for it.";
 "GitHub kennt „%@\" nicht." = "GitHub does not know \"%@\".";
+"GitHub sagt: %@" = "GitHub says: %@";
 "Gleicher Inhalt, anderer Ton" = "Same content, different tone";
 "Gliedert den Inhalt in Stichpunkte." = "Breaks the content into bullet points.";
 "Globale Tastenkürzel konnten nicht eingerichtet werden." = "Global shortcuts could not be set up.";
@@ -1230,6 +1246,7 @@
 "Minute" = "minute";
 "Minuten" = "Minutes";
 "Mit dem Modell aufräumen" = "Clean up with the model";
+"Mit GitHub anmelden" = "Sign in with GitHub";
 "Mit KI" = "With AI";
 "Mittel" = "Medium";
 "mittwochs" = "Wednesdays";
@@ -1344,6 +1361,8 @@
 "Noch nichts zu vergleichen" = "Nothing to compare yet";
 "Normalform" = "Normal form";
 "Nur dieses Netzsegment" = "This link only";
+"Oder ein Token" = "Or a token";
+"Ohne Client-ID geht die Anmeldung nicht — sie steht in den Einstellungen." = "Without a client ID there is no sign-in — it goes into settings.";
 "So bliebe keine Seite übrig." = "That would leave no page at all.";
 "Tabellenname" = "Table name";
 "nicht belegt" = "not assigned";
@@ -1497,6 +1516,7 @@
 "Schwerpunkt" = "Focus";
 "Schwärzen" = "Redact";
 "Sehr groß (30 %)" = "Very large (30%)";
+"Seite öffnen" = "Open the page";
 "September" = "September";
 "Setzt den Inhalt auf ein Format, das Telefone erkennen." = "Sets the content to a format phones recognise.";
 "Setzt jedes Kürzel auf den Wert, mit dem Anvil ausgeliefert wird." = "Puts every shortcut back to what Anvil ships with.";
@@ -1526,6 +1546,7 @@
 "Standardwerte für neue Aufnahmen im Speech Studio." = "Defaults for new recordings in Speech Studio.";
 "Startet den Modell-Durchlauf, sobald die Aufnahme endet." = "Starts the model run as soon as recording ends.";
 "Startet …" = "Starting…";
+"Statt der Anmeldung: ein persönliches Token mit dem Recht `repo`, anzulegen unter github.com/settings/tokens. Es landet an derselben Stelle im Schlüsselbund." = "Instead of signing in: a personal token with the `repo` scope, created at github.com/settings/tokens. It ends up in the same place in the keychain.";
 "Status" = "Status";
 "Steckbrief" = "At a glance";
 "Stehen vor dem Prompt. Leer lassen für die Vorgabe des Werkzeugs." = "Placed before the prompt. Leave empty for the tool's own default.";
@@ -1677,6 +1698,7 @@
 "Vorne einfügen" = "Insert at the top";
 "Vorübergehend woanders." = "Somewhere else for now.";
 "Wandelt die Aufnahme in Text um. Läuft auf diesem Mac." = "Turns the recording into text. Runs on this Mac.";
+"Warte auf die Bestätigung bei GitHub …" = "Waiting for confirmation at GitHub …";
 "Warum keine Werte" = "Why no values";
 "Was 418 eigentlich heißt" = "What 418 actually means";
 "Was abgeleitet wurde" = "What was derived";
