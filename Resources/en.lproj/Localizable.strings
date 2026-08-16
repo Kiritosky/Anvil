@@ -611,6 +611,7 @@
 "Das Feld %@ ist leer." = "The %@ field is empty.";
 "Das ist kein Wert: %@" = "That is not a value: %@";
 "Das ist kein gültiges Base64." = "That is not valid Base64.";
+"Das ist kein Repository — erwartet wird `besitzer/name`." = "That is not a repository — `owner/name` is expected.";
 "Das ist keine IPv4-Adresse: %@" = "That is not an IPv4 address: %@";
 "Das ist keine IPv6-Adresse: %@" = "That is not an IPv6 address: %@";
 "Das ist keine gültige prozentkodierte Zeichenkette." = "That is not a valid percent-encoded string.";
@@ -678,6 +679,7 @@
 "Dezimalstunden" = "Decimal hours";
 "Dialekt" = "Flavour";
 "Die Adresse gibt es, diese Methode nicht." = "The address exists, this method does not.";
+"Die Adresse ließ sich nicht bilden." = "The address could not be formed.";
 "Die Anfrage ergibt keinen Sinn — Tippfehler im Body oder in den Parametern." = "The request makes no sense — a typo in the body or the parameters.";
 "Die Anführungszeichen gehen nicht zu." = "The quotes are never closed.";
 "Die Antwort von %@ war nicht lesbar." = "The response from %@ could not be read.";
@@ -769,6 +771,7 @@
 "Ein Netz je Zeile — mit Präfixlänge, mit Maske oder als nackte Adresse." = "One network per line — with a prefix length, with a mask, or as a bare address.";
 "Ein ganzer Bildschirm, sofort." = "One whole display, at once.";
 "Ein JWT besteht aus drei mit Punkt getrennten Teilen." = "A JWT has three parts separated by dots.";
+"Ein Klick holt das Repository und zählt es." = "One click fetches the repository and counts it.";
 "Ein Satz" = "One sentence";
 "Ein Schlüssel darf nicht leer sein." = "A key must not be empty.";
 "Ein Schlüssel ist hinterlegt." = "A key is stored.";
@@ -920,6 +923,7 @@
 "Für %@ ist kein passendes Audioformat verfügbar." = "No suitable audio format is available for %@.";
 "Für Aufkleber und Ausdrucke, die etwas abbekommen." = "For stickers and printouts that take a beating.";
 "Für diesen Anbieter fehlt der API-Schlüssel." = "This provider is missing its API key.";
+"Für Werkzeuge, die ein Repository holen — ohne Zugang gehen nur öffentliche. Ein persönliches Token mit dem Recht `repo` genügt; anzulegen unter github.com/settings/tokens. Es liegt im Schlüsselbund und geht beim Klonen über die Umgebung an git, nicht als Argument." = "For tools that fetch a repository — without access only public ones work. A personal token with the `repo` scope is enough; create one at github.com/settings/tokens. It lives in the keychain and reaches git through the environment when cloning, not as an argument.";
 "Für „%@\" gibt es in dieser Ansicht nichts. Setze den Filter zurück oder such nach etwas anderem." = "Nothing matches “%@” in this view. Reset the filter or search for something else.";
 "Gab es, gibt es absichtlich nicht mehr." = "It existed, and is deliberately gone.";
 "Ganz gelesen" = "Read in full";
@@ -938,6 +942,7 @@
 "Gesichert" = "Saved";
 "Gesicherte Aufnahmen liegen unter Anvil › Screenshots." = "Saved shots live under Anvil › Screenshots.";
 "gestern" = "yesterday";
+"Getrennt." = "Disconnected.";
 "Gezählt" = "Counted";
 "Gezählt wird die Größe der Dateien, nicht der belegte Platz auf der Platte. Bei vielen winzigen Dateien liegt der echte Verbrauch höher, weil jede einen ganzen Block bekommt." = "What is counted is the size of the files, not the space taken up on disk. With many tiny files the real usage is higher, because each one gets a whole block.";
 "Geänderter Text …" = "Changed text…";
@@ -948,6 +953,12 @@
 "Gilt in jeder App. Kann mit anderen Programmen kollidieren." = "Works in every app. May collide with other programs.";
 "Gilt, während Anvil vorne ist, und steht im Menü." = "Works while Anvil is in front, and appears in the menu.";
 "Ging nicht" = "Didn’t work";
+"GitHub" = "GitHub";
+"GitHub hat den Zugang abgelehnt. Stimmt das Token noch?" = "GitHub refused access. Is the token still valid?";
+"GitHub hat keine Liste geschickt." = "GitHub did not send a list.";
+"GitHub hat mit %lld geantwortet." = "GitHub answered with %lld.";
+"GitHub kennt das nicht — oder das Token darf es nicht sehen." = "GitHub does not know this — or the token is not allowed to see it.";
+"GitHub kennt „%@\" nicht." = "GitHub does not know \"%@\".";
 "Gleicher Inhalt, anderer Ton" = "Same content, different tone";
 "Gliedert den Inhalt in Stichpunkte." = "Breaks the content into bullet points.";
 "Globale Tastenkürzel konnten nicht eingerichtet werden." = "Global shortcuts could not be set up.";
@@ -989,6 +1000,7 @@
 "Hinter dem Wert steht noch etwas." = "There is something after the value.";
 "hinzu" = "added";
 "Hinzugefügt" = "Added";
+"Holen und zählen" = "Fetch and count";
 "Hostbereich" = "Host range";
 "Hosts" = "Hosts";
 "im Dokument" = "in the document";
@@ -1169,6 +1181,7 @@
 "macOS braucht zehn Einträge, iOS siebzehn. Gezeichnet werden weniger: Zwei Einträge derselben Bildpunktgröße bekommen dieselbe Datei." = "macOS needs ten entries, iOS seventeen. Fewer are drawn: two entries of the same pixel size get the same file.";
 "Manchmal ist die Antwort kein Ordner, sondern eine Endung, die überall verstreut liegt." = "Sometimes the answer is not a folder but an extension scattered everywhere.";
 "Maßstab" = "Scale";
+"Meine Repositories" = "My repositories";
 "Nach \\u stehen vier Hexziffern." = "Four hex digits follow \\u.";
 "Name doppelt im Stapel" = "Name occurs twice in the batch";
 "Name schon vergeben" = "Name already taken";
@@ -1272,6 +1285,7 @@
 "Neu zählen" = "Count again";
 "Neue Präfixlänge" = "New prefix length";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
+"Nicht verbunden — nur öffentliche Repositories." = "Not connected — public repositories only.";
 "Nicht zu öffnen: %@" = "Cannot be opened: %@";
 "nichts" = "nothing";
 "Nichts ausgewählt" = "Nothing selected";
@@ -1366,6 +1380,8 @@
 "Ohne Sonderzeichen" = "Without symbols";
 "Ohne Text gibt es nichts zu kodieren." = "Without text there is nothing to encode.";
 "Ohne Ziel landet alles neben dem Original. Jedes Archiv bekommt beim Auspacken einen eigenen Ordner — auch wenn schon einer darin liegt." = "Without a destination everything lands next to the original. Every archive gets a folder of its own when unpacked — even if there is already one inside.";
+"Ohne Zugang gehen nur öffentliche Repositories. Das Token kommt in die Einstellungen unter „KI & Konten\" und liegt im Schlüsselbund." = "Without access only public repositories work. The token goes into settings under \"AI & accounts\" and lives in the keychain.";
+"Ohne Zugang gibt es keine Liste — verbinde Anvil in den Einstellungen mit GitHub." = "Without access there is no list — connect Anvil to GitHub in settings.";
 "Ohne Zuordnung" = "Unassigned";
 "Oktober" = "October";
 "Ollama (lokal)" = "Ollama (local)";
@@ -1560,6 +1576,7 @@
 "Textvergleich" = "Text comparison";
 "Titel" = "Title case";
 "To-dos" = "To-dos";
+"Token" = "Token";
 "Token lesbar machen" = "Make a token readable";
 "Ton" = "Tone";
 "Tool löschen" = "Delete tool";
@@ -1573,6 +1590,7 @@
 "Trag eine Zahl ein — 404, oder 4 für alle davon." = "Enter a number — 404, or 4 for all of them.";
 "Trag oben einen regulären Ausdruck ein — Treffer erscheinen sofort." = "Type a regular expression above — matches appear instantly.";
 "Treffer" = "Matches";
+"Trennen" = "Disconnect";
 "Trennzeichen" = "Delimiter";
 "Typ" = "Type";
 "Typen" = "Types";
@@ -1604,6 +1622,9 @@
 "Unverändert" = "Unchanged";
 "Variante" = "Variant";
 "Varianten zu einer Frage" = "Options for a question";
+"Verbinden" = "Connect";
+"Verbunden — private Repositories gehen auch." = "Connected — private repositories work too.";
+"Verbunden — private Repositories gehen auch. Geklont wird flach, ins temporäre Verzeichnis, und der Klon geht weg, sobald etwas anderes gezählt wird." = "Connected — private repositories work too. Cloning is shallow, into the temporary directory, and the clone goes away as soon as something else is counted.";
 "Vereinigtes Königreich" = "United Kingdom";
 "Vergisst den gemerkten Pfad — nötig, wenn du das Werkzeug gerade erst installiert hast." = "Forgets the remembered path — needed if you have only just installed the tool.";
 "Vergleich" = "Comparison";
@@ -1640,6 +1661,7 @@
 "Visitenkarte" = "Contact card";
 "Vokabular" = "vocabulary";
 "Voller Pfad oder Name im Pfad. Der Prompt wird als letztes Argument angehängt." = "Full path, or a name on the PATH. The prompt is appended as the last argument.";
+"Von GitHub" = "From GitHub";
 "Von Hex" = "From hex";
 "Von null aus lässt sich keine Änderung berechnen." = "There is no change to calculate from zero.";
 "Von überall diktieren" = "Dictate from anywhere";
@@ -1781,6 +1803,7 @@
 "Zufällig, ohne Verwechslungsgefahr" = "Random, with no look-alike characters";
 "Zuletzt" = "Recent";
 "Zuletzt benutzt" = "Recently used";
+"Zuletzt bespielt" = "Recently pushed to";
 "Zum Beispiel #3A7BD5, rgb(58, 123, 213), hsl(214, 63%, 53%) oder „blau\"." = "For example #3A7BD5, rgb(58, 123, 213), hsl(214, 63%, 53%) or “blue”.";
 "zur Minute %@" = "at minute %@";
 "Zurück" = "Back";
@@ -1837,9 +1860,11 @@
 "„%@\" ist auf diesem Mac nicht installiert — oder liegt nicht im Pfad." = "“%@” is not installed on this Mac — or is not on the PATH.";
 "„%@\" ist kein gültiger Bereich für %@." = "“%@” is not a valid range for %@.";
 "„%@\" ist kein Hex-Byte." = "“%@” is not a hex byte.";
+"„%@\" ist kein Repository-Name." = "\"%@\" is not a repository name.";
 "„%@\" liegt außerhalb von %@." = "“%@” is outside %@.";
 "„%@\" ließ sich nicht als Bild lesen." = "“%@” could not be read as an image.";
 "„%@\" ließ sich nicht als Bild öffnen." = "“%@” could not be opened as an image.";
+"„%@\" ließ sich nicht holen: %@" = "\"%@\" could not be fetched: %@";
 "„%@\" ließ sich nicht lesen: %@" = "“%@” could not be read: %@";
 "„%@\" ließ sich nicht öffnen: %@" = "“%@” could not be opened: %@";
 "„%@\" wird von der Festplatte entfernt. Das lässt sich nicht rückgängig machen." = "“%@” will be removed from disk. This cannot be undone.";

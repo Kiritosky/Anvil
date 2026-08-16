@@ -15,6 +15,15 @@ public struct CodeCountToolView: View {
     @State private var error: AnvilError?
     @State private var orientation: WorkbenchOrientation = .horizontal
 
+    @State private var repositoryName = ""
+    @State private var repositories: [GitHubRepository] = []
+    @State private var isLoadingList = false
+    /// Der Klon, den Anvil selbst angelegt hat — und danach wieder wegräumt.
+    @State private var clone: URL?
+
+    private let account = GitHubAccount()
+    private var github: GitHubClient { GitHubClient(account: account) }
+
     public init(context: ToolContext, metadata: ToolMetadata) {
         self.context = context
         self.metadata = metadata
@@ -50,9 +59,84 @@ public struct CodeCountToolView: View {
     // MARK: - Zählen
 
     private func open(_ url: URL) {
+        discardClone()
         root = FileWalk.isDirectory(url) ? url : url.deletingLastPathComponent()
         name = root?.lastPathComponent ?? ""
         measure()
+    }
+
+    // MARK: - Von GitHub
+
+    /// Holt die Liste der eigenen Repositories.
+    private func loadRepositories() {
+        guard !isLoadingList else { return }
+        Task {
+            isLoadingList = true
+            defer { isLoadingList = false }
+            do {
+                repositories = try await github.repositories()
+            } catch {
+                self.error = AnvilError.wrapping(error)
+            }
+        }
+    }
+
+    /// Klont ein Repository flach und zählt es.
+    ///
+    /// Der Klon liegt im temporären Verzeichnis und geht weg, sobald etwas
+    /// anderes gezählt wird: Anvil ist kein Ort, an dem fremder Code
+    /// liegenbleibt.
+    private func count(_ repository: GitHubRepository) {
+        guard !isWorking else { return }
+        Task {
+            // Kein `defer`: Gleich danach zählt `measure()`, und das lässt
+            // sich nur anstoßen, wenn gerade nichts läuft.
+            isWorking = true
+
+            do {
+                discardClone()
+                let folder = FileManager.default.temporaryDirectory
+                    .appending(path: "anvil-code-\(UUID().uuidString)")
+                try FileManager.default.createDirectory(
+                    at: folder,
+                    withIntermediateDirectories: true
+                )
+
+                let checkout = try await github.clone(repository, into: folder)
+                clone = folder
+                root = checkout
+                name = repository.fullName
+            } catch {
+                self.error = AnvilError.wrapping(error)
+                isWorking = false
+                return
+            }
+
+            isWorking = false
+            measure()
+        }
+    }
+
+    /// Nimmt einen eingetippten Namen oder eine eingefügte Adresse.
+    private func countTyped() {
+        guard let fullName = GitHubRepository.fullName(from: repositoryName) else {
+            error = .invalidInput(localized("Das ist kein Repository — erwartet wird `besitzer/name`."))
+            return
+        }
+
+        Task {
+            do {
+                count(try await github.repository(fullName))
+            } catch {
+                self.error = AnvilError.wrapping(error)
+            }
+        }
+    }
+
+    private func discardClone() {
+        guard let clone else { return }
+        try? FileManager.default.removeItem(at: clone)
+        self.clone = nil
     }
 
     private func chooseFolder() {
@@ -308,6 +392,59 @@ public struct CodeCountToolView: View {
                 KeyValueList(count.entries.prefix(8).map { entry in
                     KeyValueList.Item(entry.language, CodeCount.percent(entry.commentShare))
                 })
+            }
+        }
+
+        InspectorSection(
+            "Von GitHub",
+            systemImage: "chevron.left.forwardslash.chevron.right",
+            footnote: account.isConnected
+                ? "Verbunden — private Repositories gehen auch. Geklont wird flach, ins temporäre Verzeichnis, und der Klon geht weg, sobald etwas anderes gezählt wird."
+                : "Ohne Zugang gehen nur öffentliche Repositories. Das Token kommt in die Einstellungen unter „KI & Konten\" und liegt im Schlüsselbund."
+        ) {
+            OptionRow("Repository") {
+                AnvilTextField(
+                    text: $repositoryName,
+                    placeholder: "besitzer/name",
+                    isMonospaced: true
+                )
+            }
+            AnvilButton("Holen und zählen", systemImage: "arrow.down.circle", isBusy: isWorking) {
+                countTyped()
+            }
+            .disabled(isWorking || repositoryName.isEmpty)
+
+            if account.isConnected {
+                AnvilButton("Meine Repositories", systemImage: "list.bullet", isBusy: isLoadingList) {
+                    loadRepositories()
+                }
+                .disabled(isLoadingList)
+            }
+        }
+
+        if !repositories.isEmpty {
+            InspectorSection(
+                "Zuletzt bespielt",
+                systemImage: "clock",
+                footnote: "Ein Klick holt das Repository und zählt es."
+            ) {
+                ForEach(repositories.prefix(12)) { repository in
+                    Button { count(repository) } label: {
+                        HStack(spacing: AnvilSpacing.xs) {
+                            Image(systemName: repository.isPrivate ? "lock" : "globe")
+                                .font(AnvilFont.caption)
+                                .foregroundStyle(AnvilColor.textTertiary)
+                            Text.raw(repository.fullName)
+                                .font(AnvilFont.body)
+                                .foregroundStyle(AnvilColor.textPrimary)
+                                .lineLimit(1)
+                            Spacer(minLength: 0)
+                        }
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(isWorking)
+                }
             }
         }
 
