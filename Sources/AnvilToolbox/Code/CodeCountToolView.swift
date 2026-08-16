@@ -8,7 +8,9 @@ public struct CodeCountToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
 
-    @State private var root: URL?
+    /// Was gezählt wird — einer oder mehrere. Wer fünf Auschecks
+    /// nebeneinander liegen hat, will die Summe und nicht fünf Durchläufe.
+    @State private var roots: [URL] = []
     @State private var name = ""
     @State private var count = CodeCount.empty
     @State private var isWorking = false
@@ -37,7 +39,7 @@ public struct CodeCountToolView: View {
         } actions: {
             WorkbenchOrientationPicker(orientation: $orientation)
 
-            if root != nil {
+            if !roots.isEmpty {
                 AnvilButton(
                     "Neu zählen",
                     systemImage: "arrow.clockwise",
@@ -51,17 +53,19 @@ public struct CodeCountToolView: View {
         }
         .anvilErrorBanner($error)
         .anvilFilesDrop(.file, error: $error) { dropped in
-            guard let url = dropped.compactMap(\.url).first else { return }
-            open(url)
+            open(dropped.compactMap(\.url))
         }
     }
 
     // MARK: - Zählen
 
-    private func open(_ url: URL) {
+    private func open(_ urls: [URL]) {
+        guard !urls.isEmpty else { return }
         discardClone()
-        root = FileWalk.isDirectory(url) ? url : url.deletingLastPathComponent()
-        name = root?.lastPathComponent ?? ""
+        roots = urls.map { FileWalk.isDirectory($0) ? $0 : $0.deletingLastPathComponent() }
+        name = roots.count == 1
+            ? (roots.first?.lastPathComponent ?? "")
+            : localized("\(roots.count) Projekte")
         measure()
     }
 
@@ -104,7 +108,7 @@ public struct CodeCountToolView: View {
 
                 let checkout = try await github.clone(repository, into: folder)
                 clone = folder
-                root = checkout
+                roots = [checkout]
                 name = repository.fullName
             } catch {
                 self.error = AnvilError.wrapping(error)
@@ -141,11 +145,12 @@ public struct CodeCountToolView: View {
 
     private func chooseFolder() {
         guard let folder = SavePanel.directory(prompt: localized("Ordner wählen")) else { return }
-        open(folder)
+        open([folder])
     }
 
     private func measure() {
-        guard let root, !isWorking else { return }
+        let folders = roots
+        guard !folders.isEmpty, !isWorking else { return }
 
         Task {
             isWorking = true
@@ -154,16 +159,18 @@ public struct CodeCountToolView: View {
             // Lesen und zählen gehen beide über die Platte und über jede
             // Zeile. Auf dem Hauptthread stünde so lange das Fenster.
             count = await Task.detached {
-                let files = FileWalk.files(in: root).compactMap { file -> CodeCount.SourceFile? in
-                    let path = FileWalk.relativePath(of: file.url, under: root)
-                    // Erst prüfen, ob die Datei überhaupt zählt: Eine Datei zu
-                    // lesen, um sie danach wegzuwerfen, ist die teuerste Art,
-                    // nichts zu tun.
-                    guard !CodeLanguage.isIgnored(path),
-                          CodeLanguage.of(path: path) != nil,
-                          let text = try? TextFile.read(at: file.url)
-                    else { return nil }
-                    return CodeCount.SourceFile(path: path, text: text)
+                let files = folders.flatMap { folder in
+                    FileWalk.files(in: folder).compactMap { file -> CodeCount.SourceFile? in
+                        let path = FileWalk.relativePath(of: file.url, under: folder)
+                        // Erst prüfen, ob die Datei überhaupt zählt: Eine
+                        // Datei zu lesen, um sie danach wegzuwerfen, ist die
+                        // teuerste Art, nichts zu tun.
+                        guard !CodeLanguage.isIgnored(path),
+                              CodeLanguage.of(path: path) != nil,
+                              let text = try? TextFile.read(at: file.url)
+                        else { return nil }
+                        return CodeCount.SourceFile(path: path, text: text)
+                    }
                 }
                 return CodeCount.count(files)
             }.value
@@ -185,10 +192,10 @@ public struct CodeCountToolView: View {
     @ViewBuilder
     private var chartPane: some View {
         AnvilPane("Sprachen", systemImage: "chart.bar") {
-            if root == nil {
+            if roots.isEmpty {
                 EmptyStateView(
                     title: "Noch kein Projekt",
-                    message: "Zieh einen Projektordner hinein. Anvil zählt jede Zeile und sagt, woraus das Projekt besteht.",
+                    message: "Zieh einen Projektordner hinein — oder gleich mehrere. Anvil zählt jede Zeile und sagt, woraus das Ganze besteht.",
                     systemImage: "chevron.left.forwardslash.chevron.right",
                     actions: {
                         AnvilButton("Ordner wählen", systemImage: "folder") { chooseFolder() }
@@ -331,6 +338,9 @@ public struct CodeCountToolView: View {
             StatusMetric("\(count.totalCode)", label: "Zeilen Code", systemImage: "chevron.left.forwardslash.chevron.right", tone: .accent)
             StatusMetric("\(count.entries.count)", label: "Sprachen", systemImage: "globe")
             StatusMetric("\(count.fileCount)", label: "Dateien", systemImage: "doc.on.doc")
+            if roots.count > 1 {
+                StatusMetric("\(roots.count)", label: "Projekte", systemImage: "folder")
+            }
             if count.skipped > 0 {
                 StatusMetric("\(count.skipped)", label: "übergangen", systemImage: "minus.circle")
             }
@@ -367,8 +377,10 @@ public struct CodeCountToolView: View {
             systemImage: "folder",
             footnote: "Versteckte Ordner bleiben draußen, `node_modules`, `Pods`, `vendor` und `build` auch. Wer wissen will, wie groß sein Projekt ist, meint nicht die Abhängigkeiten."
         ) {
-            if let root {
-                KeyValueList([KeyValueList.Item(localized("Gezählt"), root.path)])
+            if !roots.isEmpty {
+                KeyValueList(roots.map { folder in
+                    KeyValueList.Item(folder.lastPathComponent, folder.deletingLastPathComponent().path)
+                })
             }
             AnvilButton("Ordner wählen", systemImage: "folder") { chooseFolder() }
         }

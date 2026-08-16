@@ -52,6 +52,7 @@
 "%lld entfernt" = "%lld removed";
 "%lld ergänzt" = "%lld added";
 "%lld gespeicherte Durchläufe" = "%lld saved runs";
+"%lld Projekte" = "%lld projects";
 "%lld Sätze geschrieben." = "%lld sets written.";
 "%lld Treffer" = "%lld matches";
 "%lld unverändert" = "%lld unchanged";
@@ -1414,6 +1415,7 @@
 "Probetext" = "Sample text";
 "Programm" = "Application";
 "Projekt" = "Project";
+"Projekte" = "Projects";
 "Prozent" = "Percent";
 "Präfixlänge" = "Prefix length";
 "Prüfe API-Schlüssel, Modellnamen und Netzwerkverbindung in den Einstellungen." = "Check the API key, model name and network connection in Settings.";
@@ -1784,6 +1786,7 @@
 "Zieh ein Bild hierher, nimm eines aus der Zwischenablage, oder wähl einen Ausschnitt vom Bildschirm." = "Drop an image here, take one from the clipboard, or select a region of the screen.";
 "Zieh ein quadratisches Bild hinein — am besten 1024 × 1024. Mehrere gehen auch, jedes wird ein eigener Satz." = "Drag in a square image — 1024 × 1024 is best. Several work too, each becomes a set of its own.";
 "Zieh einen Ordner hinein. Anvil rechnet zusammen, was darunter liegt, und sortiert nach Größe statt nach Alphabet." = "Drag a folder in. Anvil adds up what is below it and sorts by size instead of by alphabet.";
+"Zieh einen Projektordner hinein — oder gleich mehrere. Anvil zählt jede Zeile und sagt, woraus das Ganze besteht." = "Drag a project folder in — or several at once. Anvil counts every line and says what the whole thing is made of.";
 "Zieh einen Projektordner hinein. Anvil zählt jede Zeile und sagt, woraus das Projekt besteht." = "Drag a project folder in. Anvil counts every line and says what the project is made of.";
 "Zieh zwei oder mehr .env-Dateien hinein — die von hier und die vom Server. Anvil zeigt, welcher Schlüssel wo fehlt, ohne einen Wert anzuzeigen." = "Drag in two or more .env files — the one from here and the one from the server. Anvil shows which key is missing where, without showing a single value.";
 "Zieht Aufgaben, Zuständigkeiten und Entscheidungen heraus." = "Pulls out tasks, owners and decisions.";
