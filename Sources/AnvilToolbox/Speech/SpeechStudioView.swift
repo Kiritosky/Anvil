@@ -433,13 +433,12 @@ public struct SpeechStudioView: View {
     }
 
     private func openAudioFile() {
-        let panel = NSOpenPanel()
-        panel.allowedContentTypes = [.audio, .mpeg4Audio, .wav, .aiff, .mp3]
-        panel.allowsMultipleSelection = true
-        panel.prompt = localized("Transkribieren")
-
-        guard panel.runModal() == .OK, !panel.urls.isEmpty else { return }
-        Task { await model.transcribeFiles(at: panel.urls) }
+        let urls = SavePanel.files(
+            prompt: localized("Transkribieren"),
+            types: [.audio, .mpeg4Audio, .wav, .aiff, .mp3]
+        )
+        guard !urls.isEmpty else { return }
+        Task { await model.transcribeFiles(at: urls) }
     }
 
     /// Ob die Datei nach Ton aussieht.

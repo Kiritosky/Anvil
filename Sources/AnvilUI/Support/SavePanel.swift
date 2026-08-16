@@ -54,6 +54,33 @@ public enum SavePanel {
         return panel.runModal() == .OK ? panel.url : nil
     }
 
+    /// Fragt nach Dateien zum Öffnen.
+    ///
+    /// Drei Werkzeuge hatten dafür ihren eigenen `NSOpenPanel`, und jedem
+    /// fehlte etwas anderes: einem die Übersetzung, zweien die Fensterebene.
+    /// Ohne die steht der Dialog hinter dem Fenster, sobald Anvil nicht die
+    /// vorderste App ist — und der Benutzer sieht auf einen Knopf, der
+    /// scheinbar nichts tut.
+    ///
+    /// - Returns: Die gewählten Dateien, oder nichts bei Abbruch. Abbrechen
+    ///   ist kein Fehler.
+    public static func files(
+        prompt: String,
+        types: [UTType] = [],
+        allowsMultiple: Bool = true,
+        includingDirectories: Bool = false
+    ) -> [URL] {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = includingDirectories
+        panel.allowsMultipleSelection = allowsMultiple
+        if !types.isEmpty { panel.allowedContentTypes = types }
+        panel.prompt = prompt
+        panel.level = .modalPanel
+
+        return panel.runModal() == .OK ? panel.urls : []
+    }
+
     /// Fragt nur nach dem Ort und schreibt selbst nichts.
     ///
     /// Für alles, was schon als fertige Bytes vorliegt — ein umgewandeltes

@@ -547,6 +547,7 @@
 "Bild" = "Image";
 "Bild in die Zwischenablage" = "Image to the clipboard";
 "Bild kopieren" = "Copy image";
+"Bild wählen" = "Choose an image";
 "Bildpunkte" = "Pixels";
 "Bildschirm" = "Display";
 "Bildschirm & Bilder" = "Screen & Images";
@@ -570,6 +571,7 @@
 "CSV, TSV oder mit Semikolon — das Trennzeichen erkennt Anvil selbst." = "CSV, TSV or semicolon-separated — Anvil works out the delimiter itself.";
 "Codeblock nicht geschlossen" = "Code block never closed";
 "Das ist kein Zeitpunkt" = "That is not a point in time";
+"Dateien wählen" = "Choose files";
 "Dauer" = "Duration";
 "Ein Unix-Zeitstempel, ein ISO-Datum oder 09.08.2026 — die Einheit erkennt Anvil selbst." = "A Unix timestamp, an ISO date or 09.08.2026 — Anvil works out the unit itself.";
 "Ganze Seite" = "Whole page";
@@ -1430,6 +1432,7 @@
 "Register" = "Register";
 "Reihenfolge" = "Order";
 "Reine Prompt-Tools bestehen aus einer JSON-Datei. Neu geladen wird beim Start und über den Knopf oben rechts." = "Prompt-only tools are a single JSON file. They are reloaded at launch and with the button up top.";
+"Repository verwenden" = "Use this repository";
 "Repository wählen" = "Choose repository";
 "Reserviert" = "Reserved";
 "Richtlinie" = "Policy";

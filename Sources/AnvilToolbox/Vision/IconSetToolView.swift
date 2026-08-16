@@ -2,6 +2,7 @@ import AnvilKit
 import AnvilUI
 import AppKit
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// Aus einer Vorlage den ganzen Satz App-Symbole machen.
 public struct IconSetToolView: View {
@@ -68,6 +69,16 @@ public struct IconSetToolView: View {
                     image: image,
                     name: url?.deletingPathExtension().lastPathComponent ?? localized("Symbol")
                 )
+            )
+        }
+    }
+
+    private func choose() {
+        let urls = SavePanel.files(prompt: localized("Hinzufügen"), types: [.image])
+        for url in urls {
+            guard let image = NSImage(contentsOf: url) else { continue }
+            sources.append(
+                Source(image: image, name: url.deletingPathExtension().lastPathComponent)
             )
         }
     }
@@ -163,7 +174,10 @@ public struct IconSetToolView: View {
                 EmptyStateView(
                     title: "Noch keine Vorlage",
                     message: "Zieh ein quadratisches Bild hinein — am besten 1024 × 1024. Mehrere gehen auch, jedes wird ein eigener Satz.",
-                    systemImage: "app.dashed"
+                    systemImage: "app.dashed",
+                    actions: {
+                        AnvilButton("Bild wählen", systemImage: "photo") { choose() }
+                    }
                 )
             } else {
                 ScrollView {

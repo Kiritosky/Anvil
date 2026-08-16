@@ -96,9 +96,17 @@ public struct ArchiveToolView: View {
         inspect(added.filter(\.isArchive).map(\.url))
     }
 
+    /// Archive und alles andere aus einem Dialog holen.
+    ///
+    /// Ordner dürfen mit, weil beides in dieselbe Liste gehört: Was ein
+    /// Archiv ist, wird entpackt, alles andere eingepackt.
     private func choose() {
-        guard let folder = SavePanel.directory(prompt: localized("Ordner wählen")) else { return }
-        add([folder])
+        let urls = SavePanel.files(
+            prompt: localized("Hinzufügen"),
+            includingDirectories: true
+        )
+        guard !urls.isEmpty else { return }
+        add(urls)
     }
 
     private func clear() {
@@ -219,7 +227,7 @@ public struct ArchiveToolView: View {
                     message: "Zieh Archive hinein, um hineinzusehen — oder Dateien und Ordner, um sie einzupacken. Beides geht stapelweise.",
                     systemImage: "archivebox",
                     actions: {
-                        AnvilButton("Ordner wählen", systemImage: "folder") { choose() }
+                        AnvilButton("Dateien wählen", systemImage: "folder") { choose() }
                     }
                 )
             } else {
@@ -365,7 +373,7 @@ public struct ArchiveToolView: View {
             systemImage: "tray",
             footnote: "Archive, Dateien und Ordner dürfen zusammen in der Liste liegen. Entpacken nimmt sich die Archive, Einpacken alles andere."
         ) {
-            AnvilButton("Ordner wählen", systemImage: "folder") { choose() }
+            AnvilButton("Dateien wählen", systemImage: "folder") { choose() }
             if !items.isEmpty {
                 AnvilButton("Liste leeren", systemImage: "trash") { clear() }
             }

@@ -300,14 +300,9 @@ public struct ImageToolView: View {
     // MARK: - Arbeit
 
     private func chooseFiles() {
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = true
-        panel.canChooseDirectories = false
-        panel.allowedContentTypes = [.image]
-        panel.prompt = localized("Hinzufügen")
-
-        guard panel.runModal() == .OK else { return }
-        batch.load(panel.urls)
+        let urls = SavePanel.files(prompt: localized("Hinzufügen"), types: [.image])
+        guard !urls.isEmpty else { return }
+        batch.load(urls)
         convert()
     }
 

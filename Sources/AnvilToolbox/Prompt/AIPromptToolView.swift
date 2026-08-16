@@ -353,13 +353,9 @@ public struct AIPromptToolView: View {
     // MARK: - Git
 
     private func chooseRepository() {
-        let panel = NSOpenPanel()
-        panel.canChooseDirectories = true
-        panel.canChooseFiles = false
-        panel.allowsMultipleSelection = false
-        panel.prompt = "Repository verwenden"
-
-        guard panel.runModal() == .OK, let url = panel.url else { return }
+        guard let url = SavePanel.directory(prompt: localized("Repository verwenden")) else {
+            return
+        }
         repositoryURL = url
         Task { await loadDiff() }
     }
