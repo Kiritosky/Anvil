@@ -12,7 +12,27 @@ public enum DevToolBundle: ToolBundle {
             ToolRegistration(metadata: tool.metadata) { context in
                 TextToolView(tool: tool, context: context)
             }
-        } + [environment]
+        } + [environment, codeCount]
+    }
+
+    @MainActor
+    private static var codeCount: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "dev.lines",
+            title: "Codezeilen",
+            subtitle: "Woraus ein Projekt besteht",
+            systemImage: "chart.bar",
+            category: .coding,
+            keywords: [
+                "zeilen", "lines", "loc", "cloc", "statistik", "sprachen",
+                "projekt", "repository", "umfang", "diagramm"
+            ],
+            badge: "Neu"
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            CodeCountToolView(context: context, metadata: metadata)
+        }
     }
 
     /// Der eine Coding-Werkzeugkasten, der keine Textumwandlung ist: Er

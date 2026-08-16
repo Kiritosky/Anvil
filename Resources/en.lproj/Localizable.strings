@@ -18,6 +18,7 @@
 "%@ hat abgebrochen." = "%@ stopped.";
 "%@ hat nichts zurückgegeben." = "%@ returned nothing.";
 "%@ ist mit Fehler %lld beendet worden." = "%@ exited with error %lld.";
+"%@ Kommentar" = "%@ comments";
 "%@ konnte nicht gestartet werden: %@" = "%@ could not be started: %@";
 "%@ s" = "%@ s";
 "%@ und %@ lassen sich nicht ineinander umrechnen." = "%@ and %@ cannot be converted into one another.";
@@ -33,6 +34,7 @@
 "%lld Bildpunkte" = "%lld pixels";
 "%lld Codes geschrieben." = "%lld codes written.";
 "%lld Commits" = "%lld commits";
+"%lld Dateien" = "%lld files";
 "%lld Dateien geschrieben." = "%lld files written.";
 "%lld Dateien · %@" = "%lld files · %@";
 "%lld Dateien, %@ ausgepackt" = "%lld files, %@ unpacked";
@@ -96,6 +98,8 @@
 "Angelesen" = "Peeked at";
 "Angesehen" = "Looked at";
 "Anteil" = "Share";
+"Anteil am Code, nicht an allen Zeilen: Leerzeilen gehören niemandem." = "Share of the code, not of all lines: blank lines belong to nobody.";
+"Anteil an den geschriebenen Zeilen — Leerzeilen zählen hier nicht mit." = "Share of the written lines — blank lines do not count here.";
 "Anvil löscht nichts. Der Befehl behält je Gruppe die erste Datei und geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command keeps the first file of each group and goes to the clipboard — you run it where you can see what happens.";
 "Anvil löscht nichts. Der Befehl geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command goes to the clipboard — you run it where you can see what happens.";
 "Anvil sucht nur nach Repositories und öffnet keines. Gelesen wird, was git ohnehin verrät." = "Anvil only looks for repositories, it never opens one. It reads what git tells anyone who asks.";
@@ -586,6 +590,7 @@
 "Code-Points, Namen, UTF-8" = "Code points, names, UTF-8";
 "Code-Review" = "Code review";
 "Codeblöcke" = "Code blocks";
+"Codezeilen" = "Lines of code";
 "Coding" = "Coding";
 "Commit-Message" = "Commit message";
 "Contents.json kopieren" = "Copy Contents.json";
@@ -699,6 +704,7 @@
 "Die Zieleinheit kenne ich nicht." = "I do not know that target unit.";
 "Die eckige Klammer geht nicht zu." = "The square bracket is never closed.";
 "Die geschweifte Klammer geht nicht zu." = "The curly brace is never closed.";
+"Die größten Sprachen" = "The largest languages";
 "Die längsten Sätze" = "The longest sentences";
 "Die längsten Wörter" = "The longest words";
 "dienstags" = "Tuesdays";
@@ -819,6 +825,7 @@
 "Ergebnisse automatisch kopieren" = "Copy results automatically";
 "Erkannt als" = "Read as";
 "ergänzt" = "added";
+"Erkannt wird an der Endung, gezählt Zeile für Zeile: leer, Kommentar, oder Code. Das ist eine Faustregel und kein Übersetzer — ein `//` in einer Zeichenkette zählt als Kommentar. In zwanzigtausend Zeilen macht das ein paar aus; es richtig zu bekommen kostet einen Übersetzer je Sprache." = "Languages are recognised by extension and counted line by line: blank, comment, or code. That is a rule of thumb, not a compiler — a `//` inside a string counts as a comment. Across twenty thousand lines that is a handful; getting it right would cost a compiler per language.";
 "Erkennen" = "Detect";
 "Erkennt auch kurze Begriffe und stärkere Abweichungen — mit mehr Fehlgriffen." = "Also catches short terms and bigger differences — and gets it wrong more often.";
 "Erkennt zusätzlich leichte Verhörer bei Begriffen ab fünf Zeichen." = "Also catches slight misrecognitions of terms from five characters up.";
@@ -925,11 +932,13 @@
 "Gemessen" = "Measured";
 "Genauer Modellname beim Anbieter." = "The provider’s exact model name.";
 "Gepackt und entpackt wird mit `ditto` — demselben Werkzeug, das der Finder benutzt. Rechte, Symlinks und Ressourcenzweige bleiben dabei erhalten; ein Archiv aus Anvil kommt auf einem Mac an wie eines aus dem Finder." = "Packing and unpacking use `ditto` — the same tool the Finder uses. Permissions, symlinks and resource forks survive; an archive from Anvil arrives on a Mac just like one from the Finder.";
+"Gesamt" = "Total";
 "gesamt" = "total";
 "gesetzt" = "set";
 "Gesichert" = "Saved";
 "Gesicherte Aufnahmen liegen unter Anvil › Screenshots." = "Saved shots live under Anvil › Screenshots.";
 "gestern" = "yesterday";
+"Gezählt" = "Counted";
 "Gezählt wird die Größe der Dateien, nicht der belegte Platz auf der Platte. Bei vielen winzigen Dateien liegt der echte Verbrauch höher, weil jede einen ganzen Block bekommt." = "What is counted is the size of the files, not the space taken up on disk. With many tiny files the real usage is higher, because each one gets a whole block.";
 "Geänderter Text …" = "Changed text…";
 "Gibt es nicht — oder du darfst nicht wissen, dass es das gibt." = "Does not exist — or you are not allowed to know it does.";
@@ -1002,6 +1011,7 @@
 "In der Zwischenablage liegt kein Bild." = "There is no image on the clipboard.";
 "In die Zwischenablage kopieren" = "Copy to clipboard";
 "In diesem Ordner liegt keine .env-Datei." = "There is no .env file in this folder.";
+"In diesem Ordner liegt keine Datei in einer Sprache, die Anvil kennt." = "There is no file in this folder in a language Anvil knows.";
 "In diesem Ordner liegt keine Datei, die zählt." = "There is no file in this folder that counts.";
 "In diesem Repository gibt es keine Änderungen." = "There are no changes in this repository.";
 "In einer .env-Datei stehen Zugangsdaten. Anvil liest sie, vergleicht sie im Speicher und zeigt nur, ob etwas dasteht und ob es überall dasselbe ist. Nichts davon wird abgelegt, und in der Zwischenablage landet kein Wert." = "A .env file holds credentials. Anvil reads them, compares them in memory and only shows whether something is there and whether it is the same everywhere. None of it is stored, and no value ever reaches the clipboard.";
@@ -1018,6 +1028,7 @@
 "Inhaltsverzeichnis" = "Table of contents";
 "Ist gesichert" = "Already saved";
 "ja" = "yes";
+"Jede Datei wird einmal gelesen — gerechnet wird nichts zweimal." = "Every file is read once — nothing is counted twice.";
 "Jede Größe wird aus der Vorlage neu gezeichnet, nicht aus der nächstgrößeren — sonst summierten sich die Rundungsfehler über zehn Schritte. Metadaten der Vorlage gehen dabei verloren, was hier keine Nebenwirkung ist, sondern richtig so." = "Every size is redrawn from the template, not from the next larger one — otherwise rounding errors would add up over ten steps. The template's metadata is lost in the process, which here is not a side effect but the right thing.";
 "JSON hier einfügen — eine Antwort, ein Ausschnitt, eine ganze Datei." = "Paste JSON here — a response, a snippet, a whole file.";
 "JSON zu Typen" = "JSON to types";
@@ -1047,6 +1058,7 @@
 "Juli" = "July";
 "Juni" = "June";
 "Kein Bild" = "No image";
+"Kein Code gefunden" = "No code found";
 "Kein Diff geladen" = "No diff loaded";
 "Kein Eintrag enthält diesen Text." = "No entry contains that text.";
 "kein Fehlertext" = "no error text";
@@ -1099,6 +1111,8 @@
 "kollegial (du)" = "collegial";
 "Kollidiert mit dem, was schon da ist." = "Collides with what is already there.";
 "Komfortabel" = "Comfortable";
+"Kommentar" = "Comment";
+"Kommentare" = "Comments";
 "Kompakt" = "Compact";
 "Kontrast" = "Contrast";
 "Konvention" = "Convention";
@@ -1255,6 +1269,7 @@
 "Neu erzeugen" = "Generate again";
 "Neu laden" = "Reload";
 "Neu messen" = "Measure again";
+"Neu zählen" = "Count again";
 "Neue Präfixlänge" = "New prefix length";
 "Neuer Begriff, z. B. SwiftUI" = "New term, e.g. SwiftUI";
 "Nicht zu öffnen: %@" = "Cannot be opened: %@";
@@ -1291,6 +1306,7 @@
 "Noch kein Code" = "No code yet";
 "Noch kein Ergebnis" = "No result yet";
 "Noch kein Netz" = "No network yet";
+"Noch kein Projekt" = "No project yet";
 "Noch kein Schlüssel hinterlegt." = "No key stored yet.";
 "Noch kein Text" = "No text yet";
 "Noch kein Zeitpunkt" = "No point in time yet";
@@ -1381,6 +1397,7 @@
 "Posten" = "Items";
 "Probetext" = "Sample text";
 "Programm" = "Application";
+"Projekt" = "Project";
 "Prozent" = "Percent";
 "Präfixlänge" = "Prefix length";
 "Prüfe API-Schlüssel, Modellnamen und Netzwerkverbindung in den Einstellungen." = "Check the API key, model name and network connection in Settings.";
@@ -1413,6 +1430,7 @@
 "Setzt die Liste oben in den Text ein, mit Sprungmarken wie auf GitHub." = "Inserts the list at the top of the text, with anchors the way GitHub makes them.";
 "Silben je Wort" = "Syllables per word";
 "Sobald gemessen ist, stehen hier die zwanzig größten Dateien — egal wie tief sie liegen." = "Once measured, the twenty largest files show up here — no matter how deep they sit.";
+"Sobald gezählt ist, steht hier jede Sprache mit ihren Zeilen." = "Once counted, every language shows up here with its lines.";
 "Spalte %lld" = "Column %lld";
 "Spalten" = "Columns";
 "Straße" = "Street";
@@ -1481,6 +1499,7 @@
 "Sprache" = "Speech";
 "Sprache & Audio" = "Speech & Audio";
 "Sprache der Namen" = "Language of the names";
+"Sprachen" = "Languages";
 "Spracherkennung" = "Speech recognition";
 "Sprachmodell" = "Language model";
 "Sprachpaket wird geladen" = "Downloading language assets";
@@ -1594,6 +1613,7 @@
 "Verhörer, mit Komma getrennt" = "Misrecognitions, comma separated";
 "Verkleinern" = "Minify";
 "Verlauf" = "History";
+"Versteckte Ordner bleiben draußen, `node_modules`, `Pods`, `vendor` und `build` auch. Wer wissen will, wie groß sein Projekt ist, meint nicht die Abhängigkeiten." = "Hidden folders stay out, and so do `node_modules`, `Pods`, `vendor` and `build`. Someone asking how big their project is does not mean the dependencies.";
 "Versteckte Ordner bleiben draußen, Pakete zählen als ein Ding. Ein Klick auf einen Ordner geht hinein, der Knopf oben wieder heraus." = "Hidden folders stay out, packages count as one thing. A click on a folder goes in, the button above comes back out.";
 "Verstehen alle" = "Everyone understands it";
 "Verträgt ein Logo in der Mitte oder einen Riss." = "Survives a logo in the middle, or a tear.";
@@ -1673,6 +1693,7 @@
 "Wie geraten wird" = "How it guesses";
 "Wie gesucht wird" = "How the search works";
 "Wie gezeichnet wird" = "How it is drawn";
+"Wie gezählt wird" = "How counting works";
 "Wie schwer ein Text zu lesen ist" = "How hard a text is to read";
 "wie das Original" = "same as the original";
 "wie im Code erkennbar" = "as the code suggests";
@@ -1687,6 +1708,7 @@
 "wird gelesen" = "being read";
 "Wird gelesen" = "Understood input";
 "Wird gemessen" = "Measuring";
+"Wird gezählt" = "Counting";
 "Wird im Prompt für {{option:level}} eingesetzt." = "Substituted into the prompt for {{option:level}}.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt und oben kein Werkzeug eingeschaltet ist. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Used only when the policy allows it and no tool is switched on above. The key lives in the keychain, not in the settings.";
 "Wird nur benutzt, wenn die Richtlinie es zulässt. Der Schlüssel liegt im Schlüsselbund, nicht in den Einstellungen." = "Only used when the policy allows it. The key lives in the keychain, not in the settings file.";
@@ -1700,6 +1722,7 @@
 "Wofür" = "What for";
 "Woher" = "Where from";
 "Wohin gehen Anfragen?" = "Where do requests go?";
+"Woraus ein Projekt besteht" = "What a project is made of";
 "Wortanfänge groß" = "Capitalise Words";
 "Wortdoppelungen zusammenfassen" = "Collapse repeated words";
 "Wortgetreu säubern" = "Clean up verbatim";
@@ -1725,6 +1748,7 @@
 "Zeigt die Schritte vom ersten Start noch einmal." = "Shows the first-run steps again.";
 "Zeile %lld: %@" = "Line %lld: %@";
 "Zeilen" = "Lines";
+"Zeilen Code" = "lines of code";
 "Zeilen kommen von oben nach unten, gleich hohe von links nach rechts — zwei Spalten bleiben zwei Spalten." = "Lines come top to bottom, and left to right within a band — two columns stay two columns.";
 "Zeitrechner" = "Time calculator";
 "Zeitung, Erzählung" = "Newspaper, narrative";
@@ -1738,6 +1762,7 @@
 "Zieh ein Bild hierher, nimm eines aus der Zwischenablage, oder wähl einen Ausschnitt vom Bildschirm." = "Drop an image here, take one from the clipboard, or select a region of the screen.";
 "Zieh ein quadratisches Bild hinein — am besten 1024 × 1024. Mehrere gehen auch, jedes wird ein eigener Satz." = "Drag in a square image — 1024 × 1024 is best. Several work too, each becomes a set of its own.";
 "Zieh einen Ordner hinein. Anvil rechnet zusammen, was darunter liegt, und sortiert nach Größe statt nach Alphabet." = "Drag a folder in. Anvil adds up what is below it and sorts by size instead of by alphabet.";
+"Zieh einen Projektordner hinein. Anvil zählt jede Zeile und sagt, woraus das Projekt besteht." = "Drag a project folder in. Anvil counts every line and says what the project is made of.";
 "Zieh zwei oder mehr .env-Dateien hinein — die von hier und die vom Server. Anvil zeigt, welcher Schlüssel wo fehlt, ohne einen Wert anzuzeigen." = "Drag in two or more .env files — the one from here and the one from the server. Anvil shows which key is missing where, without showing a single value.";
 "Zieht Aufgaben, Zuständigkeiten und Entscheidungen heraus." = "Pulls out tasks, owners and decisions.";
 "Ziel" = "Destination";
@@ -1794,6 +1819,7 @@
 "Über viele Dateien, mit Vorschau" = "Across many files, with a preview";
 "Überall" = "Everywhere";
 "Übereinstimmung" = "match";
+"übergangen" = "skipped";
 "Überlastet oder in Wartung." = "Overloaded or in maintenance.";
 "Überschrift kommt doppelt vor" = "Heading occurs twice";
 "Überschriften" = "Headings";
