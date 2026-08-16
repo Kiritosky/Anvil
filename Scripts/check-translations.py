@@ -113,6 +113,11 @@ SKIP = {
     # Symbolsatz, die Schreibweise einer Kantenlänge, der Ordnername.
     "%@x%@", "@%@x", "icon", "icon_%@", "%@_%@%@.png", "%@.appiconset",
     "iOS", "macOS", "iphone",                # Produkt- und Gerätenamen
+    # Typnamen im erzeugten Quelltext. Übersetzt wären sie kein Quelltext
+    # mehr, sondern eine Datei, die sich nicht übersetzen lässt.
+    "Bool", "Double", "Int", "String", "Root", "Wert",
+    "boolean", "string", "number", "unknown", "ts", " | undefined",
+    "Swift", "TypeScript",
     "\\t",                                   # das Trennzeichen selbst
     # SQL- und JSON-Syntax. Steht im Quelltext hinter einem `return` und sieht
     # damit aus wie Anzeigetext — ist aber Format und wird nie übersetzt.

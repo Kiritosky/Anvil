@@ -8,7 +8,28 @@ public enum DataToolBundle: ToolBundle {
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        [tableTool]
+        [tableTool, modelTool]
+    }
+
+    @MainActor
+    private static var modelTool: ToolRegistration {
+        let metadata = ToolMetadata(
+            id: "data.model",
+            title: "JSON zu Typen",
+            subtitle: "Aus einer Beispielantwort werden Modelle",
+            systemImage: "cube",
+            category: .coding,
+            keywords: [
+                "json", "typ", "type", "modell", "model", "struct", "codable",
+                "swift", "typescript", "interface", "api", "antwort"
+            ],
+            badge: "Neu",
+            acceptsText: true
+        )
+
+        return ToolRegistration(metadata: metadata) { context in
+            ModelToolView(context: context, metadata: metadata)
+        }
     }
 
     @MainActor

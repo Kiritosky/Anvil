@@ -474,6 +474,8 @@
 "Aus der Zwischenablage einfügen" = "Paste from clipboard";
 "Aus der Zwischenablage lesen" = "Read from the clipboard";
 "Aus diesem Bild lässt sich nichts lesen." = "There is nothing readable in this image.";
+"Aus einer Beispielantwort werden Modelle" = "A sample response becomes models";
+"Aus einer Liste von Objekten entsteht ein Typ, in dem jedes Feld steht, das in irgendeinem Element vorkam — was nicht überall vorkam, wird optional. Das ist genau die Auskunft, die ein einzelnes Beispiel nicht hergibt." = "A list of objects becomes one type holding every field that appeared in any element — whatever did not appear everywhere becomes optional. That is exactly what a single example cannot tell you.";
 "Aus Favoriten entfernen" = "Remove from favourites";
 "Aus Stichworten eine Nachricht" = "A message from a few notes";
 "Aus Zwischenablage" = "From the clipboard";
@@ -523,6 +525,7 @@
 "Beide Fassungen sind Wort für Wort gleich." = "Both versions are identical, word for word.";
 "Beide Felder füllen — 2026-08-09, 09.08.2026 oder ein Zeitstempel." = "Fill in both fields — 2026-08-09, 09.08.2026 or a timestamp.";
 "Beim Kopieren trennen mit" = "Separate with, when copying";
+"Beispiel" = "Example";
 "Beispiel-Tool" = "Example tool";
 "Belegt" = "Taken";
 "Beliebig oft" = "Any number";
@@ -681,6 +684,7 @@
 "Die Gliederung steigt lückenlos, jede Überschrift ist eindeutig, und alle Sprungmarken gibt es." = "The outline rises without gaps, every heading is unique, and every anchor exists.";
 "Die größten Dateien" = "The largest files";
 "Die häufigsten Endungen — meistens die schnellste Antwort auf die Frage, was für ein Archiv das ist." = "The most common extensions — usually the quickest answer to what kind of archive this is.";
+"Die inneren Typen heißen nach ihrem Feld — `adressen` wird zu `Adresse`. Wo die Faustregel danebenliegt, ist es ein Umbenennen in einem Zug." = "Inner types are named after their field — `adressen` becomes `Adresse`. Where the rule of thumb misses, it is one rename away.";
 "Die Pfade der größten Dateien, eine Zeile je Datei — für den Blick im Terminal, bevor etwas weggeht." = "The paths of the largest files, one per line — for a look in the terminal before anything goes.";
 "Die Reihenfolge folgt der Liste, nicht der Reihenfolge des Anklickens." = "The order follows the list, not the order you clicked them in.";
 "Die Schrittweite in %@ muss eine Zahl über null sein." = "The step in %@ has to be a number above zero.";
@@ -764,12 +768,14 @@
 "Ein Unified Diff — mit oder ohne diff --git davor, mit oder ohne a/ und b/." = "A unified diff — with or without diff --git in front, with or without a/ and b/.";
 "Eindeutig lokal (RFC 4193)" = "Unique local (RFC 4193)";
 "Eine" = "One";
+"Eine ganze Zahl im Beispiel wird `Int`, eine mit Komma `Double`. Wo nur `null` stand, lässt sich nichts raten — daraus wird `String?`." = "A whole number in the example becomes `Int`, one with a decimal point `Double`. Where only `null` stood there is nothing to guess — that becomes `String?`.";
 "Eine IPv4-Präfixlänge liegt zwischen 0 und 32." = "An IPv4 prefix length is between 0 and 32.";
 "Eine IPv6-Präfixlänge liegt zwischen 0 und 128." = "An IPv6 prefix length is between 0 and 128.";
 "Eine Klammer am Anfang ist JSON, eine Zeile in eckigen Klammern TOML, sonst YAML." = "A brace or bracket at the start means JSON, a line in square brackets means TOML, otherwise YAML.";
 "Eine Tabelle endet mit ]: %@" = "A table ends with ]: %@";
 "Eine Tabellenreihe endet mit ]]: %@" = "A table row ends with ]]: %@";
 "Eine gerade Linie." = "A straight line.";
+"Eingabe leeren" = "Clear the input";
 "Erlaubt sind Zahlen mit einer Einheit — s, m, h, d, w — oder die Uhrzeit-Schreibweise." = "Numbers with a unit — s, m, h, d, w — or clock notation.";
 "Fehlt irgendwo" = "Missing somewhere";
 "Gilt für den Kopieren-Knopf und für die Dauer beim Abstand." = "Applies to the copy button and to the duration under Distance.";
@@ -860,6 +866,8 @@
 "fehlgeschlagen" = "failed";
 "fehlt" = "missing";
 "fehlt irgendwo" = "missing somewhere";
+"Feld" = "Field";
+"Felder" = "Fields";
 "Fenster" = "Window";
 "Fenster anklicken" = "Click a window";
 "Fenster anklicken. Wird ohne Hintergrund aufgenommen." = "Click a window. Captured without its background.";
@@ -1006,8 +1014,11 @@
 "Ist gesichert" = "Already saved";
 "ja" = "yes";
 "Jede Größe wird aus der Vorlage neu gezeichnet, nicht aus der nächstgrößeren — sonst summierten sich die Rundungsfehler über zehn Schritte. Metadaten der Vorlage gehen dabei verloren, was hier keine Nebenwirkung ist, sondern richtig so." = "Every size is redrawn from the template, not from the next larger one — otherwise rounding errors would add up over ten steps. The template's metadata is lost in the process, which here is not a side effect but the right thing.";
+"JSON hier einfügen — eine Antwort, ein Ausschnitt, eine ganze Datei." = "Paste JSON here — a response, a snippet, a whole file.";
+"JSON zu Typen" = "JSON to types";
 "JSON, YAML oder TOML einwerfen — das Format erkennt Anvil selbst." = "Drop in JSON, YAML or TOML — Anvil works out the format itself.";
 "JSON, YAML, TOML" = "JSON, YAML, TOML";
+"Kein gültiges JSON" = "Not valid JSON";
 "Lösen" = "Unpin";
 "Mit der Wahltaste in größeren Schritten" = "Hold Option for larger steps";
 "installiert" = "installed";
@@ -1128,6 +1139,7 @@
 "Liegt im Netz" = "Inside the network";
 "Liest den Stand noch einmal aus." = "Reads the current state again.";
 "Linie" = "Line";
+"Links ein Beispiel einfügen. Aus einem Objekt wird ein Typ, aus einer Liste von Objekten einer mit optionalen Feldern." = "Paste an example on the left. An object becomes a type, a list of objects becomes one with optional fields.";
 "Links etwas einfügen — das Ergebnis erscheint sofort." = "Paste something on the left — the result appears instantly.";
 "Liste" = "List";
 "LM Studio (lokal)" = "LM Studio (local)";
@@ -1223,6 +1235,7 @@
 "Nachher" = "After";
 "Nachschlagen" = "Look up";
 "Nachsehen" = "Checking";
+"Name der Wurzel" = "Name of the root";
 "Name,Ort,Umsatz\nAnna,Bremen,1200\nBen,Kiel,980" = "Name,City,Revenue\nAnna,Bristol,1200\nBen,Leeds,980";
 "Nanosekunden" = "Nanoseconds";
 "Natürlich, nicht wörtlich" = "Natural, not literal";
@@ -1285,6 +1298,7 @@
 "Noch keine Tabelle" = "No table yet";
 "Noch nicht gefragt" = "Not asked yet";
 "Noch nicht gelesen" = "Not read yet";
+"Noch nichts abzuleiten" = "Nothing to derive yet";
 "Noch nichts aufgenommen" = "Nothing recorded yet";
 "Noch nichts erzeugt" = "Nothing generated yet";
 "Noch nichts gelesen" = "Nothing read yet";
@@ -1337,6 +1351,7 @@
 "On-Device" = "On-device";
 "On-device bevorzugt" = "Prefer on-device";
 "On-Device-Modell" = "On-device model";
+"optional" = "optional";
 "Optional" = "Optional";
 "Optionen" = "Options";
 "Optionen ausblenden" = "Hide options";
@@ -1534,6 +1549,8 @@
 "Trag oben einen regulären Ausdruck ein — Treffer erscheinen sofort." = "Type a regular expression above — matches appear instantly.";
 "Treffer" = "Matches";
 "Trennzeichen" = "Delimiter";
+"Typ" = "Type";
+"Typen" = "Types";
 "Uhrzeit-Schreibweise" = "Clock notation";
 "Uhrzeiten sehen so aus: 14:30." = "Times look like this: 14:30.";
 "umbenannt" = "renamed";
@@ -1612,6 +1629,7 @@
 "Wandelt die Aufnahme in Text um. Läuft auf diesem Mac." = "Turns the recording into text. Runs on this Mac.";
 "Warum keine Werte" = "Why no values";
 "Was 418 eigentlich heißt" = "What 418 actually means";
+"Was abgeleitet wurde" = "What was derived";
 "Was Anvil braucht" = "What Anvil needs";
 "Was auf diesem Mac läuft, bleibt auf diesem Mac." = "What runs on this Mac stays on this Mac.";
 "Was benennt werden soll, plus Kontext …" = "What needs a name, plus context…";
@@ -1646,6 +1664,7 @@
 "Wie ausgeführt wird" = "How it is carried out";
 "Wie das Modell das Diktat aufbereitet, bevor es kopiert wird." = "How the model shapes the dictation before it is copied.";
 "Wie gepackt wird" = "How packing works";
+"Wie geraten wird" = "How it guesses";
 "Wie gesucht wird" = "How the search works";
 "Wie gezeichnet wird" = "How it is drawn";
 "Wie schwer ein Text zu lesen ist" = "How hard a text is to read";
