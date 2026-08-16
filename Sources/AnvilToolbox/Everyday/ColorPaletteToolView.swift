@@ -216,12 +216,10 @@ public struct ColorPaletteToolView: View {
             }
         }
 
-        InspectorSection(
+        InspectorNote(
             "Kontrast",
             systemImage: "circle.lefthalf.filled",
             footnote: "Die beiden letzten Spalten sagen, wie sich die Farbe auf Weiß und auf Schwarz liest. 4,5:1 ist die Grenze für Fließtext, 3:1 für große Schrift."
-        ) {
-            EmptyView()
-        }
+        )
     }
 }

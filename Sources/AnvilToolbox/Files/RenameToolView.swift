@@ -150,15 +150,11 @@ public struct RenameToolView: View {
                 }
             } accessory: {
                 if !files.isEmpty {
-                    Button {
+                    ClearButton {
                         files = []
                         undo = []
                         replan()
-                    } label: {
-                        Image(systemName: "trash")
                     }
-                    .buttonStyle(AnvilIconButtonStyle())
-                    .anvilHelp("Liste leeren")
                 }
             }
 

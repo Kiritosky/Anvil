@@ -233,15 +233,11 @@ public struct PDFToolView: View {
                         if operation == .text, !extracted.isEmpty {
                             CopyButton(text: extracted)
                         }
-                        Button {
+                        ClearButton {
                             files = []
                             documents = []
                             extracted = ""
-                        } label: {
-                            Image(systemName: "trash")
                         }
-                        .buttonStyle(AnvilIconButtonStyle())
-                        .anvilHelp("Liste leeren")
                     }
                 }
             }

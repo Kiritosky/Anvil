@@ -221,11 +221,7 @@ public struct StructuredToolView: View {
                     HandoffMenu(context: context, from: metadata.id, text: outputText)
                     CopyButton(text: outputText)
                 } else {
-                    Button { batch = .empty } label: {
-                        Image(systemName: "trash")
-                    }
-                    .buttonStyle(AnvilIconButtonStyle())
-                    .anvilHelp("Stapel schließen")
+                    ClearButton(help: "Stapel schließen") { batch = .empty }
 
                     CopyButton(text: batch.report)
                 }

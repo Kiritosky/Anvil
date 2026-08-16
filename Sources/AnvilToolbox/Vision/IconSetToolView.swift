@@ -177,11 +177,7 @@ public struct IconSetToolView: View {
             }
         } accessory: {
             if !sources.isEmpty {
-                Button { clear() } label: {
-                    Image(systemName: "trash")
-                }
-                .buttonStyle(AnvilIconButtonStyle())
-                .anvilHelp("Liste leeren")
+                ClearButton { clear() }
             }
         }
     }
@@ -211,10 +207,7 @@ public struct IconSetToolView: View {
             }
         }
         .padding(AnvilSpacing.sm)
-        .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .fill(AnvilColor.surface)
-        }
+        .anvilCard()
     }
 
     @ViewBuilder
@@ -301,12 +294,10 @@ public struct IconSetToolView: View {
             }
         }
 
-        InspectorSection(
+        InspectorNote(
             "Wie gezeichnet wird",
             systemImage: "info.circle",
             footnote: "Jede Größe wird aus der Vorlage neu gezeichnet, nicht aus der nächstgrößeren — sonst summierten sich die Rundungsfehler über zehn Schritte. Metadaten der Vorlage gehen dabei verloren, was hier keine Nebenwirkung ist, sondern richtig so."
-        ) {
-            EmptyView()
-        }
+        )
     }
 }

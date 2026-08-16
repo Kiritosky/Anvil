@@ -94,11 +94,7 @@ public struct ModelToolView: View {
             )
         } accessory: {
             if !input.isEmpty {
-                Button { input = "" } label: {
-                    Image(systemName: "trash")
-                }
-                .buttonStyle(AnvilIconButtonStyle())
-                .anvilHelp("Eingabe leeren")
+                ClearButton(help: "Eingabe leeren") { input = "" }
             }
         }
     }
@@ -185,12 +181,10 @@ public struct ModelToolView: View {
             }
         }
 
-        InspectorSection(
+        InspectorNote(
             "Wie geraten wird",
             systemImage: "info.circle",
             footnote: "Aus einer Liste von Objekten entsteht ein Typ, in dem jedes Feld steht, das in irgendeinem Element vorkam — was nicht überall vorkam, wird optional. Das ist genau die Auskunft, die ein einzelnes Beispiel nicht hergibt."
-        ) {
-            EmptyView()
-        }
+        )
     }
 }

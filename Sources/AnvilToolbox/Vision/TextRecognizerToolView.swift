@@ -258,13 +258,11 @@ public struct TextRecognizerToolView: View {
                 .font(AnvilFont.body)
         }
 
-        InspectorSection(
+        InspectorNote(
             "Reihenfolge",
             systemImage: "list.number",
             footnote: "Zeilen kommen von oben nach unten, gleich hohe von links nach rechts — zwei Spalten bleiben zwei Spalten."
-        ) {
-            EmptyView()
-        }
+        )
     }
 
     // MARK: - Actions

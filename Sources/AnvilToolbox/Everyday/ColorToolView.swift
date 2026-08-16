@@ -202,13 +202,11 @@ public struct ColorToolView: View {
             }
         }
 
-        InspectorSection(
+        InspectorNote(
             "Wird gelesen",
             systemImage: "text.magnifyingglass",
             footnote: "Hex mit und ohne Raute, rgb(), rgba(), hsl(), hsla() und gängige Farbnamen auf Deutsch und Englisch."
-        ) {
-            EmptyView()
-        }
+        )
     }
 
     // MARK: - Pieces

@@ -194,10 +194,7 @@ public struct RegexToolView: View {
                     }
                     .padding(AnvilSpacing.sm)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background {
-                        RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                            .fill(AnvilColor.surface)
-                    }
+                    .anvilCard(.compact)
                 }
             }
             .padding(AnvilSpacing.md)

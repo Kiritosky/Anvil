@@ -176,11 +176,7 @@ public struct EnvToolView: View {
             }
         } accessory: {
             if !files.isEmpty {
-                Button { clear() } label: {
-                    Image(systemName: "trash")
-                }
-                .buttonStyle(AnvilIconButtonStyle())
-                .anvilHelp("Liste leeren")
+                ClearButton { clear() }
             }
         }
     }
@@ -233,10 +229,7 @@ public struct EnvToolView: View {
             }
         }
         .padding(AnvilSpacing.sm)
-        .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .fill(AnvilColor.surface)
-        }
+        .anvilCard()
     }
 
     private var statusBar: some View {
@@ -294,13 +287,11 @@ public struct EnvToolView: View {
             )
         }
 
-        InspectorSection(
+        InspectorNote(
             "Warum keine Werte",
             systemImage: "eye.slash",
             footnote: "In einer .env-Datei stehen Zugangsdaten. Anvil liest sie, vergleicht sie im Speicher und zeigt nur, ob etwas dasteht und ob es überall dasselbe ist. Nichts davon wird abgelegt, und in der Zwischenablage landet kein Wert."
-        ) {
-            EmptyView()
-        }
+        )
 
         if !sources.isEmpty {
             InspectorSection(

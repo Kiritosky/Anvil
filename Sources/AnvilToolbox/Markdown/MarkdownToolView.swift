@@ -260,10 +260,7 @@ public struct MarkdownToolView: View {
         .padding(.horizontal, AnvilSpacing.sm)
         .padding(.vertical, AnvilSpacing.xs)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                .fill(AnvilColor.surface)
-        }
+        .anvilCard(.compact)
     }
 
     @ViewBuilder
@@ -306,10 +303,7 @@ public struct MarkdownToolView: View {
                         .padding(.vertical, AnvilSpacing.xs)
                         .padding(.horizontal, AnvilSpacing.sm)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background {
-                            RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                                .fill(AnvilColor.surface)
-                        }
+                        .anvilCard(.compact)
                     }
                 }
                 .padding(AnvilSpacing.md)
@@ -356,10 +350,7 @@ public struct MarkdownToolView: View {
                         }
                         .padding(AnvilSpacing.sm)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background {
-                            RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                                .fill(AnvilColor.surface)
-                        }
+                        .anvilCard(.compact)
                     }
                 }
                 .padding(AnvilSpacing.md)

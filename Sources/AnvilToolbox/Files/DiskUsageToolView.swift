@@ -185,10 +185,7 @@ public struct DiskUsageToolView: View {
                 .frame(height: AnvilSize.barHeight)
             }
             .padding(AnvilSpacing.sm)
-            .background {
-                RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                    .fill(AnvilColor.surface)
-            }
+            .anvilCard()
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -280,12 +277,10 @@ public struct DiskUsageToolView: View {
             }
         }
 
-        InspectorSection(
+        InspectorNote(
             "Was gezählt wird",
             systemImage: "info.circle",
             footnote: "Gezählt wird die Größe der Dateien, nicht der belegte Platz auf der Platte. Bei vielen winzigen Dateien liegt der echte Verbrauch höher, weil jede einen ganzen Block bekommt."
-        ) {
-            EmptyView()
-        }
+        )
     }
 }

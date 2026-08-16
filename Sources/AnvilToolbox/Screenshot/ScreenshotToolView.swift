@@ -114,11 +114,7 @@ public struct ScreenshotToolView: View {
                 .buttonStyle(AnvilIconButtonStyle())
                 .anvilHelp("Im Finder zeigen")
 
-                Button { controller.remove(shot) } label: {
-                    Image(systemName: "trash")
-                }
-                .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-                .anvilHelp("Verwerfen")
+                ClearButton(help: "Verwerfen") { controller.remove(shot) }
             }
         }
     }
@@ -239,11 +235,7 @@ public struct ScreenshotToolView: View {
             }
         } accessory: {
             if !controller.shots.isEmpty {
-                Button { controller.clear() } label: {
-                    Image(systemName: "trash")
-                }
-                .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-                .anvilHelp("Alle verwerfen")
+                ClearButton(help: "Alle verwerfen") { controller.clear() }
             }
         }
         .frame(height: AnvilSize.secondaryListHeight)

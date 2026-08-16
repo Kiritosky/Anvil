@@ -178,10 +178,7 @@ public struct DuplicateToolView: View {
             }
         }
         .padding(AnvilSpacing.sm)
-        .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .fill(AnvilColor.surface)
-        }
+        .anvilCard()
     }
 
     @ViewBuilder

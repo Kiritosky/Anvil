@@ -168,18 +168,11 @@ public struct SpeechStudioView: View {
             .buttonStyle(AnvilIconButtonStyle())
             .anvilHelp(model.isPaused ? "Weiter aufnehmen" : "Pause")
 
-            Button { Task { await model.discardRecording() } } label: {
-                Image(systemName: "trash")
-            }
-            .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-            .anvilHelp("Aufnahme verwerfen")
+            ClearButton(help: "Aufnahme verwerfen") { Task { await model.discardRecording() } }
         }
         .padding(.horizontal, AnvilSpacing.md)
         .padding(.vertical, AnvilSpacing.sm)
-        .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .fill(AnvilColor.surface)
-        }
+        .anvilCard()
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
                 .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
@@ -507,10 +500,7 @@ struct HistorySheet: View {
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(AnvilSpacing.md)
-                                .background {
-                                    RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                                        .fill(AnvilColor.surface)
-                                }
+                                .anvilCard()
                             }
                             .buttonStyle(.plain)
                         }

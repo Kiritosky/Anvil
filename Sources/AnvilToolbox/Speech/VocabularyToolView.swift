@@ -105,19 +105,12 @@ public struct VocabularyToolView: View {
 
             AnvilTextField(text: variantsBinding(for: entry), placeholder: "Verhörer, mit Komma getrennt")
 
-            Button { store.remove(entry.wrappedValue) } label: {
-                Image(systemName: "trash")
-            }
-            .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-            .anvilHelp("Löschen")
+            ClearButton(help: "Löschen") { store.remove(entry.wrappedValue) }
         }
         .opacity(entry.wrappedValue.isEnabled ? 1 : 0.5)
         .padding(.horizontal, AnvilSpacing.xs)
         .padding(.vertical, AnvilSpacing.xxs)
-        .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                .fill(AnvilColor.surface)
-        }
+        .anvilCard(.compact)
     }
 
     // MARK: - Test

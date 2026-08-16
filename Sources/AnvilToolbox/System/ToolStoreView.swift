@@ -241,11 +241,7 @@ public struct ToolStoreView: View {
                 .buttonStyle(AnvilIconButtonStyle())
                 .anvilHelp("Im Finder zeigen")
 
-                Button { pendingDeletion = tool } label: {
-                    Image(systemName: "trash")
-                }
-                .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-                .anvilHelp("Tool löschen")
+                ClearButton(help: "Tool löschen") { pendingDeletion = tool }
             }
 
             Button {
@@ -273,10 +269,7 @@ public struct ToolStoreView: View {
             }
         }
         .padding(AnvilSpacing.md)
-        .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .fill(AnvilColor.surface)
-        }
+        .anvilCard()
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
                 .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)

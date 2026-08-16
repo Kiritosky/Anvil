@@ -216,10 +216,7 @@ public struct NetToolView: View {
                     .padding(.horizontal, AnvilSpacing.sm)
                     .padding(.vertical, AnvilSpacing.xs)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background {
-                        RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                            .fill(AnvilColor.surface)
-                    }
+                    .anvilCard(.compact)
                 }
             }
         }

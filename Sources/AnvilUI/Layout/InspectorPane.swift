@@ -76,6 +76,34 @@ public struct InspectorSection<Content: View>: View {
     }
 }
 
+/// Ein Abschnitt im Inspektor, der nur erklärt.
+///
+/// Acht Werkzeuge hatten dafür einen ``InspectorSection`` mit `EmptyView()`
+/// darin — eine Klammer, die nichts umschließt, und beim Lesen jedes Mal die
+/// Frage, ob da etwas fehlt. „Wie gerechnet wird", „Was gespeichert wird",
+/// „Warum keine Werte": Der Text ist der ganze Inhalt.
+public struct InspectorNote: View {
+    private let title: LocalizedStringKey
+    private let systemImage: String?
+    private let footnote: LocalizedStringKey
+
+    public init(
+        _ title: LocalizedStringKey,
+        systemImage: String? = nil,
+        footnote: LocalizedStringKey
+    ) {
+        self.title = title
+        self.systemImage = systemImage
+        self.footnote = footnote
+    }
+
+    public var body: some View {
+        InspectorSection(title, systemImage: systemImage, footnote: footnote) {
+            EmptyView()
+        }
+    }
+}
+
 /// A label-over-control row, the inspector's unit of layout.
 ///
 /// Vertical rather than side-by-side: the inspector is narrow, and stacked

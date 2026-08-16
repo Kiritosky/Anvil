@@ -234,11 +234,7 @@ public struct ArchiveToolView: View {
             }
         } accessory: {
             if !items.isEmpty {
-                Button { clear() } label: {
-                    Image(systemName: "trash")
-                }
-                .buttonStyle(AnvilIconButtonStyle())
-                .anvilHelp("Liste leeren")
+                ClearButton { clear() }
             }
         }
     }
@@ -270,10 +266,7 @@ public struct ArchiveToolView: View {
                 }
             }
             .padding(AnvilSpacing.sm)
-            .background {
-                RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                    .fill(item.id == selected?.id ? AnvilColor.selection : AnvilColor.surface)
-            }
+            .anvilCard(isSelected: item.id == selected?.id)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -448,12 +441,10 @@ public struct ArchiveToolView: View {
             }
         }
 
-        InspectorSection(
+        InspectorNote(
             "Wie gepackt wird",
             systemImage: "info.circle",
             footnote: "Gepackt und entpackt wird mit `ditto` — demselben Werkzeug, das der Finder benutzt. Rechte, Symlinks und Ressourcenzweige bleiben dabei erhalten; ein Archiv aus Anvil kommt auf einem Mac an wie eines aus dem Finder."
-        ) {
-            EmptyView()
-        }
+        )
     }
 }

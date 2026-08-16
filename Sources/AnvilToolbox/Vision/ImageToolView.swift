@@ -101,11 +101,7 @@ public struct ImageToolView: View {
                     .font(AnvilFont.caption.monospacedDigit())
                     .foregroundStyle(AnvilColor.textTertiary)
 
-                Button { batch.clear() } label: {
-                    Image(systemName: "trash")
-                }
-                .buttonStyle(AnvilIconButtonStyle(tone: .danger))
-                .anvilHelp("Liste leeren")
+                ClearButton { batch.clear() }
             }
         }
     }

@@ -186,10 +186,7 @@ public struct ReadabilityToolView: View {
         }
         .padding(AnvilSpacing.sm)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                .fill(AnvilColor.surface)
-        }
+        .anvilCard(.compact)
     }
 
     private var statusBar: some View {
