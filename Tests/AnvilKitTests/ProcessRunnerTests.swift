@@ -49,6 +49,32 @@ struct ProcessRunnerTests {
         #expect(result.standardOutput.hasSuffix("Zeile20000\n"))
     }
 
+    /// Nicht nur vollständig, sondern auch in der richtigen Reihenfolge.
+    ///
+    /// Der Fall, den die Prüfung auf die letzte Zeile allein durchgehen ließ:
+    /// Wer am Ende den Rest nachliest, während noch ein Block unterwegs ist,
+    /// bekommt alles — nur eben nicht der Reihe nach. Das fällt bei einer
+    /// Dateiliste aus `unzip` erst auf, wenn eine Zeile mitten in einer
+    /// anderen steht.
+    @Test
+    func everyLineArrivesInOrder() async throws {
+        let result = try await runner.run(
+            "/bin/sh",
+            arguments: ["-c", "for i in $(seq 1 20000); do echo Zeile$i; done"],
+            timeout: 30
+        )
+
+        let lines = result.standardOutput.split(separator: "\n")
+        #expect(lines.count == 20_000)
+        #expect(lines.first == "Zeile1")
+        #expect(lines.last == "Zeile20000")
+
+        let outOfOrder = lines.enumerated()
+            .first { $0.element != "Zeile\($0.offset + 1)" }?
+            .element
+        #expect(outOfOrder == nil)
+    }
+
     // MARK: - Wenn es schiefgeht
 
     @Test
