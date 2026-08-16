@@ -141,4 +141,32 @@ public struct GitReader: Sendable {
     public func fetch(_ repository: URL) async throws {
         _ = try await git(["fetch", "--all", "--prune"], in: repository, timeout: 120)
     }
+
+    /// Holt einen Schwung Repositories nebenläufig.
+    ///
+    /// Ein `fetch` wartet fast die ganze Zeit auf den Server. Dreißig davon
+    /// nacheinander sind dreißigmal diese Wartezeit, obwohl der Mac dabei
+    /// nichts tut — nebenläufig ist es der Schwung, der am längsten braucht.
+    ///
+    /// - Returns: Die Repositories, bei denen es nicht ging.
+    public func fetch(_ repositories: [URL]) async -> [URL] {
+        await withTaskGroup(of: URL?.self) { group in
+            for repository in repositories {
+                group.addTask {
+                    do {
+                        try await self.fetch(repository)
+                        return nil
+                    } catch {
+                        return repository
+                    }
+                }
+            }
+
+            var failed: [URL] = []
+            for await result in group {
+                if let result { failed.append(result) }
+            }
+            return failed
+        }
+    }
 }

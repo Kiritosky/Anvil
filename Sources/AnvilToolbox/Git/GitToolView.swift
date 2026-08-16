@@ -137,14 +137,13 @@ public struct GitToolView: View {
             total = targets.count
             scanned = 0
 
+            // Schwungweise wie beim Einlesen: Ein `fetch` wartet fast die
+            // ganze Zeit auf den Server, also warten acht davon zusammen.
             var failures = 0
-            for repository in targets {
-                do {
-                    try await reader.fetch(repository.url)
-                } catch {
-                    failures += 1
-                }
-                scanned += 1
+            for start in stride(from: 0, to: targets.count, by: GitReader.batchSize) {
+                let end = min(start + GitReader.batchSize, targets.count)
+                failures += await reader.fetch(targets[start..<end].map(\.url)).count
+                scanned = end
             }
             isFetching = false
 
