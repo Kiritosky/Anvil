@@ -11,7 +11,10 @@ import SwiftUI
 /// eigene OAuth-App anlegen wollen.
 struct GitHubSettingsView: View {
     let settings: SettingsStore
-    let pasteboard: Pasteboard
+    /// Mit Modulnamen: `ApplicationServices` bringt über AppKit einen
+    /// gleichnamigen Typ mit, und dann weiß der Übersetzer nicht, welcher
+    /// gemeint ist.
+    let pasteboard: AnvilKit.Pasteboard
 
     @State private var token = ""
     @State private var status: String?
