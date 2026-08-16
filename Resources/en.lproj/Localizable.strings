@@ -93,6 +93,7 @@
 "Alte Zweige" = "Stale branches";
 "alte Zweige" = "stale branches";
 "Angelegt als %@. Es steht jetzt unter „Eigene Tools\" — %lld eigene insgesamt." = "Created as %@. It now sits under \"Your own tools\" — %lld of your own in total.";
+"Angelesen" = "Peeked at";
 "Angesehen" = "Looked at";
 "Anteil" = "Share";
 "Anvil löscht nichts. Der Befehl behält je Gruppe die erste Datei und geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command keeps the first file of each group and goes to the clipboard — you run it where you can see what happens.";
@@ -835,6 +836,7 @@
 "Ersetzt nur eingetragene Schreibweisen sowie Groß- und Kleinschreibung." = "Only replaces listed spellings and fixes upper and lower case.";
 "Erst das Apple-Modell. Nur wenn das nicht kann, geht es an den externen Anbieter." = "Apple’s model first. The remote provider is used only when it cannot do the job.";
 "Erst der externe Anbieter, das Apple-Modell als Rückfallebene." = "Remote provider first, Apple’s model as the fallback.";
+"Erst nach Größe gruppieren, dann die ersten vierundsechzig Kilobyte vergleichen, und nur was beides übersteht, ganz lesen. Zwei gleich große Videos unterscheiden sich fast immer schon im ersten Block — sie ganz zu lesen wären acht Gigabyte für eine Antwort, die nach einem Augenblick feststand." = "First group by size, then compare the first sixty-four kilobytes, and only read what survives both in full. Two videos of the same size almost always differ in the first block — reading them whole would be eight gigabytes for an answer that was settled in a moment.";
 "Erst oben einschalten." = "Switch it on above first.";
 "Erste Datei" = "First file";
 "Erste Zeile ist die Kopfzeile" = "First line is the header";
@@ -913,6 +915,7 @@
 "Für diesen Anbieter fehlt der API-Schlüssel." = "This provider is missing its API key.";
 "Für „%@\" gibt es in dieser Ansicht nichts. Setze den Filter zurück oder such nach etwas anderem." = "Nothing matches “%@” in this view. Reset the filter or search for something else.";
 "Gab es, gibt es absichtlich nicht mehr." = "It existed, and is deliberately gone.";
+"Ganz gelesen" = "Read in full";
 "Ganze Sammlung ein- oder ausschalten" = "Switch the whole collection on or off";
 "Ganzen Bildschirm aufnehmen" = "Capture the whole screen";
 "Ganzer Bildschirm" = "Whole screen";

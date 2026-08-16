@@ -74,9 +74,11 @@ public struct DuplicateToolView: View {
             scan = await Task.detached {
                 let files = FileWalk.files(in: root, minimumBytes: minimum)
                     .map { DuplicateScan.File(url: $0.url, size: $0.size) }
-                return DuplicateScan.scan(files) { url in
-                    try FileDigest.hex(SHA256.self, of: url)
-                }
+                return DuplicateScan.scan(
+                    files,
+                    peek: { try FileDigest.prefixHex(SHA256.self, of: $0) },
+                    digest: { try FileDigest.hex(SHA256.self, of: $0) }
+                )
             }.value
         }
     }
@@ -265,12 +267,13 @@ public struct DuplicateToolView: View {
         InspectorSection(
             "Wie gesucht wird",
             systemImage: "info.circle",
-            footnote: "Erst nach Größe gruppieren, dann nur innerhalb der Gruppen die Prüfsumme rechnen. Zwei Dateien unterschiedlicher Größe können nie gleich sein — dadurch wird fast nichts gelesen."
+            footnote: "Erst nach Größe gruppieren, dann die ersten vierundsechzig Kilobyte vergleichen, und nur was beides übersteht, ganz lesen. Zwei gleich große Videos unterscheiden sich fast immer schon im ersten Block — sie ganz zu lesen wären acht Gigabyte für eine Antwort, die nach einem Augenblick feststand."
         ) {
             if scan.examined > 0 {
                 KeyValueList([
                     KeyValueList.Item(localized("Angesehen"), "\(scan.examined)"),
-                    KeyValueList.Item(localized("Gelesen"), "\(scan.hashed)")
+                    KeyValueList.Item(localized("Angelesen"), "\(scan.peeked)"),
+                    KeyValueList.Item(localized("Ganz gelesen"), "\(scan.hashed)")
                 ])
             }
         }

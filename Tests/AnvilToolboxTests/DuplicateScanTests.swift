@@ -114,6 +114,82 @@ struct DuplicateScanTests {
         #expect(result.groups[0].count == 2)
     }
 
+    // MARK: - Der schnelle Blick
+
+    /// Der Punkt der zweiten Stufe: Was sich schon im ersten Block
+    /// unterscheidet, wird nie ganz gelesen.
+    @Test
+    func whatDiffersInTheFirstBlockIsNeverReadInFull() {
+        var readInFull: [String] = []
+        let result = DuplicateScan.scan(
+            [file("/a/eins.mov", 4_000), file("/b/zwei.mov", 4_000)],
+            peek: { url in url.deletingPathExtension().lastPathComponent },
+            digest: { url in
+                readInFull.append(url.lastPathComponent)
+                return digest(url)
+            }
+        )
+        #expect(result.isEmpty)
+        #expect(readInFull.isEmpty)
+        #expect(result.peeked == 2)
+        #expect(result.hashed == 0)
+    }
+
+    /// Gleicher Anfang heißt nicht gleiche Datei — deshalb kommt danach noch
+    /// die ganze Prüfsumme.
+    @Test
+    func theSameBeginningIsNotEnough() {
+        let result = DuplicateScan.scan(
+            [file("/a/film.mov", 4_000), file("/b/film.mov", 4_000)],
+            peek: { _ in "gleicher Anfang" },
+            digest: { url in url.deletingLastPathComponent().path }
+        )
+        #expect(result.isEmpty)
+        #expect(result.peeked == 2)
+        #expect(result.hashed == 2)
+    }
+
+    @Test
+    func theSameFileSurvivesBothStages() {
+        let result = DuplicateScan.scan(
+            [file("/a/x.txt", 100), file("/b/x.txt", 100)],
+            peek: { _ in "gleicher Anfang" },
+            digest: { digest($0) }
+        )
+        #expect(result.groups.count == 1)
+        #expect(result.groups[0].count == 2)
+        #expect(result.peeked == 2)
+        #expect(result.hashed == 2)
+    }
+
+    /// Ohne den schnellen Blick bleibt es bei zwei Stufen — so wie vorher.
+    @Test
+    func withoutAPeekNothingChanges() {
+        let result = scan([file("/a/x.txt", 100), file("/b/x.txt", 100)])
+        #expect(result.groups.count == 1)
+        #expect(result.peeked == 0)
+        #expect(result.hashed == 2)
+    }
+
+    /// Eine Datei, deren Anfang sich nicht lesen lässt, hält den Rest nicht
+    /// auf — sie fällt nur aus der Suche.
+    @Test
+    func aFileWhoseBeginningCannotBeReadIsSkipped() {
+        let result = DuplicateScan.scan(
+            [file("/a/x.txt", 100), file("/b/x.txt", 100), file("/c/kaputt.txt", 100)],
+            peek: { url in
+                guard !url.lastPathComponent.hasPrefix("kaputt") else {
+                    throw AnvilError.storage("geht nicht")
+                }
+                return "gleicher Anfang"
+            },
+            digest: { digest($0) }
+        )
+        #expect(result.groups.count == 1)
+        #expect(result.groups[0].count == 2)
+        #expect(result.peeked == 2)
+    }
+
     @Test
     func nothingInIsAnEmptyScan() {
         #expect(scan([]).isEmpty)

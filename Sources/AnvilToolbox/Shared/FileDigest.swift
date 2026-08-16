@@ -24,6 +24,42 @@ enum FileDigest {
         return hasher.finalize().map { String(format: "%02x", $0) }.joined()
     }
 
+    /// So weit reicht der schnelle Blick.
+    ///
+    /// Genug, dass zwei verschiedene Dateien sich fast immer schon hier
+    /// unterscheiden — Kopfdaten, Auflösung, erste Bilder eines Videos stehen
+    /// alle darin — und wenig genug, dass es einmal Kopfnicken kostet statt
+    /// einer Wartezeit.
+    static let prefixSize = 64 * 1024
+
+    /// Die Prüfsumme über den Anfang der Datei.
+    ///
+    /// Für den Vergleich vieler großer Dateien: Zwei Videos von vier Gigabyte
+    /// unterscheiden sich fast immer im ersten Block. Sie ganz zu lesen, um
+    /// das festzustellen, sind acht Gigabyte für eine Antwort, die nach
+    /// vierundsechzig Kilobyte feststand.
+    static func prefixHex<Function: HashFunction>(
+        _ function: Function.Type,
+        of url: URL,
+        bytes: Int = prefixSize
+    ) throws -> String {
+        let handle: FileHandle
+        do {
+            handle = try FileHandle(forReadingFrom: url)
+        } catch {
+            throw AnvilError.storage(
+                localized("„\(url.lastPathComponent)\" ließ sich nicht öffnen: \(error.localizedDescription)")
+            )
+        }
+        defer { try? handle.close() }
+
+        var hasher = Function()
+        if let chunk = try handle.read(upToCount: bytes) {
+            hasher.update(data: chunk)
+        }
+        return hex(hasher.finalize())
+    }
+
     /// Alle vier auf einmal — und dabei die Datei nur einmal lesen.
     ///
     /// Vier Durchläufe wären bei einem großen Image vier Mal dieselbe Wartezeit
