@@ -8,21 +8,13 @@ public enum AIToolBundle: ToolBundle {
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        // Als Funktionsreferenz nicht schreibbar: `registration(for:origin:)`
-        // hat einen Parameter mit Vorgabewert.
         AIPromptCatalog.all.map { registration(for: $0) } + [builder]
     }
 
     /// Das Werkzeug, das Werkzeuge anlegt.
-    ///
-    /// Steht bei den KI-Werkzeugen, weil es genau die baut — und nicht bei
-    /// „Eigene Tools", weil dort das Ergebnis landet und nicht der Weg dahin.
     @MainActor
     private static var builder: ToolRegistration {
         let metadata = ToolMetadata(
-            // Nicht „ai.…": Das Werkzeug schreibt eine Datei und fragt dabei
-            // kein Modell. Ein Werkzeug mit dieser Kennung müsste eines
-            // brauchen.
             id: "custom.builder",
             title: "Eigenes Werkzeug",
             subtitle: "Aus einem Prompt ein Werkzeug machen",

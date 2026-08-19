@@ -1,10 +1,6 @@
 import SwiftUI
 
 /// A wrapping set of selectable chips.
-///
-/// Preferred over `Picker` wherever the options are things the user browses —
-/// refinement styles, output formats, languages — because all options stay
-/// visible instead of hiding behind a menu.
 public struct ChipPicker<Option: Hashable>: View {
     @Binding private var selection: Option
     private let options: [Option]

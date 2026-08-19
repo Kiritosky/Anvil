@@ -4,11 +4,6 @@ import Foundation
 import Observation
 
 /// Recording and transcription as one unit.
-///
-/// This is the object a speech tool actually drives: press record, get a live
-/// transcript, press stop, get a finished one plus the audio file. Both the
-/// full Speech Studio and the menu-bar quick capture use it, so the two can
-/// never behave differently.
 @MainActor
 @Observable
 public final class DictationSession {
@@ -51,10 +46,6 @@ public final class DictationSession {
     // MARK: - Control
 
     /// Requests permission, prepares the language assets, and starts recording.
-    ///
-    /// - Parameters:
-    ///   - locale: language to transcribe in.
-    ///   - keepAudio: whether to keep the recording on disk afterwards.
     public func start(locale: Locale, keepAudio: Bool = true) async {
         guard state == .idle || state == .finished else { return }
 
@@ -67,8 +58,6 @@ public final class DictationSession {
             let url = keepAudio ? Self.makeRecordingURL() : nil
             try await transcription.start(locale: locale)
 
-            // The tap feeds the analyser directly; the session converts each
-            // buffer to the analyser's format on the way through.
             recorder.bufferHandler = { [weak transcription] buffer in
                 transcription?.feed(buffer)
             }

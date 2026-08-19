@@ -4,11 +4,6 @@ import AppKit
 import SwiftUI
 
 /// Der Blick über alle Repositories auf diesem Mac.
-///
-/// Die Frage, die dieses Werkzeug beantwortet, stellt sich vor jedem Urlaub und
-/// vor jedem Rechnerwechsel: Liegt irgendwo noch Arbeit, die es nur hier gibt?
-/// Beantworten lässt sie sich heute nur, indem man dreißig Ordner einzeln
-/// aufmacht — und genau deshalb macht es niemand.
 public struct GitToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -69,8 +64,6 @@ public struct GitToolView: View {
     // MARK: - Einlesen
 
     private func open(_ folder: URL) {
-        // Wer eine Datei aus einem Repository hineinzieht, meint den Ordner
-        // darum — nicht die Datei.
         root = FileWalk.isDirectory(folder) ? folder : folder.deletingLastPathComponent()
         rescan()
     }
@@ -99,9 +92,6 @@ public struct GitToolView: View {
             return
         }
 
-        // Die Suche selbst geht über das Dateisystem und kann bei einem
-        // Ordner mit hunderten Projekten spürbar dauern. Auf dem Hauptthread
-        // stünde so lange das Fenster.
         let wanted = depth
         let folders = await Task.detached {
             RepositoryScan.repositories(under: folder, maxDepth: wanted)
@@ -111,8 +101,6 @@ public struct GitToolView: View {
         scanned = 0
         overview = .empty
 
-        // Schwungweise statt alles auf einmal: So wächst die Liste sichtbar,
-        // statt dass der Benutzer eine halbe Minute lang auf nichts schaut.
         var collected: [GitRepository] = []
         for start in stride(from: 0, to: folders.count, by: GitReader.batchSize) {
             let end = min(start + GitReader.batchSize, folders.count)
@@ -123,9 +111,6 @@ public struct GitToolView: View {
     }
 
     /// Die Massenaktion, um die es hier eigentlich geht.
-    ///
-    /// Geholt wird, was gerade in der Liste steht — nicht immer alles. Wer auf
-    /// „Hinterher" gefiltert hat, meint genau diese.
     private func fetchAll() {
         let targets = overview.filtered(filter)
         guard !targets.isEmpty else { return }
@@ -137,8 +122,6 @@ public struct GitToolView: View {
             total = targets.count
             scanned = 0
 
-            // Schwungweise wie beim Einlesen: Ein `fetch` wartet fast die
-            // ganze Zeit auf den Server, also warten acht davon zusammen.
             var failures = 0
             for start in stride(from: 0, to: targets.count, by: GitReader.batchSize) {
                 let end = min(start + GitReader.batchSize, targets.count)
@@ -147,8 +130,6 @@ public struct GitToolView: View {
             }
             isFetching = false
 
-            // Danach neu lesen: Erst jetzt weiß jedes Repository, welche
-            // Zweige es auf dem Server noch gibt.
             if let root {
                 await scan(root)
             }
@@ -521,10 +502,6 @@ public struct GitToolView: View {
 }
 
 /// Eine Zeile in der Repository-Liste.
-///
-/// Absichtlich keine Tabellenzeile: Die drei Zahlen, um die es geht, liest man
-/// als Zeichen schneller als in Spalten — und der Name darf so lang sein, wie
-/// er ist.
 private struct RepositoryRow: View {
     let repository: GitRepository
     let isSelected: Bool

@@ -103,7 +103,6 @@ struct ClipboardHistoryTests {
     func searchIsNotFuzzy() {
         let (history, _, _) = makeHistory()
         history.record("Der Termin ist am Dienstag")
-        // The letters are all there in order — a subsequence match would hit.
         #expect(history.search("dta").isEmpty)
     }
 

@@ -7,10 +7,6 @@ public struct ArchiveEntry: Sendable, Hashable, Identifiable {
     public let path: String
     public let size: Int
     /// Datum und Uhrzeit, so wie `unzip` sie geschrieben hat.
-    ///
-    /// Bewusst als Text: `unzip` gibt das Datum je nach Fassung anders aus,
-    /// und ein Werkzeug, das ein missverstandenes Datum anzeigt, ist
-    /// schlimmer als eines, das die Auskunft weiterreicht, wie sie kam.
     public let dateText: String
 
     public init(path: String, size: Int, dateText: String = "") {
@@ -60,14 +56,8 @@ public struct ArchiveEntry: Sendable, Hashable, Identifiable {
 
     /// Ob dieser Eintrag beim Auspacken irgendwo landen würde, wo er nicht
     /// hingehört.
-    ///
-    /// Beides ist alt bekannt und trotzdem regelmäßig erfolgreich: Ein Archiv
-    /// mit `../../.ssh/authorized_keys` darin schreibt beim Auspacken in den
-    /// Nachbarordner. `ditto` weigert sich; gesagt haben will man es trotzdem
-    /// vorher, und zwar bevor man auf „Entpacken" drückt.
     public var risk: Risk? {
         if path.hasPrefix("/") { return .absolute }
-        // Ein Laufwerksbuchstabe aus der Windows-Welt ist derselbe Fall.
         if path.count > 2, path.dropFirst().hasPrefix(":\\") { return .absolute }
         if path.components(separatedBy: "/").contains("..") { return .escapes }
         return nil
@@ -75,11 +65,6 @@ public struct ArchiveEntry: Sendable, Hashable, Identifiable {
 }
 
 /// Was in einem Archiv liegt, ohne es auszupacken.
-///
-/// Der Punkt der Übung: Ein Archiv ist eine Katze im Sack. Doppelklicken
-/// entpackt es — und erst danach sieht man, dass es dreihundert Dateien ohne
-/// gemeinsamen Ordner waren, die jetzt im Download-Ordner verteilt liegen.
-/// Hier steht das vorher da.
 public struct ArchiveListing: Sendable, Hashable {
     public let entries: [ArchiveEntry]
 
@@ -94,11 +79,6 @@ public struct ArchiveListing: Sendable, Hashable {
     // MARK: - Lesen
 
     /// Zerlegt die Ausgabe von `unzip -l`.
-    ///
-    /// Kopf- und Fußzeilen werden übergangen, statt sie zu zählen: Ihre Form
-    /// hängt an der Fassung von `unzip`, die Zeilen dazwischen nicht. Eine
-    /// Zeile zählt, wenn vorn eine Zahl steht und danach etwas mit
-    /// Doppelpunkt — eine Uhrzeit.
     public static func read(_ text: String) -> ArchiveListing {
         var entries: [ArchiveEntry] = []
         for line in TextLines.split(text, keepingEmpty: false) {
@@ -112,8 +92,6 @@ public struct ArchiveListing: Sendable, Hashable {
         let parts = line.split(separator: " ", maxSplits: 3, omittingEmptySubsequences: true)
         guard parts.count == 4 else { return nil }
         guard let size = Int(parts[0]) else { return nil }
-        // Die dritte Spalte ist die Uhrzeit. Ohne diese Prüfung nähme die
-        // Kopfzeile („Length Date Time Name") jede Form an, die man ihr gibt.
         guard parts[2].contains(":") else { return nil }
 
         let path = String(parts[3]).trimmingCharacters(in: .whitespaces)
@@ -149,10 +127,6 @@ public struct ArchiveListing: Sendable, Hashable {
     }
 
     /// Ob das Archiv beim Auspacken alles in den Zielordner schüttet.
-    ///
-    /// Ein sauber gepacktes Archiv hat genau einen Ordner ganz oben. Hat es
-    /// mehrere Einträge oben, verteilt sich der Inhalt beim Auspacken über
-    /// den Zielordner — deshalb legt Anvil grundsätzlich einen Ordner an.
     public var scatters: Bool { roots.count > 1 }
 
     public var risky: [ArchiveEntry] { entries.filter { $0.risk != nil } }

@@ -1,10 +1,6 @@
 import SwiftUI
 
 /// A scrolling bar meter driven by recent audio levels.
-///
-/// Not a real waveform — it is a live activity readout. What matters while
-/// dictating is "is it hearing me", and a handful of bars answers that at a
-/// glance without decoding sample buffers on the main thread.
 public struct LevelMeter: View {
     private let levels: [Float]
     private let isActive: Bool
@@ -54,7 +50,6 @@ public struct LevelMeter: View {
 
     private func color(for level: Float, index: Int, total: Int) -> Color {
         guard isActive else { return AnvilColor.textTertiary.opacity(0.5) }
-        // Fade out older bars so the meter reads left-to-right as time.
         let age = Double(index) / Double(max(1, total - 1))
         let base = level > 0.92 ? AnvilColor.warning : tone.color
         return base.opacity(0.35 + 0.65 * age)

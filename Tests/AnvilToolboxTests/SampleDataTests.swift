@@ -110,7 +110,6 @@ struct SampleIBANTests {
             let iban = row[0]
             #expect(iban.count == 22)
             #expect(iban.hasPrefix("DE"))
-            // Umgestellt und in Zahlen übersetzt muss der Rest 1 sein.
             let rearranged = String(iban.dropFirst(4)) + "1314" + String(iban.dropFirst(2).prefix(2))
             #expect(SampleData.mod97(rearranged) == 1)
         }
@@ -118,7 +117,6 @@ struct SampleIBANTests {
 
     @Test
     func mod97WorksOnNumbersTooLongForAnInteger() {
-        // 34 Stellen — kein UInt64 fasst das.
         #expect(SampleData.mod97("1234567890123456789012345678901234") == 53)
         #expect(SampleData.mod97("97") == 0)
         #expect(SampleData.mod97("98") == 1)
@@ -134,8 +132,6 @@ struct SampleUUIDTests {
             let value = row[0]
             #expect(value.count == 36)
             #expect(value.split(separator: "-").map(\.count) == [8, 4, 4, 4, 12])
-            // Fassung 4, Variante 1 — sonst ist es keine UUID, sondern nur
-            // hübsch.
             #expect(Array(value)[14] == "4")
             #expect("89ab".contains(Array(value)[19]))
             #expect(UUID(uuidString: value) != nil)

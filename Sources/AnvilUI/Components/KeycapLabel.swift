@@ -1,11 +1,6 @@
 import SwiftUI
 
 /// Eine Tastenkombination, gezeichnet wie eine Taste: „⌥⌘D", „⌘1".
-///
-/// Nimmt bewusst einen `String` und keinen `LocalizedStringKey`: ⌘ heißt in
-/// jeder Sprache ⌘, und der Text kommt ohnehin aus einer Einstellung des
-/// Benutzers — übersetzt würde daraus bestenfalls dasselbe und schlimmstenfalls
-/// eine Taste, die es nicht gibt.
 public struct KeycapLabel: View {
     private let keys: String
     /// Für Kürzel, die zwar eingetragen, aber gerade nicht scharf sind.

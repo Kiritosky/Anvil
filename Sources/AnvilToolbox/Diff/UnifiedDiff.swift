@@ -2,12 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Ein Unified Diff, gelesen statt nur angezeigt.
-///
-/// Der Unterschied zu einem Diff-Betrachter: Hier wird der Patch **verstanden**
-/// — welche Dateien, welche Stellen, was dazukommt und was wegfällt — und er
-/// lässt sich auf einen Text anwenden und wieder zurücknehmen. Das ist der
-/// Fall, für den man ihn braucht: Ein Patch hängt an einem Ticket, und man
-/// will wissen, was er täte, bevor man ihn anfasst.
 public struct UnifiedDiff: Sendable {
     // MARK: - Bestandteile
 
@@ -103,12 +97,6 @@ public struct UnifiedDiff: Sendable {
     // MARK: - Lesen
 
     /// Liest einen Unified Diff.
-    ///
-    /// Robust gegenüber dem, was tatsächlich in Tickets landet: mit und ohne
-    /// `diff --git`-Kopf, mit `a/`- und `b/`-Präfix oder ohne, mit
-    /// Zeitstempeln hinter dem Dateinamen. Was nicht zu einem Abschnitt
-    /// gehört, wird übergangen statt als Fehler behandelt — ein Patch mitten
-    /// in einem E-Mail-Text soll trotzdem lesbar sein.
     public init(parsing text: String) {
         var files: [FilePatch] = []
         var oldPath: String?
@@ -117,10 +105,6 @@ public struct UnifiedDiff: Sendable {
         var current: (old: Int, oldCount: Int, new: Int, newCount: Int, heading: String)?
         var lines: [Line] = []
         /// Wie viele Zeilen der Abschnitt laut seinem Kopf noch erwartet.
-        ///
-        /// Ohne das frisst ein Abschnitt die Leerzeile, die ihn vom Text
-        /// dahinter trennt — und dieser Kontext, den es nie gab, lässt den
-        /// Patch später nirgends mehr passen.
         var oldRemaining = 0
         var newRemaining = 0
 
@@ -167,8 +151,6 @@ public struct UnifiedDiff: Sendable {
                 continue
             }
             if line.hasPrefix("--- ") {
-                // Ein neuer `---`-Kopf beginnt eine neue Datei, auch ohne
-                // `diff --git` davor.
                 closeFile()
                 oldPath = Self.path(from: line.dropFirst(4))
                 continue
@@ -187,8 +169,6 @@ public struct UnifiedDiff: Sendable {
 
             guard current != nil else { continue }
 
-            // Ein voller Abschnitt nimmt nur noch den „\ No newline"-Vermerk,
-            // der hinter seiner letzten Zeile steht und für keine Seite zählt.
             if oldRemaining <= 0, newRemaining <= 0 {
                 if line.hasPrefix("\\") {
                     lines.append(
@@ -210,12 +190,8 @@ public struct UnifiedDiff: Sendable {
                 oldRemaining -= 1
                 newRemaining -= 1
             } else if line.hasPrefix("\\") {
-                // Gehört zum Patch, zählt aber für keine Seite mit.
                 lines.append(Line(kind: .note, text: String(line.dropFirst()).trimmingCharacters(in: .whitespaces)))
             } else if line.isEmpty, oldRemaining > 0 || newRemaining > 0 {
-                // Ein leerer Kontext verliert im Transport gern sein führendes
-                // Leerzeichen. Solange der Abschnitt noch Zeilen erwartet, ist
-                // das die wahrscheinlichere Erklärung als sein Ende.
                 lines.append(Line(kind: .context, text: ""))
                 oldRemaining -= 1
                 newRemaining -= 1
@@ -233,9 +209,6 @@ public struct UnifiedDiff: Sendable {
     }
 
     /// Der Dateiname aus einer `---`- oder `+++`-Zeile.
-    ///
-    /// Hinter dem Namen steht oft ein Zeitstempel, getrennt durch einen
-    /// Tabulator; das `a/`- und `b/`-Präfix von Git gehört nicht zum Pfad.
     static func path(from field: Substring) -> String {
         var name = String(field)
         if let tab = name.firstIndex(of: "\t") {
@@ -277,9 +250,6 @@ public struct UnifiedDiff: Sendable {
     // MARK: - Umkehren
 
     /// Derselbe Patch andersherum.
-    ///
-    /// Das ist die Rücknahme: Was hinzugefügt wurde, fällt weg; was wegfiel,
-    /// kommt zurück; die Dateien tauschen die Seiten.
     public var reversed: UnifiedDiff {
         UnifiedDiff(
             files: files.map { file in
@@ -323,22 +293,11 @@ public struct UnifiedDiff: Sendable {
     // MARK: - Anwenden
 
     /// Wendet die Abschnitte einer Datei auf einen Text an.
-    ///
-    /// Die Zeilennummer im Kopf ist ein Hinweis, keine Zusage: Patches werden
-    /// gegen eine Fassung geschrieben und gegen eine leicht andere angewendet.
-    /// Deshalb wird um die angegebene Stelle herum gesucht — und wenn der
-    /// Kontext nirgends passt, gibt es einen Fehler statt einer stillen
-    /// Verstümmelung.
     public func applied(_ file: FilePatch, to text: String) throws -> String {
         var lines = TextLines.split(text)
-        // Ein abschließender Umbruch ergibt eine leere letzte Zeile, die keine
-        // Zeile der Datei ist. Sie wird abgetrennt und am Ende wieder
-        // angehängt, sonst verschiebt sie jede Suche.
         let hadTrailingNewline = lines.count > 1 && lines.last?.isEmpty == true
         if hadTrailingNewline { lines.removeLast() }
 
-        // Von hinten nach vorn: so bleiben die Stellen der noch nicht
-        // angewendeten Abschnitte gültig.
         for hunk in file.hunks.reversed() {
             let old = hunk.oldLines
             let position = try Self.position(of: old, in: lines, hint: hunk.oldStart - 1, hunk: hunk.id)
@@ -350,15 +309,10 @@ public struct UnifiedDiff: Sendable {
     }
 
     /// Wie weit von der angegebenen Stelle aus gesucht wird.
-    ///
-    /// Genug für den üblichen Versatz durch ein paar Zeilen darüber, wenig
-    /// genug, dass nicht irgendein gleich aussehender Abschnitt am anderen
-    /// Ende der Datei erwischt wird.
     static let searchWindow = 200
 
     static func position(of old: [String], in lines: [String], hint: Int, hunk: Int) throws -> Int {
         guard !old.isEmpty else {
-            // Ein Abschnitt, der nur hinzufügt, hat keinen Kontext zum Suchen.
             let position = max(0, min(hint, lines.count))
             return position
         }

@@ -1,10 +1,6 @@
 import SwiftUI
 
 /// The options column on the right of a tool.
-///
-/// Scrollable, fixed width, its own background. Tools fill it with
-/// ``InspectorSection`` groups — never with ad-hoc `Form`s, so that every tool's
-/// options read the same way.
 public struct InspectorPane<Content: View>: View {
     @Environment(\.anvilTheme) private var theme
     private let content: Content
@@ -77,11 +73,6 @@ public struct InspectorSection<Content: View>: View {
 }
 
 /// Ein Abschnitt im Inspektor, der nur erklärt.
-///
-/// Acht Werkzeuge hatten dafür einen ``InspectorSection`` mit `EmptyView()`
-/// darin — eine Klammer, die nichts umschließt, und beim Lesen jedes Mal die
-/// Frage, ob da etwas fehlt. „Wie gerechnet wird", „Was gespeichert wird",
-/// „Warum keine Werte": Der Text ist der ganze Inhalt.
 public struct InspectorNote: View {
     private let title: LocalizedStringKey
     private let systemImage: String?
@@ -105,9 +96,6 @@ public struct InspectorNote: View {
 }
 
 /// A label-over-control row, the inspector's unit of layout.
-///
-/// Vertical rather than side-by-side: the inspector is narrow, and stacked
-/// labels keep long German option names from truncating.
 public struct OptionRow<Control: View>: View {
     private let label: LocalizedStringKey
     private let help: LocalizedStringKey?

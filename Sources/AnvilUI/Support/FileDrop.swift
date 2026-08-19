@@ -44,15 +44,6 @@ public struct FileDropKind: OptionSet, Sendable {
 
 extension View {
     /// Nimmt gezogene Dateien entgegen.
-    ///
-    /// Vorher hatte genau ein Werkzeug das, mit eigener Fassung — und die ließ
-    /// eine gezogene Textdatei wortlos fallen, weil sie nur nach Bildern
-    /// gesucht hat. Wortlos ist die schlechteste Antwort: der Benutzer sieht
-    /// eine Datei über dem Fenster loslassen und danach nichts.
-    ///
-    /// Hier gibt es auf jeden Drop eine Reaktion — Inhalt oder Fehlermeldung —
-    /// und während gezogen wird, einen Rahmen, der zeigt, dass losgelassen
-    /// werden darf.
     public func anvilFileDrop(
         _ kinds: FileDropKind = .any,
         error: Binding<AnvilError?>? = nil,
@@ -65,14 +56,6 @@ extension View {
     }
 
     /// Dasselbe, aber für alle gezogenen Dateien auf einmal.
-    ///
-    /// Getrennter Name statt einer Überladung: bei zwei Methoden, die sich nur
-    /// im Namen des letzten Arguments unterscheiden, wird jede geschweifte
-    /// Klammer am Ende mehrdeutig.
-    ///
-    /// Der Empfänger wird einmal gerufen, wenn alles gelesen ist — nicht je
-    /// Datei. Ein Werkzeug, das dreißig Bilder bekommt, will dreißigmal
-    /// rechnen und einmal etwas anzeigen.
     public func anvilFilesDrop(
         _ kinds: FileDropKind = .any,
         error: Binding<AnvilError?>? = nil,
@@ -101,10 +84,6 @@ private struct FileDropModifier: ViewModifier {
             .onDrop(of: kinds.typeIdentifiers, isTargeted: $isTargeted) { providers in
                 guard !providers.isEmpty else { return false }
                 FileDropReader.readAll(providers, kinds: kinds) { files, failure in
-                    // Gemeldet wird der erste Fehler, und auch nur dann, wenn
-                    // gar nichts durchkam. Wer zwanzig Bilder und ein PDF
-                    // zieht, will die zwanzig Bilder — nicht eine Meldung
-                    // über das PDF.
                     if files.isEmpty, let failure { error?.wrappedValue = failure }
                     if !files.isEmpty { action(files) }
                 }
@@ -114,18 +93,9 @@ private struct FileDropModifier: ViewModifier {
 }
 
 /// Holt aus einem Drop das heraus, was ein Werkzeug damit anfangen kann.
-///
-/// Eigener Typ statt einer Methode am Modifier, weil hier die einzige Logik
-/// steckt, die nichts mit Darstellung zu tun hat: welcher Anbieter welchen
-/// Inhalt liefert, und was passiert, wenn keiner passt.
 enum FileDropReader {
     /// Liest alle Anbieter und ruft den Empfänger einmal, wenn der letzte
     /// fertig ist.
-    ///
-    /// Die Anbieter antworten in beliebiger Reihenfolge und auf fremden
-    /// Threads; die Reihenfolge, in der die Dateien gezogen wurden, geht dabei
-    /// verloren. Deshalb wird jedes Ergebnis an seinen Platz gelegt statt
-    /// angehängt — sonst stünde die Liste bei jedem Drop anders da.
     @MainActor
     static func readAll(
         _ providers: [NSItemProvider],
@@ -155,9 +125,6 @@ enum FileDropReader {
         kinds: FileDropKind,
         completion: @escaping @MainActor (Result<DroppedFile, AnvilError>) -> Void
     ) {
-        // Eine Datei aus dem Finder: die URL entscheidet, was es ist. Das ist
-        // der Weg, der vorher fehlte — ohne ihn landet eine .txt im
-        // Bild-Zweig und verschwindet.
         if provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
             _ = provider.loadObject(ofClass: URL.self) { url, _ in
                 Task { @MainActor in
@@ -173,8 +140,6 @@ enum FileDropReader {
             return
         }
 
-        // Kein Datei-Drop, sondern Inhalt direkt aus einer anderen App —
-        // ein Bild aus der Vorschau, markierter Text aus dem Browser.
         if kinds.contains(.image), provider.canLoadObject(ofClass: NSImage.self) {
             _ = provider.loadObject(ofClass: NSImage.self) { object, _ in
                 let image = object as? NSImage
@@ -216,19 +181,10 @@ enum FileDropReader {
     static func load(_ url: URL, kinds: FileDropKind) -> Result<DroppedFile, AnvilError> {
         let type = UTType(filenameExtension: url.pathExtension)
 
-        // Wer nur `.file` verlangt, bekommt die Datei so, wie sie ist. Sie hier
-        // erst zu entziffern wäre falsch: eine Prüfsumme über entzifferten Text
-        // ist nicht die Prüfsumme der Datei.
         if kinds == .file {
             return .success(.file(url))
         }
 
-        // Ein Ordner ist weder Text noch Bild — und trotzdem genau das, was
-        // ein halbes Dutzend Werkzeuge haben will: Dubletten suchen, zwei
-        // Ordner vergleichen, Repositories durchsehen. Ohne diesen Zweig
-        // landete er im Text-Zweig, wo `Data(contentsOf:)` an einem Ordner
-        // scheitert — und wer einen Ordner hineinzog, sah eine Fehlermeldung
-        // statt seiner Dateien.
         if isDirectory(url) {
             return .success(.file(url))
         }
@@ -258,10 +214,6 @@ enum FileDropReader {
     }
 
     /// Ob der Pfad auf einen Ordner zeigt.
-    ///
-    /// Ein Paket — eine `.app`, ein `.rtfd` — ist auf der Platte auch ein
-    /// Ordner, im Finder aber ein Ding. Hier zählt die Platte: Wer eine App
-    /// in ein Werkzeug zieht, das Ordner durchsieht, meint ihren Inhalt.
     static func isDirectory(_ url: URL) -> Bool {
         (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
     }

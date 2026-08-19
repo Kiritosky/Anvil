@@ -23,15 +23,11 @@ public struct CustomToolBuilderView: View {
     /// Die Kennungen, die es schon gibt — die eingebauten wie die eigenen.
     private var taken: Set<String> {
         var identifiers = Set(context.registry.allTools.map(\.id.rawValue))
-        // Beim Nachbessern ist die eigene Kennung kein Hindernis, sondern der
-        // Zweck.
         if isEditingExisting { identifiers.remove(draft.identifier) }
         return identifiers
     }
 
     /// Ob gerade eine Datei nachgebessert wird, die es schon gibt.
-    ///
-    /// Dann ist die vergebene Kennung kein Hindernis, sondern der Zweck.
     @State private var isEditingExisting = false
 
     private var problems: [CustomToolDraft.Problem] { draft.problems(existing: taken) }

@@ -2,10 +2,6 @@ import Foundation
 import Observation
 
 /// Tools that came from the same bundle or the same folder.
-///
-/// A named type rather than a tuple: SwiftUI's `ForEach` needs an
-/// `Identifiable` element or a key path, and key paths cannot address tuple
-/// members.
 public struct ToolGroup: Identifiable {
     public let origin: ToolOrigin
     public let tools: [ToolRegistration]
@@ -19,11 +15,6 @@ public struct ToolGroup: Identifiable {
 }
 
 /// The single source of truth for which tools exist.
-///
-/// The registry knows about every registered tool; the shell only ever shows
-/// the *active* ones — those the user has not switched off in the Tool Store,
-/// from a bundle that is also switched on. The store itself works against
-/// ``allTools`` so a disabled tool remains findable and can be switched back on.
 @MainActor
 @Observable
 public final class ToolRegistry {
@@ -63,9 +54,6 @@ public final class ToolRegistry {
     }
 
     /// Replaces every tool that came from a given bundle identifier.
-    ///
-    /// Used when user-defined tools are reloaded from disk: drop the old set,
-    /// register the new one, leave everything else untouched.
     public func replaceTools(
         fromBundle bundleIdentifier: String,
         with registrations: [ToolRegistration]
@@ -162,9 +150,6 @@ public final class ToolRegistry {
     // MARK: - Search
 
     /// Ranked search across titles, subtitles, keywords and identifiers.
-    ///
-    /// An empty query returns the active set with favourites first, so the
-    /// command palette opens with something useful rather than a blank sheet.
     public func search(
         _ query: String,
         limit: Int = 40,
@@ -185,7 +170,6 @@ public final class ToolRegistry {
             guard var score = FuzzyMatch.score(query: trimmed, in: meta.searchCorpus) else {
                 return nil
             }
-            // A hit in the title is worth more than a hit in a keyword.
             if let titleScore = FuzzyMatch.score(query: trimmed, in: meta.title) {
                 score += titleScore + 40
             }
@@ -255,19 +239,9 @@ public final class ToolRegistry {
     // MARK: - Schnellzugriff
 
     /// Wie viele Werkzeuge auf einer Zifferntaste liegen können.
-    ///
-    /// Neun, weil ⌘0 in der App zurück zur Übersicht führt — so wie in einem
-    /// Browser die Null die Ausgangsgröße herstellt.
     public static let quickAccessLimit = 9
 
     /// Die Werkzeuge auf ⌘1…9, in genau dieser Reihenfolge.
-    ///
-    /// Erst die Favoriten, dann die zuletzt benutzten. Die Favoriten stehen
-    /// vorn, weil ihre Reihenfolge der Benutzer selbst bestimmt hat — die
-    /// Zuletzt-Liste ordnet sich dagegen bei jeder Benutzung um, und eine
-    /// Taste, die gestern etwas anderes geöffnet hat als heute, ist keine
-    /// Abkürzung, sondern eine Falle. Wer sich auf ⌘1 verlassen will, macht
-    /// das Werkzeug zum Favoriten; bis dahin ist die Belegung ein Angebot.
     public var quickAccessTools: [ToolMetadata] {
         var result: [ToolMetadata] = []
         var seen: Set<ToolIdentifier> = []

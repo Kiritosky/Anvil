@@ -2,23 +2,10 @@ import AnvilKit
 import Foundation
 
 /// Rechnen mit Zeit — Dauern, Zeitstempel, Abstände.
-///
-/// Alles hier ist eine reine Funktion über Werte. Kein `Date()` im Inneren:
-/// eine Rechnung, die weiß, wie spät es gerade ist, lässt sich nicht prüfen.
-/// Die Gegenwart kommt von außen herein.
 public enum TimeMath {
     // MARK: - Dauer lesen
 
     /// Wie lange, in Sekunden.
-    ///
-    /// Nimmt an, was Menschen aufschreiben: `90m`, `1h 30m`, `2 Tage`,
-    /// `1,5 h`, `1:30` und `1:30:00`. Eine nackte Zahl sind Sekunden — auch am
-    /// Ende, `1h30` ist also eine Stunde und dreißig **Sekunden**. Wer Minuten
-    /// meint, schreibt sie hin; geraten wird hier nichts.
-    ///
-    /// Gibt `nil` zurück, wenn nichts davon passt — nicht `0`. Der Unterschied
-    /// zwischen „keine Dauer" und „Dauer null" ist genau der, an dem eine
-    /// Oberfläche entscheidet, ob sie ein Ergebnis zeigt.
     public static func seconds(parsing text: String) -> TimeInterval? {
         let work = text
             .trimmingCharacters(in: .whitespaces)
@@ -49,7 +36,6 @@ public enum TimeMath {
 
         for character in work {
             if character.isNumber || character == "." || character == "," {
-                // Eine neue Zahl beginnt: das Paar davor ist fertig.
                 if !unit.isEmpty, !commit() { return nil }
                 number.append(character)
             } else if character.isLetter {
@@ -65,9 +51,6 @@ public enum TimeMath {
     }
 
     /// Wie viele Sekunden eine Einheit ist. Leer heißt Sekunden.
-    ///
-    /// Deutsche und englische Kürzel nebeneinander, weil beides in denselben
-    /// Notizen steht.
     static func factor(for unit: String) -> TimeInterval? {
         switch unit {
         case "": 1
@@ -82,9 +65,6 @@ public enum TimeMath {
     }
 
     /// `1:30` sind anderthalb Stunden, `1:30:00` auch.
-    ///
-    /// Zwei Felder werden als Stunden und Minuten gelesen, nicht als Minuten
-    /// und Sekunden: wer `1:30` schreibt, meint fast immer die Uhr.
     static func clockSeconds(_ text: String) -> TimeInterval? {
         let isNegative = text.hasPrefix("-")
         let parts = (isNegative ? String(text.dropFirst()) : text).components(separatedBy: ":")
@@ -141,7 +121,6 @@ public enum TimeMath {
 
         case .decimalHours:
             let hours = total / 3600
-            // Zwei Nachkommastellen: 7,5 h ist eine Angabe, 7,4999 h ist keine.
             return sign + String(format: "%.2f", hours)
                 .replacingOccurrences(of: ".", with: ",") + " h"
 
@@ -226,11 +205,6 @@ public enum TimeMath {
     }
 
     /// Liest einen Unix-Zeitstempel und rät seine Einheit an der Stellenzahl.
-    ///
-    /// Das geht, weil die Einheiten drei Zehnerpotenzen auseinanderliegen: seit
-    /// 2001 hat ein Zeitstempel in Sekunden zehn Stellen, in Millisekunden
-    /// dreizehn. Eine Zahl mit dreizehn Stellen als Sekunden zu lesen ergäbe
-    /// das Jahr 440 000 — und niemand meint das.
     public static func timestamp(parsing text: String) -> (date: Date, unit: TimestampUnit)? {
         let work = text
             .trimmingCharacters(in: .whitespaces)
@@ -324,9 +298,6 @@ public enum TimeMath {
         to end: Date,
         calendar: Calendar = Calendar(identifier: .gregorian)
     ) -> Span {
-        // Jede Einheit einzeln erfragen. Zusammen erfragt zerlegt `Calendar`
-        // den Abstand („1 Jahr, 2 Monate, 3 Tage"), und `days` wären dann die
-        // übrigen drei Tage statt der 428, die tatsächlich dazwischenliegen.
         func total(_ component: Calendar.Component) -> Int {
             calendar.dateComponents([component], from: start, to: end).value(for: component) ?? 0
         }
@@ -342,10 +313,6 @@ public enum TimeMath {
     }
 
     /// Arbeitstage zwischen zwei Tagen, beide mitgezählt.
-    ///
-    /// Gerechnet und nicht gezählt: über ganze Wochen sind es fünf je Woche,
-    /// und nur der Rest von weniger als einer Woche wird durchgegangen. Sonst
-    /// liefe ein Abstand von zwanzig Jahren durch siebentausend Schleifen.
     public static func workdays(
         from start: Date,
         to end: Date,
@@ -356,25 +323,17 @@ public enum TimeMath {
         guard let between = calendar.dateComponents([.day], from: first, to: last).day else { return 0 }
 
         let total = between + 1
-        // `weekday` ist im gregorianischen Kalender immer 1 = Sonntag … 7 =
-        // Samstag, unabhängig davon, welcher Tag in der Region die Woche
-        // anfängt. Auf 0-basiert umgerechnet läuft der Rest mit `%` durch.
         let start0 = calendar.component(.weekday, from: first) - 1
 
         var count = (total / 7) * 5
         for step in 0..<(total % 7) {
             let day = (start0 + step) % 7
-            // 0 = Sonntag, 6 = Samstag.
             if day != 0, day != 6 { count += 1 }
         }
         return end < start ? -count : count
     }
 
     /// Die Kalenderwoche nach ISO 8601 — die, die in Europa gemeint ist.
-    ///
-    /// Nicht `Calendar.current`: dort hängt die Wochenzählung an der Region,
-    /// und in den USA fängt die Woche am Sonntag an. Eine Kalenderwoche, die
-    /// je nach Systemeinstellung eine andere Zahl ergibt, ist keine.
     public static func isoWeek(of date: Date, in zone: TimeZone = .current) -> (week: Int, year: Int) {
         var calendar = Calendar(identifier: .iso8601)
         calendar.timeZone = zone

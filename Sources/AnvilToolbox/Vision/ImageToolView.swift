@@ -6,9 +6,6 @@ import SwiftUI
 
 /// Bilder rein, kleinere Bilder in einem anderen Format raus — eines oder
 /// dreißig.
-///
-/// Ein Bildwerkzeug, das immer nur ein Bild kann, ist ein halbes: Wer
-/// umwandelt, hat fast nie genau eine Datei, sondern den Inhalt eines Ordners.
 public struct ImageToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -155,8 +152,6 @@ public struct ImageToolView: View {
                     Image(nsImage: preview)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        // Ein einzelnes Ergebnis lässt sich direkt in den
-                        // Finder ziehen, ohne den Umweg über „alle sichern".
                         .anvilDragOut(name: "\(entry.name) \(format.title)") {
                             .image(preview)
                         }

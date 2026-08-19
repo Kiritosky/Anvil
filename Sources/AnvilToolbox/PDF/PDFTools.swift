@@ -3,10 +3,6 @@ import Foundation
 import PDFKit
 
 /// Was sich mit PDFs anstellen lässt, ohne sie zu öffnen.
-///
-/// Jede Funktion baut ein **neues** Dokument und lässt das alte, wie es ist.
-/// Das ist der Unterschied zwischen einem Werkzeug, das man ausprobiert, und
-/// einem, bei dem man vorher eine Kopie anlegt.
 public enum PDFTools {
     // MARK: - Zusammenführen
 
@@ -30,10 +26,6 @@ public enum PDFTools {
     }
 
     /// Liest die Dokumente hinter den Adressen.
-    ///
-    /// Was sich nicht öffnen lässt, fällt heraus und wird gemeldet — der Rest
-    /// wird trotzdem verarbeitet. Ein Stapel, der an einer kaputten Datei
-    /// ganz abbricht, ist bei zwanzig Dateien unbrauchbar.
     public static func load(_ urls: [URL]) -> (documents: [PDFDocument], failed: [URL]) {
         var documents: [PDFDocument] = []
         var failed: [URL] = []
@@ -99,10 +91,6 @@ public enum PDFTools {
     // MARK: - Drehen
 
     /// Dreht die gewählten Seiten.
-    ///
-    /// PDFKit erwartet ein Vielfaches von 90 und rechnet nicht selbst um —
-    /// deshalb wird hier auf 0, 90, 180 oder 270 normalisiert, statt eine
-    /// krumme Zahl durchzureichen und sich zu wundern.
     public static func rotated(
         _ document: PDFDocument,
         by degrees: Int,
@@ -130,10 +118,6 @@ public enum PDFTools {
     // MARK: - Text
 
     /// Der Text des Dokuments, Seite für Seite.
-    ///
-    /// Ein PDF ohne Textschicht — ein Scan — gibt nichts zurück. Das ist kein
-    /// Fehler, sondern die Auskunft, dass hier die Texterkennung gebraucht
-    /// wird und nicht dieses Werkzeug.
     public static func text(of document: PDFDocument, separator: String = "\n\n") -> String {
         (0..<document.pageCount)
             .compactMap { document.page(at: $0)?.string }

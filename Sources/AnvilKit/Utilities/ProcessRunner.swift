@@ -1,11 +1,6 @@
 import Foundation
 
 /// Runs a command-line tool and collects its output.
-///
-/// The app is not sandboxed, so tools may shell out — to `git` for diffs, to
-/// `swift`/`node` for formatters. Everything goes through here so there is one
-/// place that enforces timeouts and never invokes a shell (no string
-/// interpolation into `sh -c`, therefore nothing to quote-escape wrong).
 public struct ProcessRunner: Sendable {
     public struct Result: Sendable {
         public let exitCode: Int32
@@ -30,17 +25,9 @@ public struct ProcessRunner: Sendable {
 
     /// Wie lange nach dem Ende des Programms noch auf das Ende seiner
     /// Ausgabe gewartet wird.
-    ///
-    /// Im Normalfall sind die Rohre längst zu, bevor die Frist überhaupt
-    /// anläuft — sie greift nur, wenn ein Enkelprozess sie offen hält.
     static let gracePeriod: TimeInterval = 2
 
     /// Runs `executable` with `arguments`, returning once it exits.
-    ///
-    /// - Parameters:
-    ///   - executable: Absolute path, or a bare name resolved through `/usr/bin/env`.
-    ///   - workingDirectory: Directory to run in.
-    ///   - timeout: Seconds before the process is terminated.
     public func run(
         _ executable: String,
         arguments: [String],
@@ -65,12 +52,6 @@ public struct ProcessRunner: Sendable {
             process.standardOutput = outPipe
             process.standardError = errPipe
 
-            // Fertig ist der Aufruf, wenn beide Rohre am Ende sind *und* das
-            // Programm beendet ist. Vorher stand hier: Handler abhängen,
-            // Rest lesen, zurückgeben — und wenn in genau dem Moment noch ein
-            // Block unterwegs war, hängte der sich hinter den Rest und die
-            // Ausgabe stand in falscher Reihenfolge da. Selten, aber bei
-            // zwanzigtausend Zeilen aus `git` oder `unzip` reicht selten.
             let state = OutputCollector { result in
                 continuation.resume(returning: result)
             }
@@ -85,10 +66,6 @@ public struct ProcessRunner: Sendable {
             process.terminationHandler = { finished in
                 state.exited(with: finished.terminationStatus)
 
-                // Rückfalltür: Ein Enkelprozess kann das Rohr offen halten,
-                // nachdem sein Elternteil beendet ist — dann käme das Ende
-                // nie. Nach einer Schonfrist wird geliefert, was da ist,
-                // statt zu warten, bis jemand die App abschießt.
                 DispatchQueue.global().asyncAfter(deadline: .now() + Self.gracePeriod) {
                     state.giveUp(
                         out: outPipe.fileHandleForReading,
@@ -128,17 +105,6 @@ public struct ProcessRunner: Sendable {
 }
 
 /// Sammelt die Ausgabe eines Prozesses und gibt sie genau einmal zurück.
-///
-/// Drei Dinge müssen zusammenkommen, bevor ein Aufruf fertig ist: das Ende
-/// der Standardausgabe, das Ende der Fehlerausgabe und das Ende des
-/// Programms. Alle drei melden sich auf eigenen Warteschlangen und in
-/// beliebiger Reihenfolge — deshalb zählt der Sammler mit, statt eine
-/// Reihenfolge anzunehmen.
-///
-/// Das Ende eines Rohrs erkennt man daran, dass ein Lesen nichts mehr
-/// liefert. Genau darauf zu warten ist der Unterschied zu „am Schluss den
-/// Rest nachlesen": Ein Block, der beim Nachlesen noch unterwegs war, landete
-/// dahinter statt davor.
 private final class OutputCollector: @unchecked Sendable {
     private let lock = NSLock()
     private var out = Data()
@@ -150,9 +116,6 @@ private final class OutputCollector: @unchecked Sendable {
 
     private let complete: (ProcessRunner.Result) -> Void
     /// Wird nach jedem Block gerufen, mit allem, was bisher da ist.
-    ///
-    /// Für den Weg, der die Ausgabe laufend weitergibt statt am Ende: ein
-    /// Modell, das Wort für Wort antwortet, soll auch Wort für Wort ankommen.
     private let onOutput: ((String) -> Void)?
 
     init(
@@ -168,8 +131,6 @@ private final class OutputCollector: @unchecked Sendable {
         let data = handle.availableData
 
         guard !data.isEmpty else {
-            // Kein Byte mehr: Das Rohr ist zu. Der Handler muss weg, sonst
-            // ruft das System ihn endlos mit demselben leeren Ergebnis.
             handle.readabilityHandler = nil
             lock.lock()
             if isError { errorIsClosed = true } else { outIsClosed = true }
@@ -198,9 +159,6 @@ private final class OutputCollector: @unchecked Sendable {
     }
 
     /// Gibt auf und liefert, was da ist.
-    ///
-    /// Nur für den Fall, dass ein Rohr nach dem Ende des Programms offen
-    /// bleibt. Ist der Aufruf längst fertig, passiert hier nichts.
     func giveUp(out: FileHandle, error: FileHandle) {
         out.readabilityHandler = nil
         error.readabilityHandler = nil
@@ -224,9 +182,6 @@ private final class OutputCollector: @unchecked Sendable {
     }
 
     /// Das Ergebnis, wenn alles beisammen ist — und nur beim ersten Mal.
-    ///
-    /// Wird unter dem Schloss gerufen; geliefert wird außerhalb, damit der
-    /// Empfänger nicht unter einem fremden Schloss läuft.
     private func readyResult() -> ProcessRunner.Result? {
         guard !isFinished, outIsClosed, errorIsClosed, let status else { return nil }
         isFinished = true
@@ -245,14 +200,6 @@ private final class OutputCollector: @unchecked Sendable {
 
 extension ProcessRunner {
     /// Runs a command and hands back its output as it arrives.
-    ///
-    /// Each element is the *cumulative* standard output so far, not a delta —
-    /// the same contract the model providers use, so a view can bind straight
-    /// to the latest value.
-    ///
-    /// Whether this actually produces more than one element is up to the
-    /// command: one that buffers until it exits yields once, at the end. That
-    /// is a property of the program, not a bug here.
     public func stream(
         _ executable: String,
         arguments: [String],
@@ -277,8 +224,6 @@ extension ProcessRunner {
             process.standardOutput = outPipe
             process.standardError = errPipe
 
-            // Derselbe Sammler wie beim einmaligen Aufruf: Fertig ist es,
-            // wenn beide Rohre am Ende sind und das Programm beendet ist.
             let state = OutputCollector { text in
                 continuation.yield(text)
             } complete: { result in

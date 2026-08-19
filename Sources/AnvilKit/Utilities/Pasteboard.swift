@@ -2,9 +2,6 @@ import AppKit
 import Foundation
 
 /// Thin wrapper over `NSPasteboard`.
-///
-/// Injected through ``ToolContext`` so tests and previews can assert on what a
-/// tool copied without touching the real clipboard.
 @MainActor
 public class Pasteboard {
     public init() {}
@@ -20,17 +17,11 @@ public class Pasteboard {
     }
 
     /// Bumped by the system on every copy, from any app.
-    ///
-    /// The only way to notice a copy: `NSPasteboard` posts no notification, so
-    /// anything watching the clipboard compares this number on a timer.
     public var changeCount: Int {
         NSPasteboard.general.changeCount
     }
 
     /// Whether the current contents are marked as sensitive.
-    ///
-    /// Password managers set this flag exactly so that clipboard managers keep
-    /// their hands off. Honouring it is not optional.
     public func isConcealed() -> Bool {
         guard let types = NSPasteboard.general.types else { return false }
         return types.contains { $0.rawValue == "org.nspasteboard.ConcealedType" }

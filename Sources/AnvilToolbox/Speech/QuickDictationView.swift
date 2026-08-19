@@ -3,10 +3,6 @@ import AnvilUI
 import SwiftUI
 
 /// The contents of the dictation bubble: one row, read at a glance.
-///
-/// No transcript, no buttons beyond a way out. While talking you are looking at
-/// the text field, not at this — so it answers exactly two questions: *is it
-/// hearing me* (the meter moves) and *how long have I been going*.
 struct QuickDictationView: View {
     let controller: QuickDictationController
 

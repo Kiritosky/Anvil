@@ -4,19 +4,10 @@ import Foundation
 // MARK: - Zahlen, die größer sind als die Maschine
 
 /// Rechnerei, die nicht in eine Ganzzahl passt.
-///
-/// Ein IPv6-Netz mit /0 hat 2^128 Adressen. Keine Ganzzahl dieses Rechners
-/// fasst das, und trotzdem ist die Zahl das, was der Benutzer sehen will —
-/// also entsteht sie Ziffer für Ziffer.
 public enum IPMath {
     /// 2^`exponent` als Dezimalzahl.
-    ///
-    /// Fortgesetztes Verdoppeln einer Ziffernliste: langsam, aber exakt, und
-    /// bei höchstens 128 Verdopplungen schnell genug für jede Tastatureingabe.
     public static func powerOfTwo(_ exponent: Int) -> String {
         guard exponent > 0 else { return "1" }
-        // Niederwertigste Ziffer zuerst — so wächst die Liste hinten, und der
-        // Übertrag läuft in Leserichtung des Algorithmus.
         var digits = [1]
         for _ in 0..<exponent {
             var carry = 0
@@ -31,11 +22,6 @@ public enum IPMath {
     }
 
     /// Setzt schmale Leerzeichen in Dreierblöcke.
-    ///
-    /// Ein Punkt als Tausendertrenner wäre in einem Werkzeug, das den ganzen
-    /// Tag Adressen mit Punkten zeigt, die schlechteste aller Ideen. Das
-    /// schmale geschützte Leerzeichen trennt, ohne eine neue Bedeutung
-    /// mitzubringen, und bricht die Zahl nicht um.
     public static func grouped(_ digits: String) -> String {
         guard digits.count > 4 else { return digits }
         var result = ""
@@ -68,11 +54,6 @@ public enum IPFamily: String, Hashable, Sendable, CaseIterable {
 // MARK: - IPv4
 
 /// Eine IPv4-Adresse — 32 Bit, nicht vier Zeichenketten.
-///
-/// Alles, was dieses Werkzeug rechnet, ist Bitarbeit: maskieren, invertieren,
-/// hochzählen. Auf Zeichenketten wäre jede dieser Operationen eine
-/// Fehlerquelle, also wird genau einmal beim Lesen und genau einmal beim
-/// Anzeigen umgewandelt.
 public struct IPv4Address: Hashable, Sendable, Comparable, CustomStringConvertible {
     public let value: UInt32
 
@@ -82,8 +63,6 @@ public struct IPv4Address: Hashable, Sendable, Comparable, CustomStringConvertib
 
     public init(parsing text: String) throws {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        // Ohne `omittingEmptySubsequences: false` verschwänden „1..2.3" und
-        // „1.2.3." lautlos in einer gültigen Adresse.
         let parts = trimmed.split(separator: ".", omittingEmptySubsequences: false)
         guard parts.count == 4 else { throw Self.notAnAddress(text) }
 
@@ -156,7 +135,6 @@ public struct IPv4Network: Hashable, Sendable, CustomStringConvertible {
 
         let address = try IPv4Address(parsing: addressPart)
         guard parts.count == 2 else {
-            // Ohne Angabe dahinter ist genau diese eine Adresse gemeint.
             try self.init(address: address, prefixLength: 32)
             return
         }
@@ -164,8 +142,6 @@ public struct IPv4Network: Hashable, Sendable, CustomStringConvertible {
         let suffix = parts[1]
         if suffix.contains(".") {
             let written = try IPv4Address(parsing: suffix)
-            // Cisco-Zugriffslisten schreiben die Maske andersherum. Wer eine
-            // Wildcard einträgt, meint dasselbe Netz — also beides versuchen.
             guard let prefixLength = Self.prefixLength(mask: written.value)
                 ?? Self.prefixLength(mask: ~written.value)
             else {
@@ -187,18 +163,12 @@ public struct IPv4Network: Hashable, Sendable, CustomStringConvertible {
     // MARK: Maske und Präfix
 
     /// Die Präfixlänge zu einer Maske — oder `nil`, wenn die Maske Lücken hat.
-    ///
-    /// Eine gültige Maske ist eine ununterbrochene Folge von Einsen, gefolgt
-    /// von einer ununterbrochenen Folge von Nullen. Gezählt werden deshalb die
-    /// Nullbits, und geprüft wird, ob die daraus gebaute Maske dieselbe ist.
     public static func prefixLength(mask value: UInt32) -> Int? {
         let hostBits = (~value).nonzeroBitCount
         return (UInt32.max << hostBits) == value ? 32 - hostBits : nil
     }
 
     public var mask: IPv4Address {
-        // Swifts `<<` ist ein „smart shift": um 32 verschoben ergibt es 0 und
-        // nicht undefiniertes Verhalten — genau das, was /0 braucht.
         IPv4Address(UInt32.max << (32 - prefixLength))
     }
 
@@ -228,11 +198,6 @@ public struct IPv4Network: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// Der klassische Hostbereich — Netz- und Broadcast-Adresse abgezogen.
-    ///
-    /// Bei /31 und /32 gibt es ihn nicht. Das ist der Grund, warum hier
-    /// überhaupt Optionale stehen: `addressCount - 2` wäre bei einem /32 ein
-    /// Unterlauf, und eine Zahl in der Nähe von 18 Trillionen ist eine
-    /// schlechtere Antwort als „gibt es nicht".
     public var firstUsableAddress: IPv4Address? {
         prefixLength <= 30 ? IPv4Address(networkAddress.value + 1) : nil
     }
@@ -287,9 +252,6 @@ public struct IPv4Network: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// Die ersten `limit` Teilnetze.
-    ///
-    /// Gekappt, weil ein /8 in /30 zerlegt über vier Millionen Zeilen wären —
-    /// eine Liste, die niemand liest und die das Fenster für Sekunden anhält.
     public func split(into newPrefixLength: Int, limit: Int = 64) throws -> [IPv4Network] {
         let count = try subnetCount(splittingInto: newPrefixLength)
         let step = UInt64(1) << (32 - newPrefixLength)
@@ -307,9 +269,6 @@ public struct IPv4Network: Hashable, Sendable, CustomStringConvertible {
 // MARK: - IPv6
 
 /// Eine IPv6-Adresse als zwei mal 64 Bit.
-///
-/// Sechzehn Bytes wären dasselbe, aber zwei `UInt64` lassen sich maskieren und
-/// addieren, ohne über ein Array zu laufen.
 public struct IPv6Address: Hashable, Sendable, CustomStringConvertible {
     public let high: UInt64
     public let low: UInt64
@@ -337,11 +296,9 @@ public struct IPv6Address: Hashable, Sendable, CustomStringConvertible {
 
     public init(parsing text: String) throws {
         var work = text.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        // Ein Zonenindex gehört zur Schnittstelle, nicht zur Adresse.
         if let percent = work.firstIndex(of: "%") {
             work = String(work[work.startIndex..<percent])
         }
-        // Eckige Klammern stehen in URLs um die Adresse herum.
         if work.hasPrefix("["), work.hasSuffix("]"), work.count >= 2 {
             work = String(work.dropFirst().dropLast())
         }
@@ -358,8 +315,6 @@ public struct IPv6Address: Hashable, Sendable, CustomStringConvertible {
         let tail = halves.count == 2 ? try Self.parseGroups(in: halves[1], of: text) : []
 
         if halves.count == 2 {
-            // :: steht für mindestens einen Nullblock. Sind schon acht Blöcke
-            // ausgeschrieben, ist die Adresse falsch und nicht etwa lang.
             guard head.count + tail.count <= 7 else { throw Self.notAnAddress(text) }
             let filler = Array(repeating: UInt16(0), count: 8 - head.count - tail.count)
             self.init(groups: head + filler + tail)
@@ -378,8 +333,6 @@ public struct IPv6Address: Hashable, Sendable, CustomStringConvertible {
         let pieces = part.components(separatedBy: ":")
         for (index, piece) in pieces.enumerated() {
             if piece.contains(".") {
-                // ::ffff:192.168.1.1 — die vier Bytes füllen die letzten zwei
-                // Blöcke und dürfen deshalb nur ganz am Ende stehen.
                 guard index == pieces.count - 1 else { throw notAnAddress(text) }
                 let embedded = try IPv4Address(parsing: piece)
                 result.append(UInt16(truncatingIfNeeded: embedded.value >> 16))
@@ -410,11 +363,6 @@ public struct IPv6Address: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// Gekürzt nach RFC 5952.
-    ///
-    /// Drei Regeln, und alle drei werden regelmäßig falsch gemacht: führende
-    /// Nullen fallen weg; nur die **längste** Folge von Nullblöcken wird zu
-    /// `::`, denn zwei `::` ließen sich nicht mehr auflösen; und eine Folge aus
-    /// einem einzigen Nullblock bleibt stehen, weil `::` dort nichts kürzt.
     public var compressedText: String {
         let groups = self.groups
         var bestStart = -1
@@ -427,7 +375,6 @@ public struct IPv6Address: Hashable, Sendable, CustomStringConvertible {
             }
             var end = index
             while end < groups.count, groups[end] == 0 { end += 1 }
-            // Echt größer: bei Gleichstand gewinnt die erste Folge.
             if end - index > bestLength {
                 bestLength = end - index
                 bestStart = index
@@ -513,8 +460,6 @@ public struct IPv6Network: Hashable, Sendable, CustomStringConvertible {
 
         let address = try IPv6Address(parsing: addressPart)
         guard parts.count == 2 else {
-            // IPv6 kennt keine Masken in Punktschreibweise; ohne Angabe ist
-            // genau diese eine Adresse gemeint.
             try self.init(address: address, prefixLength: 128)
             return
         }
@@ -579,8 +524,6 @@ public struct IPv6Network: Hashable, Sendable, CustomStringConvertible {
     public func split(into newPrefixLength: Int, limit: Int = 64) throws -> [IPv6Network] {
         try validateSplit(newPrefixLength)
         let exponent = newPrefixLength - prefixLength
-        // 2^64 passt nicht mehr in einen UInt64. Ab dort ist die Liste ohnehin
-        // längst gekappt, also reicht „mehr als jedes Limit".
         let total: UInt64 = exponent >= 64 ? UInt64.max : (UInt64(1) << exponent)
         let shown = min(total, UInt64(max(limit, 0)))
         let base = networkAddress
@@ -594,9 +537,6 @@ public struct IPv6Network: Hashable, Sendable, CustomStringConvertible {
 // MARK: - Einordnung
 
 /// Wofür ein Adressbereich vorgesehen ist.
-///
-/// Der praktische Nutzen: wer eine Adresse in einem Log sieht, will in einer
-/// Sekunde wissen, ob sie überhaupt aus dem Internet kommen kann.
 public enum IPScope: String, Hashable, Sendable, CaseIterable {
     case unspecified
     case loopback
@@ -662,10 +602,6 @@ public enum IPScope: String, Hashable, Sendable, CaseIterable {
     // MARK: IPv4
 
     /// Die Bereiche, die IANA aus dem allgemeinen Verkehr herausgenommen hat.
-    ///
-    /// Die Reihenfolge trägt Bedeutung: 255.255.255.255 liegt in 240.0.0.0/4,
-    /// ist aber nicht einfach „reserviert", also muss der engere Eintrag
-    /// zuerst geprüft werden.
     static let v4Ranges: [(base: UInt32, prefixLength: Int, scope: IPScope)] = [
         (0xFFFF_FFFF, 32, .broadcast),          // 255.255.255.255
         (0x0000_0000, 8, .unspecified),         // 0.0.0.0/8
@@ -697,25 +633,17 @@ public enum IPScope: String, Hashable, Sendable, CaseIterable {
         if address.high == 0 {
             if address.low == 0 { return .unspecified }
             if address.low == 1 { return .loopback }
-            // ::ffff:0:0/96
             if address.low >> 32 == 0xFFFF { return .ipv4Mapped }
         }
-        // ff00::/8
         if address.high >> 56 == 0xFF { return .multicast }
-        // fe80::/10
         if address.high >> 54 == 0x3FA { return .linkLocal }
-        // fc00::/7
         if address.high >> 57 == 0x7E { return .uniqueLocal }
-        // 2001:db8::/32
         if address.high >> 32 == 0x2001_0DB8 { return .documentation }
         return .global
     }
 }
 
 /// Welche Farbe eine Einordnung in der Oberfläche bekommt.
-///
-/// Ein eigener Typ, damit ``IPScope`` — und damit die ganze Rechnerei — ohne
-/// das Design-System auskommt und in einem Test ohne Fenster läuft.
 public enum AnvilScopeTone: String, Hashable, Sendable {
     case neutral
     case accent
@@ -726,9 +654,6 @@ public enum AnvilScopeTone: String, Hashable, Sendable {
 // MARK: - Beides zusammen
 
 /// Ein Netz, egal welcher Familie.
-///
-/// Die Oberfläche hat ein Eingabefeld, nicht zwei — welche Familie gemeint ist,
-/// steht in der Eingabe selbst.
 public enum IPNetwork: Hashable, Sendable, CustomStringConvertible {
     case v4(IPv4Network)
     case v6(IPv6Network)
@@ -738,8 +663,6 @@ public enum IPNetwork: Hashable, Sendable, CustomStringConvertible {
         guard !trimmed.isEmpty else {
             throw AnvilError.invalidInput(localized("Da steht noch keine Adresse."))
         }
-        // Ein Doppelpunkt kommt in einer IPv4-Schreibweise nirgends vor, also
-        // reicht er zur Unterscheidung — auch bei ::ffff:192.168.1.1.
         if trimmed.contains(":") {
             self = .v6(try IPv6Network(parsing: trimmed))
         } else {
@@ -885,8 +808,6 @@ public enum IPNetwork: Hashable, Sendable, CustomStringConvertible {
         case let .v6(network):
             let countText = try network.subnetCountText(splittingInto: newPrefixLength)
             let subnets = try network.split(into: newPrefixLength, limit: limit)
-            // Der Vergleich läuft über den Text: die echte Zahl passt bei IPv6
-            // nicht zuverlässig in einen `UInt64`.
             return Split(
                 countText: countText,
                 subnets: subnets.map(IPNetwork.v6),

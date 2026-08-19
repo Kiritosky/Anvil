@@ -15,9 +15,6 @@ public enum EverydayToolBundle: ToolBundle {
                 TextToolView(tool: tool, context: context)
             }
         }
-        // Vier passen nicht in die Form „eine Eingabe, eine Ausgabe": eine
-        // Liste, die mitläuft, eine Farbe mit Muster, eine ganze Farbliste
-        // und ein Bild.
         return [clipboard, color, colorPalette, qrCode] + converters
     }
 

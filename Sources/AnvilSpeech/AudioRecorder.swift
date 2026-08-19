@@ -4,11 +4,6 @@ import Foundation
 import Observation
 
 /// Captures the microphone.
-///
-/// Two jobs: hand every buffer to whoever wants to transcribe it, and keep a
-/// cheap level history for the meter. Optionally it also writes the raw audio
-/// to disk, so a dictation can be replayed or re-transcribed later with a
-/// different language without asking the user to say it all again.
 @MainActor
 @Observable
 public final class AudioRecorder {
@@ -21,15 +16,10 @@ public final class AudioRecorder {
     public private(set) var fileURL: URL?
 
     /// Called for every captured buffer, on the audio thread.
-    ///
-    /// Keep the work here short and non-blocking: converting and handing the
-    /// buffer to an `AsyncStream` continuation is fine, anything that allocates
-    /// heavily or touches the main actor is not.
     @ObservationIgnored
     public nonisolated(unsafe) var bufferHandler: (@Sendable (AVAudioPCMBuffer) -> Void)?
 
     @ObservationIgnored private let engine = AVAudioEngine()
-    // Written from the audio thread, so it cannot be actor-isolated.
     @ObservationIgnored private nonisolated(unsafe) var audioFile: AVAudioFile?
     @ObservationIgnored private var startedAt: Date?
     @ObservationIgnored private var accumulated: TimeInterval = 0
@@ -47,8 +37,6 @@ public final class AudioRecorder {
     // MARK: - Control
 
     /// Starts capture.
-    ///
-    /// - Parameter recordingURL: when given, raw audio is also written there.
     public func start(recordingURL: URL? = nil) throws {
         guard !isRecording else { return }
 
@@ -152,8 +140,6 @@ public final class AudioRecorder {
     // MARK: - Audio thread
 
     private nonisolated func handleTap(_ buffer: AVAudioPCMBuffer) {
-        // Both of these have to happen before the engine reuses the buffer,
-        // which rules out hopping to the main actor first.
         bufferHandler?(buffer)
         try? audioFile?.write(from: buffer)
 
@@ -183,8 +169,6 @@ public final class AudioRecorder {
             }
         }
 
-        // Speech peaks well below 1.0; a mild curve keeps the meter lively
-        // without pinning it at the top the moment someone speaks up.
         let boosted = min(1, peak * 3.2)
         return sqrt(boosted)
     }

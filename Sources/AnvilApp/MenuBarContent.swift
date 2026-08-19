@@ -5,16 +5,11 @@ import AppKit
 import SwiftUI
 
 /// The menu-bar menu.
-///
-/// Kept to jumps and status. Anything that needs a text field belongs in the
-/// window, and a menu that tries to be an app is worse than both.
 struct MenuBarContent: View {
     @Environment(AppEnvironment.self) private var environment
     @Environment(AIRouter.self) private var router: AIRouter?
 
     var body: some View {
-        // The quick capture comes first: it is the reason the menu-bar item
-        // exists at all, and the one thing you reach for without a window.
         if let keys = shortcutLabel(QuickDictationController.actionID) {
             Button("Schnell-Diktat  \(keys)") {
                 environment.quickDictation.toggle()

@@ -4,11 +4,6 @@ import Foundation
 import SwiftUI
 
 /// Try a regular expression against real text and see what it matches.
-///
-/// The one tool in the deterministic set that cannot be a plain
-/// `String -> String` function: it has two inputs (pattern and subject), a
-/// handful of flags, and the interesting output is *where* things matched
-/// rather than a transformed string.
 public struct RegexToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata

@@ -27,8 +27,6 @@ struct ScreenCaptureTests {
 
     @Test
     func aFullScreenShotNamesOneDisplay() {
-        // With one file name and two screens, screencapture writes two files —
-        // so the display is always spelled out.
         let result = arguments(ScreenCapture.Options(target: .fullScreen, displayIndex: 2))
         #expect(result.contains("-D"))
         #expect(result.contains("2"))

@@ -1,9 +1,6 @@
 import Foundation
 
 /// Word-level diffing, used to show what a cleanup pass actually changed.
-///
-/// Built on `CollectionDifference` (Myers), so long transcripts stay fast and
-/// there is no hand-rolled LCS matrix to get wrong.
 public enum TextDiff {
     public struct Segment: Hashable, Sendable, Identifiable {
         public enum Kind: Hashable, Sendable {
@@ -21,8 +18,6 @@ public enum TextDiff {
             self.text = text
         }
 
-        // Identity is the content, not the generated id: the id exists purely
-        // so `ForEach` has something stable to key on.
         public static func == (lhs: Segment, rhs: Segment) -> Bool {
             lhs.kind == rhs.kind && lhs.text == rhs.text
         }
@@ -34,9 +29,6 @@ public enum TextDiff {
     }
 
     /// Diffs `old` against `new` on word boundaries.
-    ///
-    /// Adjacent segments of the same kind are merged, so a rewritten sentence
-    /// renders as one block rather than a stutter of single words.
     public static func words(from old: String, to new: String) -> [Segment] {
         let oldWords = tokenize(old)
         let newWords = tokenize(new)

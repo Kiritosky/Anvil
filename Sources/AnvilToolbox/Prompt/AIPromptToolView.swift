@@ -5,10 +5,6 @@ import AppKit
 import SwiftUI
 
 /// The screen every prompt-driven tool gets.
-///
-/// Input on one side, streamed answer on the other, the tool's own options in
-/// the inspector. Because it is driven entirely by ``AIPromptTool``, the tools a
-/// user writes as JSON look and behave exactly like the built-in ones.
 public struct AIPromptToolView: View {
     private let tool: AIPromptTool
     private let metadata: ToolMetadata
@@ -59,13 +55,8 @@ public struct AIPromptToolView: View {
     /// Ein Diff, den man gerade an das Modell schicken wollte, ist nach einem
     /// Neustart nicht wiederzubeschaffen — das Fenster war die einzige Stelle,
     /// an der er stand.
-    ///
-    /// Ein Werkzeug, dessen Eingabe aus einem Git-Repository kommt, holt sie
-    /// sich beim Öffnen ohnehin frisch; dort wäre ein alter Diff schlimmer als
-    /// ein leeres Feld.
     private func restore() {
         guard tool.inputSource != .gitDiff else { return }
-        // Hereingereichtes sticht den eigenen Entwurf.
         if let handed = context.handoff.take(for: metadata.id) {
             input = handed
             return
@@ -366,8 +357,6 @@ public struct AIPromptToolView: View {
             let runner = ProcessRunner()
             var diff = try await runner.git(["diff", "--staged"], in: repositoryURL)
             if diff.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                // Nothing staged is the common case when someone just wants a
-                // message for what they have been working on.
                 diff = try await runner.git(["diff"], in: repositoryURL)
             }
             guard !diff.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {

@@ -1,9 +1,6 @@
 import SwiftUI
 
 /// What a pane shows before the user has done anything.
-///
-/// Every empty pane in the app uses this, so "nothing here yet" always looks
-/// deliberate rather than broken.
 public struct EmptyStateView<Actions: View>: View {
     private let title: LocalizedStringKey
     private let message: LocalizedStringKey?

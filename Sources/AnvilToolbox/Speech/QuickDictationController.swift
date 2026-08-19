@@ -8,10 +8,6 @@ import Observation
 import SwiftUI
 
 /// Dictation from anywhere, without bringing the app forward.
-///
-/// Press the shortcut, talk, press it again. The text is cleaned up and — if
-/// the cursor was sitting in a text field — typed straight in. Otherwise it
-/// waits on the clipboard. The main window never opens.
 @MainActor
 @Observable
 public final class QuickDictationController {
@@ -57,10 +53,6 @@ public final class QuickDictationController {
     // MARK: - Shortcut
 
     /// The dictation action, for the app to register.
-    ///
-    /// The controller no longer claims a hot key itself: every shortcut in the
-    /// app goes through one registry, so that a single screen can show them
-    /// all and none of them can quietly collide.
     public func makeAction() -> ShortcutAction {
         ShortcutAction(
             id: Self.actionID,
@@ -88,10 +80,6 @@ public final class QuickDictationController {
     }
 
     /// Escape, claimed globally only while a dictation is running.
-    ///
-    /// The bubble deliberately never takes keyboard focus — that is what keeps
-    /// the caret in the target app — so the only way to offer a keyboard cancel
-    /// is to borrow the key for the few seconds it is needed.
     private func claimCancelKey() {
         let escape = GlobalShortcut(keyCode: UInt32(kVK_Escape), carbonModifiers: 0, keyLabel: "⎋")
         try? HotKeyCenter.shared.register(escape, owner: Self.cancelHotKeyOwner) { [weak self] in
@@ -109,7 +97,6 @@ public final class QuickDictationController {
         guard phase == .idle || isFinished else { return }
 
         dismissTask?.cancel()
-        // Both of these have to be read before the bubble exists.
         previousApplication = NSWorkspace.shared.frontmostApplication
         targetAcceptsText = settings[.quickDictationPastes] && PasteService.focusedElementIsEditable()
 
@@ -186,7 +173,6 @@ public final class QuickDictationController {
                 vocabulary: settings[.vocabularyInPrompt] ? vocabulary.promptTerms() : []
             )
         } catch {
-            // A model that cannot answer is not a reason to lose the dictation.
             return cleaned
         }
     }

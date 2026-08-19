@@ -2,22 +2,12 @@ import AnvilKit
 import Foundation
 
 /// Packt und entpackt Zip-Archive.
-///
-/// Zwei Werkzeuge aus dem System statt einer Bibliothek: `unzip` liest das
-/// Verzeichnis, `ditto` packt und entpackt. `ditto` ist dabei nicht Geschmack,
-/// sondern der Unterschied zwischen einem Archiv, das auf einem Mac ankommt,
-/// und einem, bei dem Ressourcenzweige, Rechte und Symlinks unterwegs
-/// verloren gehen — es ist dasselbe Werkzeug, das der Finder benutzt.
 public struct ArchiveTool: Sendable {
     private let runner = ProcessRunner()
 
     public init() {}
 
     /// Endungen, die Anvil als Archiv liest.
-    ///
-    /// Nur Zip: `ditto -k` kann nichts anderes, und ein Werkzeug, das ein
-    /// `.tar.gz` annimmt und dann scheitert, hat einen Schritt zu spät nein
-    /// gesagt.
     public static let archiveExtensions: Set<String> = ["zip", "ipa", "jar", "zipx"]
 
     public static func isArchive(_ url: URL) -> Bool {
@@ -38,8 +28,6 @@ public struct ArchiveTool: Sendable {
 
     /// Was im Archiv liegt, ohne etwas anzufassen.
     public func list(_ archive: URL) async throws -> ArchiveListing {
-        // `-l` listet, `-qq` lässt Kopf- und Fußzeile weg. Beides ist seit
-        // Info-ZIP 5 unverändert; nichts davon schreibt.
         let result = try await runner.run(
             Self.unzip,
             arguments: ["-l", "-qq", archive.path],
@@ -51,11 +39,6 @@ public struct ArchiveTool: Sendable {
     // MARK: - Auspacken
 
     /// Packt ein Archiv in einen eigenen Ordner unterhalb von `folder`.
-    ///
-    /// Immer in einen eigenen Ordner, auch wenn im Archiv schon einer liegt:
-    /// Der Fall, in dem ein Archiv seinen Inhalt über den Zielordner
-    /// verstreut, kostet danach eine halbe Stunde Aufräumen, der doppelte
-    /// Ordner einen Doppelklick.
     @discardableResult
     public func unpack(_ archive: URL, into folder: URL) async throws -> URL {
         let name = archive.deletingPathExtension().lastPathComponent
@@ -69,8 +52,6 @@ public struct ArchiveTool: Sendable {
                 timeout: 900
             ).outputOrThrow()
         } catch {
-            // Ein leerer Ordner, der nach einem Fehlschlag stehen bleibt, ist
-            // die Sorte Müll, die man erst Wochen später wiederfindet.
             try? FileManager.default.removeItem(at: destination)
             throw error
         }
@@ -81,10 +62,6 @@ public struct ArchiveTool: Sendable {
     // MARK: - Einpacken
 
     /// Packt eine Datei oder einen Ordner in ein Archiv daneben.
-    ///
-    /// `--keepParent` behält den Namen des Ordners im Archiv. Ohne das packt
-    /// `ditto` den Inhalt ohne Hülle, und das entpackte Archiv verteilt sich
-    /// beim Empfänger über dessen Download-Ordner.
     @discardableResult
     public func pack(_ source: URL, into folder: URL) async throws -> URL {
         let destination = ExportFile.uniqueURL(

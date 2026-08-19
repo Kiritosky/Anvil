@@ -2,16 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Mehrere Markdown-Dateien auf einmal.
-///
-/// Der Grund, warum das ein eigener Typ ist und keine Schleife über die
-/// Einzelansicht: Erst im Stapel lässt sich prüfen, was zwischen den Dateien
-/// passiert. Ein Verweis von `README.md` auf `docs/aufbau.md#kern` ist aus der
-/// Sicht von `README.md` nur ein Text — ob die Datei existiert und ob die
-/// Sprungmarke darin vorkommt, weiß nur, wer beide kennt.
-///
-/// Genau daran gehen Dokumentationen kaputt: Eine Datei wird umbenannt, eine
-/// Überschrift umformuliert, und die Verweise darauf zeigen ins Leere, ohne
-/// dass irgendetwas rot wird.
 public struct MarkdownBatch: Sendable {
     /// Ein Verweis, der ins Leere zeigt.
     public struct CrossProblem: Sendable, Hashable, Identifiable {
@@ -55,15 +45,9 @@ public struct MarkdownBatch: Sendable {
     public var wordCount: Int { entries.reduce(0) { $0 + $1.document.statistics.words } }
 
     /// Liest einen Stapel.
-    ///
-    /// - Parameter files: Name und Inhalt. Der Name ist der, unter dem die
-    ///   Datei in Verweisen auftaucht — bei einem abgelegten Ordner also der
-    ///   Dateiname ohne Pfad.
     public init(_ files: [(name: String, text: String)]) {
         let documents = files.map { (name: $0.name, document: MarkdownDocument($0.text)) }
 
-        // Erst alle Anker sammeln, dann prüfen: Ein Verweis auf eine Datei
-        // weiter hinten im Stapel ist genauso gültig wie einer nach vorn.
         var anchorsByFile: [String: Set<String>] = [:]
         for file in documents {
             anchorsByFile[file.name] = Set(file.document.headings.map(\.anchor))
@@ -84,11 +68,6 @@ public struct MarkdownBatch: Sendable {
     }
 
     /// Prüft die Verweise einer Datei gegen den Rest des Stapels.
-    ///
-    /// Geprüft wird nur, was auf eine Markdown-Datei zeigt. Ein Verweis auf
-    /// ein Bild, eine Adresse im Netz oder eine Sprungmarke im eigenen
-    /// Dokument geht hier niemanden etwas an — die erste Prüfung macht die
-    /// Einzelansicht, die zweite gehört nicht hierher.
     static func crossProblems(
         in document: MarkdownDocument,
         anchorsByFile: [String: Set<String>]
@@ -100,10 +79,6 @@ public struct MarkdownBatch: Sendable {
             let path = String(parts.first ?? "")
             guard path.hasSuffix(".md") || path.hasSuffix(".markdown") else { continue }
 
-            // Verglichen wird der Dateiname. Der Stapel kennt keine
-            // Ordnerstruktur — „../docs/x.md" und „x.md" sind hier dieselbe
-            // Datei, und das ist die ehrlichere Näherung, als so zu tun, als
-            // wüsste man es besser.
             let name = URL(fileURLWithPath: path).lastPathComponent
             guard let anchors = anchorsByFile[name] else {
                 result.append(

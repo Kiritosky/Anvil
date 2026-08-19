@@ -61,9 +61,6 @@ public enum SpeechToolBundle: ToolBundle {
 }
 
 /// Preferences for the speech tools.
-///
-/// The defaults here are what a new recording starts from; the inspector inside
-/// the tool changes the current session only.
 struct SpeechSettingsView: View {
     let context: ToolContext
 
@@ -151,10 +148,6 @@ struct SpeechSettingsView: View {
     }
 
     /// Everything about dictating without opening the app.
-    ///
-    /// Kept in one group because the parts only make sense together: a shortcut
-    /// without the feature switched on does nothing, and auto-paste without the
-    /// Accessibility permission silently would not work.
     @ViewBuilder
     private var quickDictationGroup: some View {
         SettingsGroup(
@@ -218,8 +211,6 @@ struct SpeechSettingsView: View {
             get: { settings[.quickDictationPastes] },
             set: { newValue in
                 settings[.quickDictationPastes] = newValue
-                // Asking at the moment the switch is flipped is the only point
-                // where the request is not a surprise.
                 if newValue, !PasteService.isTrusted { PasteService.requestTrust() }
             }
         )
@@ -240,7 +231,6 @@ struct SpeechSettingsView: View {
             ? "Steht der Cursor in einem Textfeld, tippt Anvil den Text dort hinein. Sonst bleibt er in der Zwischenablage."
             : "Dafür fehlt noch die Bedienungshilfen-Berechtigung — bis dahin nur Zwischenablage."
     }
-
 
     private var formattedSize: String {
         ByteCountFormatter.string(fromByteCount: recordingBytes, countStyle: .file)

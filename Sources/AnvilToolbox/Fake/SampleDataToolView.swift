@@ -56,8 +56,6 @@ public struct SampleDataToolView: View {
             inspector
         } actions: {
             AnvilButton("Neu würfeln", systemImage: "die.face.5") {
-                // Ein neuer Startwert, nicht echter Zufall: das Ergebnis
-                // bleibt wiederholbar, es ist nur ein anderes.
                 seed = UInt64.random(in: 1...9_999_999)
             }
         }
@@ -197,13 +195,10 @@ public struct SampleDataToolView: View {
 
     private func toggle(_ field: SampleData.Field) {
         if let index = fields.firstIndex(of: field) {
-            // Die letzte Spalte bleibt: eine Tabelle ohne Spalten ist keine.
             guard fields.count > 1 else { return }
             fields.remove(at: index)
         } else {
             fields.append(field)
-            // Nach der festen Reihenfolge des Aufzählungstyps sortiert, damit
-            // die Spalten nicht davon abhängen, was man zuerst angeklickt hat.
             fields.sort { left, right in
                 let order = SampleData.Field.allCases
                 return (order.firstIndex(of: left) ?? 0) < (order.firstIndex(of: right) ?? 0)

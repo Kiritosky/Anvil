@@ -2,12 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Ein lokaler Zweig, so wie `git for-each-ref` ihn beschreibt.
-///
-/// Der Anlass: In jedem Repository, das länger als ein halbes Jahr lebt, liegen
-/// Zweige, deren Arbeit längst in `main` steckt und deren Gegenstück auf dem
-/// Server nicht mehr existiert. Sie stehen niemandem im Weg und gehen deshalb
-/// nie weg. Wer sie sehen will, muss dafür drei Befehle tippen und deren
-/// Ausgaben im Kopf zusammenführen — das ist der Grund, warum es niemand tut.
 public struct GitBranch: Sendable, Hashable, Identifiable {
     public let name: String
     /// Wann zuletzt etwas darauf passiert ist.
@@ -48,20 +42,11 @@ public struct GitBranch: Sendable, Hashable, Identifiable {
     }
 
     /// Ob der Zweig ein Kandidat zum Aufräumen ist.
-    ///
-    /// Zwei Bedingungen, und beide müssen erfüllt sein: Das Gegenstück auf dem
-    /// Server ist weg *und* lokal liegt nichts, was nicht auch dort war. Ein
-    /// Zweig mit eigenen Commits wird nie vorgeschlagen — der Vorschlag wäre
-    /// dann eine Aufforderung, Arbeit wegzuwerfen.
     public var isStale: Bool { isGone && ahead == 0 && !isCurrent }
 
     // MARK: - Lesen
 
     /// Das Format, mit dem die Liste geholt wird.
-    ///
-    /// Tabulatorgetrennt, weil in einem Zweignamen alles vorkommen darf außer
-    /// Leerzeichen und Steuerzeichen — ein Tabulator ist also das einzige
-    /// Trennzeichen, das nicht im Namen stecken kann.
     public static let refFormat =
         "%(refname:short)%09%(committerdate:iso8601-strict)%09%(upstream:short)%09%(upstream:track)%09%(HEAD)"
 
@@ -84,8 +69,6 @@ public struct GitBranch: Sendable, Hashable, Identifiable {
             ahead: number(after: "ahead", in: track),
             behind: number(after: "behind", in: track),
             isGone: track.contains("gone"),
-            // `%(HEAD)` ist „*" für den aktuellen Zweig und sonst ein
-            // Leerzeichen.
             isCurrent: fields[4].trimmingCharacters(in: .whitespaces) == "*"
         )
     }

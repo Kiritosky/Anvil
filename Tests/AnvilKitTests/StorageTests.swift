@@ -74,8 +74,6 @@ struct ImageFileTests {
     func producesRealPNGBytes() throws {
         let data = try image(width: 8, height: 8).pngData()
 
-        // Die PNG-Signatur. Ein Test auf „nicht leer" würde auch bei TIFF
-        // durchgehen, und genau der Unterschied ist hier der Punkt.
         #expect(data.starts(with: [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]))
     }
 

@@ -1,10 +1,6 @@
 import Foundation
 
 /// A stable, human-readable identifier for a tool.
-///
-/// Identifiers are reverse-DNS-ish (`speech.studio`, `text.json`, `ai.commit`)
-/// and are persisted in favourites, recents, window state and user-defined tool
-/// files. Renaming a tool's title is free; changing its identifier is not.
 public struct ToolIdentifier: Hashable, Sendable, Codable, RawRepresentable, CustomStringConvertible {
     public let rawValue: String
 

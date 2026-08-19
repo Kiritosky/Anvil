@@ -1,10 +1,6 @@
 import SwiftUI
 
 /// A settings page.
-///
-/// Used by the app's own preference panes *and* by per-tool settings, so a
-/// tool's options look identical to the app's own — the user should not be able
-/// to tell which of the two they are looking at.
 public struct SettingsPage<Content: View>: View {
     @Environment(\.anvilTheme) private var theme
 
@@ -80,8 +76,6 @@ public struct SettingsGroup<Content: View>: View {
                 RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous)
                     .fill(AnvilColor.surface)
             }
-            // Clipping lets every row draw a bottom divider unconditionally:
-            // the last one lands on the edge and the border stroke covers it.
             .clipShape(RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous)

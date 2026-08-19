@@ -8,10 +8,6 @@ import SwiftUI
 extension GlobalShortcut {
     /// The same combination as a SwiftUI menu shortcut, or `nil` when SwiftUI
     /// has no way to express the key.
-    ///
-    /// The function row is the gap: `KeyEquivalent` has no F5, so an action
-    /// bound to one can be global but not a menu item. Worth knowing rather
-    /// than worth working around — the menu is not where anybody presses F5.
     public var keyEquivalent: SwiftUI.KeyEquivalent? {
         if let named = Self.namedEquivalents[keyLabel] { return named }
         guard keyLabel.count == 1, let character = keyLabel.lowercased().first else { return nil }

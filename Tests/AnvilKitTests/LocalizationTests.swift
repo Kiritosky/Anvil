@@ -14,8 +14,6 @@ struct LocalizationTests {
 
     @Test
     func unknownKeysFallBackToThemselves() {
-        // The whole point of using the German source text as the key: a missing
-        // entry shows correct German rather than an identifier.
         let text = "Ein Satz, den mit Sicherheit niemand übersetzt hat."
         #expect(localized(runtime: text) == text)
     }
@@ -27,8 +25,6 @@ struct LocalizationTests {
 
     @Test @MainActor
     func toolMetadataLocalisesItsDisplayText() {
-        // Without a translation bundle the strings pass through unchanged; what
-        // matters here is that nothing is mangled on the way.
         let metadata = ToolMetadata(
             id: "test.tool",
             title: "Prüfsummen",
@@ -48,8 +44,6 @@ struct LocalizationTests {
 
     @Test
     func categoriesKeepTheirIdentifierWhileTranslatingTheTitle() {
-        // The identifier is data and must never change with the language —
-        // it is what user tool files reference in `categoryID`.
         #expect(ToolCategory.coding.id == "coding")
         #expect(ToolCategory.speech.id == "speech")
         #expect(!ToolCategory.coding.title.isEmpty)

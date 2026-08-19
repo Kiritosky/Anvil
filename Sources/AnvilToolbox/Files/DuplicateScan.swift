@@ -2,21 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Dieselbe Datei, mehrfach auf der Platte.
-///
-/// Die Frage stellt sich, wenn eine Platte voll ist oder ein Ordner über
-/// Jahre gewachsen ist: Was liegt hier doppelt? Von Hand ist sie nicht zu
-/// beantworten — gleiche Dateien heißen selten gleich, und gleiche Namen
-/// bedeuten selten dasselbe.
-///
-/// Gesucht wird in drei Stufen, und das ist der ganze Trick. Erst nach Größe
-/// gruppieren: Zwei Dateien unterschiedlicher Größe können nie gleich sein,
-/// und in einem Ordner mit zehntausend Dateien bleibt danach fast nichts
-/// übrig. Dann ein Blick auf die ersten vierundsechzig Kilobyte, der zwei
-/// zufällig gleich große Videos in aller Regel schon auseinanderhält. Erst was
-/// beides übersteht, wird ganz gelesen.
-///
-/// Wer stattdessen alles durchrechnet, liest das ganze Verzeichnis — und das
-/// dauert bei Videos Minuten.
 public struct DuplicateScan: Sendable {
     public struct File: Sendable, Hashable, Identifiable {
         public let url: URL
@@ -76,9 +61,6 @@ public struct DuplicateScan: Sendable {
     // MARK: - Suchen
 
     /// Die erste Stufe: nach Größe gruppieren, Einzelgänger wegwerfen.
-    ///
-    /// Leere Dateien bleiben draußen. Sie sind alle gleich, und eine Meldung
-    /// „diese 240 leeren Dateien sind Dubletten" hilft niemandem.
     static func candidates(_ files: [File]) -> [[File]] {
         var bySize: [Int: [File]] = [:]
         for file in files where file.size > 0 {
@@ -91,17 +73,6 @@ public struct DuplicateScan: Sendable {
     }
 
     /// Die zweite Stufe: der schnelle Blick auf den Anfang der Datei.
-    ///
-    /// Zwei Videos von vier Gigabyte, die zufällig gleich groß sind,
-    /// unterscheiden sich fast immer schon im ersten Block. Sie ganz zu lesen,
-    /// um das festzustellen, sind acht Gigabyte für eine Antwort, die nach
-    /// vierundsechzig Kilobyte feststand.
-    ///
-    /// - Parameters:
-    ///   - peek: Die Prüfsumme über den Anfang. Fehlt sie, entfällt die Stufe.
-    ///   - digest: Die Prüfsumme über die ganze Datei. Beides als Parameter,
-    ///     damit sich die Suche prüfen lässt, ohne dass etwas von der Platte
-    ///     gelesen wird.
     public static func scan(
         _ files: [File],
         peek: ((URL) throws -> String)? = nil,
@@ -128,7 +99,6 @@ public struct DuplicateScan: Sendable {
             }
         }
 
-        // Das Größte zuerst: Danach fragt, wer Platz sucht.
         groups.sort { $0.wastedBytes > $1.wastedBytes }
         return DuplicateScan(
             groups: groups,
@@ -139,9 +109,6 @@ public struct DuplicateScan: Sendable {
     }
 
     /// Teilt eine Größengruppe nach dem Anfang der Dateien auf.
-    ///
-    /// Was danach allein dasteht, wird nie ganz gelesen — und genau das ist
-    /// der Gewinn.
     private static func narrow(
         _ candidate: [File],
         peek: ((URL) throws -> String)?,
@@ -187,12 +154,6 @@ public struct DuplicateScan: Sendable {
 
     /// Die Befehle, mit denen sich die Dubletten entfernen ließen — je Gruppe
     /// bleibt die erste Datei stehen.
-    ///
-    /// Ausgeführt wird hier nichts. Eine App, die ungefragt Dateien löscht,
-    /// müsste sich sicherer sein, als sie sein kann: Zwei Dateien mit
-    /// gleichem Inhalt können trotzdem beide gebraucht werden — von einem
-    /// Programm, das seine Datei am Ort erwartet, oder von einem Menschen,
-    /// der die Kopie im anderen Ordner mit Absicht dort abgelegt hat.
     public var removalCommands: String {
         groups.flatMap { group in
             group.files.dropFirst().map { file in

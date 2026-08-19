@@ -2,14 +2,6 @@ import AnvilKit
 import Foundation
 
 /// The tools that have nothing to do with code.
-///
-/// Same engine as the converters in ``TextToolCatalog`` — a mode is a pure
-/// function over a string — but a different audience: these are the ones you
-/// reach for while writing an email, not while debugging.
-///
-/// Numbers are formatted with a full stop, never a comma. The result of a
-/// conversion is something people paste on, and a comma turns into a thousands
-/// separator the moment it lands in a spreadsheet.
 public enum EverydayToolCatalog {
     public static var all: [TextTool] {
         [passwords, units, percent, timeZones, lorem]
@@ -181,7 +173,6 @@ public enum EverydayToolCatalog {
     }
 
     static let unitTable: [UnitEntry] = [
-        // Länge
         UnitEntry(unit: UnitLength.millimeters, symbol: "mm", names: ["mm", "millimeter"], family: "Länge"),
         UnitEntry(unit: UnitLength.centimeters, symbol: "cm", names: ["cm", "zentimeter"], family: "Länge"),
         UnitEntry(unit: UnitLength.meters, symbol: "m", names: ["m", "meter"], family: "Länge"),
@@ -191,23 +182,19 @@ public enum EverydayToolCatalog {
         UnitEntry(unit: UnitLength.yards, symbol: "yd", names: ["yd", "yard", "yards"], family: "Länge"),
         UnitEntry(unit: UnitLength.miles, symbol: "mi", names: ["mi", "mile", "miles", "meile", "meilen"], family: "Länge"),
         UnitEntry(unit: UnitLength.nauticalMiles, symbol: "nmi", names: ["nmi", "sm", "seemeile"], family: "Länge"),
-        // Gewicht
         UnitEntry(unit: UnitMass.grams, symbol: "g", names: ["g", "gramm", "gram"], family: "Gewicht"),
         UnitEntry(unit: UnitMass.kilograms, symbol: "kg", names: ["kg", "kilo", "kilogramm"], family: "Gewicht"),
         UnitEntry(unit: UnitMass.metricTons, symbol: "t", names: ["t", "tonne", "tonnen"], family: "Gewicht"),
         UnitEntry(unit: UnitMass.ounces, symbol: "oz", names: ["oz", "unze", "unzen", "ounce"], family: "Gewicht"),
         UnitEntry(unit: UnitMass.pounds, symbol: "lb", names: ["lb", "lbs", "pfund", "pound", "pounds"], family: "Gewicht"),
         UnitEntry(unit: UnitMass.stones, symbol: "st", names: ["st", "stone", "stones"], family: "Gewicht"),
-        // Temperatur
         UnitEntry(unit: UnitTemperature.celsius, symbol: "°C", names: ["c", "°c", "celsius"], family: "Temperatur"),
         UnitEntry(unit: UnitTemperature.fahrenheit, symbol: "°F", names: ["f", "°f", "fahrenheit"], family: "Temperatur"),
         UnitEntry(unit: UnitTemperature.kelvin, symbol: "K", names: ["k", "kelvin"], family: "Temperatur"),
-        // Tempo
         UnitEntry(unit: UnitSpeed.kilometersPerHour, symbol: "km/h", names: ["kmh", "km/h", "kph"], family: "Tempo"),
         UnitEntry(unit: UnitSpeed.metersPerSecond, symbol: "m/s", names: ["ms", "m/s"], family: "Tempo"),
         UnitEntry(unit: UnitSpeed.milesPerHour, symbol: "mph", names: ["mph", "mp/h"], family: "Tempo"),
         UnitEntry(unit: UnitSpeed.knots, symbol: "kn", names: ["kn", "knoten", "knots"], family: "Tempo"),
-        // Daten
         UnitEntry(unit: UnitInformationStorage.kilobytes, symbol: "kB", names: ["kb", "kilobyte"], family: "Daten"),
         UnitEntry(unit: UnitInformationStorage.megabytes, symbol: "MB", names: ["mb", "megabyte"], family: "Daten"),
         UnitEntry(unit: UnitInformationStorage.gigabytes, symbol: "GB", names: ["gb", "gigabyte"], family: "Daten"),
@@ -215,12 +202,10 @@ public enum EverydayToolCatalog {
         UnitEntry(unit: UnitInformationStorage.kibibytes, symbol: "KiB", names: ["kib", "kibibyte"], family: "Daten"),
         UnitEntry(unit: UnitInformationStorage.mebibytes, symbol: "MiB", names: ["mib", "mebibyte"], family: "Daten"),
         UnitEntry(unit: UnitInformationStorage.gibibytes, symbol: "GiB", names: ["gib", "gibibyte"], family: "Daten"),
-        // Fläche
         UnitEntry(unit: UnitArea.squareMeters, symbol: "m²", names: ["m2", "m²", "quadratmeter"], family: "Fläche"),
         UnitEntry(unit: UnitArea.squareKilometers, symbol: "km²", names: ["km2", "km²"], family: "Fläche"),
         UnitEntry(unit: UnitArea.hectares, symbol: "ha", names: ["ha", "hektar"], family: "Fläche"),
         UnitEntry(unit: UnitArea.acres, symbol: "ac", names: ["ac", "acre", "acres"], family: "Fläche"),
-        // Zeit
         UnitEntry(unit: UnitDuration.seconds, symbol: "s", names: ["s", "sek", "sekunde", "sekunden"], family: "Zeit"),
         UnitEntry(unit: UnitDuration.minutes, symbol: "min", names: ["min", "minute", "minuten"], family: "Zeit"),
         UnitEntry(unit: UnitDuration.hours, symbol: "h", names: ["h", "std", "stunde", "stunden"], family: "Zeit")
@@ -241,8 +226,6 @@ public enum EverydayToolCatalog {
             .replacingOccurrences(of: "→", with: " in ")
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        // The number may be glued to its unit ("5km"), so it is scanned off the
-        // front rather than split on whitespace.
         var numberText = ""
         var rest = Substring(normalised)
         while let first = rest.first, first.isNumber || first == "." || first == "-" || first == "+" {
@@ -333,7 +316,6 @@ public enum EverydayToolCatalog {
         let first = numbers[0]
         let second = numbers[1]
 
-        // "von 250 auf 300" — the change between two values.
         if text.contains("auf") {
             guard first != 0 else {
                 throw AnvilError.invalidInput(localized("Von null aus lässt sich keine Änderung berechnen."))
@@ -343,7 +325,6 @@ public enum EverydayToolCatalog {
             return "\(direction)\(formatNumber(change))%"
         }
 
-        // "250 + 19%" / "250 - 19%" — surcharge and discount.
         if text.contains("+") {
             return formatNumber(first * (1 + second / 100))
         }
@@ -351,14 +332,12 @@ public enum EverydayToolCatalog {
             return formatNumber(first * (1 - second / 100))
         }
 
-        // "19% von 250" — the percent sign sits on the first number.
         if let percentIndex = text.firstIndex(of: "%"),
            let vonIndex = text.range(of: "von")?.lowerBound,
            percentIndex < vonIndex {
             return formatNumber(first / 100 * second)
         }
 
-        // "47.5 von 250" — which share that is.
         guard second != 0 else {
             throw AnvilError.invalidInput(localized("Durch null lässt sich nicht teilen."))
         }
@@ -405,7 +384,6 @@ public enum EverydayToolCatalog {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "HH:mm"
 
-        // The date matters more than the hour when the answer is "tomorrow".
         let dayFormatter = DateFormatter()
         dayFormatter.locale = Locale(identifier: "en_US_POSIX")
         dayFormatter.dateFormat = "dd.MM."

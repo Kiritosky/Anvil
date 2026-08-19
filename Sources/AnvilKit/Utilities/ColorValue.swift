@@ -1,11 +1,6 @@
 import Foundation
 
 /// A colour, parsed from whatever notation it was written in.
-///
-/// Lives in the core rather than with the colour tool: three tools already read
-/// colours, and none of what happens here — parsing, converting, judging
-/// contrast — is anything but arithmetic. `AnvilUI` adds the one line that
-/// turns it into something a view can fill with.
 public struct ColorValue: Hashable, Sendable, Codable {
     /// Components in 0…1.
     public var red: Double
@@ -69,7 +64,6 @@ public struct ColorValue: Hashable, Sendable, Codable {
         let hex = trimmed.hasPrefix("#") ? String(trimmed.dropFirst()) : trimmed
         guard hex.allSatisfy(\.isHexDigit) else { return nil }
 
-        // The short forms double each digit: #f0c is #ff00cc.
         let expanded: String
         switch hex.count {
         case 3, 4: expanded = hex.map { "\($0)\($0)" }.joined()

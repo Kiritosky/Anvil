@@ -2,19 +2,8 @@ import AnvilKit
 import Foundation
 
 /// Wie schwer ein Text zu lesen ist.
-///
-/// Alle Lesbarkeitsformeln messen dasselbe: lange Sätze und lange Wörter. Sie
-/// wissen nichts über Inhalt, Aufbau oder Sinn — ein Text aus lauter kurzen
-/// Sätzen kann völlig unverständlich sein und trotzdem gut abschneiden. Was
-/// sie können, ist etwas anderes und trotzdem nützlich: sie zeigen, **wo** ein
-/// Text schwer wird, und zwei Fassungen desselben Textes lassen sich damit
-/// ehrlich vergleichen.
 public struct Readability: Sendable {
     /// Für welche Sprache gerechnet wird.
-    ///
-    /// Deutsch braucht eine eigene Formel: dieselbe Rechnung wie fürs
-    /// Englische ergäbe für jeden deutschen Text zu schlechte Werte, weil
-    /// deutsche Wörter im Schnitt länger sind, ohne deshalb schwerer zu sein.
     public enum Language: String, Hashable, Sendable, CaseIterable, Identifiable {
         case german
         case english
@@ -53,11 +42,6 @@ public struct Readability: Sendable {
     // MARK: - Zerlegen
 
     /// Sätze.
-    ///
-    /// Getrennt an `.`, `!`, `?` — aber nicht an Abkürzungen wie „z. B." und
-    /// nicht an Zahlen wie „1.500". Ohne diese beiden Ausnahmen zerfällt jeder
-    /// deutsche Text in doppelt so viele Sätze, wie er hat, und alle Werte
-    /// darunter sind zu gut.
     public static func sentences(in text: String) -> [String] {
         var result: [String] = []
         var current = ""
@@ -72,22 +56,15 @@ public struct Readability: Sendable {
             }
 
             let next = index + 1 < characters.count ? characters[index + 1] : nil
-            // „1.500" — ein Punkt zwischen Ziffern trennt keinen Satz.
             if character == ".", let previous, previous.isNumber, let next, next.isNumber {
                 continue
             }
-            // „z. B." — ein einzelner Buchstabe vor dem Punkt ist eine
-            // Abkürzung und kein Satzende.
             if character == ".", isAbbreviation(current) {
                 continue
             }
-            // Mehrere Satzzeichen hintereinander sind ein Ende, nicht drei.
             if let next, next == "." || next == "!" || next == "?" {
                 continue
             }
-            // Geht es klein weiter, war das kein Satzende: „Warte … jetzt."
-            // ist ein Satz. Im Deutschen wie im Englischen fängt ein Satz groß
-            // an, und das ist hier das verlässlichere Zeichen als der Punkt.
             if let following = characters[(index + 1)...].first(where: { !$0.isWhitespace }),
                following.isLowercase {
                 continue
@@ -108,7 +85,6 @@ public struct Readability: Sendable {
     static func isAbbreviation(_ upToDot: String) -> Bool {
         let body = upToDot.dropLast()
         guard let last = body.last, last.isLetter else { return false }
-        // Das letzte „Wort" vor dem Punkt.
         let token = String(body.reversed().prefix { $0.isLetter }.reversed())
         if token.count == 1 { return true }
         return abbreviations.contains(token.lowercased())
@@ -124,9 +100,6 @@ public struct Readability: Sendable {
     ]
 
     /// Wörter.
-    ///
-    /// Zahlen zählen mit: „2026" ist ein Wort, das man liest. Bindestriche und
-    /// Apostrophe halten ein Wort zusammen — „E-Mail" ist eins, nicht zwei.
     public static func words(in text: String) -> [String] {
         text.split { character in
             !(character.isLetter || character.isNumber || character == "-" || character == "'"
@@ -137,15 +110,9 @@ public struct Readability: Sendable {
     }
 
     /// Silben eines Wortes.
-    ///
-    /// Gezählt werden Vokalgruppen, nicht Vokale: „Haus" hat eine Silbe und
-    /// nicht zwei. Das ist eine Schätzung und keine Silbentrennung — für einen
-    /// Durchschnitt über hunderte Wörter reicht sie, für ein einzelnes Wort
-    /// nicht.
     public static func syllables(in word: String, language: Language) -> Int {
         let clean = word.lowercased().filter { $0.isLetter }
         guard !clean.isEmpty else {
-            // Eine reine Zahl liest man als mindestens eine Silbe.
             return word.contains(where: \.isNumber) ? 1 : 0
         }
 
@@ -160,14 +127,11 @@ public struct Readability: Sendable {
                 continue
             }
             count += 1
-            // Die ganze Vokalgruppe überspringen: „ei", „eau", „ieu" sind je
-            // ein Kern.
             while index < characters.count, vowels.contains(characters[index]) {
                 index += 1
             }
         }
 
-        // Englisches Schluss-e ist stumm: „name" hat eine Silbe, nicht zwei.
         if language == .english, clean.hasSuffix("e"), count > 1,
            !clean.hasSuffix("le"), !clean.hasSuffix("ee"), !clean.hasSuffix("ye") {
             count -= 1
@@ -198,11 +162,6 @@ public struct Readability: Sendable {
     }
 
     /// Flesch-Lesbarkeit: 0 bis 100, hoch heißt leicht.
-    ///
-    /// Fürs Deutsche in der Fassung von Toni Amstad, fürs Englische die
-    /// ursprüngliche von Rudolf Flesch. Der Wert wird auf 0…100 begrenzt: die
-    /// Formel kann darüber hinausschießen, aber „112 von 100" ist keine
-    /// Auskunft, sondern ein Rechenartefakt.
     public var flesch: Double {
         guard wordCount > 0, sentenceCount > 0 else { return 0 }
         let sentenceLength = averageSentenceLength
@@ -218,10 +177,6 @@ public struct Readability: Sendable {
     }
 
     /// Die Schuljahre, die man für den Text gebraucht hätte.
-    ///
-    /// Amerikanische Klassenstufen — im deutschen Schulsystem gibt es keine
-    /// Entsprechung, deshalb steht der Wert hier als Zahl und nicht als
-    /// Empfehlung.
     public var gradeLevel: Double {
         guard wordCount > 0, sentenceCount > 0 else { return 0 }
         return max(0, 0.39 * averageSentenceLength + 11.8 * averageSyllablesPerWord - 15.59)
@@ -297,9 +252,6 @@ public struct Readability: Sendable {
     }
 
     /// Die Sätze, einzeln vermessen.
-    ///
-    /// Der eigentliche Nutzen des ganzen Werkzeugs: eine Zahl fürs Dokument
-    /// sagt einem nicht, was man ändern soll — die drei längsten Sätze schon.
     public var measuredSentences: [Sentence] {
         sentences.enumerated().map { index, text in
             let words = Self.words(in: text)
@@ -329,9 +281,6 @@ public struct Readability: Sendable {
 }
 
 /// Welche Farbe eine Einstufung bekommt.
-///
-/// Ein eigener Typ, damit die Rechnerei ohne das Design-System auskommt und in
-/// einem Test ohne Fenster läuft.
 public enum ReadabilityTone: String, Hashable, Sendable {
     case success
     case accent

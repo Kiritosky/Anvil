@@ -45,10 +45,6 @@ public enum AIPolicy: String, Codable, CaseIterable, Sendable, Identifiable {
 }
 
 /// Picks a provider and runs requests against it.
-///
-/// Tools never construct a provider themselves — they ask the router. That is
-/// what makes the privacy policy a single setting rather than a promise spread
-/// across twenty tools.
 @MainActor
 @Observable
 public final class AIRouter {
@@ -99,8 +95,6 @@ public final class AIRouter {
     public var onDeviceProvider: any AIProvider { FoundationModelsProvider() }
 
     public var remoteProvider: (any AIProvider)? {
-        // An installed agent takes precedence over an endpoint: it is the one
-        // the user had to configure least, and the one with no key to leak.
         if settings[.usesCLIAgent] {
             return CLIAgentProvider(
                 agent: settings[.cliAgent],
@@ -140,10 +134,6 @@ public final class AIRouter {
     }
 
     /// Resolves the provider to use for the next call.
-    ///
-    /// - Parameter inputLength: characters of input. A long input can push the
-    ///   router to the remote provider even under `.preferOnDevice`, because the
-    ///   on-device context window would reject it outright.
     public func resolveProvider(inputLength: Int = 0) async throws -> any AIProvider {
         let onDevice = onDeviceProvider
         let remote = policy.allowsRemote ? remoteProvider : nil
@@ -226,7 +216,6 @@ public final class AIRouter {
         do {
             _ = try await resolveProvider()
         } catch {
-            // `resolveProvider` has already recorded the reason.
         }
         return availability
     }

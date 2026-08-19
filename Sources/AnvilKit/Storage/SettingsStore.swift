@@ -2,10 +2,6 @@ import Foundation
 import Observation
 
 /// A typed, defaulted preference key.
-///
-/// Keys live next to the code that uses them: `AnvilKit` declares the shell's
-/// keys below, `AnvilAI` declares provider keys in its own extension. Adding a
-/// setting therefore never means editing a central enum.
 public struct SettingKey<Value: Codable & Sendable>: Sendable {
     public let name: String
     public let defaultValue: Value
@@ -17,10 +13,6 @@ public struct SettingKey<Value: Codable & Sendable>: Sendable {
 }
 
 /// Observable preferences backed by `UserDefaults`.
-///
-/// Values round-trip through JSON, so any `Codable` type works — including the
-/// enums the AI and speech layers store. Views observe the store directly;
-/// mutations bump an internal revision that SwiftUI picks up.
 @MainActor
 @Observable
 public final class SettingsStore {
@@ -54,8 +46,6 @@ public final class SettingsStore {
         guard let data = defaults.data(forKey: prefix + key.name) else {
             return key.defaultValue
         }
-        // Values are boxed in an array so that fragments (String, Int, Bool)
-        // encode the same way as structs, on every Foundation version.
         guard let boxed = try? decoder.decode([Value].self, from: data), let first = boxed.first
         else {
             return key.defaultValue

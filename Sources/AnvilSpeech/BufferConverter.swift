@@ -3,11 +3,6 @@ import AnvilKit
 import Foundation
 
 /// Converts microphone buffers into the format the analyser asked for.
-///
-/// The input node hands out whatever the current input device runs at; the
-/// speech modules want a specific sample rate and channel count. One converter
-/// is kept alive across buffers because rebuilding it per buffer both wastes
-/// work and drops the resampler's internal state, which is audible as clicks.
 public final class BufferConverter {
     private var converter: AVAudioConverter?
     private var currentInputFormat: AVAudioFormat?

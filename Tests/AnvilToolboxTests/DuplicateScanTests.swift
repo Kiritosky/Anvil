@@ -55,7 +55,6 @@ struct DuplicateScanTests {
     func sameSizeButDifferentContentIsNoDuplicate() {
         let result = scan([file("/a/eins.txt", 100), file("/b/zwei.txt", 100)])
         #expect(result.isEmpty)
-        // Gelesen wurde trotzdem — anders ließe sich das nicht feststellen.
         #expect(result.hashed == 2)
     }
 

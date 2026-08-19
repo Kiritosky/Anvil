@@ -86,8 +86,6 @@ public struct DiskUsageToolView: View {
             isWorking = true
             defer { isWorking = false }
 
-            // Einmal durch einen großen Ordner zu laufen dauert Sekunden.
-            // Auf dem Hauptthread stünde so lange das Fenster.
             usage = await Task.detached {
                 DiskUsage.make(root: root, files: FileWalk.files(in: root))
             }.value
@@ -152,9 +150,6 @@ public struct DiskUsageToolView: View {
     }
 
     /// Eine Zeile mit einem Balken darunter.
-    ///
-    /// Der Balken ist der Punkt: Zahlen nebeneinander muss man vergleichen,
-    /// Längen sieht man.
     private func bar(_ node: DiskUsage.Node) -> some View {
         Button {
             if node.isDirectory { descend(into: node) } else { reveal(node) }

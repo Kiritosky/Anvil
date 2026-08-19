@@ -3,10 +3,6 @@ import AnvilUI
 import SwiftUI
 
 /// Zeit ausrechnen: Dauern, Zeitstempel, Abstände, Zeitzonen.
-///
-/// Vier Fragen, die im Alltag ständig auftauchen und für die man sonst jedes
-/// Mal eine Webseite aufmacht — mit dem Unterschied, dass hier nichts von dem,
-/// was man eintippt, das Gerät verlässt.
 public struct TimeToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -44,9 +40,6 @@ public struct TimeToolView: View {
     @State private var dropError: AnvilError?
 
     /// Der Bezugspunkt für „jetzt".
-    ///
-    /// Einmal beim Öffnen genommen und danach nur noch auf Knopfdruck neu:
-    /// eine Zeile, die sich beim Zusehen ändert, kann man nicht abschreiben.
     @State private var now = Date()
 
     public init(context: ToolContext, metadata: ToolMetadata) {
@@ -70,8 +63,6 @@ public struct TimeToolView: View {
     private func restore() {
         now = Date()
         if let handed = context.handoff.take(for: metadata.id) {
-            // Was hereinkommt, ist meist ein Zeitstempel aus einem Log — und
-            // der gehört ins Zeitstempel-Feld, nicht ins Dauer-Feld.
             timestampInput = handed.trimmingCharacters(in: .whitespacesAndNewlines)
             mode = .timestamp
             return

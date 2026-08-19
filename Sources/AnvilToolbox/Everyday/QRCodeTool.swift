@@ -5,11 +5,6 @@ import CoreImage.CIFilterBuiltins
 import Foundation
 
 /// Making and reading QR codes.
-///
-/// Core Image does both, which is why this is a small file: the interesting
-/// parts are the error-correction trade-off and scaling the result up without
-/// blurring it — a QR code renders at one module per pixel and looks like mush
-/// at any interpolated size.
 public enum QRCode {
     /// How much of the code may be damaged and still be readable.
     public enum Correction: String, Codable, CaseIterable, Sendable, Identifiable {
@@ -51,10 +46,6 @@ public enum QRCode {
     }
 
     /// Renders `text` as a QR code, `size` points on a side.
-    ///
-    /// - Throws: ``AnvilError/invalidInput(_:)`` when the text is empty or too
-    ///   long for the format — around 2 900 bytes at the lowest correction
-    ///   level, far less at the highest.
     public static func image(for text: String, correction: Correction = .medium, size: CGFloat = 512) throws -> NSImage {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
@@ -71,8 +62,6 @@ public enum QRCode {
             )
         }
 
-        // Nearest-neighbour by scaling the CIImage itself: every module has to
-        // stay a hard-edged square, or scanners lose it.
         let scale = size / output.extent.width
         let scaled = output.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
 

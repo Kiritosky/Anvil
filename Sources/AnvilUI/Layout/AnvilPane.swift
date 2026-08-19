@@ -1,10 +1,6 @@
 import SwiftUI
 
 /// A titled content pane: header strip, then content.
-///
-/// The workhorse container inside tools — an input pane, a result pane, a log.
-/// Panes fill the space they are given, so two of them inside a
-/// ``WorkbenchLayout`` line up exactly.
 public struct AnvilPane<Content: View, Accessory: View>: View {
     @Environment(\.anvilTheme) private var theme
 
@@ -94,10 +90,6 @@ extension AnvilPane where Accessory == EmptyView {
 }
 
 /// A plain surface with the app's card treatment.
-///
-/// Use for grouped content that does not need a header. Nested cards go flat
-/// automatically via ``AnvilTheme/prefersFlatSurfaces``, so a card inside the
-/// inspector does not stack two backgrounds on top of each other.
 public struct AnvilCard<Content: View>: View {
     @Environment(\.anvilTheme) private var theme
     private let content: Content

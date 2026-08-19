@@ -2,10 +2,6 @@ import AnvilKit
 import Foundation
 
 /// What the model should turn a raw transcript into.
-///
-/// Ordered from "change as little as possible" to "rewrite completely". The
-/// first two are the ones that get used daily: cleaning up dictation without
-/// losing the speaker's words, and turning it into text someone else can read.
 public enum RefinementStyle: String, Codable, CaseIterable, Sendable, Identifiable {
     /// Keep every word; fix only the speaking noise, grammar and punctuation.
     case verbatim
@@ -86,9 +82,6 @@ public enum RefinementStyle: String, Codable, CaseIterable, Sendable, Identifiab
     }
 
     /// Whether the result should still be the speaker's own wording.
-    ///
-    /// Drives the diff view: for these styles a large diff means something went
-    /// wrong, for the others it is the whole point.
     public var preservesWording: Bool {
         self == .verbatim
     }
@@ -112,14 +105,6 @@ public enum RefinementStyle: String, Codable, CaseIterable, Sendable, Identifiab
     // MARK: - Prompting
 
     /// The standing instruction sent as the model's role.
-    ///
-    /// - Parameters:
-    ///   - languageName: the language the transcript is in, so the model does
-    ///     not quietly translate to English — the single most common failure
-    ///     mode when cleaning up German dictation.
-    ///   - customInstruction: used by ``custom``.
-    ///   - vocabulary: the user's own terms. Listing them stops the model from
-    ///     "correcting" a name it has never seen into a word it knows.
     public func instructions(
         languageName: String,
         customInstruction: String = "",
@@ -212,11 +197,6 @@ public enum RefinementStyle: String, Codable, CaseIterable, Sendable, Identifiab
     }
 
     /// The word list, as a rule rather than as a suggestion.
-    ///
-    /// The deterministic pass has already put these terms into the text; this
-    /// section only has to stop the model from taking them back out again —
-    /// which small models otherwise do reliably, because an unknown name looks
-    /// to them exactly like a recognition error.
     private static func vocabularySection(_ terms: [String]) -> String {
         let cleaned = terms
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }

@@ -2,16 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Die Anmeldung bei GitHub, wie eine App ohne Server sie führen darf.
-///
-/// GitHub kennt für native Programme genau einen offenen Weg: den *Device
-/// Flow*. Der übliche Weg mit Rückadresse scheidet aus, weil GitHub beim
-/// Eintauschen des Codes ein Client-Geheimnis verlangt und PKCE nicht
-/// unterstützt — ein Geheimnis in einer App, die jeder herunterladen kann,
-/// ist aber keines.
-///
-/// Der Device Flow braucht dagegen nur die Client-ID, und die ist öffentlich.
-/// Anvil holt einen Code, zeigt ihn an, schickt den Browser zu GitHub und
-/// fragt so lange nach, bis der Mensch dort fertig ist.
 public struct GitHubDeviceLogin: Sendable {
     private let clientID: String
     private let session: URLSession
@@ -26,24 +16,9 @@ public struct GitHubDeviceLogin: Sendable {
     }
 
     /// Die OAuth-App, mit der Anvil selbst anfragt.
-    ///
-    /// Eine Client-ID gehört nicht zu den Dingen, die man versteckt: Sie
-    /// steht in jedem Anmeldelink, den die App öffnet, und ohne das
-    /// Client-Geheimnis — das der Device Flow nicht braucht und Anvil nicht
-    /// hat — lässt sich mit ihr nichts tun, dem der Mensch bei GitHub nicht
-    /// vorher zugestimmt hat. Deshalb bringt Anvil eine mit, statt jedem
-    /// zuzumuten, sich erst eine eigene anzulegen.
-    ///
-    /// Wer lieber unter eigenem Namen anfragt, trägt in den Einstellungen
-    /// eine andere ein; dann steht auch der eigene Name auf der Seite, auf
-    /// der bestätigt wird.
     public static let anvilClientID = "Ov23lihIKGGg0dCIJViw"
 
     /// Wofür Anvil um Erlaubnis bittet.
-    ///
-    /// `repo` und nichts weiter: Es ist das Recht, Repositories zu lesen —
-    /// und das kleinste, mit dem sich ein privates klonen lässt. GitHub
-    /// kennt kein Nur-Lesen-Recht für private Repositories.
     public static let scope = "repo"
 
     /// Was der Mensch tun muss, damit die Anmeldung weitergeht.
@@ -162,8 +137,6 @@ public struct GitHubDeviceLogin: Sendable {
             userCode: userCode,
             verificationURL: url,
             deviceCode: deviceCode,
-            // Die Voreinstellungen stehen in der Norm; GitHub schickt sie
-            // trotzdem mit, und wenn nicht, sind fünf Sekunden höflich.
             interval: number(object["interval"]) ?? 5,
             expiresIn: number(object["expires_in"]) ?? 900
         )
@@ -180,8 +153,6 @@ public struct GitHubDeviceLogin: Sendable {
         case "authorization_pending":
             return .pending
         case "slow_down":
-            // GitHub sagt dazu, wie lange — und meint es ernst: Wer weiter
-            // im alten Takt fragt, wird abgewiesen.
             return .slowDown(number(object["interval"]) ?? 10)
         default:
             if let failure = error(in: object) { throw failure }
@@ -232,10 +203,6 @@ public struct GitHubDeviceLogin: Sendable {
 
 extension SettingKey {
     /// Die Client-ID der eigenen OAuth-App bei GitHub.
-    ///
-    /// Sie steht in den Einstellungen und nicht im Schlüsselbund: Eine
-    /// Client-ID ist öffentlich — sie steht in jedem Anmeldelink, den die App
-    /// je öffnet. Geheim ist nur, was danach zurückkommt.
     public static var githubClientID: SettingKey<String> {
         SettingKey<String>("github.clientID", default: GitHubDeviceLogin.anvilClientID)
     }

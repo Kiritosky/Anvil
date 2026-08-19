@@ -2,9 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Was Anvil von GitHub holt.
-///
-/// Zwei Dinge, mehr nicht: die Liste der eigenen Repositories und einen
-/// flachen Klon zum Zählen. Alles andere kann der Browser besser.
 public struct GitHubClient: Sendable {
     private let account: GitHubAccount
     private let runner = ProcessRunner()
@@ -18,9 +15,6 @@ public struct GitHubClient: Sendable {
     // MARK: - Fragen
 
     /// Die Repositories des angemeldeten Kontos, das zuletzt bespielte zuerst.
-    ///
-    /// Ohne Token gibt es hier nichts zu holen: Die Liste der eigenen
-    /// Repositories ist genau die Auskunft, für die man angemeldet sein muss.
     public func repositories(limit: Int = 100) async throws -> [GitHubRepository] {
         guard let token = account.token else {
             throw AnvilError.invalidInput(
@@ -85,16 +79,10 @@ public struct GitHubClient: Sendable {
     // MARK: - Holen
 
     /// Wie viel Geschichte geklont wird.
-    ///
-    /// Genau ein Commit: Gezählt wird der Stand von jetzt, und die
-    /// Geschichte eines großen Repositories ist ein Vielfaches davon.
     public static let cloneDepth = 1
 
     /// Klont ein Repository flach in einen Ordner und gibt zurück, wo es
     /// liegt.
-    ///
-    /// - Parameter into: Wohin — normalerweise ein Ordner im temporären
-    ///   Verzeichnis, den die Aufrufstelle danach wieder wegräumt.
     @discardableResult
     public func clone(_ repository: GitHubRepository, into folder: URL) async throws -> URL {
         let destination = folder.appending(path: ExportFile.sanitize(repository.name))
@@ -113,9 +101,6 @@ public struct GitHubClient: Sendable {
         )
 
         guard result.succeeded else {
-            // Was `git` beim Klonen sagt, steht auf der Fehlerausgabe — und
-            // enthält bei einem privaten Repository ohne Zugang genau den
-            // Hinweis, den man braucht.
             let detail = result.standardError.trimmingCharacters(in: .whitespacesAndNewlines)
             throw AnvilError.storage(
                 localized("„\(repository.fullName)\" ließ sich nicht holen: \(detail)")

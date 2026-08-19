@@ -197,13 +197,11 @@ struct SpanTests {
     /// eine Planung zählt.
     @Test
     func aWeekFromMondayToFridayIsFiveWorkdays() {
-        // 2026-08-10 ist ein Montag.
         #expect(TimeMath.workdays(from: day("2026-08-10"), to: day("2026-08-14"), calendar: calendar) == 5)
     }
 
     @Test
     func aWeekendCountsForNothing() {
-        // 2026-08-15 Samstag, 2026-08-16 Sonntag.
         #expect(TimeMath.workdays(from: day("2026-08-15"), to: day("2026-08-16"), calendar: calendar) == 0)
     }
 
@@ -218,7 +216,6 @@ struct SpanTests {
     @Test
     func tenYearsAreCountedWithoutWalkingEveryDay() {
         let count = TimeMath.workdays(from: day("2016-01-04"), to: day("2025-12-26"), calendar: calendar)
-        // 3644 Tage insgesamt, davon 520 volle Wochen und ein Rest.
         #expect(count > 2500)
         #expect(count < 2700)
     }

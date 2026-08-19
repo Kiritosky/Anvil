@@ -2,11 +2,6 @@ import Foundation
 import Observation
 
 /// Which tools the user has switched on.
-///
-/// Stored as the set of *disabled* identifiers, not enabled ones. That way a
-/// tool added in a later version shows up automatically instead of staying
-/// invisible because it was missing from an allow-list written before it
-/// existed.
 @MainActor
 @Observable
 public final class ToolActivationStore {

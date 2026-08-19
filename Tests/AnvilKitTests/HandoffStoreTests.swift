@@ -32,7 +32,6 @@ struct HandoffStoreTests {
         store.send("Netz", to: netz)
         store.send("Zeit", to: zeit)
         #expect(store.take(for: zeit) == "Zeit")
-        // Das andere liegt weiterhin bereit.
         #expect(store.take(for: netz) == "Netz")
     }
 
@@ -52,7 +51,6 @@ struct HandoffStoreTests {
         store.send("x", to: netz)
         #expect(store.hasPending(for: netz))
         #expect(store.hasPending(for: zeit) == false)
-        // Und nach dem Nachsehen liegt es immer noch da.
         #expect(store.take(for: netz) == "x")
     }
 
@@ -66,7 +64,6 @@ struct HandoffStoreTests {
         #expect(store.lastTarget == netz)
         store.clearTarget()
         #expect(store.lastTarget == nil)
-        // Das Bereitgelegte bleibt davon unberührt.
         #expect(store.take(for: netz) == "x")
     }
 

@@ -158,12 +158,9 @@ struct CSVTransformTests {
 
     @Test
     func filteringLooksInEveryColumnAndIgnoresCase() {
-        // Kleingeschrieben, und trifft trotzdem die Spalte „Ort".
         #expect(sample.filtered(by: "kiel").rowCount == 1)
-        // Auch in einer Zahlenspalte wird gesucht.
         #expect(sample.filtered(by: "1200").rowCount == 1)
         #expect(sample.filtered(by: "n").rowCount == 3)
-        // Ein leerer Filter filtert nicht, statt alles wegzunehmen.
         #expect(sample.filtered(by: "   ").rowCount == 3)
         #expect(sample.filtered(by: "Hamburg").rowCount == 0)
     }
@@ -208,7 +205,6 @@ struct CSVOutputTests {
         #expect(name != nil)
         #expect(umsatz != nil)
         if let name, let umsatz { #expect(name.lowerBound < umsatz.lowerBound) }
-        // Zahlen bleiben Zahlen, leere Felder werden null.
         #expect(json.contains("\"Umsatz\": 1200"))
         #expect(json.contains("\"Notiz\": null"))
     }
@@ -226,8 +222,6 @@ struct CSVOutputTests {
         ("1200", true), ("-3", true), ("1.5", true), ("1e5", true),
         ("0", true), ("0.5", true), ("-0.5", true),
         ("0x1p3", false), ("inf", false), ("nan", false), (".5", false),
-        // Eine Artikelnummer ist keine Zahl: unangeführt käme sie als 123
-        // wieder heraus.
         ("00123", false),
         ("1,5", false), ("1.2.3", false), ("", false)
     ])
@@ -246,9 +240,6 @@ struct CSVOutputTests {
 
     @Test
     func sqlQuotesTextAndLeavesNumbersAlone() {
-        // Umlaute bleiben — sie sind Buchstaben, und Postgres wie SQLite
-        // nehmen sie unangeführt an. Ersetzt wird nur, was kein Zeichen für
-        // einen Bezeichner ist.
         let statements = sample.sql(table: "Umsätze 2026")
         #expect(statements.contains("INSERT INTO umsätze_2026"))
         #expect(statements.contains("VALUES ('Anna', 'Bremen, Nord', 1200);"))

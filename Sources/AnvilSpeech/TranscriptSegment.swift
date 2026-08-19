@@ -1,11 +1,6 @@
 import Foundation
 
 /// One finalised piece of transcript.
-///
-/// Timing is kept because it is what makes a transcript navigable later —
-/// jumping to the spot in the recording where a sentence was said — and because
-/// unusually long gaps between segments are a decent signal of where paragraph
-/// breaks belong.
 public struct TranscriptSegment: Identifiable, Hashable, Sendable, Codable {
     public let id: UUID
     public var text: String

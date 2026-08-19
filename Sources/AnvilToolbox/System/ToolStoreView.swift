@@ -35,10 +35,6 @@ enum ToolStoreFilter: String, CaseIterable, Identifiable, Sendable {
 }
 
 /// Browse every installed tool and switch it on or off.
-///
-/// The store is the only place that works against the *whole* library rather
-/// than the active set — everywhere else in the app, a disabled tool simply
-/// does not exist.
 public struct ToolStoreView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata

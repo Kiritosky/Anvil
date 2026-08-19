@@ -2,12 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Removes the noise of speaking from a transcript, without a model.
-///
-/// This runs before any AI pass and matters for two reasons. It works when no
-/// model is available at all, and it is *predictable*: "äh" is always deleted,
-/// nothing is ever reworded, and nothing can be invented. The model is then
-/// left with the job it is actually good at — grammar and phrasing — on much
-/// cleaner input.
 public struct FillerCleaner: Sendable {
     /// How much to take out.
     public enum Strength: String, Codable, CaseIterable, Sendable, Identifiable {
@@ -102,8 +96,6 @@ public struct FillerCleaner: Sendable {
             }
 
             removed += 1
-            // "…, ähm, weiter" — the filler goes, its punctuation stays, so the
-            // sentence does not silently lose a comma or a full stop.
             let trailing = Self.trailingPunctuation(of: token)
             if !trailing.isEmpty, var previous = result.popLast() {
                 if Self.trailingPunctuation(of: previous).isEmpty {
@@ -156,7 +148,6 @@ public struct FillerCleaner: Sendable {
                Self.core(of: previous) == core,
                !intentionalDoubles.contains(core) {
                 collapsed += 1
-                // Keep whichever of the two carries the punctuation.
                 if Self.trailingPunctuation(of: token).isEmpty == false {
                     result[result.count - 1] = token
                 }
@@ -172,8 +163,6 @@ public struct FillerCleaner: Sendable {
 
     private var wordFillers: Set<String> {
         var fillers = Self.hardFillers[languageCode] ?? Self.hardFillers["en"] ?? []
-        // Hesitation sounds are the same noise whatever the language, and
-        // recognisers routinely spell them the other language's way.
         fillers.formUnion(Self.universalHardFillers)
         if strength == .thorough {
             fillers.formUnion(Self.softFillers[languageCode] ?? [])

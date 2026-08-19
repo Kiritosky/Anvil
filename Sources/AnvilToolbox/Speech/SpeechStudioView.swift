@@ -7,11 +7,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 /// Dictate, transcribe, clean up.
-///
-/// The screen is deliberately two panes: what was said on the left, what you
-/// can actually use on the right. Everything else — language, style, how hard
-/// to scrub — sits in the inspector, because those are settings you change
-/// once a month, not once a sentence.
 public struct SpeechStudioView: View {
     @State private var model: SpeechStudioModel
     @State private var orientation: WorkbenchOrientation = .horizontal
@@ -41,9 +36,6 @@ public struct SpeechStudioView: View {
             Task { await model.releaseSpeechAssets() }
         }
         .anvilFilesDrop(.file) { dropped in
-            // Nur Audio: Ein Bild oder ein PDF hier fallen zu lassen ist ein
-            // Versehen, und der Analyzer würde es mit einer Meldung quittieren,
-            // die niemandem hilft.
             let audio = dropped.compactMap(\.url).filter(Self.isAudio)
             guard !audio.isEmpty else { return }
             Task { await model.transcribeFiles(at: audio) }
@@ -442,10 +434,6 @@ public struct SpeechStudioView: View {
     }
 
     /// Ob die Datei nach Ton aussieht.
-    ///
-    /// Über die Endung statt über den Inhalt: Zum Zeitpunkt des Ziehens
-    /// jede Datei zu öffnen, um hineinzuschauen, wäre teurer als der
-    /// Fehlversuch, den es verhindert.
     static func isAudio(_ url: URL) -> Bool {
         guard let type = UTType(filenameExtension: url.pathExtension) else { return false }
         return type.conforms(to: .audio) || type.conforms(to: .audiovisualContent)

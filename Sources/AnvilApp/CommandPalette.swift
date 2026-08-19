@@ -3,9 +3,6 @@ import AnvilUI
 import SwiftUI
 
 /// ⌘K: type a few letters, hit return, land in a tool.
-///
-/// Keyboard-first by design — the palette exists precisely so the mouse can
-/// stay where it is.
 struct CommandPalette: View {
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
@@ -66,9 +63,6 @@ struct CommandPalette: View {
             .frame(height: 180)
         } else {
             ScrollView {
-                // Wer die Palette benutzt, sucht ohnehin den kurzen Weg —
-                // hier ist die Stelle, an der man erfährt, dass es für dieses
-                // Werkzeug noch einen kürzeren gibt.
                 let shortcuts = environment.registry.quickAccessShortcuts
                 LazyVStack(spacing: AnvilSpacing.xxs) {
                     ForEach(Array(results.enumerated()), id: \.element.id) { index, tool in
@@ -85,8 +79,6 @@ struct CommandPalette: View {
                 .padding(AnvilSpacing.sm)
             }
             .frame(maxHeight: 380)
-            // Arrow keys move the highlight; the field keeps focus so typing
-            // never has to stop.
             .onMoveCommand { direction in
                 switch direction {
                 case .up: highlighted = max(0, highlighted - 1)

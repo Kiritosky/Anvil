@@ -2,10 +2,6 @@ import SwiftUI
 
 /// A tool as the registry sees it: metadata, a lazy view factory, and an
 /// optional settings view.
-///
-/// Splitting metadata from the view matters. Metadata is cheap and `Sendable`,
-/// so search, the sidebar and the Tool Store never touch tool code. The view —
-/// and whatever model object it owns — is built the first time it is shown.
 public struct ToolRegistration: Identifiable {
     public let metadata: ToolMetadata
     /// Which bundle or file this tool came from. Stamped by the registry.
@@ -31,9 +27,6 @@ public struct ToolRegistration: Identifiable {
     }
 
     /// A tool with its own settings page.
-    ///
-    /// The settings view is shown inside the app's Settings window under the
-    /// tool's name, so a tool never has to open a window of its own.
     public init<Content: View, Settings: View>(
         metadata: ToolMetadata,
         origin: ToolOrigin = .unspecified,
@@ -71,10 +64,6 @@ public struct ToolRegistration: Identifiable {
 }
 
 /// A group of tools shipped together.
-///
-/// A bundle is the unit of extension: add a type conforming to this protocol,
-/// list it in the app's environment, and its tools appear in the sidebar, the
-/// command palette, search and the Tool Store with no other change.
 public protocol ToolBundle {
     /// Reverse-DNS identifier, used for diagnostics and in the Tool Store.
     static var bundleIdentifier: String { get }

@@ -3,10 +3,6 @@ import SwiftUI
 
 extension ColorValue {
     /// The same colour, for SwiftUI.
-    ///
-    /// Kept out of ``ColorValue`` itself: the type is arithmetic and is tested
-    /// without a window. This is the one line that turns it into something a
-    /// view can fill with, and every view that needs it uses this one.
     public var color: Color {
         Color(.sRGB, red: red, green: green, blue: blue, opacity: alpha)
     }

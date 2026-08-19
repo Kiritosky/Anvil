@@ -4,10 +4,6 @@ import Foundation
 import SwiftUI
 
 /// The editor for the words dictation keeps getting wrong.
-///
-/// Built around the test field on the right: a word list is guesswork until you
-/// can paste a botched transcript in and watch what the rules actually do with
-/// it. Every change to the list re-runs the test immediately.
 public struct VocabularyToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -251,10 +247,6 @@ public struct VocabularyToolView: View {
     }
 
     /// Reads a pasted list, one term per line, `Begriff: verhört, verhört`.
-    ///
-    /// Additive on purpose: importing is how a list moves between machines, and
-    /// silently dropping what is already there would be the one mistake that
-    /// cannot be undone.
     private func importFromPasteboard() {
         guard let text = context.pasteboard.string() else { return }
 
@@ -326,7 +318,6 @@ public struct VocabularyToolView: View {
     private var sensitivityBinding: Binding<VocabularyCorrector.Sensitivity> {
         settings.bind(.vocabularySensitivity)
     }
-
 
     static func splitVariants(_ text: String) -> [String] {
         text.split(separator: ",")

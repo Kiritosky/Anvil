@@ -86,9 +86,6 @@ public struct AIOptions: Sendable, Equatable {
 }
 
 /// One turn of work for a model.
-///
-/// Deliberately single-shot: every tool in the app is "take this text, produce
-/// that text". Chat history, when a tool needs it, is that tool's business.
 public struct AIRequest: Sendable {
     /// The standing role description. Stays constant across calls in a tool.
     public var instructions: String
@@ -104,11 +101,6 @@ public struct AIRequest: Sendable {
 }
 
 /// A language-model backend.
-///
-/// Providers are value-like and cheap to create; configuration lives in
-/// ``AIRouter``. Anything conforming to this can be dropped into the router,
-/// which is how a future local llama.cpp or a company gateway gets added
-/// without touching a single tool.
 public protocol AIProvider: Sendable {
     var identifier: AIProviderIdentifier { get }
     var displayName: String { get }
@@ -124,9 +116,6 @@ public protocol AIProvider: Sendable {
     func complete(_ request: AIRequest) async throws -> String
 
     /// Produces the answer incrementally.
-    ///
-    /// Each element is the *cumulative* text so far, not a delta, so a view can
-    /// bind straight to the latest value without accumulating anything itself.
     func stream(_ request: AIRequest) -> AsyncThrowingStream<String, any Error>
 }
 

@@ -185,14 +185,12 @@ struct CronExpressionTests {
         #expect(components.minute == 0)
         #expect(components.day == 1)
 
-        // One a day, in order.
         #expect(next[1] > next[0])
         #expect(next[2].timeIntervalSince(next[0]) == 2 * 24 * 3600)
     }
 
     @Test
     func skipsToTheNextWeekday() throws {
-        // Saturday the 6th of January 2024, asking for weekdays only.
         let saturday = calendar.date(from: DateComponents(year: 2024, month: 1, day: 6, hour: 12)) ?? .now
         let expression = try CronExpression(parsing: "0 9 * * 1-5")
         let next = expression.upcoming(count: 1, after: saturday, calendar: calendar)
@@ -204,7 +202,6 @@ struct CronExpressionTests {
 
     @Test
     func combinesTheTwoDayFieldsWithOr() throws {
-        // The rule everyone gets wrong: with both day fields set, either counts.
         let expression = try CronExpression(parsing: "0 0 1 * 0")
         let dates = expression.upcoming(count: 6, after: newYear2024, calendar: calendar)
         let days = dates.map { calendar.component(.day, from: $0) }

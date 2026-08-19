@@ -2,10 +2,6 @@ import AppKit
 import SwiftUI
 
 /// Semantic colours.
-///
-/// Everything resolves from AppKit's system colours, so light mode, dark mode,
-/// increased contrast and the user's accent colour all work without a second
-/// set of definitions.
 public enum AnvilColor {
     // MARK: Surfaces
 

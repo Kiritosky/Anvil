@@ -51,8 +51,6 @@ public struct RenameToolView: View {
     // MARK: - Dateien
 
     private func add(_ urls: [URL]) {
-        // Ordner werden aufgeklappt: Wer einen Ordner hineinzieht, meint das,
-        // was darin liegt.
         var collected: [URL] = []
         for url in urls {
             var isDirectory: ObjCBool = false

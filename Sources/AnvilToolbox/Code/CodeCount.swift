@@ -2,11 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Wie viel Code hier eigentlich liegt.
-///
-/// Die Frage kommt selten allein: „Wie groß ist das Projekt" heißt in
-/// Wirklichkeit „woraus besteht es" — und die Antwort ist eine Verteilung,
-/// keine Zahl. Zwanzigtausend Zeilen sagen wenig; zwanzigtausend Zeilen
-/// Swift neben achttausend Zeilen YAML sagen viel.
 public struct CodeCount: Sendable, Hashable {
     /// Was von einer Sprache im Projekt liegt.
     public struct Entry: Sendable, Hashable, Identifiable {
@@ -57,10 +52,6 @@ public struct CodeCount: Sendable, Hashable {
     public var totalLines: Int { totalCode + totalComments + totalBlanks }
 
     /// Der Anteil einer Sprache am Code — nicht an allen Zeilen.
-    ///
-    /// Leerzeilen gehören niemandem: Ein Diagramm, in dem eine Sprache groß
-    /// aussieht, weil in ihr großzügig Absätze gesetzt werden, beantwortet
-    /// die Frage nicht.
     public func share(of entry: Entry) -> Double {
         guard totalCode > 0 else { return 0 }
         return Double(entry.code) / Double(totalCode)
@@ -80,10 +71,6 @@ public struct CodeCount: Sendable, Hashable {
     }
 
     /// Zählt einen Stapel Dateien.
-    ///
-    /// Die Dateien kommen als Text herein statt als Pfade: So lässt sich das
-    /// Zählen prüfen, ohne ein Projekt auf die Platte zu legen — und der
-    /// Aufrufer entscheidet, was er überhaupt einliest.
     public static func count(_ files: [SourceFile]) -> CodeCount {
         var totals: [String: Entry] = [:]
         var skipped = 0
@@ -114,11 +101,6 @@ public struct CodeCount: Sendable, Hashable {
     }
 
     /// Zerlegt eine Datei in Code, Kommentar und Leerzeile.
-    ///
-    /// Eine Faustregel und kein Übersetzer: Ein `//` in einer Zeichenkette
-    /// zählt hier als Kommentar. Das falsch zu bekommen kostet in einem
-    /// Projekt ein paar Zeilen von zwanzigtausend — es richtig zu bekommen
-    /// kostet einen Übersetzer je Sprache.
     static func count(_ text: String, in language: CodeLanguage) -> (
         code: Int, comments: Int, blanks: Int
     ) {
@@ -145,8 +127,6 @@ public struct CodeCount: Sendable, Hashable {
 
             if let open = language.blockOpen, trimmed.hasPrefix(open) {
                 comments += 1
-                // Ein Block, der in derselben Zeile wieder zugeht, macht die
-                // nächste nicht zum Kommentar.
                 let rest = trimmed.dropFirst(open.count)
                 if let close = language.blockClose, !rest.contains(close) { isInBlock = true }
                 continue

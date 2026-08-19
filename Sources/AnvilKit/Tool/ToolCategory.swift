@@ -1,10 +1,6 @@
 import Foundation
 
 /// A sidebar section.
-///
-/// Deliberately a struct rather than an enum: a tool bundle added later — or a
-/// third-party bundle — can introduce its own category without editing this
-/// file. The registry sorts categories by ``sortOrder`` and then by title.
 public struct ToolCategory: Hashable, Sendable, Identifiable {
     public let id: String
     public let title: String

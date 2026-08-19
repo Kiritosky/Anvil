@@ -23,9 +23,6 @@ public enum ScreenshotToolBundle: ToolBundle {
 
     @MainActor
     public static func makeTools() -> [ToolRegistration] {
-        // One bundle rather than two: aufnehmen and auslesen are the same
-        // subject, and a Tool Store full of one-tool groups is a list of
-        // headings.
         [screenshot, textRecognizer, imageConverter, iconSet]
     }
 
@@ -116,12 +113,6 @@ public enum ScreenshotToolBundle: ToolBundle {
     }
 
     /// The shortcut actions, built against a controller the app owns.
-    ///
-    /// Defaults deliberately shifted one modifier away from the system's own
-    /// ⇧⌘3/4/5: close enough that the muscle memory carries over, far enough
-    /// that nothing is fought over. All four are on out of the box — a
-    /// screenshot tool whose shortcuts have to be switched on first is a
-    /// screenshot tool nobody uses.
     @MainActor
     public static func makeActions(controller: ScreenshotController) -> [ShortcutAction] {
         [

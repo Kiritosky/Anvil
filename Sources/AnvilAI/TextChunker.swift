@@ -1,12 +1,6 @@
 import Foundation
 
 /// Splits long text into pieces a model can actually accept.
-///
-/// The on-device model has a small context window, and a dictated transcript
-/// happily runs past it. Splitting on paragraph and sentence boundaries — never
-/// mid-sentence unless a single sentence is itself too long — keeps each chunk
-/// independently rewritable, which is what makes chunk-and-rejoin produce
-/// readable output instead of visible seams.
 public enum TextChunker {
     public struct Chunk: Sendable, Identifiable {
         public let id: Int
@@ -19,9 +13,6 @@ public enum TextChunker {
     }
 
     /// Splits `text` into chunks of at most `budget` characters.
-    ///
-    /// - Parameter budget: characters, not tokens. Callers pass a provider's
-    ///   ``AIProvider/approximateInputBudget`` minus room for the instructions.
     public static func split(_ text: String, budget: Int) -> [Chunk] {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return [] }
@@ -34,7 +25,6 @@ public enum TextChunker {
 
         for paragraph in paragraphs(of: trimmed) {
             if paragraph.count > budget {
-                // Flush what we have, then break the oversized paragraph down.
                 if !current.isEmpty { chunks.append(current); current = "" }
                 for piece in splitSentences(paragraph, budget: budget) {
                     if current.count + piece.count + 1 > budget, !current.isEmpty {
@@ -84,8 +74,6 @@ public enum TextChunker {
 
         if sentences.isEmpty { sentences = [text] }
 
-        // A single sentence longer than the budget only happens with dictated
-        // text that never got punctuated — fall back to hard word wrapping.
         return sentences.flatMap { sentence -> [String] in
             sentence.count <= budget ? [sentence] : wrapWords(sentence, budget: budget)
         }

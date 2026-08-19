@@ -1,18 +1,6 @@
 import Foundation
 
 /// Was in einem Werkzeug stand, als man es zuletzt verlassen hat.
-///
-/// Eine Werkzeugkiste, zu der man zurückkommt, sollte nicht jedes Mal leer
-/// sein. Gespeichert wird deshalb die letzte Eingabe — aber nur die, und nur
-/// wenn drei Bedingungen stimmen:
-///
-/// 1. Das Werkzeug hat mit Geheimnissen nichts zu tun (``allows(_:)``).
-/// 2. Der Text sieht nicht nach einem Geheimnis aus (``Sensitivity``).
-/// 3. Er ist klein genug, dass eine JSON-Datei dafür angemessen ist.
-///
-/// Ergebnisse werden nie gespeichert. Sie entstehen aus der Eingabe in
-/// Millisekunden neu, und ein Ergebnis kann verräterischer sein als die
-/// Eingabe — der entzifferte Inhalt eines Tokens etwa.
 @MainActor
 public final class DraftStore {
     /// Ab hier ist es kein „ich mache gleich weiter" mehr, sondern ein
@@ -58,10 +46,6 @@ public final class DraftStore {
         }
 
         /// Jeder Text, der bei diesem Entwurf auf der Platte landen würde.
-        ///
-        /// Der Grund, warum es diese Eigenschaft gibt: Wird nur `input`
-        /// geprüft, wandert ein Schlüssel, den jemand in das zweite Feld des
-        /// Textvergleichs einfügt, ungeprüft mit.
         var allText: [String] {
             [input] + extras.values
         }
@@ -80,14 +64,7 @@ public final class DraftStore {
 
     /// Merkt sich den Stand — oder löscht ihn, wenn er nicht gespeichert
     /// werden darf.
-    ///
-    /// Das Löschen ist der wichtige Teil: wer einen Schlüssel in ein Feld
-    /// einfügt, in dem vorher etwas Harmloses stand, soll nicht das Harmlose
-    /// auf der Platte behalten und den Schlüssel im Fenster. Beides muss weg.
     public func save(_ draft: Draft, for tool: ToolIdentifier, allowed: Bool = true) {
-        // Ein einziges verdächtiges Feld verwirft den ganzen Entwurf. Die
-        // Hälfte zu behalten wäre schlimmer als nichts: der Benutzer sähe
-        // beim nächsten Öffnen einen Stand, den es so nie gab.
         guard allowed, draft.allText.contains(where: { !$0.isEmpty }),
               draft.allText.allSatisfy({ $0.isEmpty || Self.mayStore($0) })
         else {
@@ -103,8 +80,6 @@ public final class DraftStore {
             try encoder.encode(draft).write(to: url(for: tool))
             cache[tool] = draft
         } catch {
-            // Ein Entwurf ist Bequemlichkeit, kein Auftrag. Scheitert das
-            // Schreiben, ist das kein Grund, dem Benutzer etwas zu melden.
             cache[tool] = draft
         }
     }
@@ -129,9 +104,6 @@ public final class DraftStore {
     // MARK: - Die Entscheidung
 
     /// Ob dieser Text überhaupt gespeichert werden darf.
-    ///
-    /// Nicht `private`, weil genau hier die Regel steckt, die stimmen muss —
-    /// und eine Regel, die man nicht prüfen kann, ist eine Hoffnung.
     public static func mayStore(_ text: String) -> Bool {
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return false }
         guard text.utf8.count <= sizeLimit else { return false }
@@ -139,8 +111,6 @@ public final class DraftStore {
     }
 
     private func url(for tool: ToolIdentifier) -> URL {
-        // Werkzeug-Kennungen sind Punkt-getrennte Bezeichner ohne
-        // Pfadtrenner, taugen also unverändert als Dateiname.
         directory.appending(path: "\(tool.rawValue).json")
     }
 }
@@ -152,9 +122,6 @@ extension ToolContext {
 
 extension SettingKey {
     /// Ob Werkzeuge sich merken, was zuletzt drinstand.
-    ///
-    /// An, weil eine Werkzeugkiste, die jedes Mal leer ist, lästig ist — und
-    /// weil das, was hier landen darf, ohnehin nichts Vertrauliches ist.
     public static var remembersInput: SettingKey<Bool> {
         SettingKey<Bool>("tools.remembersInput", default: true)
     }

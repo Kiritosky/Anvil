@@ -1,11 +1,6 @@
 import SwiftUI
 
 /// Ein Regler mit dem Wert daneben.
-///
-/// Ein Regler ohne Zahl ist eine Vermutung: Man sieht, dass es „ungefähr in
-/// der Mitte" steht, und weiß nicht, ob das 0,5 oder 0,55 ist. Beim
-/// Nachbauen einer Einstellung — in einer Notiz, in einer zweiten App, im
-/// Gespräch — ist genau das die Angabe, die fehlt.
 public struct AnvilSlider: View {
     @Binding private var value: Double
     private let range: ClosedRange<Double>
@@ -46,8 +41,6 @@ public struct AnvilSlider: View {
             Text(verbatim: format(value))
                 .font(AnvilFont.caption.monospacedDigit())
                 .foregroundStyle(AnvilColor.textSecondary)
-                // Feste Breite, sonst wandert der Regler beim Ziehen, weil die
-                // Zahl daneben mal drei und mal vier Zeichen breit ist.
                 .frame(width: AnvilSize.sliderValueWidth, alignment: .trailing)
         }
     }

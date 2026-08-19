@@ -1,9 +1,6 @@
 import SwiftUI
 
 /// A layout that places subviews left to right and wraps to the next line.
-///
-/// SwiftUI has no built-in wrapping stack, and the inspector is narrow enough
-/// that chips and tags need to wrap rather than truncate.
 public struct FlowLayout: Layout {
     public var spacing: CGFloat
     public var lineSpacing: CGFloat

@@ -4,11 +4,6 @@ import Foundation
 import SwiftUI
 
 /// The screen every deterministic text tool gets.
-///
-/// Runs the active mode on every keystroke — these transforms are microseconds
-/// of work, and a live result is far more useful than a "Convert" button. Errors
-/// appear in place of the output rather than as an alert, because with live
-/// running you are constantly in a half-typed, temporarily invalid state.
 public struct TextToolView: View {
     private let tool: TextTool
     private let context: ToolContext
@@ -47,12 +42,7 @@ public struct TextToolView: View {
         .onAppear(perform: restore)
         .onDisappear(perform: remember)
         .anvilErrorBanner($dropError)
-        // Werkzeuge, die über Bytes rechnen, wollen die Datei selbst; alle
-        // anderen deren Text. Beides über denselben Empfänger, damit es für den
-        // Benutzer keinen Unterschied macht, wo er loslässt.
         .anvilFilesDrop(acceptsFiles ? .file : .text, error: $dropError) { dropped in
-            // Ein Werkzeug, das über Bytes rechnet, bekommt alle gezogenen
-            // Dateien; eines, das Text erwartet, kann nur eine anzeigen.
             let urls = dropped.compactMap { item -> URL? in
                 if case let .file(url) = item { return url }
                 return nil
@@ -76,9 +66,6 @@ public struct TextToolView: View {
     }
 
     /// Nimmt Dateien in die Liste, ohne Doppelte.
-    ///
-    /// Dieselbe Datei zweimal wäre zweimal dieselbe Prüfsumme unter demselben
-    /// Namen — eine Liste, die man nicht mehr liest, sondern zählt.
     private func add(_ urls: [URL]) {
         let known = Set(files.map(\.url))
         files += urls
@@ -89,15 +76,7 @@ public struct TextToolView: View {
     // MARK: - Zurückholen und merken
 
     /// Holt zurück, was beim letzten Mal drinstand.
-    ///
-    /// Dass hier überhaupt etwas ankommt, heißt schon, dass es unverfänglich
-    /// war — der Store speichert nichts anderes. Trotzdem wird die Variante
-    /// nur übernommen, wenn es sie noch gibt: Werkzeuge bekommen neue
-    /// Varianten und verlieren alte.
     private func restore() {
-        // Was ein anderes Werkzeug hereingereicht hat, sticht den eigenen
-        // Entwurf: Wer gerade „weitergeben an" gedrückt hat, will das sehen
-        // und nicht, was hier vor einer Woche stand.
         if let handed = context.handoff.take(for: tool.id) {
             input = handed
             run()
@@ -113,10 +92,6 @@ public struct TextToolView: View {
     }
 
     /// Merkt sich den Stand beim Verlassen.
-    ///
-    /// Eine geladene Datei wird nicht gemerkt: Wege auf der Platte ändern
-    /// sich, und ein Werkzeug, das beim Öffnen auf eine Datei zeigt, die es
-    /// nicht mehr gibt, ist schlechter als eines, das leer beginnt.
     private func remember() {
         guard files.isEmpty else {
             context.drafts.forget(tool.id)
@@ -187,10 +162,6 @@ public struct TextToolView: View {
     }
 
     /// Was statt des Editors steht, solange Dateien geladen sind.
-    ///
-    /// Kein Textfeld mit den Dateinamen darin: die Prüfsumme gehört zu den
-    /// Bytes auf der Platte, nicht zu einer Zeichenkette, die man versehentlich
-    /// bearbeiten könnte.
     private var fileList: some View {
         ScrollView(.vertical) {
             LazyVStack(spacing: AnvilSpacing.xxs) {
@@ -392,9 +363,6 @@ public struct TextToolView: View {
             let result = try await Task.detached(priority: .userInitiated) {
                 try handler(urls)
             }.value
-            // Zwischendurch kann eine Datei entfernt oder die Variante
-            // gewechselt worden sein — dann gehört dieses Ergebnis nicht mehr
-            // auf den Bildschirm.
             guard self.files == files else { return }
             output = result
             failure = nil
@@ -416,17 +384,11 @@ public struct TextToolView: View {
     }
 
     /// Sichert das Ergebnis als Datei.
-    ///
-    /// Der Vorschlag ist der Name der geladenen Datei plus Variante — wer eine
-    /// Prüfsumme über „ubuntu.iso" gerechnet hat, will sie als
-    /// „ubuntu.iso SHA-256" ablegen und nicht als „Ergebnis".
     private func save() {
         let suggestion: String
         switch files.count {
         case 0: suggestion = "\(tool.title) \(activeMode.title)"
         case 1: suggestion = "\(files[0].url.lastPathComponent) \(activeMode.title)"
-        // Bei mehreren ist der Name der Liste die Aufgabe, nicht die einzelne
-        // Datei — so heißt sie wie das, was drinsteht.
         default: suggestion = "\(activeMode.title) \(localized("Prüfsummen"))"
         }
         do {

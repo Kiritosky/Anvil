@@ -63,7 +63,6 @@ struct CustomToolDraftTests {
         let taken: Set<String> = ["user.aenderungstext-schreiben"]
         #expect(draft().problems(existing: taken).contains(.identifierTaken))
         #expect(!draft().isReady(existing: taken))
-        // Ohne die fremde Kennung ist derselbe Entwurf in Ordnung.
         #expect(draft().isReady())
     }
 
@@ -140,7 +139,6 @@ struct CustomToolDraftTests {
         #expect(tool.keywords == ["diff", "notiz"])
         #expect(tool.temperature == 0.2)
         #expect(tool.categoryID == ToolCategory.custom.id)
-        // Ohne den Platzhalter für die Eingabe käme beim Modell nichts an.
         #expect(tool.promptTemplate.contains("{{input}}"))
         #expect(tool.options.count == 1)
         #expect(tool.options[0].id == "ton")
@@ -158,7 +156,6 @@ struct CustomToolDraftTests {
         let text = draft().json()
         #expect(text.contains("\"id\" : \"user.aenderungstext-schreiben\""))
         #expect(text.contains("{{input}}"))
-        // Schrägstriche bleiben Schrägstriche.
         #expect(!text.contains("\\/"))
     }
 

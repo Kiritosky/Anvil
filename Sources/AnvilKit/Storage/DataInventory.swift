@@ -1,12 +1,6 @@
 import Foundation
 
 /// Was Anvil auf der Platte liegen hat — und wie man es wieder los wird.
-///
-/// Der Grund, warum es das gibt: Eine App, die auf dem eigenen Rechner rechnet
-/// statt in einer Wolke, sammelt zwangsläufig etwas an. Wer wissen will, was
-/// das ist, soll nicht in den Finder wechseln müssen, und wer es weghaben will,
-/// nicht in den Papierkorb ziehen. Beides gehört in die App, sonst glaubt man
-/// ihr das Versprechen nicht.
 public struct StoredData: Sendable, Identifiable, Hashable {
     /// Eine Ablage — je Ordner eine.
     public enum Kind: String, Sendable, Hashable, CaseIterable, Identifiable {
@@ -64,10 +58,6 @@ public struct StoredData: Sendable, Identifiable, Hashable {
         }
 
         /// Ob „alles löschen" das hier mitnimmt.
-        ///
-        /// Die eigenen Werkzeuge nicht: Sie sind keine Ablage, sondern Arbeit.
-        /// Wer sie loswerden will, löscht sie einzeln — dafür gibt es in
-        /// derselben Zeile einen Knopf.
         public var isRemovedWithEverything: Bool { self != .customTools }
     }
 
@@ -101,8 +91,6 @@ public struct StoredData: Sendable, Identifiable, Hashable {
 /// Sieht nach, was da ist, und räumt es weg.
 public enum DataInventory {
     /// Was in jeder Ablage liegt.
-    ///
-    /// - Parameter kinds: Nur diese ansehen. Standard: alle.
     public static func scan(_ kinds: [StoredData.Kind] = StoredData.Kind.allCases) -> [StoredData] {
         kinds.map { kind in
             let counted = count(in: kind.url)
@@ -130,10 +118,6 @@ public enum DataInventory {
     }
 
     /// Leert eine Ablage — den Ordner selbst lässt es stehen.
-    ///
-    /// Gelöscht wird Datei für Datei statt der Ordner am Stück: Ein Ordner, den
-    /// die App beim Start anlegt und der dann fehlt, wäre beim nächsten
-    /// Schreiben ein Fehler statt einer leeren Liste.
     public static func empty(_ kind: StoredData.Kind) throws {
         try empty(at: kind.url)
     }

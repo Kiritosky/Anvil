@@ -1,9 +1,6 @@
 import SwiftUI
 
 /// The bar at the top of every tool: identity on the left, actions on the right.
-///
-/// Used by ``ToolScaffold``; exposed on its own so sheets and the menu-bar
-/// popover can present the same header without pulling in the whole scaffold.
 public struct ToolHeaderBar<Actions: View>: View {
     private let title: String
     private let subtitle: String
@@ -74,9 +71,6 @@ extension ToolHeaderBar where Actions == EmptyView {
 }
 
 /// The tinted rounded square a tool is identified by.
-///
-/// Same shape in the header, the sidebar and the command palette — it is the
-/// app's most repeated visual element, so it lives in exactly one place.
 public struct ToolIconBadge: View {
     private let systemImage: String
     private let tone: AnvilTone

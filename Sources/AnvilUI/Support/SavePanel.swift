@@ -4,17 +4,9 @@ import Foundation
 import UniformTypeIdentifiers
 
 /// „Sichern unter" — einmal für alle Werkzeuge.
-///
-/// Text lässt sich nicht sinnvoll herausziehen: dieselbe Fläche trägt schon
-/// die Textauswahl, und zwei Gesten auf einer Fläche heißt, dass keine von
-/// beiden zuverlässig auslöst. Für Text ist der Dialog also nicht die
-/// zweitbeste Lösung, sondern die richtige.
 @MainActor
 public enum SavePanel {
     /// Fragt nach einem Ort und schreibt den Text dorthin.
-    ///
-    /// Gibt zurück, wo die Datei liegt — oder `nil`, wenn abgebrochen wurde.
-    /// Abbrechen ist kein Fehler und darf deshalb auch keinen erzeugen.
     @discardableResult
     public static func write(
         _ text: String,
@@ -55,15 +47,6 @@ public enum SavePanel {
     }
 
     /// Fragt nach Dateien zum Öffnen.
-    ///
-    /// Drei Werkzeuge hatten dafür ihren eigenen `NSOpenPanel`, und jedem
-    /// fehlte etwas anderes: einem die Übersetzung, zweien die Fensterebene.
-    /// Ohne die steht der Dialog hinter dem Fenster, sobald Anvil nicht die
-    /// vorderste App ist — und der Benutzer sieht auf einen Knopf, der
-    /// scheinbar nichts tut.
-    ///
-    /// - Returns: Die gewählten Dateien, oder nichts bei Abbruch. Abbrechen
-    ///   ist kein Fehler.
     public static func files(
         prompt: String,
         types: [UTType] = [],
@@ -82,10 +65,6 @@ public enum SavePanel {
     }
 
     /// Fragt nur nach dem Ort und schreibt selbst nichts.
-    ///
-    /// Für alles, was schon als fertige Bytes vorliegt — ein umgewandeltes
-    /// Bild etwa. Die Alternative wäre, die Daten durch eine der
-    /// `write`-Methoden zu schleusen, die sie vorher gar nicht kennt.
     public static func url(suggestedName: String, type: UTType) -> URL? {
         ask(suggestedName: suggestedName, type: type)
     }
@@ -95,8 +74,6 @@ public enum SavePanel {
         panel.allowedContentTypes = [type]
         panel.nameFieldStringValue = ExportFile.sanitize(suggestedName)
         panel.canCreateDirectories = true
-        // Ohne das steht der Dialog hinter dem Fenster, wenn Anvil gerade
-        // nicht die vorderste App ist — etwa direkt nach einem Kürzel.
         panel.level = .modalPanel
 
         return panel.runModal() == .OK ? panel.url : nil

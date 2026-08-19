@@ -2,11 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Wo der Platz auf der Platte hingeht.
-///
-/// Der Finder beantwortet die Frage nicht: Er zeigt die Größe eines Ordners
-/// erst, wenn man ihn einzeln aufklappt, und dann in der Reihenfolge des
-/// Alphabets. Gesucht ist aber die Reihenfolge der Größe — und die Antwort ist
-/// fast immer ein einzelner Ordner, den man vergessen hat.
 public struct DiskUsage: Sendable, Hashable {
     /// Ein Ordner oder eine Datei mit ihrem Anteil.
     public struct Node: Sendable, Hashable, Identifiable {
@@ -67,10 +62,6 @@ public struct DiskUsage: Sendable, Hashable {
 
     /// Fasst eine Liste von Dateien zu den Ordnern direkt unter `root`
     /// zusammen.
-    ///
-    /// Die Dateien kommen von außen statt aus dem Dateisystem: Damit lässt
-    /// sich die Rechnung prüfen, ohne eine Platte mit fünfzigtausend Dateien
-    /// dafür anzulegen.
     public static func make(root: URL, files: [(url: URL, size: Int)]) -> DiskUsage {
         var folders: [String: (bytes: Int, count: Int)] = [:]
         var loose: [Node] = []
@@ -91,8 +82,6 @@ public struct DiskUsage: Sendable, Hashable {
             )
             all.append(node)
 
-            // Liegt die Datei direkt im Ordner, ist sie ihr eigener Posten —
-            // sonst zählt sie zum obersten Ordner über ihr.
             guard parts.count > 1, let first = parts.first else {
                 loose.append(node)
                 continue
@@ -127,10 +116,6 @@ public struct DiskUsage: Sendable, Hashable {
     }
 
     /// Wie viel Platz auf welche Endung geht.
-    ///
-    /// Die Antwort auf „warum ist das so groß" ist manchmal kein Ordner,
-    /// sondern eine Endung, die überall verstreut liegt — Videos in einem
-    /// Projekt, `.mov` aus dem Bildschirmrekorder, Ordner voller `.zip`.
     public func byExtension(_ limit: Int = 10) -> [Node] {
         var sums: [String: (bytes: Int, count: Int)] = [:]
         for file in files {
@@ -176,9 +161,6 @@ public struct DiskUsage: Sendable, Hashable {
     }
 
     /// Ein Anteil als Prozentzahl, ohne Nachkommastellen.
-    ///
-    /// Nachkommastellen wären hier nur Ziffern: Ob ein Ordner 41,3 % oder
-    /// 41 % ausmacht, ändert an keiner Entscheidung etwas.
     public static func percent(_ share: Double) -> String {
         "\(Int((share * 100).rounded())) %"
     }

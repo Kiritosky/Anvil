@@ -5,12 +5,6 @@ import Observation
 import Speech
 
 /// A running `SpeechAnalyzer` you can push microphone buffers into.
-///
-/// Wraps the four moving parts the framework expects you to assemble yourself:
-/// a transcriber module, an analyser, an input stream of `AnalyzerInput`, and a
-/// task draining the results. Getting the teardown order wrong is what produces
-/// transcripts that stop one sentence short, so finishing is explicit and
-/// awaited rather than left to `deinit`.
 @MainActor
 @Observable
 public final class LiveTranscriptionSession {
@@ -20,12 +14,6 @@ public final class LiveTranscriptionSession {
 
     /// Asked for the current recording position when a segment is finalised, so
     /// segments carry timings without decoding attributed-string metadata.
-    ///
-    /// Main-actor-isolated on purpose, unlike the audio path below: it is only
-    /// ever read while draining results, which already runs on the main actor.
-    /// Declaring it `@Sendable` would be a lie that costs the caller the ability
-    /// to read main-actor state — which is exactly what a recorder's elapsed
-    /// time is.
     @ObservationIgnored
     public var elapsedTimeProvider: (() -> TimeInterval?)?
 
@@ -36,9 +24,6 @@ public final class LiveTranscriptionSession {
     /// Where the previous finalised segment ended, for the next segment's start.
     @ObservationIgnored private var lastSegmentEnd: TimeInterval?
 
-    // The audio tap runs off the main actor, so everything ``feed`` touches has
-    // to be reachable without an actor hop — by the time a hop completed, the
-    // engine would already have reused the buffer.
     @ObservationIgnored
     private nonisolated(unsafe) var inputContinuation: AsyncStream<AnalyzerInput>.Continuation?
     @ObservationIgnored private nonisolated(unsafe) var analyzerFormat: AVAudioFormat?
@@ -64,8 +49,6 @@ public final class LiveTranscriptionSession {
         let transcriber = SpeechTranscriber(
             locale: locale,
             transcriptionOptions: [],
-            // Volatile results are what make the live view feel immediate: the
-            // engine keeps revising the tail until it commits to it.
             reportingOptions: [.volatileResults],
             attributeOptions: [.audioTimeRange]
         )
@@ -116,8 +99,6 @@ public final class LiveTranscriptionSession {
         guard isRunning else { return }
 
         inputContinuation?.finish()
-        // Flushes what the analyser is still holding: without this the last few
-        // words never arrive as a final result.
         try? await analyzer?.finalizeAndFinishThroughEndOfInput()
         await teardown()
     }
@@ -163,8 +144,6 @@ public final class LiveTranscriptionSession {
                 transcript.volatileText = ""
             }
         } catch {
-            // Tearing the session down cancels this loop, which surfaces as a
-            // throw. A genuine failure shows up again the next time `start` runs.
             transcript.volatileText = ""
         }
     }

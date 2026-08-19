@@ -2,10 +2,6 @@ import AnvilKit
 import SwiftUI
 
 /// Renders a word-level diff.
-///
-/// The speech tools lean on this: after a cleanup pass the interesting question
-/// is never "what does the text say" but "what did it change", and a diff
-/// answers that faster than reading both versions.
 public struct DiffTextView: View {
     private let segments: [TextDiff.Segment]
     private let showsRemovals: Bool

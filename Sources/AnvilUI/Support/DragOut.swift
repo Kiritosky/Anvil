@@ -28,15 +28,6 @@ public enum DragOutContent {
 
 extension View {
     /// Macht diese Ansicht zu etwas, das man in den Finder ziehen kann.
-    ///
-    /// Die Gegenrichtung zu ``anvilFileDrop(_:error:perform:)``. Auf einem Mac
-    /// ist ein Ergebnis, das man nur kopieren und nirgends hinziehen kann,
-    /// halb fertig — der Zug in ein Mail-Fenster oder auf den Schreibtisch ist
-    /// der kürzeste Weg, den es gibt.
-    ///
-    /// Die Datei entsteht erst, wenn der Zug beginnt. Ein Werkzeug, das bei
-    /// jedem Tastendruck rechnet, würde sonst dauernd Dateien anlegen, die
-    /// niemand je anfasst.
     public func anvilDragOut(
         name: @escaping @autoclosure () -> String,
         content: @escaping () -> DragOutContent?
@@ -50,8 +41,6 @@ extension View {
                   ),
                   let provider = NSItemProvider(contentsOf: url)
             else {
-                // Ein leerer Anbieter beendet den Zug, ohne dass irgendwo
-                // etwas Halbes ankommt.
                 return NSItemProvider()
             }
             provider.suggestedName = url.lastPathComponent

@@ -14,9 +14,6 @@ public struct QRCodeToolView: View {
     @State private var exportedURL: URL?
 
     /// Eine Zeile, ein Code.
-    ///
-    /// Als Schalter und nicht am Zeilenumbruch erkannt: Eine Visitenkarte hat
-    /// selbst Zeilen, und die würde sonst zu fünf halben Codes.
     @State private var isBatch = false
     @State private var note: String?
 
@@ -287,10 +284,6 @@ public struct QRCodeToolView: View {
     }
 
     /// Der Dateiname beim Herausziehen: der Inhalt des Codes selbst.
-    ///
-    /// Eine URL im Finder heißt dann „anvil.dev.png" statt „QR 2026-08-06T…" —
-    /// man sieht der Datei an, was in ihr steckt, ohne sie zu öffnen.
-    /// ExportFile.sanitize kümmert sich um Schrägstriche und Länge.
     private var dragName: String {
         let firstLine = text.components(separatedBy: .newlines).first ?? text
         return ExportFile.sanitize(firstLine, fallback: localized("QR-Code"))

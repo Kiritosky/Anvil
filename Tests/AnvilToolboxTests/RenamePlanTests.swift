@@ -21,7 +21,6 @@ struct RenamePlanTests {
         let plan = RenamePlan(files: urls(["a.txt", "b.txt"]), rules: RenamePlan.Rules())
         #expect(plan.changing.isEmpty)
         #expect(plan.entries.allSatisfy { $0.problem == .unchanged })
-        // „Unverändert" ist kein Fehler — die Dateien bleiben einfach.
         #expect(plan.blocked.isEmpty)
         #expect(!plan.isReady)
     }
@@ -248,15 +247,12 @@ struct RenameExecutionTests {
         rules.counterWidth = 1
         let plan = RenamePlan(files: files, rules: rules)
 
-        // Der neue Name der ersten Datei ist der jetzige der zweiten.
         #expect(plan.entries.map(\.newName) == ["2.txt", "3.txt"])
         #expect(plan.isReady)
 
         try plan.execute()
         let two = try String(contentsOf: folder.appendingPathComponent("2.txt"), encoding: .utf8)
         let three = try String(contentsOf: folder.appendingPathComponent("3.txt"), encoding: .utf8)
-        // Nichts ist verlorengegangen: In 2.txt steht, was vorher in 1.txt
-        // stand, und in 3.txt, was in 2.txt stand.
         #expect(two == "1.txt")
         #expect(three == "2.txt")
     }

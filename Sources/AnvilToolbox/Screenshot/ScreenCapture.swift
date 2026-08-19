@@ -3,13 +3,6 @@ import AppKit
 import Foundation
 
 /// Taking pictures of the screen.
-///
-/// Built on the `screencapture` binary rather than ScreenCaptureKit, and that
-/// is a deliberate choice: it brings the whole selection interaction — the
-/// crosshair, space to switch to window mode, Escape to cancel, the shutter
-/// sound, the flash — for free, it is what the system shortcuts themselves
-/// use, and it needs no window of our own over the screen we are trying to
-/// photograph. The permission prompt is the same one either way.
 public enum ScreenCapture {
     /// What to photograph.
     public enum Target: String, Codable, CaseIterable, Sendable, Identifiable {
@@ -54,9 +47,6 @@ public enum ScreenCapture {
             switch self {
             case .region: ["-i"]
             case .window: ["-w"]
-            // Always a specific display, never "all of them": given one file
-            // name and two screens, screencapture writes two files and only
-            // the first one is the one we asked for.
             case .fullScreen: ["-D", String(max(1, displayIndex))]
             }
         }
@@ -102,24 +92,17 @@ public enum ScreenCapture {
 
     /// Takes the shot and returns where it was written, or `nil` when the user
     /// cancelled.
-    ///
-    /// Always to a file first, never straight to the clipboard: the file is
-    /// what makes "save it" and "copy it" and "read the text in it" the same
-    /// code path afterwards.
     public static func capture(_ options: Options) async throws -> URL? {
         let destination = FileManager.default.temporaryDirectory
             .appending(path: "anvil-\(UUID().uuidString).png")
 
         let runner = ProcessRunner()
-        // Ten minutes: the user decides how long they take to aim, and a
-        // timeout that fires mid-selection would be worse than no timeout.
         let result = try await runner.run(
             "/usr/sbin/screencapture",
             arguments: arguments(for: options, destination: destination),
             timeout: 600
         )
 
-        // Escape writes no file and still exits zero.
         guard FileManager.default.fileExists(atPath: destination.path(percentEncoded: false)) else {
             guard result.succeeded else {
                 throw AnvilError.storage(
@@ -133,9 +116,6 @@ public enum ScreenCapture {
     }
 
     /// The command line for a set of options.
-    ///
-    /// Split out from ``capture(_:)`` because it is the part with the rules in
-    /// it — and the part that can be checked without photographing anything.
     static func arguments(for options: Options, destination: URL) -> [String] {
         var arguments = options.target.arguments(displayIndex: options.displayIndex)
         arguments += ["-t", "png"]
@@ -143,8 +123,6 @@ public enum ScreenCapture {
         if !options.playsSound { arguments.append("-x") }
         if options.includesCursor { arguments.append("-C") }
         if !options.includesShadow { arguments.append("-o") }
-        // A delay before an interactive shot would run before the crosshair
-        // appears, which is a delay nobody asked for.
         if options.delay > 0, !options.target.isInteractive {
             arguments += ["-T", String(options.delay)]
         }

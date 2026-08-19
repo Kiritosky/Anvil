@@ -2,12 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Was `git status --porcelain --branch` über ein Repository sagt.
-///
-/// Warum ausgerechnet die Porzellan-Form: Sie ist die einzige Ausgabe, die
-/// `git` ausdrücklich als stabil zusichert. Die menschenlesbare Fassung ändert
-/// sich zwischen Versionen und ist außerdem übersetzt — wer sie zerlegt, baut
-/// etwas, das auf einem Rechner mit deutschem `git` anders funktioniert als auf
-/// dem eigenen.
 public struct GitStatus: Sendable, Hashable {
     /// Eine geänderte Datei.
     public struct Change: Sendable, Hashable, Identifiable {
@@ -90,10 +84,6 @@ public struct GitStatus: Sendable, Hashable {
     public var isClean: Bool { changes.isEmpty }
 
     /// Ob hier etwas liegt, das verloren gehen kann.
-    ///
-    /// Genau danach sucht man, wenn man vor einem Rechnerwechsel durch dreißig
-    /// Repositories geht: nicht „ist etwas anders", sondern „ist etwas nur
-    /// hier".
     public var hasUnsavedWork: Bool { !isClean || ahead > 0 }
 
     /// Was in einer Tabellenzeile steht: „3↑ 1↓ 2✚".
@@ -108,8 +98,6 @@ public struct GitStatus: Sendable, Hashable {
     // MARK: - Lesen
 
     /// Zerlegt die Ausgabe von `git status --porcelain --branch`.
-    ///
-    /// - Parameter porcelain: Die Ausgabe, unverändert.
     public init(porcelain text: String) {
         var branch: String?
         var upstream: String?
@@ -150,10 +138,6 @@ public struct GitStatus: Sendable, Hashable {
     }
 
     /// Liest die Zeile hinter `## `.
-    ///
-    /// Vier Formen kommen vor:
-    /// `main`, `main...origin/main`, `main...origin/main [ahead 1, behind 2]`,
-    /// `HEAD (no branch)` und `No commits yet on main`.
     private static func readHeader(_ text: String) -> Header {
         var header = Header()
         var rest = text
@@ -165,7 +149,6 @@ public struct GitStatus: Sendable, Hashable {
             rest = String(rest[rest.startIndex..<range.lowerBound])
         }
 
-        // „No commits yet on main" — der Zweig existiert, zeigt aber auf nichts.
         if let range = rest.range(of: "No commits yet on ") {
             header.hasNoCommitsYet = true
             rest = String(rest[range.upperBound...])
@@ -191,10 +174,6 @@ public struct GitStatus: Sendable, Hashable {
     }
 
     /// Liest eine Zeile wie ` M pfad` oder `?? pfad` oder `R  alt -> neu`.
-    ///
-    /// Gibt bewusst ein Array zurück: Eine Datei kann gleichzeitig vorgemerkt
-    /// *und* danach nochmal geändert worden sein (`MM`), und das sind zwei
-    /// Dinge, die man wissen will.
     private static func readChange(_ line: String) -> [Change] {
         guard line.count > 3 else { return [] }
         let codes = Array(line.prefix(2))
@@ -202,8 +181,6 @@ public struct GitStatus: Sendable, Hashable {
         let worktree = codes[1]
         var path = String(line.dropFirst(3))
 
-        // Bei einer Umbenennung nennt `git` beides; interessant ist, wo die
-        // Datei jetzt liegt.
         if let range = path.range(of: " -> ") {
             path = String(path[range.upperBound...])
         }
@@ -213,8 +190,6 @@ public struct GitStatus: Sendable, Hashable {
         if index == "?" && worktree == "?" {
             return [Change(stage: .untracked, code: "?", path: path)]
         }
-        // Ignorierte Dateien tauchen nur mit `--ignored` auf und sind dann
-        // keine Änderung, sondern eine Auskunft.
         if index == "!" && worktree == "!" { return [] }
 
         if isConflict(index: index, worktree: worktree) {

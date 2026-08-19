@@ -21,9 +21,6 @@ public enum AnvilButtonRole: Sendable {
 }
 
 /// The app's button.
-///
-/// Handles the busy state itself: pass `isBusy` and it swaps its icon for a
-/// spinner and disables itself, so no tool has to build that combination twice.
 public struct AnvilButton: View {
     private let title: LocalizedStringKey
     private let systemImage: String?

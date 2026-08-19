@@ -2,11 +2,6 @@ import AnvilKit
 import Foundation
 
 /// A tool that is nothing but a prompt.
-///
-/// `Codable` on purpose: the built-in AI tools and the ones a user drops into
-/// `~/Library/Application Support/Anvil/Tools` are the *same type*, loaded by
-/// the same engine. That is what makes "add your own tool" a file rather than a
-/// plug-in API.
 public struct AIPromptTool: Codable, Sendable, Identifiable {
     public var id: String
     public var title: String
@@ -72,8 +67,6 @@ public struct AIPromptTool: Codable, Sendable, Identifiable {
             category: category,
             keywords: keywords,
             requirements: inputSource == .gitDiff ? [.languageModel, .git] : [.languageModel],
-            // Ein Werkzeug, das seinen Text aus einem Git-Diff zieht, hat
-            // kein Eingabefeld, in das etwas hineingereicht werden könnte.
             acceptsText: inputSource != .gitDiff
         )
     }

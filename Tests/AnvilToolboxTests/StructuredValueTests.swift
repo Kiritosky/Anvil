@@ -13,7 +13,6 @@ struct StructuredJSONTests {
         let value = try StructuredValue.json(parsing: #"{"z": 1, "a": 2, "m": 3}"#)
         #expect(value.pairs?.map(\.key) == ["z", "a", "m"])
         #expect(value.jsonText.contains("\"z\": 1"))
-        // Und in der Ausgabe steht z immer noch vorn.
         let text = value.jsonText
         #expect(text.range(of: "\"z\"")!.lowerBound < text.range(of: "\"a\"")!.lowerBound)
     }
@@ -130,8 +129,6 @@ struct StructuredYAMLTests {
     /// Ein `#` in Anführungszeichen ist kein Kommentar.
     @Test
     func aHashInsideQuotesStays() throws {
-        // Zwei Rauten als Begrenzer: in #"…"# beendet die Folge "# die
-        // Zeichenkette, und genau die steht hier mitten im Text.
         let value = try StructuredValue.yaml(parsing: ##"farbe: "#3A7BD5""##)
         #expect(value.pairs?[0].value == .string("#3A7BD5"))
     }
@@ -183,7 +180,6 @@ struct StructuredYAMLTests {
         """)
         let pairs = try #require(value.pairs)
         #expect(pairs[0].value == .string("echo eins\n# kein Kommentar\n- kein Listenpunkt"))
-        // Und danach geht die Struktur normal weiter.
         #expect(pairs[1].key == "danach")
         #expect(pairs[1].value == .number(1))
     }

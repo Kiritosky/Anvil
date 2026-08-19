@@ -2,13 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Eine ganze Farbliste auf einmal.
-///
-/// Der Grund, warum das ein eigener Typ ist und keine Schleife über die
-/// Einzelansicht: Erst in der Liste lässt sich sehen, was zwischen den Farben
-/// passiert. Zwei Grautöne, die sich um ein Prozent unterscheiden, sind kein
-/// Entwurf, sondern ein Versehen — und dieselbe Farbe dreimal, einmal als
-/// `#FFF`, einmal als `#ffffff`, einmal als `rgb(255,255,255)`, findet von Hand
-/// niemand.
 public struct ColorPalette: Sendable {
     public struct Entry: Sendable, Identifiable, Hashable {
         public let id: Int
@@ -57,10 +50,6 @@ public struct ColorPalette: Sendable {
     // MARK: - Lesen
 
     /// Liest eine Farbe je Zeile.
-    ///
-    /// Beiwerk stört nicht: `--marke: #3A7BD5;`, `Primär   #3A7BD5` und
-    /// `#3A7BD5` sind dieselbe Zeile. Gesucht wird von hinten nach vorn, weil
-    /// die Farbe in jeder dieser Formen hinten steht und der Name davor.
     public init(_ text: String) {
         entries = TextLines.split(text, keepingEmpty: false)
             .map { $0.trimmingCharacters(in: .whitespaces) }
@@ -75,8 +64,6 @@ public struct ColorPalette: Sendable {
             .replacingOccurrences(of: ",", with: ", ")
             .trimmingCharacters(in: .whitespaces)
 
-        // Funktionale Schreibweisen enthalten selbst Leerzeichen und Klammern
-        // und lassen sich nicht in Wörter zerlegen.
         if let range = cleaned.range(of: #"(rgba?|hsla?)\([^)]*\)"#, options: .regularExpression) {
             let value = String(cleaned[range])
             let name = String(cleaned[cleaned.startIndex..<range.lowerBound])
@@ -105,11 +92,6 @@ public struct ColorPalette: Sendable {
     // MARK: - Was zwischen den Farben passiert
 
     /// Ab wann zwei Farben als dieselbe durchgehen.
-    ///
-    /// Der Abstand ist der größte Unterschied eines Kanals, in Achtel-Prozent
-    /// gerechnet: Zwei Farben, die sich in keinem Kanal um mehr als drei von
-    /// 255 unterscheiden, sieht niemand auseinander — auf zwei Bildschirmen
-    /// nebeneinander schon gar nicht.
     public static let twinThreshold = 3.0 / 255
 
     /// Farben, die zu nah beieinander liegen, um zwei zu sein.
@@ -129,10 +111,6 @@ public struct ColorPalette: Sendable {
     }
 
     /// Der größte Unterschied eines einzelnen Kanals.
-    ///
-    /// Kein Abstand im Farbraum: Der wäre genauer und wäre hier trotzdem
-    /// falsch, weil eine Palette Kanäle vergleicht — `#333` und `#334` sollen
-    /// als dasselbe gelten, `#333` und `#663333` nicht.
     static func distance(_ first: ColorValue, _ second: ColorValue) -> Double {
         max(
             abs(first.red - second.red),
@@ -177,9 +155,6 @@ public struct ColorPalette: Sendable {
     }
 
     /// Die Palette als CSS-Variablen.
-    ///
-    /// Namen, die keine sind, werden durchnummeriert: Eine Variable namens
-    /// `--` wäre in jeder Stilvorlage ein Fehler.
     public var css: String {
         var lines = [":root {"]
         for (index, entry) in readable.enumerated() {
@@ -214,7 +189,6 @@ public struct ColorPalette: Sendable {
         let head = parts[0]
         let tail = parts.dropFirst().map { $0.prefix(1).uppercased() + $0.dropFirst() }
         let joined = ([head] + tail).joined()
-        // Ein Bezeichner, der mit einer Ziffer anfängt, ist keiner.
         return joined.first?.isNumber == true ? "farbe\(joined)" : joined
     }
 }

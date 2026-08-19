@@ -2,16 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Zwei Ordner nebeneinander.
-///
-/// Die Frage dahinter ist immer dieselbe und immer unangenehm: Ist die
-/// Sicherung vollständig? Der Finder beantwortet sie nicht — er zeigt zwei
-/// Fenster, und ob in dem einen dieselben tausend Dateien liegen wie im
-/// anderen, sieht man daran nicht.
-///
-/// Verglichen wird über den Pfad *unterhalb* der beiden Ordner: `bilder/2026/
-/// anna.jpg` heißt in beiden dasselbe, auch wenn die Ordner darüber anders
-/// heißen. Der Inhalt kommt erst dran, wenn die Größe gleich ist — bei
-/// verschiedener Größe steht das Ergebnis schon fest.
 public struct FolderComparison: Sendable {
     public enum Difference: String, Sendable, Hashable, CaseIterable, Identifiable {
         /// Gibt es nur links.
@@ -109,8 +99,6 @@ public struct FolderComparison: Sendable {
             case (.some, .none): difference = .onlyLeft
             case (.none, .some): difference = .onlyRight
             case let (.some(a), .some(b)):
-                // Verschiedene Größe heißt verschiedener Inhalt — dafür muss
-                // niemand etwas lesen.
                 difference = a != b ? .different : (sameContent(path) ? .same : .different)
             case (.none, .none): continue
             }
@@ -120,8 +108,6 @@ public struct FolderComparison: Sendable {
             )
         }
 
-        // Erst das Auffällige, darin nach Pfad — eine Liste, in der man von
-        // oben nach unten liest und irgendwann aufhören kann.
         self.init(entries: entries.sorted { first, second in
             if first.difference.isNoteworthy != second.difference.isNoteworthy {
                 return first.difference.isNoteworthy

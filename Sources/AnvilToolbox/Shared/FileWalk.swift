@@ -1,25 +1,12 @@
 import Foundation
 
 /// Alle Dateien unter einem Ordner.
-///
-/// Drei Werkzeuge liefen vorher jedes mit seiner eigenen Fassung durch das
-/// Dateisystem, und jede hatte eine andere Meinung dazu, was ein Ordner
-/// eigentlich enthält. Das ist die Sorte Doppelung, die harmlos bleibt, bis
-/// eine Fassung etwas lernt, das die anderen nicht wissen — etwa, dass ein
-/// Paket im Finder wie eine Datei aussieht und ein Ordner mit tausend Dateien
-/// darin ist.
 enum FileWalk {
     /// Was hier nie mitkommt.
-    ///
-    /// Versteckte Dateien und Pakete: Wer einen Projektordner hineinzieht,
-    /// meint seine Dateien und nicht die Innereien von `.git`, und wer eine
-    /// App im Ordner liegen hat, meint sie als ein Ding.
     static let options: FileManager.DirectoryEnumerationOptions =
         [.skipsHiddenFiles, .skipsPackageDescendants]
 
     /// Jede reguläre Datei unter `folder`, samt Unterordnern.
-    ///
-    /// - Parameter minimumBytes: Kleineres wird übergangen.
     static func files(in folder: URL, minimumBytes: Int = 0) -> [(url: URL, size: Int)] {
         let manager = FileManager.default
         guard let walker = manager.enumerator(
@@ -44,10 +31,6 @@ enum FileWalk {
     }
 
     /// Was direkt in dem Ordner liegt, ohne Unterordner.
-    ///
-    /// - Parameter includingHidden: Versteckte Dateien kommen mit. Für die
-    ///   allermeisten Werkzeuge wäre das falsch — für eines, das `.env`
-    ///   sucht, ist es die ganze Aufgabe.
     static func shallow(_ folder: URL, includingHidden: Bool = false) -> [URL] {
         (try? FileManager.default.contentsOfDirectory(
             at: folder,
@@ -64,10 +47,6 @@ enum FileWalk {
     }
 
     /// Der Pfad einer Datei relativ zu einem Ordner darüber.
-    ///
-    /// Das ist der Schlüssel, an dem sich zwei Ordner vergleichen lassen:
-    /// `bilder/2026/anna.jpg` heißt in beiden dasselbe, auch wenn die Ordner
-    /// darüber verschieden heißen.
     static func relativePath(of url: URL, under folder: URL) -> String {
         let base = folder.standardizedFileURL.path
         let full = url.standardizedFileURL.path

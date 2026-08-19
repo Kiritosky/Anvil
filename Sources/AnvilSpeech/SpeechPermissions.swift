@@ -4,10 +4,6 @@ import Foundation
 import Speech
 
 /// Microphone and speech-recognition authorisation.
-///
-/// Asked for at the moment the user first presses record, never at launch: a
-/// toolbox that demands the microphone before you have opened a speech tool
-/// feels like it is taking something.
 public enum SpeechPermissions {
     public enum Status: Sendable, Equatable {
         case granted
@@ -53,9 +49,6 @@ public enum SpeechPermissions {
     }
 
     /// Requests everything the speech tools need, in one go.
-    ///
-    /// - Throws: ``AnvilError/permissionDenied(_:)`` naming the missing one, so
-    ///   the UI can say exactly which switch to flip in System Settings.
     public static func requestAll() async throws {
         guard await requestMicrophone() == .granted else {
             throw AnvilError.permissionDenied(

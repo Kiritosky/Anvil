@@ -86,15 +86,9 @@ public struct CodeCountToolView: View {
     }
 
     /// Klont ein Repository flach und zählt es.
-    ///
-    /// Der Klon liegt im temporären Verzeichnis und geht weg, sobald etwas
-    /// anderes gezählt wird: Anvil ist kein Ort, an dem fremder Code
-    /// liegenbleibt.
     private func count(_ repository: GitHubRepository) {
         guard !isWorking else { return }
         Task {
-            // Kein `defer`: Gleich danach zählt `measure()`, und das lässt
-            // sich nur anstoßen, wenn gerade nichts läuft.
             isWorking = true
 
             do {
@@ -156,15 +150,10 @@ public struct CodeCountToolView: View {
             isWorking = true
             defer { isWorking = false }
 
-            // Lesen und zählen gehen beide über die Platte und über jede
-            // Zeile. Auf dem Hauptthread stünde so lange das Fenster.
             count = await Task.detached {
                 let files = folders.flatMap { folder in
                     FileWalk.files(in: folder).compactMap { file -> CodeCount.SourceFile? in
                         let path = FileWalk.relativePath(of: file.url, under: folder)
-                        // Erst prüfen, ob die Datei überhaupt zählt: Eine
-                        // Datei zu lesen, um sie danach wegzuwerfen, ist die
-                        // teuerste Art, nichts zu tun.
                         guard !CodeLanguage.isIgnored(path),
                               CodeLanguage.of(path: path) != nil,
                               let text = try? TextFile.read(at: file.url)
@@ -349,9 +338,6 @@ public struct CodeCountToolView: View {
                 StatusPill(.resolved(name), systemImage: "folder", tone: .neutral)
             }
             if count.totalComments > 0 {
-                // Erst benennen, dann einsetzen: `CodeCount.percent(…)` liefert
-                // Text, sieht aber nach einer Zahl aus — für den Menschen wie
-                // für die Übersetzungsprüfung.
                 let commentText = CodeCount.percent(commentShare)
                 StatusPill(
                     .resolved(localized("\(commentText) Kommentar")),

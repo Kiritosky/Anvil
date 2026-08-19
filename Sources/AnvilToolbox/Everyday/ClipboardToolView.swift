@@ -4,10 +4,6 @@ import Foundation
 import SwiftUI
 
 /// Everything that has been on the clipboard this session.
-///
-/// The list is the tool — there is no input pane, because the input is
-/// everything you have copied since launch. One click puts an entry back on the
-/// clipboard, which is the only action that matters.
 public struct ClipboardToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -36,8 +32,6 @@ public struct ClipboardToolView: View {
             .disabled(history.entries.allSatisfy(\.isPinned))
         }
         .task {
-            // Catch whatever was copied while another tool was open, instead of
-            // showing a stale list for the first second.
             history.poll()
         }
     }

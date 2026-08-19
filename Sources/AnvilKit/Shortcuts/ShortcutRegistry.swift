@@ -2,11 +2,6 @@ import Foundation
 import Observation
 
 /// Every key combination in the app, in one place.
-///
-/// Tools do not register hot keys themselves. They declare actions here, and
-/// this decides what is listened for and where — which is the only way the
-/// settings screen can show a complete list, spot collisions between two
-/// tools, and let every single shortcut be switched off.
 @MainActor
 @Observable
 public final class ShortcutRegistry {
@@ -80,8 +75,6 @@ public final class ShortcutRegistry {
     public func setShortcut(_ shortcut: GlobalShortcut?, for id: ShortcutActionID) {
         var setting = setting(for: id)
         setting.shortcut = shortcut
-        // A shortcut nobody listens for is a puzzle, not a setting: assigning
-        // one to a switched-off action switches it on, in the narrow scope.
         if shortcut != nil, setting.scope == .off {
             setting.scope = actions[id]?.defaultScope == .global ? .global : .app
         }
@@ -121,10 +114,6 @@ public final class ShortcutRegistry {
 
     /// Other actions that listen for the same combination in a scope that can
     /// fire at the same time.
-    ///
-    /// Two in-app shortcuts on the same keys are a real conflict; an in-app one
-    /// and a global one are too, because the global registration swallows the
-    /// key before the menu ever sees it.
     public func conflicts(for id: ShortcutActionID) -> [ShortcutAction] {
         let setting = setting(for: id)
         guard let shortcut = setting.shortcut, setting.scope != .off else { return [] }
@@ -144,10 +133,6 @@ public final class ShortcutRegistry {
     // MARK: - Activating
 
     /// Registers or removes every global hot key to match the settings.
-    ///
-    /// Called at launch and after every change. Cheap enough to do wholesale:
-    /// re-registering a dozen hot keys is a handful of Carbon calls, and the
-    /// alternative — tracking what changed — is where the bugs live.
     public func sync() {
         failures = [:]
 

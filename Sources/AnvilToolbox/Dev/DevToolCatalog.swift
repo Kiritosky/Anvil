@@ -2,9 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Deterministic tools for the other half of the day.
-///
-/// Same engine as everywhere else: a mode is a pure function over a string, so
-/// each of these is a catalog entry rather than a screen.
 public enum DevToolCatalog {
     public static var all: [TextTool] {
         [numbers, unicode, permissions, statusCodes, cron]
@@ -214,7 +211,6 @@ public enum DevToolCatalog {
             return (0..<9).reversed().map { value & (1 << $0) != 0 }
         }
 
-        // "-rwxr-xr-x" from ls has a type character in front.
         let symbols = text.count == 10 ? String(text.dropFirst()) : text
         guard symbols.count == 9 else {
             throw AnvilError.invalidInput(
@@ -223,8 +219,6 @@ public enum DevToolCatalog {
         }
 
         return symbols.enumerated().map { index, character in
-            // The execute slot also carries setuid and sticky, and both of
-            // those imply the bit is set.
             character == permissionLetters[index % 3]
                 || (index % 3 == 2 && "sSt".contains(character))
         }
@@ -289,7 +283,6 @@ public enum DevToolCatalog {
             throw AnvilError.invalidInput(localized("Trag eine Zahl ein — 404, oder 4 für alle davon."))
         }
 
-        // A single digit means "show me the whole class".
         if number < 10 {
             let matching = statusTable
                 .filter { $0.key / 100 == number }

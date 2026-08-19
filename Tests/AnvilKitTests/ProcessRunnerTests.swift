@@ -5,10 +5,6 @@ import Testing
 
 /// Der Weg, über den Anvil fremde Programme startet — Git für Diffs, die
 /// Coding-Agenten fürs Modell.
-///
-/// Getestet wird mit `/bin/sh -c`, weil das auf jedem Mac liegt und sich dazu
-/// bringen lässt, genau das zu tun, was hier interessiert: schreiben, sich
-/// beschweren, scheitern, hängenbleiben.
 @Suite("ProcessRunner")
 struct ProcessRunnerTests {
     private let runner = ProcessRunner()
@@ -50,12 +46,6 @@ struct ProcessRunnerTests {
     }
 
     /// Nicht nur vollständig, sondern auch in der richtigen Reihenfolge.
-    ///
-    /// Der Fall, den die Prüfung auf die letzte Zeile allein durchgehen ließ:
-    /// Wer am Ende den Rest nachliest, während noch ein Block unterwegs ist,
-    /// bekommt alles — nur eben nicht der Reihe nach. Das fällt bei einer
-    /// Dateiliste aus `unzip` erst auf, wenn eine Zeile mitten in einer
-    /// anderen steht.
     @Test
     func everyLineArrivesInOrder() async throws {
         let result = try await runner.run(
@@ -138,8 +128,6 @@ struct ProcessRunnerTests {
             arguments: ["-c", "pwd"],
             workingDirectory: directory
         )
-        // Das temporäre Verzeichnis liegt hinter einem Symlink; verglichen wird
-        // deshalb der letzte Teil, nicht der ganze Pfad.
         #expect(result.standardOutput.contains(directory.lastPathComponent))
     }
 

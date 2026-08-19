@@ -2,16 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Suchen und Ersetzen in vielen Dateien — erst als Plan, dann als Tat.
-///
-/// Dasselbe Muster wie beim Umbenennen, aus demselben Grund: Was in
-/// hundert Dateien geschrieben wurde, holt niemand einzeln zurück. Der Plan
-/// zeigt jede Zeile, die sich ändern würde, *bevor* etwas geschrieben wird,
-/// und sagt bei jeder Datei, warum sie ausgelassen wird.
-///
-/// Ersetzt wird zeilenweise. Das ist eine Einschränkung mit Absicht: Ein
-/// Ausdruck, der über Zeilen greift, lässt sich nicht mehr als „diese Zeile
-/// wird zu jener" anzeigen — und eine Massenänderung, die man nicht vorher
-/// lesen kann, ist genau das, wovor dieses Werkzeug schützen soll.
 public struct ReplacePlan: Sendable {
     // MARK: - Regeln
 
@@ -70,9 +60,6 @@ public struct ReplacePlan: Sendable {
         }
 
         /// Ob es sich lohnt, davon zu erzählen.
-        ///
-        /// „Kein Treffer" ist der Normalfall in jedem Stapel und keine
-        /// Meldung wert; die anderen drei sind eine.
         public var isWorthMentioning: Bool { self != .noMatch }
     }
 
@@ -81,10 +68,6 @@ public struct ReplacePlan: Sendable {
         public let hits: [Hit]
         public let skip: Skip?
         /// Der neue Inhalt der Datei. Nur vorhanden, wenn etwas zu tun ist.
-        ///
-        /// Liegt bewusst nur im Arbeitsspeicher und wird nirgends abgelegt:
-        /// Was in den Dateien eines Benutzers steht, geht niemanden etwas an,
-        /// auch die eigene Zwischenablage nicht.
         let updated: String?
 
         public var id: String { url.path }
@@ -117,10 +100,6 @@ public struct ReplacePlan: Sendable {
     // MARK: - Planen
 
     /// Wie groß eine Datei höchstens sein darf.
-    ///
-    /// Vier Megabyte sind für Quelltext, Konfiguration und Notizen reichlich.
-    /// Was darüber liegt, ist in aller Regel keine Datei, die man von Hand
-    /// durchsucht — und der Plan hält jede davon vollständig im Speicher.
     public static let maxBytes = 4 * 1024 * 1024
 
     /// Liest die Dateien und baut den Plan.
@@ -158,11 +137,6 @@ public struct ReplacePlan: Sendable {
     // MARK: - Ersetzen
 
     /// Wendet die Regeln auf einen Text an.
-    ///
-    /// Die Zeilenenden der Datei bleiben, wie sie waren: Eine Datei mit
-    /// CRLF zurückzuschreiben, in der plötzlich überall LF steht, wäre im Diff
-    /// eine Änderung an jeder einzelnen Zeile — und die eigentliche Ersetzung
-    /// darin nicht mehr zu finden.
     static func apply(_ rules: Rules, to text: String) -> (text: String, hits: [Hit]) {
         guard !rules.isEmpty else { return (text, []) }
 
@@ -187,14 +161,7 @@ public struct ReplacePlan: Sendable {
     }
 
     /// Eine Zeile ersetzen — wörtlich oder als regulärer Ausdruck.
-    ///
-    /// Ein fehlerhaftes Muster lässt die Zeile unverändert, statt zu werfen:
-    /// Beim Tippen ist ein Ausdruck die meiste Zeit unfertig, und ein Fehler
-    /// bei jedem Tastendruck hilft niemandem.
     static func replace(in line: String, rules: Rules) -> String {
-        // Der einfache Weg reicht, solange weder Muster noch Wortgrenzen im
-        // Spiel sind — und er ist der einzige, bei dem ein `$` im Ersatz
-        // wirklich ein `$` bleibt, ohne dass jemand daran denken muss.
         if !rules.isRegularExpression && !rules.wholeWords {
             return line.replacingOccurrences(
                 of: rules.search,
@@ -236,11 +203,6 @@ public struct ReplacePlan: Sendable {
     }
 
     /// Schreibt die Änderungen.
-    ///
-    /// Vorher wird jede betroffene Datei noch einmal gelesen: Zwischen dem
-    /// Plan und dem Klick können Minuten liegen, und in dieser Zeit kann ein
-    /// Editor dieselbe Datei gespeichert haben. Was sich seither geändert hat,
-    /// wird ausgelassen statt überschrieben.
     @discardableResult
     public func execute() throws -> Outcome {
         guard isReady else {
@@ -255,9 +217,6 @@ public struct ReplacePlan: Sendable {
         for entry in changing {
             guard let updated = entry.updated else { continue }
             let current = try String(contentsOf: entry.url, encoding: .utf8)
-            // Nicht gegen den Plan geprüft, sondern gegen das Ergebnis: Wer
-            // zweimal auf Ersetzen drückt, soll beim zweiten Mal nichts
-            // kaputtmachen.
             guard current != updated else { continue }
             guard Self.entry(for: entry.url, text: current, rules: rules).updated == updated else {
                 continue

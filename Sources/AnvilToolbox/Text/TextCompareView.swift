@@ -3,10 +3,6 @@ import AnvilUI
 import SwiftUI
 
 /// Compare two texts and see what actually changed.
-///
-/// Two inputs rather than one, which is why it is a view of its own rather than
-/// a `TextTool`. The diff itself is the same word-level machinery the Speech
-/// Studio uses to show what a cleanup pass touched.
 public struct TextCompareView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -67,9 +63,6 @@ public struct TextCompareView: View {
 
     private var content: some View {
         VStack(spacing: AnvilSpacing.md) {
-            // Hier trägt die Werkbank nur die beiden Eingaben; das Ergebnis
-            // steht darunter über der ganzen Breite, weil ein Vergleich sonst
-            // in einer halben Spalte landet.
             ToolWorkbench(orientation: $orientation, storageKey: metadata.id.rawValue) {
                 inputPane(
                     title: "Vorher",
@@ -115,8 +108,6 @@ public struct TextCompareView: View {
             .anvilHelp("Leeren")
             .disabled(text.wrappedValue.isEmpty)
         }
-        // Pro Bereich statt für das ganze Werkzeug: bei einem Vergleich ist die
-        // Seite, auf der man loslässt, die Antwort auf „welche der beiden?".
         .anvilFileDrop(.text, error: $dropError) { dropped in
             guard case let .text(loaded, _) = dropped else { return }
             text.wrappedValue = loaded

@@ -37,11 +37,6 @@ public struct GitRepository: Sendable, Hashable, Identifiable {
 }
 
 /// Viele Repositories auf einmal.
-///
-/// Der Grund, warum das ein eigener Typ ist: Die Frage, die man wirklich hat,
-/// lautet nie „wie steht es um dieses Repository", sondern „wo liegt noch etwas
-/// herum". Die erste beantwortet jede Entwicklungsumgebung, die zweite keine —
-/// dafür müsste man dreißig Ordner einzeln aufmachen.
 public struct GitOverview: Sendable {
     public let repositories: [GitRepository]
 
@@ -139,12 +134,6 @@ public struct GitOverview: Sendable {
 
     /// Die Befehle, mit denen sich die alten Zweige entfernen ließen — eine
     /// Zeile je Repository, zum Einfügen ins Terminal.
-    ///
-    /// Anvil führt sie nicht aus, und das ist keine Bequemlichkeit: Ein
-    /// Werkzeug, das ungefragt Zweige löscht, müsste sich seiner Sache
-    /// sicherer sein, als es sein kann. `git branch -d` ist dabei die zweite
-    /// Sicherung — im Gegensatz zu `-D` weigert es sich, einen Zweig zu
-    /// löschen, dessen Commits nirgendwo sonst stehen.
     public func cleanupCommands(_ filter: Filter = .all) -> String {
         filtered(filter).compactMap { repository -> String? in
             let names = repository.staleBranches.map(\.name)

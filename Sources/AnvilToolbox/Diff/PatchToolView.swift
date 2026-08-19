@@ -55,8 +55,6 @@ public struct PatchToolView: View {
         .anvilErrorBanner($dropError)
         .anvilFileDrop(.text, error: $dropError) { dropped in
             guard case let .text(text, _) = dropped else { return }
-            // Ein Patch fängt mit einem Kopf an; alles andere ist die Vorlage,
-            // auf die er angewendet werden soll.
             if text.contains("@@ ") {
                 patchText = text
             } else {
@@ -78,7 +76,6 @@ public struct PatchToolView: View {
 
     private func restore() {
         if let handed = context.handoff.take(for: metadata.id) {
-            // Ein Patch bringt seinen Kopf mit; alles andere ist die Vorlage.
             if handed.contains("@@ ") {
                 patchText = handed
             } else {

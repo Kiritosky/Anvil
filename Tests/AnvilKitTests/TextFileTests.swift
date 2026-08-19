@@ -83,7 +83,6 @@ struct TextFileTests {
     /// Windows-Editoren zwischen 0x80 und 0x9F ablegen.
     @Test
     func readsWindowsPunctuation() {
-        // 0x93 und 0x94 sind dort die englischen Anführungszeichen.
         let data = Data([0x93, 0x48, 0x69, 0x94])
         #expect(TextFile.decode(data) == "“Hi”")
     }

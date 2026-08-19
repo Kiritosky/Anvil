@@ -5,10 +5,6 @@ import Speech
 
 /// Which languages the on-device transcriber can handle, and which ones are
 /// actually installed on this Mac.
-///
-/// Speech assets are downloaded per language and have to be *reserved* before
-/// use. Getting that wrong is the single most common reason live transcription
-/// silently produces nothing, so it all lives in one place.
 @MainActor
 @Observable
 public final class TranscriptionModelCatalog {
@@ -56,9 +52,6 @@ public final class TranscriptionModelCatalog {
     }
 
     /// Downloads the assets for `transcriber` if needed and reserves its locale.
-    ///
-    /// - Throws: ``AnvilError`` when the language is unsupported or the download
-    ///   fails, so callers can show the reason instead of an empty transcript.
     public func prepare(transcriber: SpeechTranscriber, locale: Locale) async throws {
         isPreparing = true
         downloadProgress = nil

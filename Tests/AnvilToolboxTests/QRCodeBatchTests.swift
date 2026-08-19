@@ -31,7 +31,6 @@ struct QRCodeBatchTests {
     @Test
     func withoutANameTheContentBecomesOne() {
         let batch = QRCodeBatch("https://anvil.dev")
-        // Der Doppelpunkt darf nicht in den Namen: im Finder trennt er Pfade.
         #expect(!batch.entries[0].name.contains(":"))
         #expect(!batch.entries[0].name.contains("/"))
         #expect(!batch.entries[0].name.isEmpty)

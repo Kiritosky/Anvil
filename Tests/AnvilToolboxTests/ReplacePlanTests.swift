@@ -233,7 +233,6 @@ struct ReplacePlanTests {
         let url = try write("alt", to: folder, as: "a.txt")
         let plan = ReplacePlan(files: [url], rules: rules("alt", "neu"))
 
-        // Jemand anders war schneller.
         try "etwas ganz anderes".write(to: url, atomically: true, encoding: .utf8)
 
         let outcome = try plan.execute()

@@ -1,9 +1,6 @@
 import SwiftUI
 
 /// A label/value pair, monospaced on the value side and selectable.
-///
-/// Decoded JWT claims, hash digests, file metadata, audio settings — anything a
-/// tool wants to present as a small table.
 public struct KeyValueRow: View {
     private let key: String
     private let value: String

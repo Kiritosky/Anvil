@@ -1,10 +1,6 @@
 import Foundation
 
 /// Where a tool came from.
-///
-/// The Tool Store groups by this, and it decides what the user is allowed to do
-/// with an entry: a built-in tool can be switched off, a user-defined one can
-/// also be edited and deleted.
 public struct ToolOrigin: Hashable, Sendable, Identifiable {
     public let bundleIdentifier: String
     public let displayName: String

@@ -13,11 +13,6 @@ public struct ShortcutActionID: Hashable, Sendable, Codable, RawRepresentable,
 }
 
 /// Where a shortcut is listened for.
-///
-/// The distinction people actually care about: a shortcut that works only while
-/// Anvil is in front cannot collide with anything else, and one that works
-/// everywhere is the reason to have the feature at all. Both are useful, and
-/// which is which has to be the user's decision rather than the developer's.
 public enum ShortcutScope: String, Codable, CaseIterable, Sendable, Identifiable {
     /// Registered, but not listened for.
     case off
@@ -68,10 +63,6 @@ public struct ShortcutSetting: Codable, Sendable, Hashable {
 }
 
 /// Something that can be triggered by a key combination.
-///
-/// Actions are registered once at launch, not by the tool view: a global
-/// shortcut has to work while the tool is closed — which is the whole point —
-/// so the thing it calls has to outlive any view.
 @MainActor
 public struct ShortcutAction: Identifiable, Sendable {
     public let id: ShortcutActionID

@@ -1,10 +1,6 @@
 import Foundation
 
 /// The error type the shell knows how to present.
-///
-/// Tools may throw anything; ``AnvilError/wrapping(_:)`` normalises whatever
-/// they throw into something with a title, a message and — where we can offer
-/// one — a concrete next step for the user.
 public enum AnvilError: LocalizedError, Sendable {
     /// No language model is usable right now.
     case modelUnavailable(String)

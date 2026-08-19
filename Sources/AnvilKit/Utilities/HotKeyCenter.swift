@@ -4,15 +4,6 @@ import Foundation
 import Observation
 
 /// Registers key combinations that fire while any app is frontmost.
-///
-/// Built on Carbon's `RegisterEventHotKey` rather than
-/// `NSEvent.addGlobalMonitorForEvents`, for two reasons that matter here: it
-/// needs no Accessibility permission, and it *consumes* the key press instead
-/// of letting it also reach the app you are typing in. A dictation shortcut
-/// that additionally types a "d" into your editor would be useless.
-///
-/// The API is deprecated-adjacent but has no replacement; every launcher and
-/// clipboard manager on the platform uses it.
 @MainActor
 @Observable
 public final class HotKeyCenter {
@@ -45,9 +36,6 @@ public final class HotKeyCenter {
     // MARK: - Registration
 
     /// Claims `shortcut` for `owner`.
-    ///
-    /// - Throws: ``AnvilError/unexpected(_:)`` when the combination is already
-    ///   taken by another app — the only failure people actually hit.
     public func register(
         _ shortcut: GlobalShortcut,
         owner: String,
@@ -134,9 +122,6 @@ public final class HotKeyCenter {
 }
 
 /// The C callback Carbon calls on the main run loop.
-///
-/// It cannot capture context, so it reads the hot-key identifier out of the
-/// event and hands it to the shared centre.
 private let anvilHotKeyHandler: EventHandlerUPP = { _, event, _ in
     var hotKeyID = EventHotKeyID()
     let status = GetEventParameter(

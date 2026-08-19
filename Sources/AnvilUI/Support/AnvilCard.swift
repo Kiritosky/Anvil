@@ -18,13 +18,6 @@ public enum AnvilCardSize: Sendable {
 
 extension View {
     /// Die Fläche, auf der eine Zeile in einer Liste sitzt.
-    ///
-    /// Vierzehn Stellen hatten dafür denselben Fünfzeiler mit
-    /// `RoundedRectangle`, und weil jede ihn abgeschrieben hatte, unterschied
-    /// sich die Auswahlfarbe zwischen zwei Werkzeugen, die dasselbe zeigen.
-    ///
-    /// - Parameter isSelected: Hebt die Karte hervor. Die Farbe kommt aus dem
-    ///   System, damit die Auswahl dieselbe ist wie überall auf dem Mac.
     public func anvilCard(_ size: AnvilCardSize = .regular, isSelected: Bool = false) -> some View {
         background {
             RoundedRectangle(cornerRadius: size.radius, style: .continuous)

@@ -4,12 +4,6 @@ import Foundation
 import Vision
 
 /// Reading text out of pictures.
-///
-/// Vision does the recognising; the work here is everything around it — picking
-/// a region of the screen, getting the languages right, and putting the lines
-/// back together in an order a human would read them in. Vision returns
-/// observations in no particular order, and a naive `joined()` produces a
-/// jumble on anything with two columns.
 public enum TextRecognizer {
     /// One recognised line, with where it sat on the page.
     public struct Line: Sendable, Identifiable, Hashable {
@@ -109,13 +103,9 @@ public enum TextRecognizer {
 
     /// Sorts lines the way they are read: top to bottom, and within a band that
     /// shares a baseline, left to right.
-    ///
-    /// The tolerance is what makes two columns come out as two columns instead
-    /// of alternating between them line by line.
     static func sortIntoReadingOrder(_ lines: [Line], tolerance: CGFloat = 0.012) -> [Line] {
         lines
             .sorted { first, second in
-                // Vision's origin is bottom-left, so a larger y is higher up.
                 if abs(first.box.midY - second.box.midY) > tolerance {
                     return first.box.midY > second.box.midY
                 }
@@ -129,26 +119,17 @@ public enum TextRecognizer {
 
     /// Lets the user drag a rectangle over the screen and returns what was in
     /// it, or `nil` when they pressed Escape.
-    ///
-    /// Uses the `screencapture` binary rather than ScreenCaptureKit: it brings
-    /// the whole selection interaction — crosshair, window highlighting, space
-    /// switching — for free, and it is the same code path the system shortcut
-    /// uses. The first run asks for the Screen Recording permission.
     @MainActor
     public static func captureRegion() async throws -> NSImage? {
         let runner = ProcessRunner()
         let before = NSPasteboard.general.changeCount
 
-        // No timeout worth the name: the user decides how long they take to
-        // drag a rectangle.
         _ = try await runner.run(
             "/usr/sbin/screencapture",
             arguments: ["-i", "-c"],
             timeout: 600
         )
 
-        // A cancelled selection writes nothing and still exits zero, so the
-        // clipboard is the only thing that can be asked.
         guard NSPasteboard.general.changeCount != before else { return nil }
         let images = NSPasteboard.general.readObjects(forClasses: [NSImage.self]) as? [NSImage]
         return images?.first

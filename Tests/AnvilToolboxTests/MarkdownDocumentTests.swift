@@ -56,7 +56,6 @@ struct MarkdownOutlineTests {
     func anchorsFollowTheGitHubRules() {
         #expect(MarkdownDocument.anchor(for: "Was jetzt?") == "was-jetzt")
         #expect(MarkdownDocument.anchor(for: "Netz & Adressen") == "netz--adressen")
-        // Umlaute bleiben: GitHub wirft sie nicht weg.
         #expect(MarkdownDocument.anchor(for: "Größe") == "größe")
         #expect(MarkdownDocument.anchor(for: "snake_case") == "snake-case")
     }
@@ -301,7 +300,6 @@ struct MarkdownHTMLTests {
         #expect(html.contains("<th style=\"text-align:right\">b</th>"))
         #expect(html.contains("<td style=\"text-align:right\">2</td>"))
 
-        // Ohne Trennzeile ist es keine Tabelle, sondern ein Satz mit Strichen.
         #expect(MarkdownDocument("a | b").html == "<p>a | b</p>")
     }
 

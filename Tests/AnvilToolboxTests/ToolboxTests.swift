@@ -5,12 +5,6 @@ import Testing
 @testable import AnvilToolbox
 
 /// Der einzige Test, der den Werkzeugkasten als Ganzes ansieht.
-///
-/// Jeder andere Test prüft eine Rechnung. Hier geht es um das, was erst
-/// auffällt, wenn alle Sammlungen nebeneinander liegen: zwei Werkzeuge mit
-/// derselben Kennung, ein leerer Titel, ein Symbol, das es nicht gibt. Ohne
-/// diesen Test fiele das erst beim Starten der App auf — und dann als
-/// Werkzeug, das stumm fehlt, weil eine Registrierung die andere ersetzt hat.
 @MainActor
 @Suite("Der ganze Werkzeugkasten")
 struct ToolboxTests {

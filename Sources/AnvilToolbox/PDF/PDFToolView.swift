@@ -103,10 +103,6 @@ public struct PDFToolView: View {
 
         let loaded = PDFTools.load(files)
         documents = loaded.documents
-        // Die Liste der Dateien und die der Dokumente werden nebeneinander
-        // indiziert. Eine Datei, die sich nicht öffnen ließ, muss deshalb aus
-        // beiden verschwinden — sonst steht in der Tabelle der falsche Name
-        // neben den Seitenzahlen.
         files = files.filter { !loaded.failed.contains($0) }
         if !loaded.failed.isEmpty {
             let names = loaded.failed.map(\.lastPathComponent).joined(separator: ", ")
@@ -199,8 +195,6 @@ public struct PDFToolView: View {
     }
 
     private func runText() throws {
-        // Bei mehreren Dateien bekommt jeder Block seinen Namen davor — sonst
-        // weiß nach dem Einfügen niemand mehr, was woher kam.
         extracted = TextBlocks.combine(
             documents.enumerated().map { index, document in
                 (name: files[index].lastPathComponent, text: PDFTools.text(of: document))

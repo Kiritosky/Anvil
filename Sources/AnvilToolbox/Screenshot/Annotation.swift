@@ -3,11 +3,6 @@ import AppKit
 import Foundation
 
 /// A mark drawn on top of a screenshot.
-///
-/// Coordinates are normalised to 0…1 of the image, not points on screen. That
-/// is what lets a mark survive the window being resized, the shot being shown
-/// at half size, and the export being rendered at full resolution — all three
-/// happen, and all three would otherwise move the arrow.
 public struct Annotation: Identifiable, Sendable, Hashable, Codable {
     public enum Kind: String, Codable, CaseIterable, Sendable, Identifiable {
         case arrow
@@ -110,9 +105,6 @@ public struct Annotation: Identifiable, Sendable, Hashable, Codable {
 /// Draws annotations onto an image.
 public enum AnnotationRenderer {
     /// Returns a new image with the marks burned in.
-    ///
-    /// A copy, never in place: the original is what an undo goes back to, and
-    /// what a second export starts from.
     @MainActor
     public static func render(_ image: NSImage, annotations: [Annotation]) -> NSImage {
         guard !annotations.isEmpty else { return image }
@@ -152,8 +144,6 @@ public enum AnnotationRenderer {
         )
         color.set()
 
-        // Normalised coordinates count from the top down, the way a drag does;
-        // AppKit draws from the bottom up.
         func point(_ normalized: CGPoint) -> NSPoint {
             NSPoint(x: normalized.x * size.width, y: (1 - normalized.y) * size.height)
         }
@@ -165,8 +155,6 @@ public enum AnnotationRenderer {
             width: rect.width * size.width,
             height: rect.height * size.height
         )
-        // The stroke is stored at a nominal width; scale it with the image so a
-        // 4pt line looks the same on a 5K shot as on a small one.
         let width = annotation.lineWidth * max(1, size.width / 1_200)
 
         switch annotation.kind {
@@ -201,8 +189,6 @@ public enum AnnotationRenderer {
         let angle = atan2(end.y - start.y, end.x - start.x)
         let headLength = max(width * 4, 12)
 
-        // The shaft stops short of the tip so the head is not drawn over a
-        // line sticking out the front of it.
         let shaftEnd = NSPoint(
             x: end.x - cos(angle) * headLength * 0.8,
             y: end.y - sin(angle) * headLength * 0.8
@@ -232,10 +218,6 @@ public enum AnnotationRenderer {
 
     /// Where an image ends up inside a container that fits it, keeping the
     /// aspect ratio.
-    ///
-    /// Needed to turn a drag in the view into a point on the image: the picture
-    /// almost never fills its pane, and the letterbox around it is not part of
-    /// the shot.
     public static func fittedRect(for imageSize: CGSize, in containerSize: CGSize) -> CGRect {
         guard imageSize.width > 0, imageSize.height > 0,
               containerSize.width > 0, containerSize.height > 0

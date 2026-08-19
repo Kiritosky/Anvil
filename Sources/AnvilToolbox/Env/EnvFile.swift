@@ -2,11 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Eine `.env`-Datei, aufgeschlüsselt.
-///
-/// Es gibt keine Norm dafür, sondern eine Gewohnheit: `KEY=VALUE`, `#` für
-/// Kommentare, Anführungszeichen, wenn Leerzeichen im Wert stehen. Anvil liest
-/// die Gewohnheit — und sagt, wo eine Zeile ihr nicht folgt, statt sie
-/// stillschweigend zu übergehen.
 public struct EnvFile: Sendable, Hashable, Identifiable {
     public let name: String
     public let entries: [Entry]
@@ -75,11 +70,6 @@ public struct EnvFile: Sendable, Hashable, Identifiable {
     // MARK: - Lesen
 
     /// Zerlegt den Text einer `.env`-Datei.
-    ///
-    /// Steht ein Schlüssel zweimal darin, gewinnt der letzte — so machen es
-    /// die Bibliotheken, die solche Dateien einlesen, und deshalb muss Anvil
-    /// es genauso machen. Gemeldet wird die Dopplung trotzdem: Sie ist fast
-    /// immer der Grund, warum eine Einstellung „nicht ankommt".
     public static func read(_ text: String, name: String) -> EnvFile {
         var entries: [Entry] = []
         var problems: [Problem] = []
@@ -125,10 +115,6 @@ public struct EnvFile: Sendable, Hashable, Identifiable {
 
     /// Nimmt Anführungszeichen weg und schneidet den Kommentar hinter einem
     /// Wert ab.
-    ///
-    /// Der Kommentar wird nur abgeschnitten, wenn der Wert nicht in
-    /// Anführungszeichen steht — sonst verlöre ein Passwort mit `#` darin
-    /// seine zweite Hälfte.
     static func unquote(_ raw: String) -> String {
         let value = raw.trimmingCharacters(in: .whitespaces)
         guard let first = value.first, let last = value.last else { return "" }

@@ -5,16 +5,6 @@ import Foundation
 
 extension StructuredValue {
     /// Liest YAML — die Teilmenge, die in Konfigurationsdateien vorkommt.
-    ///
-    /// Abgedeckt: Zuordnungen und Listen über Einrückung, Listen und
-    /// Zuordnungen in einer Zeile (`[1, 2]`, `{a: 1}`), Anführungszeichen in
-    /// beiden Formen, Blocktext mit `|` und `>`, Kommentare, mehrere
-    /// Dokumente (das erste gewinnt).
-    ///
-    /// **Nicht** abgedeckt: Anker und Verweise (`&`, `*`), Typangaben (`!!`),
-    /// zusammengesetzte Schlüssel (`? `). Das sind die Ecken von YAML, die
-    /// selbst YAML-Bibliotheken uneinheitlich auslegen — hier führen sie zu
-    /// Text statt zu einer falschen Struktur.
     public static func yaml(parsing text: String) throws -> StructuredValue {
         var reader = YAMLReader(text: text)
         return try reader.document()
@@ -58,14 +48,8 @@ extension StructuredValue {
                 let withoutComment = YAMLReader.stripComment(raw)
                 let trimmed = withoutComment.trimmingCharacters(in: .whitespaces)
                 guard !trimmed.isEmpty else { continue }
-                // Dokumenttrenner und -ende gehören nicht zum Inhalt.
                 guard trimmed != "---", trimmed != "..." else { continue }
 
-                // „- eins" wird zu einem Marker und einer eigenen Zeile
-                // darunter. Danach kennt der Rest des Lesers nur noch zwei
-                // Fälle statt vier — und `- schlüssel: wert` fällt von selbst
-                // richtig heraus, weil YAML die Fortsetzung genau dort
-                // einrückt.
                 var level = indent
                 var content = Substring(trimmed)
                 while content == "-" || content.hasPrefix("- ") {
@@ -80,8 +64,6 @@ extension StructuredValue {
                 guard !content.isEmpty else { continue }
                 lines.append(Line(indent: level, text: String(content)))
 
-                // Endet die Zeile auf `|` oder `>`, ist alles Tiefere darunter
-                // Text.
                 if let split = YAMLReader.splitKey(String(content)),
                    let marker = split.value.first,
                    marker == "|" || marker == ">" {
@@ -89,7 +71,6 @@ extension StructuredValue {
                 }
             }
 
-            // Leerzeilen am Ende eines Blocktexts gehören nicht dazu.
             while let last = lines.last, last.isRaw, last.text.isEmpty {
                 lines.removeLast()
             }
@@ -126,9 +107,6 @@ extension StructuredValue {
             guard index < lines.count else { return .null }
             if lines[index].text == "-" { return try sequence(indent: indent) }
 
-            // Kein Schlüssel in der Zeile: dann ist sie der Wert. Das ist der
-            // Fall bei jedem Listeneintrag ohne Doppelpunkt — ohne diesen
-            // Zweig würde aus „- eins" eine leere Zuordnung.
             guard YAMLReader.splitKey(lines[index].text) != nil else {
                 let text = lines[index].text
                 index += 1
@@ -173,14 +151,8 @@ extension StructuredValue {
         }
 
         /// Blocktext hinter `|` oder `>`.
-        ///
-        /// `|` behält die Zeilenumbrüche, `>` faltet sie zu Leerzeichen — das
-        /// ist der einzige Unterschied, und er ist der Grund, warum es beide
-        /// gibt.
         mutating func blockText(folded: Bool) -> String {
             guard index < lines.count, lines[index].isRaw else { return "" }
-            // Die Einrückung der ersten Zeile ist die des Blocks; was darüber
-            // hinausgeht, gehört zum Text.
             let indent = lines[index].indent
             var collected: [String] = []
             while index < lines.count, lines[index].isRaw {
@@ -208,8 +180,6 @@ extension StructuredValue {
                     quote = character
                     continue
                 }
-                // In einer eingebetteten Liste oder Zuordnung trennt der
-                // Doppelpunkt nichts auf dieser Ebene.
                 if character == "[" || character == "{" { return nil }
                 guard character == ":" else { continue }
                 let isEnd = offset == characters.count - 1
@@ -297,7 +267,6 @@ extension StructuredValue {
         guard isQuoted(text) else { return text }
         let body = String(text.dropFirst().dropLast())
         guard text.hasPrefix("\"") else {
-            // Einfache Anführungszeichen kennen nur eine Ersetzung: '' ist '.
             return body.replacingOccurrences(of: "''", with: "'")
         }
         return body
@@ -326,8 +295,6 @@ extension StructuredValue {
             guard !pairs.isEmpty else { return pad + "{}" }
             return pairs.map { pair in
                 let key = Self.yamlKey(pair.key)
-                // Ein leerer Behälter passt in dieselbe Zeile — ein voller
-                // bekommt den eingerückten Block darunter.
                 guard pair.value.hasChildren else {
                     return pad + key + ": " + Self.yamlScalar(pair.value)
                 }
@@ -340,8 +307,6 @@ extension StructuredValue {
             return values.map { value in
                 switch value {
                 case let .object(inner) where !inner.isEmpty:
-                    // Der erste Schlüssel steht hinter dem Strich, der Rest
-                    // darunter — so schreibt man YAML von Hand.
                     let block = StructuredValue.object(inner).yamlText(indent: indent + 1)
                     return pad + "- " + String(block.drop { $0 == " " })
                 case let .array(inner) where !inner.isEmpty:
@@ -370,9 +335,6 @@ extension StructuredValue {
     }
 
     /// Angeführt wird nur, was sonst als etwas anderes gelesen würde.
-    ///
-    /// Ein Text wie `nein` oder `12` sähe unangeführt wie ein Wahrheitswert
-    /// oder eine Zahl aus — und wäre beim nächsten Einlesen einer.
     static func yamlString(_ text: String) -> String {
         if text.isEmpty { return "\"\"" }
         if text.contains("\n") { return quotedJSON(text) }
@@ -386,8 +348,6 @@ extension StructuredValue {
             || "[]{}&*!|>%@`,".contains(where: { text.hasPrefix(String($0)) })
         if needsQuotes { return quotedJSON(text) }
 
-        // Was als Zahl oder Wahrheitswert wieder hereinkäme, muss angeführt
-        // werden, sonst ist es beim nächsten Lesen keins mehr.
         if case .string = scalar(text) { return text }
         return quotedJSON(text)
     }

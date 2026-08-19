@@ -2,10 +2,6 @@ import AnvilKit
 import SwiftUI
 
 /// How tightly the UI is packed.
-///
-/// A toolbox is used in two very different ways — parked on a big display all
-/// day, or opened for ten seconds from the menu bar. Density is the one knob
-/// that adapts the whole component library to both.
 public enum AnvilDensity: String, CaseIterable, Codable, Sendable, Identifiable {
     case comfortable
     case compact
@@ -45,9 +41,6 @@ public enum AnvilDensity: String, CaseIterable, Codable, Sendable, Identifiable 
 }
 
 /// Theme values that a view can override for its subtree.
-///
-/// Tokens that never change (spacing, radii, type scale) stay static; the ones
-/// a user or a container legitimately changes live here.
 public struct AnvilTheme: Sendable, Equatable {
     public var density: AnvilDensity
     /// Corner radius for cards in this subtree.

@@ -2,20 +2,11 @@ import AnvilKit
 import Foundation
 
 /// Ein Markdown-Dokument, aufgeschlüsselt.
-///
-/// Nicht als vollständiger Parser gedacht — CommonMark hat mehr Sonderfälle,
-/// als in ein Werkzeug gehören. Gedacht für das, was man an einem Text
-/// tatsächlich wissen will: Wie ist er gegliedert? Wohin zeigt er? Wie lange
-/// braucht man dafür? Und stimmt daran etwas nicht?
 public struct MarkdownDocument: Sendable {
     public let source: String
     public let lines: [String]
 
     /// Für jede Zeile, ob sie in einem Codeblock steht.
-    ///
-    /// Ohne das hielte jede Kommentarzeile mit `#` in einem Shell-Beispiel
-    /// sich für eine Überschrift — und das Inhaltsverzeichnis wäre voller
-    /// Einträge, die es im Text nicht gibt.
     private let isCode: [Bool]
 
     public init(_ source: String) {
@@ -39,8 +30,6 @@ public struct MarkdownDocument: Sendable {
                 inFence = false
                 flags.append(true)
             } else {
-                // Eingerückter Code zählt auch — vier Leerzeichen sind seit
-                // jeher ein Codeblock.
                 flags.append(inFence || line.hasPrefix("    ") || line.hasPrefix("\t"))
             }
         }
@@ -75,8 +64,6 @@ public struct MarkdownDocument: Sendable {
         for (index, line) in lines.enumerated() where !isCode[index] {
             guard let (level, text) = Self.heading(at: index, in: lines, line: line) else { continue }
             let base = Self.anchor(for: text)
-            // Zwei gleich benannte Überschriften bekämen denselben Anker; der
-            // zweite Link führte dann auf den ersten Abschnitt.
             let count = seen[base, default: 0]
             seen[base] = count + 1
             let anchor = count == 0 ? base : "\(base)-\(count)"
@@ -95,8 +82,6 @@ public struct MarkdownDocument: Sendable {
             let hashes = trimmed.prefix { $0 == "#" }.count
             guard (1...6).contains(hashes) else { return nil }
             let rest = trimmed.dropFirst(hashes)
-            // `#Kein Titel` ohne Leerzeichen ist keine Überschrift, sondern
-            // ein Schlagwort.
             guard rest.isEmpty || rest.hasPrefix(" ") else { return nil }
             let text = rest.trimmingCharacters(in: .whitespaces)
                 .replacingOccurrences(of: "#", with: "")
@@ -114,10 +99,6 @@ public struct MarkdownDocument: Sendable {
     }
 
     /// Der Anker zu einer Überschrift, so wie GitHub ihn bildet.
-    ///
-    /// Kleinbuchstaben, Satzzeichen weg, Leerzeichen zu Bindestrichen. Umlaute
-    /// bleiben stehen — GitHub wirft sie nicht weg, und ein Werkzeug, das
-    /// hier eigenwillig wäre, erzeugte Links, die nirgends funktionieren.
     public static func anchor(for text: String) -> String {
         var anchor = ""
         for character in text.lowercased() {
@@ -131,10 +112,6 @@ public struct MarkdownDocument: Sendable {
     }
 
     /// Das Inhaltsverzeichnis als Markdown-Liste.
-    ///
-    /// Eingerückt nach der *relativen* Tiefe, nicht nach der Überschriftstufe:
-    /// ein Dokument, das bei `##` anfängt, bekommt sonst eine Liste, die schon
-    /// beim ersten Eintrag zwei Stufen eingerückt ist.
     public var tableOfContents: String {
         let headings = self.headings
         guard let top = headings.map(\.level).min() else { return "" }
@@ -162,8 +139,6 @@ public struct MarkdownDocument: Sendable {
     }
 
     public var links: [Link] {
-        // Der Ausdruck ist ein Literal und kann nicht fehlschlagen — ein
-        // `try!` wäre trotzdem ein Absturz, der auf eine Vermutung baut.
         guard let expression = try? NSRegularExpression(pattern: Self.linkPattern) else { return [] }
 
         var result: [Link] = []
@@ -177,7 +152,6 @@ public struct MarkdownDocument: Sendable {
                     Link(
                         id: result.count,
                         text: String(line[textRange]),
-                        // Ein Titel hinter der Adresse gehört nicht zum Ziel.
                         target: Self.targetOnly(String(line[targetRange])),
                         isImage: isImage,
                         line: index + 1
@@ -260,7 +234,6 @@ public struct MarkdownDocument: Sendable {
             headings: headings.count,
             links: links.filter { !$0.isImage }.count,
             images: links.filter(\.isImage).count,
-            // Auf und Zu eines Blocks sind zwei Zeilen, aber ein Block.
             codeBlocks: fences / 2,
             tasksOpen: open,
             tasksDone: done,
@@ -310,8 +283,6 @@ public struct MarkdownDocument: Sendable {
         var result: [Problem] = []
         let headings = self.headings
 
-        // Von H2 auf H4 zu springen bricht jede Gliederung, die aus dem
-        // Dokument erzeugt wird — Inhaltsverzeichnis, Vorlesehilfen, Export.
         var previous = 0
         for heading in headings {
             if previous > 0, heading.level > previous + 1 {
@@ -319,7 +290,6 @@ public struct MarkdownDocument: Sendable {
                     Problem(
                         id: result.count,
                         kind: .skippedLevel,
-                        // „H2 → H4" ist keine Sprache, sondern eine Stelle.
                         detail: "H\(previous) → H\(heading.level): \(heading.text)",
                         line: heading.line
                     )

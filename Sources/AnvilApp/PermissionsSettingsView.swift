@@ -3,11 +3,6 @@ import AnvilUI
 import SwiftUI
 
 /// What the system has and has not let Anvil do.
-///
-/// Every one of these is asked for at the moment it is first needed, which is
-/// the right time — but that also means a refusal disappears into a dialog
-/// nobody remembers dismissing. This screen is where you find out that
-/// dictation is silent because the microphone was denied three weeks ago.
 struct PermissionsSettingsView: View {
     @Environment(AppEnvironment.self) private var environment
 
@@ -70,8 +65,6 @@ struct PermissionsSettingsView: View {
                         permission.request { revision += 1 }
                     }
                 case .denied:
-                    // Once denied, the dialog never comes back — only System
-                    // Settings can change the answer.
                     AnvilButton("Einstellungen öffnen", role: .secondary) {
                         permission.openSystemSettings()
                     }

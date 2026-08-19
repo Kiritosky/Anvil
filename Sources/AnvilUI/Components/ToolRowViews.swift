@@ -2,9 +2,6 @@ import AnvilKit
 import SwiftUI
 
 /// A tool in a list: sidebar, command palette, search results.
-///
-/// One row definition for all three places means a tool looks identical
-/// wherever it shows up, and the palette never drifts from the sidebar.
 public struct ToolListRow: View {
     private let metadata: ToolMetadata
     private let isSelected: Bool
@@ -47,8 +44,6 @@ public struct ToolListRow: View {
                         .lineLimit(1)
 
                     if let badge = metadata.badge {
-                        // Das Abzeichen kommt aus den Metadaten und ist dort
-                        // schon übersetzt worden.
                         StatusPill(.resolved(badge), tone: .accent)
                     }
                 }
@@ -63,8 +58,6 @@ public struct ToolListRow: View {
 
             Spacer(minLength: AnvilSpacing.xs)
 
-            // Das Kürzel steht dort, wo es gedrückt wird — sonst weiß niemand,
-            // dass es die Zeile überhaupt gibt.
             if let shortcutHint {
                 KeycapLabel(shortcutHint, isMuted: !isSelected)
             }
@@ -118,9 +111,6 @@ public struct ToolCard: View {
             card
         }
         .buttonStyle(.plain)
-        // Der Stern liegt über der Karte statt in ihr: eine Schaltfläche in der
-        // Beschriftung einer anderen Schaltfläche bekommt den Klick nicht
-        // zuverlässig ab.
         .overlay(alignment: .topTrailing) {
             if let onToggleFavourite, isHovering || isFavourite {
                 Button(action: onToggleFavourite) {

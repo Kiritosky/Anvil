@@ -2,10 +2,6 @@ import AnvilKit
 import Foundation
 
 /// A crontab line, parsed into the five sets it really is.
-///
-/// Cron is easy to write and hard to read, which is the whole reason for this:
-/// `*/15 9-17 * * 1-5` is obvious to nobody at a glance, and the surest way to
-/// check it is to look at the next three dates it produces.
 public struct CronExpression: Sendable {
     public let minutes: Set<Int>
     public let hours: Set<Int>
@@ -34,7 +30,6 @@ public struct CronExpression: Sendable {
         hours = try Self.expand(fields[1], range: 0...23, names: [:], label: localized("Stunde"))
         daysOfMonth = try Self.expand(fields[2], range: 1...31, names: [:], label: localized("Tag"))
         months = try Self.expand(fields[3], range: 1...12, names: Self.monthNames, label: localized("Monat"))
-        // Cron accepts 7 for Sunday as well as 0.
         let parsedWeekdays = try Self.expand(fields[4], range: 0...7, names: Self.weekdayNames, label: localized("Wochentag"))
         weekdays = Set(parsedWeekdays.map { $0 == 7 ? 0 : $0 })
 
@@ -129,13 +124,10 @@ public struct CronExpression: Sendable {
             return false
         }
 
-        // `DateComponents.weekday` counts from 1 for Sunday; cron counts from 0.
         let cronWeekday = weekday - 1
         let dayMatches = daysOfMonth.contains(day)
         let weekdayMatches = weekdays.contains(cronWeekday)
 
-        // Both restricted means either may match — the one rule in cron that
-        // reads like a bug and is not.
         if restrictsDayOfMonth, restrictsWeekday { return dayMatches || weekdayMatches }
         if restrictsDayOfMonth { return dayMatches }
         if restrictsWeekday { return weekdayMatches }
@@ -143,16 +135,12 @@ public struct CronExpression: Sendable {
     }
 
     /// The next `count` times this fires, starting after `date`.
-    ///
-    /// Walks candidate days rather than minutes: a yearly expression would take
-    /// half a million steps the other way.
     public func upcoming(count: Int, after date: Date = .now, calendar: Calendar = .current) -> [Date] {
         var found: [Date] = []
         let startOfToday = calendar.startOfDay(for: date)
         let sortedHours = hours.sorted()
         let sortedMinutes = minutes.sorted()
 
-        // Four years covers 29 February; beyond that an expression fires never.
         for dayOffset in 0..<(366 * 4) {
             guard found.count < count else { break }
             guard let day = calendar.date(byAdding: .day, value: dayOffset, to: startOfToday) else { continue }
@@ -165,9 +153,6 @@ public struct CronExpression: Sendable {
                     candidate.minute = minute
                     guard matches(candidate) else { continue }
 
-                    // Built without the weekday: a DateComponents carrying both
-                    // a date and a weekday is resolved by the calendar, not read
-                    // literally, and the two can disagree.
                     var wanted = DateComponents()
                     wanted.year = dayComponents.year
                     wanted.month = dayComponents.month
@@ -199,9 +184,6 @@ public struct CronExpression: Sendable {
             sentence += localized(", am \(list(daysOfMonth)). des Monats")
         }
         if months.count < 12 {
-            // Joined into a local first: the extractor that collects display
-            // texts reads the source, and an interpolation containing a quoted
-            // comma splits the key in half.
             let names = months.sorted().map { Self.monthTitles[$0 - 1] }.joined(separator: ", ")
             sentence += localized(", im \(names)")
         }

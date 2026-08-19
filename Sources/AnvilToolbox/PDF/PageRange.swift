@@ -2,11 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Eine Seitenauswahl, wie man sie in einen Druckdialog tippt.
-///
-/// `1-3, 5, 8-` — das ist die Schreibweise, die jeder kennt, und deshalb die
-/// einzige, die das Werkzeug versteht. Sie steht in einem eigenen Typ, weil
-/// sie der Teil ist, an dem man sich vertut: Seiten zählen für Menschen ab 1
-/// und für Programme ab 0, und genau dazwischen entstehen die Fehler.
 public struct PageRange: Sendable, Hashable {
     /// Die Seiten, **nullbasiert** — so, wie PDFKit sie zählt.
     public let indices: [Int]
@@ -15,11 +10,6 @@ public struct PageRange: Sendable, Hashable {
     public var count: Int { indices.count }
 
     /// Liest eine Auswahl für ein Dokument mit `pageCount` Seiten.
-    ///
-    /// Was außerhalb liegt, fällt weg statt zu werfen: Wer `1-100` in ein
-    /// Dokument mit zwölf Seiten tippt, meint alle zwölf und keinen Fehler.
-    /// Leere Eingabe heißt alle Seiten — das ist der Fall, den man am
-    /// häufigsten will, und Tippen ist dafür zu viel verlangt.
     public init(parsing text: String, pageCount: Int) throws {
         guard pageCount > 0 else {
             self.indices = []
@@ -40,16 +30,12 @@ public struct PageRange: Sendable, Hashable {
             guard !piece.isEmpty else { continue }
 
             let bounds = try Self.bounds(piece, pageCount: pageCount)
-            // Rückwärts geschrieben ist trotzdem gemeint: 5-3 sind die Seiten
-            // 3, 4, 5.
             let range = bounds.lower <= bounds.upper
                 ? bounds.lower...bounds.upper
                 : bounds.upper...bounds.lower
 
             for page in range where page >= 1 && page <= pageCount {
                 let index = page - 1
-                // Doppelt genannte Seiten kommen einmal vor, in der
-                // Reihenfolge ihrer ersten Nennung.
                 if seen.insert(index).inserted { collected.append(index) }
             }
         }

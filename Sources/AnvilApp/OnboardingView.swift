@@ -4,11 +4,6 @@ import AnvilUI
 import SwiftUI
 
 /// The first two minutes.
-///
-/// Four steps, and every one of them does something rather than describing
-/// something: the permissions are asked for here, the shortcuts are switched
-/// on here. A tour that only talks is a tour people click through — and then
-/// wonder later why the microphone is silent.
 struct OnboardingView: View {
     @Environment(AppEnvironment.self) private var environment
     @Environment(\.dismiss) private var dismiss
@@ -81,7 +76,6 @@ struct OnboardingView: View {
 
             Spacer(minLength: 0)
 
-            // Where you are, without a number nobody reads.
             HStack(spacing: AnvilSpacing.xs) {
                 ForEach(Step.allCases) { candidate in
                     Circle()
@@ -130,8 +124,6 @@ struct OnboardingView: View {
 
     private var welcomeStep: some View {
         VStack(alignment: .leading, spacing: AnvilSpacing.lg) {
-            // Keyed by position: a LocalizedStringKey is not Hashable, and
-            // the list is fixed anyway.
             ForEach(Array(Self.highlights.enumerated()), id: \.offset) { _, highlight in
                 HStack(alignment: .top, spacing: AnvilSpacing.md) {
                     Image(systemName: highlight.systemImage)

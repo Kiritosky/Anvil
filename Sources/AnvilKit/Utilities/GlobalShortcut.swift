@@ -3,16 +3,6 @@ import Carbon.HIToolbox
 import Foundation
 
 /// A key combination that works while another app is frontmost.
-///
-/// Deliberately not SwiftUI's `KeyboardShortcut`: that one describes a menu
-/// item inside this app. This one is handed to Carbon's hot-key API, which
-/// wants a virtual key code and its own modifier mask.
-///
-/// The key's label is stored alongside the code rather than derived from it.
-/// Translating a key code back to a character means going through
-/// `UCKeyTranslate` and the current input source — on a German keyboard, key
-/// code 6 is "Y" but on a US layout it is "Z". Recording what the user actually
-/// pressed sidesteps the whole problem.
 public struct GlobalShortcut: Codable, Sendable, Hashable {
     /// Virtual key code, as reported by `NSEvent.keyCode`.
     public let keyCode: UInt32
@@ -39,8 +29,6 @@ public struct GlobalShortcut: Codable, Sendable, Hashable {
 
         let label = Self.label(for: event)
 
-        // A bare letter would swallow that key in every other app. Function keys
-        // and Escape are the usual exceptions people expect to work alone.
         let isFunctionKey = flags.contains(.function) || label.hasPrefix("F")
         guard modifiers != 0 || isFunctionKey else { return nil }
         guard !label.isEmpty else { return nil }
@@ -64,9 +52,6 @@ public struct GlobalShortcut: Codable, Sendable, Hashable {
     }
 
     /// The combination people get when they have not chosen one.
-    ///
-    /// ⌥⌘D is free on a stock macOS install and sits under the left hand while
-    /// the right one is still on the mouse.
     public static let defaultDictation = GlobalShortcut(
         keyCode: UInt32(kVK_ANSI_D),
         carbonModifiers: UInt32(optionKey | cmdKey),

@@ -16,6 +16,14 @@ durchgehend **Anvil**. Nichts davon je wieder auf „Nook" zurückdrehen; wo noc
   Erwähnung von Claude, Claude Code oder Modellnamen.
 - Commit-Messages beschreiben nur die Änderung selbst, im Imperativ.
 
+## Kommentare
+
+- **Sparsam.** Ein Kommentar sagt, *warum* etwas so ist — nie, *was* dasteht.
+- Doku über Typ oder Methode: ein kurzer Satz, höchstens zwei. Kein Aufsatz,
+  keine Begründungskette, keine Anekdote.
+- Im Rumpf einer Funktion in aller Regel gar keiner. Nur dort, wo eine Zeile
+  ohne Hinweis nach einem Fehler aussieht.
+
 ## Distribution
 
 - Die App geht **nicht** in den Mac App Store.

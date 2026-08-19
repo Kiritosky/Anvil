@@ -1,16 +1,6 @@
 import Foundation
 
 /// Die Frage, ob ein Text auf der Platte liegen darf.
-///
-/// Anvil merkt sich, was in einem Werkzeug stand — aber nur, wenn es nicht
-/// nach etwas aussieht, das niemand wiederfinden soll. Ein Schlüssel, den man
-/// einmal kurz eingefügt hat, hat in einer Datei nichts verloren, die
-/// unverschlüsselt neben den Einstellungen liegt.
-///
-/// Die Prüfung ist absichtlich in die falsche Richtung ungenau: sie hält
-/// lieber etwas Harmloses für geheim als umgekehrt. Ein Fehlalarm kostet, dass
-/// man nach dem Neustart neu einfügen muss. Ein übersehener Schlüssel kostet
-/// den Schlüssel.
 public enum Sensitivity {
     /// Sieht der Text nach etwas aus, das nicht gespeichert werden darf?
     public static func looksConfidential(_ text: String) -> Bool {
@@ -47,8 +37,6 @@ public enum Sensitivity {
     /// Die Anbieter, die ihren Schlüsseln ein erkennbares Präfix geben. Wer
     /// eines davon findet, muss nicht mehr raten.
     private static func containsKnownTokenPrefix(_ text: String) -> Bool {
-        // Groß-/Kleinschreibung zählt hier: „AKIA" ist ein AWS-Schlüssel,
-        // „akia" ist ein Wort in irgendeiner Sprache.
         let prefixes = [
             "sk-", "sk_live_", "pk_live_", "rk_live_",
             "ghp_", "gho_", "ghu_", "ghs_", "github_pat_",
@@ -73,10 +61,6 @@ public enum Sensitivity {
 
     /// Konfigurationszeilen, die ihr Geheimnis benennen: `API_KEY=…`,
     /// `password: …`, `Authorization: Bearer …`.
-    ///
-    /// Das bloße Wort reicht nicht — „Passwort vergessen?" in einem
-    /// übersetzten Text ist kein Geheimnis. Erst ein Wert dahinter macht es
-    /// zu einem.
     private static func namesASecret(_ text: String) -> Bool {
         let words = [
             "password", "passwort", "passwd", "secret", "geheim",
@@ -89,8 +73,6 @@ public enum Sensitivity {
             guard let word = words.first(where: { lowered.contains($0) }) else { continue }
             guard let range = lowered.range(of: word) else { continue }
 
-            // Was hinter dem Wort steht: erst ein Trennzeichen, dann etwas mit
-            // Substanz. „password:" allein ist eine Überschrift.
             let rest = lowered[range.upperBound...]
                 .drop { $0 == "\"" || $0 == "'" || $0 == " " }
             guard let separator = rest.first, separator == "=" || separator == ":" else { continue }

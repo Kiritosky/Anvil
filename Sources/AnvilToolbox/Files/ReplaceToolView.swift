@@ -176,8 +176,6 @@ public struct ReplaceToolView: View {
     ]
 
     private var fileRows: [[String]] {
-        // Ohne Suchbegriff gibt es keinen Plan — die Dateien liegen aber
-        // trotzdem da und sollen zu sehen sein.
         guard !rules.isEmpty else {
             return wanted.map { [$0.lastPathComponent, "—", "—"] }
         }
@@ -224,9 +222,6 @@ public struct ReplaceToolView: View {
     ]
 
     /// Höchstens so viele Zeilen in der Vorschau.
-    ///
-    /// Bei einem großen Projekt sind es schnell zehntausend, und keine davon
-    /// liest jemand. Die Zahl in der Statuszeile stimmt trotzdem.
     private static let previewLimit = 500
 
     private var hitRows: [[String]] {

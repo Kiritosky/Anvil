@@ -41,15 +41,6 @@ public struct ClipboardEntry: Identifiable, Sendable, Hashable {
 }
 
 /// The clipboard, remembered.
-///
-/// `NSPasteboard` posts no notification when it changes, so the only way to
-/// notice a copy is to compare `changeCount` on a timer. Everything else here
-/// follows from that: the poll interval is a compromise between missing a fast
-/// copy-copy-paste and burning a wakeup every frame.
-///
-/// The history stays in memory. Writing what passes through your clipboard to
-/// disk is a different product decision than remembering it until you quit, and
-/// this is the one that cannot leak.
 @MainActor
 @Observable
 public final class ClipboardHistory {
@@ -67,8 +58,6 @@ public final class ClipboardHistory {
     public init(pasteboard: AnvilKit.Pasteboard, settings: SettingsStore) {
         self.pasteboard = pasteboard
         self.settings = settings
-        // Whatever is on the clipboard at launch was not copied by this
-        // session, so it is the baseline rather than the first entry.
         self.lastChangeCount = pasteboard.changeCount
     }
 
@@ -114,16 +103,10 @@ public final class ClipboardHistory {
     // MARK: - Recording
 
     /// Adds `text` to the front of the history.
-    ///
-    /// Separate from ``poll()`` so the interesting behaviour — deduplication,
-    /// the limit, pinned entries — can be tested without a clipboard.
     public func record(_ text: String, source: String? = nil, at date: Date = .now) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
 
-        // Copying the same thing twice is one entry, moved back to the top —
-        // and pasting from the history must not push a duplicate in front of
-        // the original.
         if let existing = entries.firstIndex(where: { $0.text == text }) {
             let entry = entries.remove(at: existing)
             entries.insert(
@@ -144,16 +127,11 @@ public final class ClipboardHistory {
     }
 
     /// Drops the oldest unpinned entries once the limit is exceeded.
-    ///
-    /// The limit counts unpinned entries only. Pinned ones were kept on
-    /// purpose, so they neither age out nor push anything else out.
     private func trim() {
         let limit = max(10, settings[.clipboardHistoryLimit])
         var allowance = limit
         guard entries.filter({ !$0.isPinned }).count > limit else { return }
 
-        // Newest first, so counting the allowance down the list keeps exactly
-        // the most recent unpinned entries.
         entries = entries.filter { entry in
             if entry.isPinned { return true }
             guard allowance > 0 else { return false }
@@ -166,8 +144,6 @@ public final class ClipboardHistory {
 
     public func copy(_ entry: ClipboardEntry) {
         pasteboard.copy(entry.text)
-        // The copy we just made is our own, so it must not come back as a new
-        // entry — but the timestamp should still move.
         lastChangeCount = pasteboard.changeCount
         record(entry.text)
     }
@@ -188,16 +164,12 @@ public final class ClipboardHistory {
 
     public func search(_ query: String) -> [ClipboardEntry] {
         let trimmed = query.trimmingCharacters(in: .whitespaces)
-        // Plain containment, not the fuzzy match the palette uses: over a
-        // clipboard entry the size of a document, a subsequence match hits
-        // everything and finds nothing.
         let matching = trimmed.isEmpty
             ? entries
             : entries.filter {
                 $0.text.range(of: trimmed, options: [.caseInsensitive, .diacriticInsensitive]) != nil
             }
 
-        // Pinned first: they are the ones being used as a scratchpad.
         return matching.filter(\.isPinned) + matching.filter { !$0.isPinned }
     }
 }

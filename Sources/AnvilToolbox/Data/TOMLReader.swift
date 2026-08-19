@@ -5,18 +5,8 @@ import Foundation
 
 extension StructuredValue {
     /// Liest TOML.
-    ///
-    /// Abgedeckt: Schlüssel und Werte, Tabellen (`[a.b]`), Tabellenreihen
-    /// (`[[a]]`), gepunktete Schlüssel, Listen, Tabellen in einer Zeile
-    /// (`{a = 1}`), Anführungszeichen in beiden Formen, Kommentare,
-    /// Unterstriche in Zahlen.
-    ///
-    /// Datum und Uhrzeit bleiben **Text**. TOML kennt fünf Zeitformate, JSON
-    /// keins — sie in eine Zahl zu verwandeln wäre ein Datenverlust, der beim
-    /// Zurückwandeln nicht auffällt.
     public static func toml(parsing text: String) throws -> StructuredValue {
         var root = TOMLTable()
-        // Wohin die nächsten Schlüssel gehören.
         var path: [String] = []
 
         for raw in TextLines.split(text) {
@@ -52,10 +42,6 @@ extension StructuredValue {
     }
 
     /// Ein Baum aus Tabellen, der beim Lesen wächst.
-    ///
-    /// Eigener Typ, weil TOML den Baum nicht der Reihe nach beschreibt: Nach
-    /// `[a.b.c]` muss es `a` und `a.b` schon geben, auch wenn sie nie
-    /// dastanden.
     struct TOMLTable {
         private var pairs: [Pair] = []
 
@@ -91,12 +77,6 @@ extension StructuredValue {
 
         /// Geht den Pfad entlang, legt an, was fehlt, und lässt `body` am Ende
         /// die Tabelle bearbeiten.
-        ///
-        /// Eine Operation für alle drei Fälle, weil sie sich nur darin
-        /// unterscheiden, was am Ende passiert. Der Weg dorthin ist derselbe —
-        /// und der ist der Teil, der stimmen muss: TOML beschreibt den Baum
-        /// nicht der Reihe nach, `[a.b.c]` setzt `a` und `a.b` voraus, ohne
-        /// dass sie je dastanden.
         private static func modify(
             _ pairs: inout [Pair],
             path: [String],
@@ -111,8 +91,6 @@ extension StructuredValue {
             let index = pairs.firstIndex { $0.key == head }
             let existing = index.map { pairs[$0].value } ?? .object([])
 
-            // In einer Tabellenreihe geht es in der zuletzt angehängten
-            // Tabelle weiter — dort landen die Schlüssel, die darauf folgen.
             if case let .array(rows) = existing, let last = rows.last {
                 var inner = last.pairs ?? []
                 try modify(&inner, path: rest, body: body)
@@ -231,7 +209,6 @@ extension StructuredValue {
             if trimmed == "true" { return .boolean(true) }
             if trimmed == "false" { return .boolean(false) }
             if let number = StructuredValue.strictNumber(trimmed) { return .number(number) }
-            // Datum und Uhrzeit bleiben Text — siehe oben.
             return .string(trimmed)
         }
     }
@@ -241,10 +218,6 @@ extension StructuredValue {
 
 extension StructuredValue {
     /// Als TOML.
-    ///
-    /// Nur ein Objekt lässt sich als TOML schreiben — die Sprache hat kein
-    /// anderes Oberstes. Alles andere kommt als `wert = …` heraus, damit es
-    /// nicht verlorengeht.
     public var tomlText: String {
         guard case let .object(pairs) = self else {
             return "wert = " + Self.tomlScalar(self)
@@ -256,10 +229,6 @@ extension StructuredValue {
 
     /// Schreibt eine Tabelle: erst die einfachen Werte, dann die
     /// Untertabellen.
-    ///
-    /// Die Reihenfolge ist keine Vorliebe, sondern Pflicht: Alles hinter einer
-    /// `[tabelle]`-Zeile gehört zu dieser Tabelle. Ein Skalar, der nach einer
-    /// Untertabelle stünde, landete beim nächsten Lesen darin.
     private static func tomlBody(_ pairs: [Pair], path: [String], into lines: inout [String]) {
         let plain = pairs.filter { !isTable($0.value) && !isTableArray($0.value) }
         let tables = pairs.filter { isTable($0.value) }
@@ -302,8 +271,6 @@ extension StructuredValue {
         case let .string(text): return quotedJSON(text)
         case let .number(number): return numberText(number)
         case let .boolean(flag): return flag ? "true" : "false"
-        // TOML kennt kein Null. Ein leerer Text ist die einzige Fassung, die
-        // beim Zurücklesen nicht zu etwas anderem wird.
         case .null: return "\"\""
         case let .array(values):
             return "[" + values.map { tomlScalar($0) }.joined(separator: ", ") + "]"

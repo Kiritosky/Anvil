@@ -1,14 +1,8 @@
 import Foundation
 
 /// Subsequence matching with the usual quality-of-life bonuses.
-///
-/// Kept deliberately small: this powers the command palette, so it runs on
-/// every keystroke over the whole tool list and must stay allocation-light.
 public enum FuzzyMatch {
     /// Returns a score, or `nil` when `query` is not a subsequence of `text`.
-    ///
-    /// Higher is better. Consecutive matches and matches at word boundaries
-    /// score highest, so "jsf" ranks "JSON Formatter" above "Job Sheet Filter".
     public static func score(query: String, in text: String) -> Int? {
         let needle = Array(query.lowercased().unicodeScalars.filter { $0 != " " })
         guard !needle.isEmpty else { return 0 }
@@ -44,7 +38,6 @@ public enum FuzzyMatch {
 
         guard needleIndex == needle.count else { return nil }
 
-        // Prefer tight matches over ones smeared across a long string.
         score -= max(0, (haystack.count - needle.count) / 8)
         return score
     }

@@ -5,10 +5,6 @@ import SwiftUI
 
 /// Type a colour in any notation, get it back in all of them — and find out
 /// whether text on it is readable.
-///
-/// The contrast half is the reason this tool exists. Converting hex to rgb is a
-/// two-second job; noticing that your brand colour fails WCAG on white is not,
-/// and it is the thing that comes back to bite.
 public struct ColorToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -135,7 +131,6 @@ public struct ColorToolView: View {
 
                     Spacer(minLength: 0)
 
-                    // A ratio is a number, not text — no translation to make.
                     StatusPill(
                         .resolved("\(String(format: "%.2f", contrastRatio)):1"),
                         systemImage: rating.systemImage,
@@ -220,7 +215,6 @@ public struct ColorToolView: View {
                     .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
             }
     }
-
 
     /// Nine steps from nearly black to nearly white, through the colour itself.
     private func steps(of color: ColorValue) -> [ColorValue] {

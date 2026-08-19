@@ -4,16 +4,12 @@ import Foundation
 import SwiftUI
 
 /// One mark, drawn on screen.
-///
-/// The same geometry the renderer burns into the exported file, expressed in
-/// SwiftUI — so what you see while dragging is what ends up in the PNG.
 struct AnnotationShape: View {
     let annotation: Annotation
     /// Where the picture sits inside its pane.
     let frame: CGRect
 
     var body: some View {
-        // Highlighting is the one kind that lets what is under it show through.
         let color = annotation.color.color
             .opacity(annotation.kind == .highlight ? 0.35 : 1)
         let rect = viewRect

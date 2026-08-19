@@ -5,10 +5,6 @@ import Foundation
 import Observation
 
 /// The state and behaviour behind the Speech Studio.
-///
-/// Deliberately separate from the view: recording, cleaning and refining are
-/// three stages with their own failure modes, and keeping them out of SwiftUI
-/// makes them straightforward to reason about — and to test.
 @MainActor
 @Observable
 public final class SpeechStudioModel {
@@ -207,9 +203,6 @@ public final class SpeechStudioModel {
     }
 
     /// Mirrors the live transcript into `rawText` while recording.
-    ///
-    /// A polling loop rather than an observer: `Transcript` changes on nearly
-    /// every audio buffer, and repainting the editor that often is wasted work.
     private func observeLiveTranscript() {
         Task { @MainActor [weak self] in
             while let self, self.session.isActive {
@@ -230,10 +223,6 @@ public final class SpeechStudioModel {
     // MARK: - Cleaning
 
     /// Re-runs the deterministic passes. Cheap, so they run on every edit.
-    ///
-    /// Order matters: fillers go first so the vocabulary is not matched against
-    /// "äh Anvil", and the vocabulary runs before the model so the model sees
-    /// the terms already spelled correctly instead of being asked to guess.
     public func recompute() {
         let cleaner = FillerCleaner(
             languageCode: locale.language.languageCode?.identifier ?? "de",
@@ -256,9 +245,6 @@ public final class SpeechStudioModel {
         refinedText = ""
         let startedAt = Date.now
 
-        // The model gets the deterministically cleaned text, not the raw one:
-        // it has less noise to wade through and cannot "fix" a filler by
-        // turning it into a real word.
         let input = cleanedText.isEmpty ? rawText : cleanedText
 
         let task = Task { @MainActor [weak self] in
@@ -309,14 +295,6 @@ public final class SpeechStudioModel {
     }
 
     /// Transkribiert mehrere Aufnahmen nacheinander.
-    ///
-    /// Ein Ordner mit Sprachnachrichten ist der Fall, für den es das gibt —
-    /// zehnmal einzeln auswählen und dazwischen den Text wegkopieren wäre die
-    /// Arbeit, die das Werkzeug abnehmen soll.
-    ///
-    /// Nacheinander und nicht nebeneinander: Der Transkriptions-Analyzer hält
-    /// Sprachmodelle im Speicher, und mehrere gleichzeitig bringen keine Zeit
-    /// ein, sondern nur Druck auf den Arbeitsspeicher.
     public func transcribeFiles(at urls: [URL]) async {
         guard !urls.isEmpty else { return }
         error = nil
@@ -329,9 +307,6 @@ public final class SpeechStudioModel {
                 let transcript = try await fileTranscriber.transcribe(url: url, locale: locale)
                 pieces.append((url.lastPathComponent, transcript.finalizedText))
             } catch {
-                // Eine Aufnahme, die nicht gelesen werden kann, beendet den
-                // Stapel nicht — sie bekommt ihre Zeile, und die übrigen neun
-                // laufen weiter.
                 let failure = AnvilError.wrapping(error)
                 firstFailure = firstFailure ?? failure
                 pieces.append((url.lastPathComponent, ""))
@@ -342,10 +317,6 @@ public final class SpeechStudioModel {
         recompute()
         if let firstFailure { self.error = firstFailure }
 
-        // Automatisch aufgeräumt wird nur bei einer einzelnen Aufnahme. Bei
-        // einem Stapel ist das Ergebnis ein Dokument aus Abschnitten, und ein
-        // Modell darüber laufen zu lassen verwischt genau die Grenzen, die man
-        // gerade hergestellt hat.
         if urls.count == 1, refinesAutomatically, usesAI { await refine() }
     }
 
@@ -393,9 +364,6 @@ public final class SpeechStudioModel {
     }
 
     /// Gives back the reserved speech locales.
-    ///
-    /// Reservations are a limited system resource, so the studio hands them
-    /// back when it goes away — but never while a recording is still running.
     public func releaseSpeechAssets() async {
         guard !session.isActive else { return }
         await session.catalog.releaseAll()

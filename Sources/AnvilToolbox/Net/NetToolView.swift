@@ -3,11 +3,6 @@ import AnvilUI
 import SwiftUI
 
 /// Netze rechnen — eins oder zweihundert.
-///
-/// Die Eingabe ist bewusst ein Textfeld und kein Formular mit vier Oktett-
-/// Feldern: Netze kommen aus einer Konfiguration, aus einem Ticket oder aus
-/// einer Tabelle, und dort stehen sie als Text, oft gleich mehrere. Wer sie
-/// erst in Einzelfelder abtippt, hat den Nutzen des Werkzeugs schon verloren.
 public struct NetToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata

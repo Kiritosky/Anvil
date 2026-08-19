@@ -2,10 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Eine Programmiersprache, so weit Anvil sie zum Zählen kennen muss.
-///
-/// Erkannt wird an der Endung, nicht am Inhalt. Das ist die Regel, an die sich
-/// jedes Werkzeug dieser Art hält — und es ist die einzige, die bei
-/// zehntausend Dateien schnell genug bleibt.
 public struct CodeLanguage: Sendable, Hashable, Identifiable {
     public let name: String
     /// Womit eine Zeile zum Kommentar wird.
@@ -30,11 +26,6 @@ public struct CodeLanguage: Sendable, Hashable, Identifiable {
     // MARK: - Erkennen
 
     /// Die Sprache einer Datei — oder nichts, wenn Anvil sie nicht kennt.
-    ///
-    /// Was hier nicht steht, wird nicht mitgezählt. Das ist Absicht: Eine
-    /// Zeile „Sonstiges: 412.000" entsteht sonst aus Wörterbüchern,
-    /// Testdaten und minimierten Bibliotheken und macht die ganze Zahl
-    /// wertlos.
     public static func of(path: String) -> CodeLanguage? {
         let name = path.components(separatedBy: "/").last ?? path
         if let byName = byFileName[name.lowercased()] { return byName }
@@ -45,10 +36,6 @@ public struct CodeLanguage: Sendable, Hashable, Identifiable {
     }
 
     /// Ordner, die nie mitgezählt werden.
-    ///
-    /// Fremder Code, gebaute Ergebnisse, heruntergeladene Abhängigkeiten: Wer
-    /// wissen will, wie groß sein Projekt ist, meint nicht `node_modules`.
-    /// Versteckte Ordner wie `.git` fallen schon beim Durchlaufen weg.
     public static let ignoredFolders: Set<String> = [
         "node_modules", "pods", "vendor", "vendors", "dist", "build",
         "deriveddata", "carthage", "packages", "third_party", "thirdparty",

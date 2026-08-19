@@ -3,10 +3,6 @@ import AnvilUI
 import SwiftUI
 
 /// Every key combination in the app, in one list.
-///
-/// One screen rather than a shortcut field buried in each tool's settings: the
-/// question people have is "what is ⌥⌘4 doing", and that cannot be answered by
-/// a setting that only knows about itself.
 struct ShortcutSettingsView: View {
     @Environment(AppEnvironment.self) private var environment
 

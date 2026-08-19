@@ -3,20 +3,11 @@ import Foundation
 import Observation
 
 /// One term the speech recogniser keeps getting wrong.
-///
-/// Recognition is trained on ordinary language, so the words it mangles are
-/// exactly the ones you care about most: product names, colleagues, API
-/// identifiers. A short personal list fixes more of a dictation than any amount
-/// of prompt tuning.
 public struct VocabularyEntry: Codable, Sendable, Identifiable, Hashable {
     public var id: UUID
     /// The correct spelling — what should end up in the text.
     public var term: String
     /// Misrecognitions to replace outright, when you already know them.
-    ///
-    /// Fuzzy matching catches "Anwil" for "Anvil" on its own; variants are for
-    /// the cases it cannot, where the recogniser produces something that only
-    /// *sounds* similar: "Tool Registrierung" for "ToolRegistration".
     public var variants: [String]
     public var isEnabled: Bool
 

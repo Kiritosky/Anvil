@@ -46,7 +46,6 @@ struct UnifiedDiffParsingTests {
         #expect(full.newCount == 9)
         #expect(full.heading == "func etwas()")
 
-        // Ohne Komma ist die Anzahl 1.
         let short = try #require(UnifiedDiff.hunkHeader("@@ -3 +3 @@"))
         #expect(short.oldCount == 1)
         #expect(short.heading.isEmpty)
@@ -106,9 +105,6 @@ struct UnifiedDiffParsingTests {
         """)
         #expect(diff.files.count == 1)
         #expect(diff.files[0].hunks[0].additions == 1)
-        // Die Leerzeile hinter dem Patch ist kein Kontext. Als einer gelesen
-        // stünde im Abschnitt eine Zeile, die es in der Datei nicht gibt —
-        // und der Patch passte danach nirgends mehr.
         #expect(diff.files[0].hunks[0].lines.count == 2)
     }
 
@@ -116,7 +112,6 @@ struct UnifiedDiffParsingTests {
     func nothingInIsNoPatch() {
         #expect(UnifiedDiff(parsing: "").isEmpty)
         #expect(UnifiedDiff(parsing: "nur ein Satz").isEmpty)
-        // Ein Kopf ohne Abschnitt ist kein Patch.
         #expect(UnifiedDiff(parsing: "--- a/x\n+++ b/x").isEmpty)
     }
 

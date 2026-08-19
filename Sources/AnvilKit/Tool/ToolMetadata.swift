@@ -1,9 +1,6 @@
 import Foundation
 
 /// Something a tool needs from the machine it runs on.
-///
-/// The shell uses these to explain *why* a tool is unavailable instead of
-/// letting the tool fail at the moment the user presses a button.
 public enum ToolRequirement: String, Hashable, Sendable, Codable, CaseIterable {
     /// Needs a language model — on-device or remote.
     case languageModel
@@ -34,9 +31,6 @@ public enum ToolRequirement: String, Hashable, Sendable, Codable, CaseIterable {
 }
 
 /// Everything the shell needs to know about a tool without instantiating it.
-///
-/// Metadata is `Sendable` and cheap: the registry holds hundreds of these,
-/// searches them, and only builds a view when the user opens a tool.
 public struct ToolMetadata: Hashable, Sendable, Identifiable {
     public let id: ToolIdentifier
     public let title: String
@@ -49,11 +43,6 @@ public struct ToolMetadata: Hashable, Sendable, Identifiable {
     /// Shown in the sidebar next to the title, e.g. "Neu" or "Beta".
     public let badge: String?
     /// Ob das Werkzeug mit Text anfangen kann, der von woanders kommt.
-    ///
-    /// Entscheidet, ob es im „Weitergeben an"-Menü anderer Werkzeuge auftaucht.
-    /// Standardmäßig aus: Ein Werkzeug, das Dateien einsammelt oder ein
-    /// Mikrofon aufmacht, kann mit einer Zeichenkette nichts anfangen, und ein
-    /// Menü voller Ziele, bei denen nichts passiert, ist schlimmer als keins.
     public let acceptsText: Bool
 
     public init(
@@ -67,9 +56,6 @@ public struct ToolMetadata: Hashable, Sendable, Identifiable {
         badge: String? = nil,
         acceptsText: Bool = false
     ) {
-        // Display text is translated here, once, so that every consumer —
-        // sidebar, search, Tool Store, window title — sees the same string and
-        // no call site has to remember to localise.
         self.id = id
         self.title = localized(runtime: title)
         self.subtitle = localized(runtime: subtitle)

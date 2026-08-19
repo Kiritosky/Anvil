@@ -2,10 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Anthropic's Messages API.
-///
-/// Separate from the OpenAI-compatible provider because the wire format really
-/// is different: the system prompt is a top-level field rather than a message,
-/// `max_tokens` is required, and streaming events are typed.
 public struct AnthropicProvider: AIProvider {
     public let identifier = AIProviderIdentifier.anthropic
     public var displayName: String { configuration.presetName }

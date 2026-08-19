@@ -28,7 +28,6 @@ struct GlobalShortcutTests {
 
     @Test
     func aShortcutWithoutModifiersStillRenders() {
-        // Function keys are allowed to stand alone.
         let shortcut = GlobalShortcut(keyCode: UInt32(kVK_F5), carbonModifiers: 0, keyLabel: "F5")
         #expect(shortcut.displayString == "F5")
     }
@@ -50,8 +49,6 @@ struct GlobalShortcutTests {
 
     @Test
     func optionalShortcutsRoundTripToo() throws {
-        // The setting is optional so that "no shortcut" is representable; that
-        // has to survive the store's encode/decode.
         let values: [GlobalShortcut?] = [GlobalShortcut.defaultDictation, nil]
         for value in values {
             let data = try JSONEncoder().encode([value])

@@ -2,13 +2,6 @@ import AnvilKit
 import SwiftUI
 
 /// „Weitergeben an …" — schickt ein Ergebnis in ein anderes Werkzeug.
-///
-/// Steht neben dem Kopieren-Knopf, weil es dieselbe Frage beantwortet: Was
-/// passiert jetzt mit dem, was hier steht? Der Unterschied ist nur, dass die
-/// Antwort in derselben App liegt.
-///
-/// Aufgeführt wird, was mit Text etwas anfangen kann und **eingeschaltet** ist
-/// — ein Ziel, das im Tool-Store aus ist, würde beim Antippen nichts tun.
 public struct HandoffMenu: View {
     private let text: () -> String
     private let source: ToolIdentifier
@@ -48,10 +41,6 @@ public struct HandoffMenu: View {
     }
 
     /// Die möglichen Ziele, ohne das Werkzeug, in dem man gerade steht.
-    ///
-    /// Nach Bereich und Titel sortiert, damit die Liste bei jedem Öffnen
-    /// gleich aussieht — ein Menü, dessen Reihenfolge sich ändert, lernt
-    /// niemand.
     private var targets: [ToolMetadata] {
         context.registry.metadata
             .filter { $0.acceptsText && $0.id != source }

@@ -92,9 +92,6 @@ public struct FolderCompareToolView: View {
                     let a = left.appending(path: path)
                     let b = right.appending(path: path)
 
-                    // Erst der Anfang: Zwei gleich große Dateien, die sich
-                    // unterscheiden, tun das fast immer schon dort — und dann
-                    // müssen vier Gigabyte nicht zweimal durch den Kopf.
                     guard let firstBlock = try? FileDigest.prefixHex(SHA256.self, of: a),
                           let secondBlock = try? FileDigest.prefixHex(SHA256.self, of: b),
                           firstBlock == secondBlock

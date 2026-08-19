@@ -155,7 +155,6 @@ struct LongestPartsTests {
         #expect(longest.count == 3)
         #expect(longest[0].words > longest[1].words)
         #expect(longest[1].words > longest[2].words)
-        // „Kurz." ist der kürzeste Satz und steht deshalb hinten.
         #expect(longest.last?.words == 1)
     }
 

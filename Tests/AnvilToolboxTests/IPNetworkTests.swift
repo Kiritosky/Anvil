@@ -38,7 +38,6 @@ struct IPv4NetworkTests {
         let spaced = try IPv4Network(parsing: "10.0.0.0 255.255.0.0")
         #expect(spaced.prefixLength == 16)
 
-        // Cisco schreibt die Maske andersherum; gemeint ist dasselbe Netz.
         let wildcard = try IPv4Network(parsing: "10.0.0.0/0.0.255.255")
         #expect(wildcard.prefixLength == 16)
     }
@@ -120,7 +119,6 @@ struct IPv4NetworkTests {
         let network = try IPv4Network(parsing: "10.0.0.0/16")
         #expect(throws: AnvilError.self) { try network.subnetCount(splittingInto: 8) }
         #expect(throws: AnvilError.self) { try network.subnetCount(splittingInto: 33) }
-        // Gleich groß ist erlaubt: genau ein Teilnetz.
         #expect(try network.subnetCount(splittingInto: 16) == 1)
     }
 }
@@ -256,7 +254,6 @@ struct IPNetworkTests {
     func theFamilyComesOutOfTheInput() throws {
         #expect(try IPNetwork(parsing: "10.0.0.0/8").family == .v4)
         #expect(try IPNetwork(parsing: "2001:db8::/32").family == .v6)
-        // Auch eine abgebildete IPv4-Adresse ist IPv6.
         #expect(try IPNetwork(parsing: "::ffff:10.0.0.1").family == .v6)
     }
 
@@ -308,8 +305,6 @@ struct IPMathTests {
 
     @Test
     func groupingUsesANarrowSpaceAndNotADot() {
-        // Ein Punkt als Tausendertrenner wäre neben Adressen mit Punkten
-        // schlicht nicht lesbar.
         #expect(IPMath.grouped("254") == "254")
         #expect(IPMath.grouped("1024") == "1024")
         #expect(IPMath.grouped("65536") == "65\u{202F}536")

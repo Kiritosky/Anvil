@@ -2,10 +2,6 @@ import AnvilKit
 import Foundation
 
 /// The prompt tools Anvil ships with.
-///
-/// Every entry here is data. If a prompt turns out to be wrong, the fix is a
-/// string in this file — and a user who disagrees can copy the JSON of any of
-/// them into their own tools folder and change it.
 public enum AIPromptCatalog {
     public static var all: [AIPromptTool] {
         coding + everyday

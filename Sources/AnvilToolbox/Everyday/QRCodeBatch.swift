@@ -2,16 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Viele QR-Codes auf einmal.
-///
-/// Der Anlass ist immer eine Liste: Geräte, die ein Etikett bekommen, Links
-/// für eine Schulung, ein Gäste-WLAN für jeden Raum. Einzeln ist das
-/// zwanzigmal derselbe Handgriff, und beim zwölften Mal vertippt man sich im
-/// Dateinamen.
-///
-/// Wie überall im Stapel gilt: erst der Plan, dann die Tat. Der Plan zeigt zu
-/// jeder Zeile den Dateinamen, den sie bekäme — auch die Nummer, die zwei
-/// gleiche Zeilen auseinanderhält. Ohne die wäre nach dem Schreiben eine der
-/// beiden weg.
 public struct QRCodeBatch: Sendable {
     /// Was einem Eintrag im Weg steht.
     public enum Problem: String, Sendable, Hashable {
@@ -62,22 +52,11 @@ public struct QRCodeBatch: Sendable {
     // MARK: - Planen
 
     /// Was ein QR-Code höchstens fassen kann.
-    ///
-    /// Die Obergrenze liegt bei Version 40 und niedrigster Fehlerkorrektur
-    /// bei 2 953 Byte. Wer daran kratzt, bekommt ein Muster, das kein Scanner
-    /// mehr sicher liest — die Grenze hier ist deshalb die harte, und die
-    /// Warnung davor gehört ins Werkzeug.
     public static let maxBytes = 2_953
 
     /// Liest eine Zeile je Code.
-    ///
-    /// Steht ein Tabulator in der Zeile, ist davor der Name und dahinter der
-    /// Inhalt — genau die Form, die aus einer Tabellenkalkulation kommt. Sonst
-    /// wird der Name aus dem Inhalt gebildet.
     public init(_ text: String) {
         var entries: [Entry] = []
-        // Wie oft ein Name schon vergeben wurde. Zwei gleiche Zeilen ergäben
-        // sonst zweimal denselben Dateinamen, und die erste wäre weg.
         var used: [String: Int] = [:]
 
         for (index, line) in TextLines.split(text, keepingEmpty: false).enumerated() {
@@ -87,15 +66,12 @@ public struct QRCodeBatch: Sendable {
                 .trimmingCharacters(in: .whitespaces)
             let given = hasName ? String(parts[0]).trimmingCharacters(in: .whitespaces) : ""
 
-            // Ein Dateiname wird nicht übersetzt — er muss auf jeder Platte
-            // derselbe sein.
             var name = ExportFile.sanitize(
                 given.isEmpty ? content : given,
                 fallback: "code-\(index + 1)"
             )
             let count = (used[name] ?? 0) + 1
             used[name] = count
-            // Wie im Finder: die zweite Datei heißt „Name 2".
             if count > 1 { name = "\(name) \(count)" }
 
             let problem: Problem?
@@ -139,9 +115,6 @@ public struct QRCodeBatch: Sendable {
     }
 
     /// Schreibt jeden Code als PNG in den Ordner.
-    ///
-    /// - Parameter make: Wie aus Text ein Bild wird. Als Parameter, damit der
-    ///   Plan sich prüfen lässt, ohne dass CoreImage laufen muss.
     @discardableResult
     public func write(
         to folder: URL,
@@ -157,9 +130,6 @@ public struct QRCodeBatch: Sendable {
 
         var created: [URL] = []
         for entry in writing {
-            // Nicht einfach `name.png`: Im Zielordner können schon Dateien
-            // liegen, von denen der Plan nichts weiß. Überschrieben wird
-            // keine — durchnummeriert wird wie im Finder.
             let url = ExportFile.uniqueURL(in: folder, named: entry.name, extension: "png")
             try make(entry.text).write(to: url, options: .atomic)
             created.append(url)

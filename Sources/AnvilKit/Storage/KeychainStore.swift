@@ -2,9 +2,6 @@ import Foundation
 import Security
 
 /// Keychain-backed storage for provider API keys.
-///
-/// Secrets never go through `SettingsStore`: `UserDefaults` is a plist in the
-/// user's Library that any process running as them can read.
 public struct KeychainStore: Sendable {
     public let service: String
 

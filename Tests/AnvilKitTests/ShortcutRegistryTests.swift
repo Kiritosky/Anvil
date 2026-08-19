@@ -123,7 +123,6 @@ struct ShortcutRegistryTests {
 
     @Test
     func anInAppAndAGlobalShortcutStillConflict() {
-        // The global registration swallows the key before the menu sees it.
         let registry = makeRegistry()
         registry.register(action("a", shortcut: combination, scope: .app))
         registry.register(action("b", shortcut: combination, scope: .global))

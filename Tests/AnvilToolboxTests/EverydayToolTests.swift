@@ -64,8 +64,6 @@ struct EverydayToolCatalogTests {
     @Test
     func pinsAreSixDigits() throws {
         let pin = try run(EverydayToolCatalog.passwords, "pin")
-        // Pulled out of the macro: `#expect` cannot prove a key-path argument
-        // to a rethrowing function does not throw.
         let onlyDigits = pin.allSatisfy(\.isNumber)
         #expect(pin.count == 6)
         #expect(onlyDigits)
@@ -194,7 +192,6 @@ struct EverydayToolCatalogTests {
 
     @Test
     func showsOneLinePerZone() {
-        // 2023-11-14 22:13:20 UTC — the same instant is the next day in Tokyo.
         let clock = EverydayToolCatalog.worldClock(for: Date(timeIntervalSince1970: 1_700_000_000))
         let lines = clock.components(separatedBy: .newlines)
 
@@ -224,8 +221,6 @@ struct EverydayToolCatalogTests {
     @Test
     func formatsNumbersWithoutTrailingNoise() {
         #expect(EverydayToolCatalog.formatNumber(100) == "100")
-        // Not a value sitting exactly on the rounding boundary: whether
-        // 3.106855 goes up or down is a property of binary floats, not of this.
         #expect(EverydayToolCatalog.formatNumber(3.1068559611866697) == "3.10686")
         #expect(EverydayToolCatalog.formatNumber(0.5) == "0.5")
         #expect(EverydayToolCatalog.formatNumber(-16.666666) == "-16.6667")

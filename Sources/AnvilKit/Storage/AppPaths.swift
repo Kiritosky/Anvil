@@ -1,9 +1,6 @@
 import Foundation
 
 /// Where Anvil keeps things on disk.
-///
-/// One place for every path so that a tool never hand-rolls
-/// `FileManager.default.urls(for:in:)` and quietly lands somewhere else.
 public enum AppPaths {
     public static let bundleIdentifier = "dev.anvil.Anvil"
 

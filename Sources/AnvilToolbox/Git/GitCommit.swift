@@ -2,11 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Der letzte Commit eines Repositories.
-///
-/// Die Übersicht sagt bisher, ob etwas offen ist. Die zweite Frage, die man
-/// beim Durchsehen von dreißig Ordnern hat, ist eine andere: Wann habe ich das
-/// hier zuletzt angefasst? Ein Repository, in dem seit zwei Jahren nichts
-/// passiert ist, will man nicht aufräumen — man will wissen, dass es das gibt.
 public struct GitCommit: Sendable, Hashable {
     /// Die kurze Prüfsumme, so wie `git` sie selbst abkürzt.
     public let hash: String
@@ -23,10 +18,6 @@ public struct GitCommit: Sendable, Hashable {
     }
 
     /// Das Format für `git log -1`.
-    ///
-    /// Tabulatorgetrennt (`%x09`), weil in einer Commit-Nachricht alles
-    /// vorkommt — Doppelpunkte, Bindestriche, Anführungszeichen — nur kein
-    /// Tabulator, den `git` in der ersten Zeile ohnehin nicht durchlässt.
     public static let logFormat = "%h%x09%cI%x09%an%x09%s"
 
     /// Zerlegt eine Zeile im Format von ``logFormat``.
@@ -39,8 +30,6 @@ public struct GitCommit: Sendable, Hashable {
             hash: fields[0],
             date: isoFormatter.date(from: fields[1]),
             author: fields[2],
-            // Ein Tabulator in der Nachricht würde hier landen; wieder
-            // zusammengesetzt steht sie so da, wie sie geschrieben wurde.
             subject: fields[3...].joined(separator: "\t")
         )
     }

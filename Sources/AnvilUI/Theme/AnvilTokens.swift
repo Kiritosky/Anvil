@@ -3,9 +3,6 @@ import SwiftUI
 // MARK: - Spacing
 
 /// The spacing scale. Every gap and inset in the app comes from here.
-///
-/// Six steps on a 4pt grid. If a layout needs something in between, the layout
-/// is wrong — not the scale.
 public enum AnvilSpacing {
     /// 2pt — hairline separation inside a control.
     public static let xxs: CGFloat = 2
@@ -140,9 +137,6 @@ public enum AnvilSize {
 // MARK: - Typography
 
 /// The type scale.
-///
-/// Names describe the role, never the size, so a later density change or a
-/// design tweak happens here and nowhere else.
 public enum AnvilFont {
     /// The app wordmark. The only place rounded design is used.
     public static let wordmark = Font.system(size: 17, weight: .semibold, design: .rounded)
@@ -170,9 +164,6 @@ public enum AnvilFont {
 // MARK: - Motion
 
 /// Animation tokens.
-///
-/// Three speeds, one spring. Consistent motion is most of what makes a
-/// component library feel like a single app rather than a pile of views.
 public enum AnvilMotion {
     /// 0.12s — hover and press feedback.
     public static let quick = Animation.easeOut(duration: 0.12)

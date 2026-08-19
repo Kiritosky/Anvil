@@ -7,10 +7,6 @@ import UniformTypeIdentifiers
 
 /// Text off the screen — from a screenshot, an image file, or a rectangle you
 /// drag right now.
-///
-/// The one tool that beats retyping something out of a screenshot, a PDF page
-/// or a video still. Everything it needs is already on the machine: Vision does
-/// the reading, `screencapture` does the selecting.
 public struct TextRecognizerToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -21,9 +17,6 @@ public struct TextRecognizerToolView: View {
     @State private var error: AnvilError?
 
     /// Ein Bild und das, was darin stand.
-    ///
-    /// Mehrere davon, weil man selten genau einen Screenshot ausliest: Eine
-    /// Anleitung besteht aus fünf, ein abfotografiertes Dokument aus zehn.
     struct Page: Identifiable {
         let id = UUID()
         let name: String
@@ -123,9 +116,6 @@ public struct TextRecognizerToolView: View {
     }
 
     /// Die Liste, sobald es mehr als ein Bild ist.
-    ///
-    /// Mit Vorschaubild, weil ein Dateiname bei zehn Screenshots aus derselben
-    /// Anleitung nichts unterscheidet — das Bild schon.
     private var pageList: some View {
         ScrollView(.vertical) {
             LazyVStack(spacing: AnvilSpacing.xxs) {
@@ -278,10 +268,6 @@ public struct TextRecognizerToolView: View {
     }
 
     /// Nimmt Bilder auf und liest sie gleich aus.
-    ///
-    /// Angehängt statt ersetzt: Wer zweimal hintereinander einen Ausschnitt
-    /// wählt, will beide Texte — sonst müsste er den ersten vorher irgendwo
-    /// zwischenlagern.
     private func add(_ newPages: [Page]) {
         guard !newPages.isEmpty else { return }
         pages += newPages
@@ -305,9 +291,6 @@ public struct TextRecognizerToolView: View {
     }
 
     /// Liest alle Bilder aus, die noch kein Ergebnis haben.
-    ///
-    /// Nur die neuen: Ein zehntes Bild dazuzulegen darf nicht heißen, die
-    /// neun davor noch einmal durch Vision zu schicken.
     private func recognize(force: Bool = false) async {
         let todo = pages.indices.filter { force || pages[$0].result == nil }
         guard !todo.isEmpty else { return }
@@ -385,8 +368,6 @@ public struct TextRecognizerToolView: View {
             get: { settings[.ocrMode] },
             set: { newValue in
                 settings[.ocrMode] = newValue
-                // Die Erkennungsart ändert jedes Ergebnis, auch die schon
-                // gelesenen — hier muss alles noch einmal durch.
                 Task { await recognize(force: true) }
             }
         )

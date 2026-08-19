@@ -40,10 +40,6 @@ public struct HistoryEntry: Codable, Identifiable, Hashable, Sendable {
 }
 
 /// Per-tool run history, one JSON file per tool.
-///
-/// Entries are loaded lazily and cached, so a tool that never asks for its
-/// history costs nothing. Writes are debounced to the end of the run loop turn
-/// by simply writing synchronously on the main actor — history files are tiny.
 @MainActor
 @Observable
 public final class HistoryStore {
@@ -97,10 +93,6 @@ public final class HistoryStore {
     }
 
     /// Vergisst alles — auf der Platte und im Speicher.
-    ///
-    /// Beides gehört zusammen: Wer nur die Dateien löscht, hat den Verlauf
-    /// noch im Fenster stehen, bis die App neu startet — und wer nur den
-    /// Zwischenspeicher leert, sieht ihn beim nächsten Start wieder.
     public func forgetEverything() {
         cache = [:]
         let manager = FileManager.default
@@ -131,8 +123,6 @@ public final class HistoryStore {
             let data = try encoder.encode(entries)
             try data.write(to: url(for: toolID), options: .atomic)
         } catch {
-            // History is a convenience, never load-bearing: a failed write must
-            // not take down the tool the user is in the middle of using.
             NSLog("[Anvil] history write failed for \(toolID): \(error.localizedDescription)")
         }
     }

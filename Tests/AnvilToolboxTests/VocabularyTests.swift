@@ -83,7 +83,6 @@ struct VocabularyCorrectorTests {
 
     @Test
     func leavesShortEverydayWordsAlone() {
-        // "Maus" is four letters, so a balanced run must not turn "Haus" into it.
         let result = correct("Das Haus ist groß", [VocabularyEntry(term: "Maus")])
         #expect(result.text == "Das Haus ist groß")
     }
@@ -143,7 +142,6 @@ struct VocabularyCorrectorTests {
     func normalisationDropsCaseAccentsAndPunctuation() {
         #expect(VocabularyCorrector.normalize("Tool-Registration.") == "toolregistration")
         #expect(VocabularyCorrector.normalize("Café Crème") == "cafe creme")
-        // Both spellings of the same German word have to land on one form.
         #expect(VocabularyCorrector.normalize("Straße") == VocabularyCorrector.normalize("Strasse"))
     }
 

@@ -2,9 +2,6 @@ import AnvilKit
 import SwiftUI
 
 /// The tools that belong to the app itself.
-///
-/// Essential, so the Tool Store can never switch off the very screen you would
-/// need to switch it back on.
 public enum SystemToolBundle: ToolBundle {
     public static let bundleIdentifier = "dev.anvil.system"
     public static let displayName = "System"

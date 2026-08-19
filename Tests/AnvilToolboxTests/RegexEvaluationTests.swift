@@ -81,8 +81,6 @@ struct RegexEvaluationTests {
 
     @Test
     func matchesUnicodeByCharacterNotByByte() throws {
-        // NSRange works in UTF-16 units; the conversion back to String.Index is
-        // what keeps umlauts and emoji from slicing a match in half.
         let result = try evaluate("Grüße", on: "Viele Grüße 👋")
         #expect(result.matches.first?.text == "Grüße")
     }

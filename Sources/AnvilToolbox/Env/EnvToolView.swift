@@ -54,8 +54,6 @@ public struct EnvToolView: View {
                 files.append(EnvFile.read(text, name: uniqueName(name)))
                 added = true
             case let .file(url):
-                // Ein Ordner: Wer ihn hineinzieht, meint die `.env`-Dateien
-                // darin und nicht den Ordner.
                 added = scan(url) || added
             case .image:
                 continue
@@ -81,8 +79,6 @@ public struct EnvToolView: View {
     /// Nimmt jede `.env`-Datei aus einem Ordner mit.
     @discardableResult
     private func scan(_ folder: URL) -> Bool {
-        // Versteckte Dateien müssen mitkommen: `.env` fängt mit einem Punkt
-        // an, und ohne sie wäre der Ordner immer leer.
         let found = FileWalk.shallow(folder, includingHidden: true)
             .filter { $0.lastPathComponent.hasPrefix(".env") || $0.pathExtension == "env" }
             .sorted { $0.lastPathComponent < $1.lastPathComponent }
@@ -197,10 +193,6 @@ public struct EnvToolView: View {
 
             let own = comparison.onlyIn(index)
             if !own.isEmpty {
-                // Erst zusammensetzen, dann einsetzen: Ein Anführungszeichen
-                // innerhalb einer Interpolation beendet für jedes Werkzeug,
-                // das den Quelltext liest, den Text davor — auch für die
-                // Übersetzungsprüfung.
                 let names = own.prefix(6).map(\.key).joined(separator: ", ")
                 Text(.resolved(localized("\(own.count) nur hier: \(names)")))
                     .font(AnvilFont.caption)

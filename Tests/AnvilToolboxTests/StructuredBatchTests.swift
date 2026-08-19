@@ -9,7 +9,6 @@ struct StructuredFormatTests {
     /// Die Endung ist die Auskunft dessen, der die Datei angelegt hat.
     @Test
     func theExtensionDecidesBeforeTheContent() {
-        // Inhalt, den die Inhaltserkennung für TOML halten würde.
         #expect(StructuredFormat.detect(name: "config.yaml", text: "a = 1") == .yaml)
         #expect(StructuredFormat.detect(name: "config.yml", text: "a = 1") == .yaml)
         #expect(StructuredFormat.detect(name: "config.json", text: "a: 1") == .json)
@@ -143,7 +142,6 @@ struct StructuredBatchTests {
         let text = try String(contentsOf: written, encoding: .utf8)
         #expect(text.contains("\"name\""))
         #expect(text.contains("8080"))
-        // Die Quelle bleibt, wie sie war.
         #expect(try String(contentsOf: source, encoding: .utf8) == "name: Anvil\nport: 8080")
 
         try StructuredBatch.revert(outcome.created)

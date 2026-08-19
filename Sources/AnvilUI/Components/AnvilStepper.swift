@@ -2,11 +2,6 @@ import AppKit
 import SwiftUI
 
 /// Eine ganze Zahl einstellen.
-///
-/// SwiftUIs `Stepper` wäre kürzer und sieht im Inspektor falsch aus: winzige
-/// Pfeile, die nicht zur Höhe eines Eingabefelds passen, und der Wert steht
-/// daneben statt darin. Hier ist der Wert das Feld, und die beiden Knöpfe
-/// sitzen darin — dieselbe Höhe wie jedes andere Bedienelement.
 public struct AnvilStepper: View {
     @Binding private var value: Int
     private let range: ClosedRange<Int>
@@ -14,9 +9,6 @@ public struct AnvilStepper: View {
     private let format: (Int) -> String
 
     /// Wie viel ein Klick mit gedrückter Wahltaste zählt.
-    ///
-    /// Ein Bereich bis 10 000 wäre sonst nicht zu bedienen. Zehnfach und nicht
-    /// hundertfach, weil man den Sprung noch überblicken können soll.
     private static let modifierFactor = 10
 
     /// - Parameter format: Wie der Wert dasteht. Standardmäßig die Zahl selbst;
@@ -75,9 +67,6 @@ public struct AnvilStepper: View {
     }
 
     private func change(sign: Int) {
-        // Der Zustand der Wahltaste wird beim Klick gelesen, nicht über eine
-        // Geste verfolgt: eine Geste über einem Knopf schluckt gern den Klick
-        // selbst.
         let factor = NSEvent.modifierFlags.contains(.option) ? Self.modifierFactor : 1
         let next = value + sign * step * factor
         value = min(range.upperBound, max(range.lowerBound, next))

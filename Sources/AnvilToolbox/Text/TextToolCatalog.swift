@@ -3,10 +3,6 @@ import CryptoKit
 import Foundation
 
 /// The deterministic tools Anvil ships with.
-///
-/// Everything here is a pure function over a string. Adding another converter
-/// means adding an entry to this list — no view, no wiring, no registration
-/// boilerplate.
 public enum TextToolCatalog {
     public static var all: [TextTool] {
         [json, base64, urlCoding, jwt, hashes, uuid, timestamps, caseConversion, lines, slug, hex, htmlEntities, statistics]
@@ -59,7 +55,6 @@ public enum TextToolCatalog {
             systemImage: "arrow.left.arrow.right.square",
             category: .coding,
             keywords: ["base64", "encode", "decode", "kodieren", "dekodieren"],
-            // Base64 ist der übliche Weg, Zugangsdaten weiterzureichen.
             handlesSecrets: true,
             modes: [
                 TextToolMode(id: "encode", title: "Kodieren", systemImage: "lock") { input in
@@ -134,7 +129,6 @@ public enum TextToolCatalog {
             category: .coding,
             keywords: ["jwt", "token", "jose", "claims", "auth"],
             placeholder: "eyJhbGciOi…",
-            // Ein JWT ist immer ein Token — auch das abgelaufene aus dem Test.
             handlesSecrets: true,
             modes: [
                 TextToolMode(id: "decode", title: "Dekodieren", systemImage: "eye") { input in
@@ -170,7 +164,6 @@ public enum TextToolCatalog {
                 "hash", "md5", "sha", "checksum", "prüfsumme", "digest",
                 "datei", "download", "verifizieren", "integrität"
             ],
-            // Prüfsummen rechnet man oft über Passwörter.
             handlesSecrets: true,
             modes: [
                 TextToolMode(
@@ -264,7 +257,6 @@ public enum TextToolCatalog {
                     guard !trimmed.isEmpty else { return describeDate(.now) }
 
                     if let seconds = Double(trimmed) {
-                        // Values this large are milliseconds, not seconds.
                         let date = Date(timeIntervalSince1970: seconds > 100_000_000_000 ? seconds / 1000 : seconds)
                         return describeDate(date)
                     }
@@ -365,7 +357,6 @@ public enum TextToolCatalog {
             systemImage: "number.circle",
             category: .coding,
             keywords: ["hex", "hexadezimal", "bytes", "dump"],
-            // Wie Base64: der Inhalt kann alles sein, auch ein Schlüssel.
             handlesSecrets: true,
             modes: [
                 TextToolMode(id: "encode", title: "Nach Hex") { input in

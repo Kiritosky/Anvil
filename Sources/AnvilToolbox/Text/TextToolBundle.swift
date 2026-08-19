@@ -2,9 +2,6 @@ import AnvilKit
 import SwiftUI
 
 /// Every deterministic converter, registered from ``TextToolCatalog``.
-///
-/// The bundle is three lines because the catalog does the work — which is the
-/// point of the generic engine.
 public enum TextToolBundle: ToolBundle {
     public static let bundleIdentifier = "dev.anvil.text"
     public static let displayName = "Text & Daten"
@@ -16,8 +13,6 @@ public enum TextToolBundle: ToolBundle {
                 TextToolView(tool: tool, context: context)
             }
         }
-        // Two tools do not fit the one-input/one-output shape: a regex needs a
-        // pattern *and* a subject, a comparison needs two texts.
         return converters + [regexTester, textComparison, readability]
     }
 

@@ -97,9 +97,6 @@ public struct ArchiveToolView: View {
     }
 
     /// Archive und alles andere aus einem Dialog holen.
-    ///
-    /// Ordner dürfen mit, weil beides in dieselbe Liste gehört: Was ein
-    /// Archiv ist, wird entpackt, alles andere eingepackt.
     private func choose() {
         let urls = SavePanel.files(
             prompt: localized("Hinzufügen"),
@@ -118,10 +115,6 @@ public struct ArchiveToolView: View {
     // MARK: - Hineinsehen
 
     /// Liest die Verzeichnisse der genannten Archive.
-    ///
-    /// Eines nach dem anderen statt alle gleichzeitig: Jedes ist ein eigener
-    /// Prozess, und dreißig davon auf einmal machen die Platte nicht
-    /// schneller — dafür sieht man zwischendurch, dass etwas passiert.
     private func inspect(_ urls: [URL]) {
         guard !urls.isEmpty else { return }
         Task {
@@ -200,8 +193,6 @@ public struct ArchiveToolView: View {
             note = localized("\(written.count) Archive geschrieben.")
             NSWorkspace.shared.activateFileViewerSelecting(written)
 
-            // Was gerade gepackt wurde, gehört in die Liste: Der nächste
-            // Griff ist meistens, hineinzusehen, ob auch alles drin ist.
             add(written)
         }
     }

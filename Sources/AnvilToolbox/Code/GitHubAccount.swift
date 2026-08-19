@@ -2,16 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Die Verbindung zu GitHub.
-///
-/// Öffentliche Repositories lassen sich ohne alles klonen. Für die eigenen
-/// privaten braucht es einen Zugang — und dafür ein persönliches Token statt
-/// eines Anmeldefensters: Anvil ist keine registrierte OAuth-Anwendung, und
-/// ein Token lässt sich mit einem Klick wieder zurückziehen.
-///
-/// Das Token liegt im Schlüsselbund und nirgends sonst. Es steht in keiner
-/// Einstellungsdatei, in keinem Verlauf und in keiner Prozesszeile: Beim
-/// Klonen geht es über die Umgebung an `git`, nicht als Argument — Argumente
-/// stehen für jeden sichtbar in der Prozessliste.
 public struct GitHubAccount: Sendable {
     private let keychain: KeychainStore
 
@@ -35,11 +25,6 @@ public struct GitHubAccount: Sendable {
     }
 
     /// Die Umgebung, mit der `git` das Token benutzt, ohne es preiszugeben.
-    ///
-    /// `GIT_CONFIG_COUNT` setzt eine Einstellung nur für diesen einen Aufruf.
-    /// Sie landet damit weder in der Konfiguration des Klons noch in der
-    /// Prozesszeile — anders als ein Token in der URL, das in `.git/config`
-    /// stehen bliebe und beim nächsten `git remote -v` jedem entgegenspringt.
     public static func environment(for token: String) -> [String: String] {
         var environment = ProcessInfo.processInfo.environment
         let value = "Basic " + Data("x-access-token:\(token)".utf8).base64EncodedString()
@@ -48,8 +33,6 @@ public struct GitHubAccount: Sendable {
         environment["GIT_CONFIG_KEY_0"] = "http.https://github.com/.extraheader"
         environment["GIT_CONFIG_VALUE_0"] = "Authorization: \(value)"
 
-        // Ohne das wartet `git` bei einem falschen Token auf ein Passwort,
-        // das niemand eingeben kann — die App hat kein Terminal.
         environment["GIT_TERMINAL_PROMPT"] = "0"
         environment["GIT_ASKPASS"] = "/usr/bin/true"
         environment["SSH_ASKPASS"] = "/usr/bin/true"
@@ -105,11 +88,6 @@ public struct GitHubRepository: Sendable, Hashable, Identifiable {
     // MARK: - Lesen
 
     /// Liest die Antwort von `GET /user/repos`.
-    ///
-    /// Von Hand statt über `Codable`, weil die Antwort dreißig Felder je
-    /// Repository hat und Anvil sechs davon braucht. Ein `Codable`-Typ, der
-    /// vierundzwanzig Felder aufzählt, um sie zu ignorieren, ist keine
-    /// Beschreibung, sondern Ballast.
     public static func list(_ json: Data) throws -> [GitHubRepository] {
         guard let array = try JSONSerialization.jsonObject(with: json) as? [[String: Any]] else {
             throw AnvilError.invalidInput(localized("GitHub hat keine Liste geschickt."))
@@ -131,10 +109,6 @@ public struct GitHubRepository: Sendable, Hashable, Identifiable {
     }
 
     /// Was jemand in ein Feld tippt, als `owner/repo`.
-    ///
-    /// Angenommen wird beides: die Adresse aus der Adresszeile und die
-    /// Kurzform. Wer ein Repository sucht, hat meistens die URL im
-    /// Zwischenspeicher und nicht den Namen im Kopf.
     public static func fullName(from text: String) -> String? {
         var value = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !value.isEmpty else { return nil }

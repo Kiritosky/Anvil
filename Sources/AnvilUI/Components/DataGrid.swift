@@ -1,14 +1,6 @@
 import SwiftUI
 
 /// Eine Tabelle aus Zeichenketten.
-///
-/// Bewusst nicht SwiftUIs `Table`: die will ihre Spalten zur Übersetzungszeit
-/// kennen. Hier stehen sie erst zur Laufzeit fest — sie kommen aus einer
-/// Datei, die jemand hineinzieht.
-///
-/// Kopfzeile und Daten liegen im selben Rollbereich, damit sie beim seitlichen
-/// Rollen zusammenbleiben; `pinnedViews` hält den Kopf beim senkrechten Rollen
-/// oben fest.
 public struct DataGrid: View {
     private let header: [String]
     private let rows: [[String]]
@@ -115,8 +107,6 @@ public struct DataGrid: View {
             }
         }
         .frame(height: AnvilSize.tableRowHeight)
-        // Jede zweite Zeile getönt: über zehn Spalten hinweg verliert man ohne
-        // die Führung die Zeile.
         .background(number.isMultiple(of: 2) ? AnvilColor.surface : Color.clear)
     }
 }

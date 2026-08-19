@@ -3,12 +3,6 @@ import Foundation
 import FoundationModels
 
 /// Apple's on-device model.
-///
-/// The default everywhere in Anvil: nothing leaves the Mac, there is no API key
-/// to manage, and it is free to call. Its limits are real though — a small
-/// context window and no knowledge of anything outside the prompt — which is
-/// why tools chunk long input and why the router can fall back to a remote
-/// provider when the user has configured one.
 public struct FoundationModelsProvider: AIProvider {
     public let identifier = AIProviderIdentifier.foundationModels
     public let displayName = "Apple Intelligence (on-device)"
@@ -58,8 +52,6 @@ public struct FoundationModelsProvider: AIProvider {
                         to: request.prompt,
                         options: Self.generationOptions(for: request.options)
                     )
-                    // Snapshots are cumulative, which is exactly the contract
-                    // `AIProvider.stream` promises its callers.
                     for try await snapshot in stream {
                         try Task.checkCancellation()
                         continuation.yield(snapshot.content)
@@ -81,10 +73,6 @@ public struct FoundationModelsProvider: AIProvider {
     }
 
     /// Turns a Foundation Models error into something a user can act on.
-    ///
-    /// The framework's error cases are matched on their description rather than
-    /// by pattern: this file should keep compiling across framework revisions,
-    /// and a slightly generic message beats a build failure.
     private static func mapped(_ error: any Error) -> AnvilError {
         if error is CancellationError { return .cancelled }
 

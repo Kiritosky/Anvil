@@ -1,21 +1,9 @@
 import Foundation
 
 /// Dateien, die es nur gibt, weil etwas den Rechner verlässt.
-///
-/// Wer ein Ergebnis in den Finder zieht, erwartet dort eine Datei mit einem
-/// vernünftigen Namen — und nicht, dass Anvil ihm dafür vorher einen
-/// Speicherort abringt. Also entsteht die Datei im temporären Verzeichnis, und
-/// wo sie am Ende landet, entscheidet das Ziel des Zugs.
 public enum ExportFile {
     /// Aus einem beliebigen Text ein Dateiname, den das Dateisystem annimmt.
-    ///
-    /// Der Name kommt aus Inhalten — der ersten Zeile eines Ergebnisses, dem
-    /// Text hinter einem QR-Code — und darf deshalb alles enthalten:
-    /// Schrägstriche, Zeilenumbrüche, tausend Zeichen, oder gar nichts.
     public static func sanitize(_ name: String, fallback: String = "Anvil") -> String {
-        // Der Schrägstrich trennt auf Unix-Ebene Pfade, der Doppelpunkt tut es
-        // im Finder. Steuerzeichen sind erlaubt, ergeben aber Namen, die man
-        // im Terminal nicht mehr tippen kann.
         let forbidden = CharacterSet(charactersIn: "/:\\").union(.controlCharacters)
 
         let collapsed = name
@@ -25,8 +13,6 @@ public enum ExportFile {
             .filter { !$0.isEmpty }
             .joined(separator: " ")
 
-        // Ein Name, der mit einem Punkt beginnt, ist auf dem Mac unsichtbar —
-        // eine unsichtbare Datei auf dem Schreibtisch ist keine Hilfe.
         var trimmed = collapsed.trimmingCharacters(in: CharacterSet(charactersIn: "."))
         if trimmed.count > 80 {
             trimmed = String(trimmed.prefix(80)).trimmingCharacters(in: .whitespaces)
@@ -35,12 +21,6 @@ public enum ExportFile {
     }
 
     /// Ein Pfad in `directory`, den es noch nicht gibt.
-    ///
-    /// Bei einem Stapel ist das keine Feinheit: Wer dreißig Bilder in einen
-    /// Ordner legt, in dem schon welche liegen, würde sonst welche
-    /// überschreiben — und merkt es erst, wenn das Original weg ist. Statt zu
-    /// fragen oder zu überschreiben wird durchnummeriert, wie der Finder es
-    /// auch tut.
     public static func uniqueURL(
         in directory: URL,
         named name: String,
@@ -52,8 +32,6 @@ public enum ExportFile {
             return candidate
         }
 
-        // Bei 2 anfangen, weil „Bild 2" nach „Bild" die Zählung ist, die jeder
-        // erwartet — nicht „Bild 1".
         for number in 2...999 {
             let next = directory.appending(path: "\(base) \(number).\(pathExtension)")
             if !FileManager.default.fileExists(atPath: next.path(percentEncoded: false)) {
@@ -61,18 +39,11 @@ public enum ExportFile {
             }
         }
 
-        // Tausend gleichnamige Dateien sind kein Ordner mehr, sondern ein
-        // Versehen. Dann entscheidet die Uhr.
         let stamp = Int(Date().timeIntervalSince1970)
         return directory.appending(path: "\(base) \(stamp).\(pathExtension)")
     }
 
     /// Dasselbe für einen Ordner, der angelegt werden soll.
-    ///
-    /// Ein eigener Weg statt ``uniqueURL(in:named:extension:)`` mit leerer
-    /// Endung: Ein Ordner heißt „Projekt 2" und nicht „Projekt 2." — und ein
-    /// Punkt am Ende ist genau die Sorte Namensfehler, die man erst im
-    /// Terminal bemerkt.
     public static func uniqueFolderURL(in directory: URL, named name: String) -> URL {
         let base = sanitize(name)
         let manager = FileManager.default
@@ -90,10 +61,6 @@ public enum ExportFile {
     }
 
     /// Legt eine Datei zum Herausziehen an und gibt zurück, wo sie liegt.
-    ///
-    /// Jeder Export bekommt einen eigenen Unterordner. Ohne den würde ein
-    /// zweiter Zug mit demselben Namen den ersten überschreiben — während der
-    /// erste vielleicht noch kopiert wird.
     public static func temporary(
         named name: String,
         extension pathExtension: String,

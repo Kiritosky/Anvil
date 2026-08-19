@@ -3,9 +3,6 @@ import AnvilUI
 import SwiftUI
 
 /// Shows which model is answering, and whether it is doing so on this Mac.
-///
-/// Every AI tool puts this in its status bar. It is the app's privacy readout:
-/// teal laptop means nothing left the machine, blue cloud means it did.
 public struct ModelStatusPill: View {
     @Environment(AIRouter.self) private var router: AIRouter?
 

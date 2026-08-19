@@ -1,10 +1,6 @@
 import SwiftUI
 
 /// The thin strip at the bottom of a tool.
-///
-/// Holds counts, timings, the active model and errors — the things a user
-/// glances at but never clicks. Keeping them here stops that information from
-/// competing with the tool's actual content.
 public struct ToolStatusBar<Leading: View, Trailing: View>: View {
     private let leading: Leading
     private let trailing: Trailing

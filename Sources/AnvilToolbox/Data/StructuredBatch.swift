@@ -2,15 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Viele Konfigurationsdateien auf einmal umwandeln.
-///
-/// Der Anlass ist immer derselbe: Ein Projekt zieht von YAML nach TOML um, oder
-/// eine Werkzeugkette will JSON, wo bisher YAML lag. Einzeln ist das eine
-/// Viertelstunde Copy-and-paste, bei der man in der zwölften Datei nicht mehr
-/// hinsieht.
-///
-/// Wie beim Umbenennen und beim Ersetzen: erst der Plan, dann die Tat. Der
-/// Plan sagt vorher, welche Datei wohin geschrieben würde und welche im Weg
-/// steht.
 public struct StructuredBatch: Sendable {
     /// Warum eine Datei nicht geschrieben wird.
     public enum Problem: Sendable, Hashable {
@@ -86,10 +77,6 @@ public struct StructuredBatch: Sendable {
     // MARK: - Planen
 
     /// Baut den Plan aus Name und Inhalt — der Teil ohne Dateisystem.
-    ///
-    /// - Parameter existing: Welche Zielpfade es schon gibt. Ohne diese
-    ///   Auskunft kann der Plan nicht sehen, dass er etwas überschreiben
-    ///   würde — und das fällt sonst erst auf, wenn es passiert ist.
     public init(
         files: [(url: URL, text: String)],
         target: StructuredFormat,
@@ -140,7 +127,6 @@ public struct StructuredBatch: Sendable {
             }
         }
 
-        // Was am Ziel schon liegt, wird einmal für alle nachgesehen.
         let manager = FileManager.default
         let destinations = files.map {
             $0.url.deletingPathExtension().appendingPathExtension(target.fileExtension).path
@@ -183,10 +169,6 @@ public struct StructuredBatch: Sendable {
     }
 
     /// Schreibt die umgewandelten Dateien neben die Quellen.
-    ///
-    /// Die Quelldateien bleiben unangetastet. Eine Umwandlung, die das
-    /// Original wegnimmt, wäre nicht rückgängig zu machen, sobald jemand die
-    /// neue Datei einmal angefasst hat.
     @discardableResult
     public func execute() throws -> Outcome {
         guard isReady else {
@@ -206,9 +188,6 @@ public struct StructuredBatch: Sendable {
     }
 
     /// Nimmt zurück, was ``execute()`` angelegt hat.
-    ///
-    /// Gelöscht wird nur, was in diesem Durchgang entstanden ist — eine Datei,
-    /// die vorher schon da war, kam nie in die Liste.
     public static func revert(_ created: [URL]) throws {
         for url in created {
             try FileManager.default.removeItem(at: url)

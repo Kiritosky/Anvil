@@ -5,13 +5,6 @@ import Foundation
 
 extension MarkdownDocument {
     /// Das Dokument als HTML.
-    ///
-    /// Kein vollständiger CommonMark-Renderer — bewusst nicht. Abgedeckt ist,
-    /// was in Notizen, Berichten und READMEs tatsächlich vorkommt:
-    /// Überschriften, Absätze, Listen samt Aufgabenhaken, Zitate, Codeblöcke,
-    /// Tabellen, Trennlinien und die üblichen Auszeichnungen im Fließtext.
-    /// Was darüber hinausgeht, bleibt als Text stehen statt falsch gedeutet zu
-    /// werden.
     public var html: String {
         var blocks: [String] = []
         var paragraph: [String] = []
@@ -27,7 +20,6 @@ extension MarkdownDocument {
             let line = lines[index]
             let trimmed = line.trimmingCharacters(in: .whitespaces)
 
-            // Codeblock: alles darin bleibt, wie es ist.
             if Self.isFence(trimmed) {
                 flushParagraph()
                 let marker = trimmed.first ?? "`"
@@ -71,9 +63,6 @@ extension MarkdownDocument {
                 continue
             }
 
-            // Titel mit `===` oder `---` darunter. Steht hier und nicht bei
-            // der Trennlinie, weil die Zeile darüber entscheidet, was `---`
-            // bedeutet.
             if index + 1 < lines.count, paragraph.isEmpty {
                 let below = lines[index + 1].trimmingCharacters(in: .whitespaces)
                 if below.count >= 2, below.allSatisfy({ $0 == "=" }) {
@@ -127,8 +116,6 @@ extension MarkdownDocument {
     }
 
     private static func headingHTML(level: Int, text: String) -> String {
-        // Der Anker steht als `id` daran, damit ein Inhaltsverzeichnis aus
-        // demselben Dokument im erzeugten HTML auch wirklich springt.
         "<h\(level) id=\"\(escape(anchor(for: text)))\">\(inline(text))</h\(level)>"
     }
 
@@ -175,7 +162,6 @@ extension MarkdownDocument {
             let trimmed = lines[index].trimmingCharacters(in: .whitespaces)
             guard let marker = listMarker(trimmed) else { break }
             if index == start { isOrdered = marker.isOrdered }
-            // Eine Nummernliste hört auf, wo eine Strichliste anfängt.
             guard marker.isOrdered == isOrdered else { break }
 
             if let done = taskMarker(trimmed) {
@@ -192,8 +178,6 @@ extension MarkdownDocument {
         }
 
         let tag = isOrdered ? "ol" : "ul"
-        // Eine Aufgabenliste bekommt ihre eigene Klasse, damit die Punkte vor
-        // den Haken wegfallen können.
         let attribute = hasTasks ? " class=\"task-list\"" : ""
         let html = "<\(tag)\(attribute)>\n" + items.joined(separator: "\n") + "\n</\(tag)>"
         return (html, index)
@@ -283,11 +267,6 @@ extension MarkdownDocument {
     }
 
     /// Eine Zeile Fließtext als HTML.
-    ///
-    /// Code-Schnipsel werden zuerst herausgeschnitten. Ohne das würde aus
-    /// `` `**nicht fett**` `` fetter Text — und ein Werkzeug, das den Inhalt
-    /// eines Code-Schnipsels auslegt, ist an genau der Stelle unbrauchbar, an
-    /// der man es braucht.
     static func inline(_ text: String) -> String {
         var result = ""
         var rest = Substring(text)
@@ -296,8 +275,6 @@ extension MarkdownDocument {
             result += emphasise(escape(String(rest[rest.startIndex..<open])))
             let after = rest.index(after: open)
             guard let close = rest[after...].firstIndex(of: "`") else {
-                // Ein einzelnes Backtick ist keine Auszeichnung, sondern ein
-                // Zeichen.
                 result += escape(String(rest[open...]))
                 return result
             }
@@ -309,10 +286,6 @@ extension MarkdownDocument {
     }
 
     /// Bilder, Links, fett, kursiv, durchgestrichen.
-    ///
-    /// Die Reihenfolge trägt Bedeutung: Bilder vor Links, weil ein Bild ein
-    /// Link mit `!` davor ist; doppelte Zeichen vor einfachen, weil `**` sonst
-    /// als zwei mal kursiv gelesen würde.
     static func emphasise(_ escaped: String) -> String {
         var text = escaped
         for rule in emphasisRules {
@@ -333,15 +306,10 @@ extension MarkdownDocument {
         (#"(?<![A-Za-z0-9])__([^_]+)__(?![A-Za-z0-9])"#, "<strong>$1</strong>"),
         (#"~~([^~]+)~~"#, "<del>$1</del>"),
         (#"\*([^*]+)\*"#, "<em>$1</em>"),
-        // Unterstriche mitten in einem Bezeichner sind keine Auszeichnung:
-        // `max_size_limit` soll `max_size_limit` bleiben.
         (#"(?<![A-Za-z0-9_])_([^_]+)_(?![A-Za-z0-9_])"#, "<em>$1</em>")
     ]
 
     /// Eine vollständige Seite, nicht nur der Rumpf.
-    ///
-    /// Mit Stil im Dokument selbst, weil eine Datei, die nur mit einer zweiten
-    /// Datei aussieht wie gedacht, keine Datei ist, die man weitergibt.
     public func htmlPage(title: String = "") -> String {
         let heading = title.isEmpty ? (headings.first?.text ?? localized("Dokument")) : title
         return """

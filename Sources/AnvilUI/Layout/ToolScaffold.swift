@@ -2,23 +2,6 @@ import AnvilKit
 import SwiftUI
 
 /// The frame every tool is built in.
-///
-/// A tool supplies three things and gets a consistent screen for free: the
-/// header (icon, title, subtitle), a content area, an optional inspector column
-/// on the right for options, and optional header actions.
-///
-/// ```swift
-/// ToolScaffold(metadata: metadata) {
-///     ToolWorkbench(orientation: $orientation) { input } secondary: { output } status: { … }
-/// } inspector: {
-///     InspectorSection("Stil") { … }
-/// } actions: {
-///     AnvilButton("Ausführen", systemImage: "play.fill", role: .primary) { run() }
-/// }
-/// ```
-///
-/// Tools never draw their own header, never pick their own page margins, and
-/// never invent a second place to put options. That is the whole point.
 public struct ToolScaffold<Content: View, Inspector: View, Actions: View>: View {
     @Environment(\.anvilTheme) private var theme
 

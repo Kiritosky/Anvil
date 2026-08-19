@@ -6,10 +6,6 @@ import Speech
 import SwiftUI
 
 /// One thing the system can let Anvil do, or not.
-///
-/// In one place because two screens ask the same questions: the settings pane
-/// and the first-run introduction. Two copies of "is the microphone allowed"
-/// would drift the day one of them learns something the other does not.
 enum SystemPermission: String, CaseIterable, Identifiable {
     case microphone
     case speech
@@ -19,10 +15,6 @@ enum SystemPermission: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 
     /// Where the permission stands.
-    ///
-    /// Three answers, not two: "not asked yet" is a different problem from
-    /// "denied", and only the first can be resolved from inside the app —
-    /// after a refusal the system dialog never appears again.
     enum Status {
         case granted
         case denied
@@ -103,7 +95,6 @@ enum SystemPermission: String, CaseIterable, Identifiable {
             default: .denied
             }
         case .screenRecording:
-            // No "not asked" here: the system only ever answers yes or no.
             CGPreflightScreenCaptureAccess() ? .granted : .denied
         case .accessibility:
             PasteService.isTrusted ? .granted : .denied

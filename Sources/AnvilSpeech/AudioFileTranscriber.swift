@@ -5,10 +5,6 @@ import Observation
 import Speech
 
 /// Transcribes an audio file that already exists.
-///
-/// Same analyser as the live path, fed from disk instead of the microphone.
-/// Reading the file in blocks rather than all at once keeps memory flat for
-/// hour-long recordings and gives progress worth showing.
 @MainActor
 @Observable
 public final class AudioFileTranscriber {
@@ -72,7 +68,6 @@ public final class AudioFileTranscriber {
                     }
                 }
             } catch {
-                // Handled by the throw from `finalizeAndFinishThroughEndOfInput`.
             }
         }
 

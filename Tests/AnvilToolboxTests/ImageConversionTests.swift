@@ -14,9 +14,6 @@ struct ImageConversionTests {
         image.lockFocus()
         NSColor.systemTeal.setFill()
         NSRect(x: 0, y: 0, width: width, height: height).fill()
-        // Etwas Struktur, damit ein verlustbehaftetes Format überhaupt etwas
-        // zu tun hat — eine einfarbige Fläche komprimiert jedes Verfahren
-        // gleich gut, und der Test würde nichts aussagen.
         NSColor.black.setFill()
         NSRect(x: 0, y: 0, width: width / 2, height: height / 3).fill()
         image.unlockFocus()
@@ -54,7 +51,6 @@ struct ImageConversionTests {
 
     @Test
     func longestEdgeUsesTheActualLongerSide() {
-        // Hochkant: die Höhe ist die längere Kante.
         let result = ImageConversion.targetSize(
             for: CGSize(width: 1500, height: 3000),
             scale: .longestEdge,

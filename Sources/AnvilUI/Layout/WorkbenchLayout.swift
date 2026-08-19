@@ -31,10 +31,6 @@ public enum WorkbenchOrientation: String, Codable, CaseIterable, Sendable, Ident
 }
 
 /// Two resizable panes: input on one side, result on the other.
-///
-/// This is the shape most tools take — paste something, get something back —
-/// so it is a layout primitive rather than something each tool reinvents. The
-/// split position is draggable and remembered per tool.
 public struct WorkbenchLayout<Primary: View, Secondary: View>: View {
     @Binding private var orientation: WorkbenchOrientation
     private let storageKey: String?
@@ -167,9 +163,6 @@ public struct WorkbenchLayout<Primary: View, Secondary: View>: View {
 }
 
 /// The control that flips a workbench between side-by-side and stacked.
-///
-/// Lives in the tool's header actions, so the toggle sits in the same spot in
-/// every tool that has one.
 public struct WorkbenchOrientationPicker: View {
     @Binding private var orientation: WorkbenchOrientation
 

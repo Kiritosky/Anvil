@@ -26,9 +26,6 @@ struct RootView: View {
             OnboardingView()
         }
         .anvilWindowFrame(autosaveName: "anvil.main")
-        // Ein Werkzeug legt etwas für ein anderes bereit; erst hier wird
-        // daraus ein Wechsel. Damit muss kein Werkzeug wissen, wie navigiert
-        // wird.
         .onChange(of: environment.handoff.lastTarget) {
             environment.followHandoff()
         }
@@ -38,8 +35,6 @@ struct RootView: View {
     private var detail: some View {
         if let tool = environment.selectedTool {
             tool.makeView(context: environment.context)
-                // Rebuilds the tool when the selection changes, so two tools
-                // never share the state SwiftUI would otherwise reuse.
                 .id(tool.id)
         } else {
             StartView()

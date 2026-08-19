@@ -175,7 +175,6 @@ struct ToolRegistryTests {
 
         #expect(registry.quickAccessTools.count == ToolRegistry.quickAccessLimit)
         #expect(registry.quickAccessShortcuts.count == ToolRegistry.quickAccessLimit)
-        // Was hinten abgeschnitten wird, ist auch nirgends angeschrieben.
         #expect(registry.quickAccessShortcuts[ToolIdentifier("t11")] == nil)
     }
 

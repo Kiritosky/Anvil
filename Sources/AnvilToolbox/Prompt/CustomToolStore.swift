@@ -2,10 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Loads user-written tools from disk.
-///
-/// A tool is one JSON file in `~/Library/Application Support/Anvil/Tools`. No
-/// build step, no plug-in bundle, no signing — which is the only way "add your
-/// own tool" is realistically going to happen on a Tuesday evening.
 @MainActor
 public final class CustomToolStore: ToolLibraryReloading {
     public static let bundleIdentifier = "dev.anvil.user"
@@ -45,8 +41,6 @@ public final class CustomToolStore: ToolLibraryReloading {
                 let origin = ToolOrigin.userDefined(fileURL: file)
                 registrations.append(AIToolBundle.registration(for: tool, origin: origin))
             } catch {
-                // One malformed file must not take the rest of the folder down
-                // with it; the Tool Store shows what failed and why.
                 lastLoadErrors.append("\(file.lastPathComponent): \(error.localizedDescription)")
             }
         }
@@ -56,9 +50,6 @@ public final class CustomToolStore: ToolLibraryReloading {
     }
 
     /// Drops a documented example into an empty folder.
-    ///
-    /// Discovering that user tools exist at all is the hard part; a file that is
-    /// already there and already works is the cheapest possible tutorial.
     private func writeExampleIfEmpty() {
         let existing = (try? FileManager.default.contentsOfDirectory(
             at: directory,

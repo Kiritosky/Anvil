@@ -2,10 +2,6 @@ import AnvilKit
 import Foundation
 
 /// One thing a text tool can do — "Formatieren", "Dekodieren", "SHA-256".
-///
-/// A mode is a pure function. That is what lets the whole class of converter
-/// tools share a single view, run live as you type, and be tested without a
-/// window in sight.
 public struct TextToolMode: Identifiable, Sendable {
     public let id: String
     public let title: String
@@ -14,15 +10,6 @@ public struct TextToolMode: Identifiable, Sendable {
     /// with a message the user can act on.
     public let run: @Sendable (String) throws -> String
     /// Dasselbe für Dateien, wo das etwas anderes ist als für ihren Text.
-    ///
-    /// Eine Prüfsumme ist der Fall, für den es das gibt: die eines Downloads
-    /// rechnet sich über dessen Bytes, und die Datei ist zu groß, um sie
-    /// vorher in eine Zeichenkette zu verwandeln. Fehlt die Funktion, nimmt
-    /// das Werkzeug keine Dateien an.
-    ///
-    /// Die Liste ist der Normalfall, nicht die Ausnahme: Wer Prüfsummen
-    /// braucht, hat selten genau eine Datei, sondern den Inhalt eines
-    /// Download-Ordners.
     public let runOnFiles: (@Sendable ([URL]) throws -> String)?
 
     public init(
@@ -55,11 +42,6 @@ public struct TextTool: Sendable {
     /// Tools like "UUID erzeugen" produce output without any input.
     public let generatesWithoutInput: Bool
     /// Ob dieses Werkzeug seinem Wesen nach mit Geheimnissen umgeht.
-    ///
-    /// Was hier steht, wird nie gemerkt — unabhängig davon, wie harmlos der
-    /// Text im Einzelfall aussieht. Bei einem JWT-Werkzeug ist die Eingabe
-    /// immer ein Token, auch wenn keine Prüfung der Welt es erkennt, und wer
-    /// eine Prüfsumme rechnet, tut das oft über ein Passwort.
     public let handlesSecrets: Bool
 
     public init(

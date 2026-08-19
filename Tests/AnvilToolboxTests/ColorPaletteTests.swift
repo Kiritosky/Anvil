@@ -54,7 +54,6 @@ struct ColorPaletteTests {
 
     @Test
     func aLineWithBothIsReadFromTheRight() {
-        // „blau" ist ein bekannter Name — trotzdem gewinnt die Angabe hinten.
         let palette = ColorPalette("blau #FF0000")
         #expect(palette.entries[0].color?.hex == "#FF0000")
     }

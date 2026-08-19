@@ -2,10 +2,6 @@ import AnvilKit
 import Foundation
 
 /// A remote endpoint that speaks the OpenAI chat-completions protocol.
-///
-/// One implementation covers OpenAI, Ollama, LM Studio, OpenRouter and most
-/// company gateways — they differ only in base URL, model name and whether a
-/// key is required.
 public struct OpenAICompatibleProvider: AIProvider {
     public let identifier = AIProviderIdentifier.openAICompatible
     public var displayName: String { configuration.presetName }
@@ -24,8 +20,6 @@ public struct OpenAICompatibleProvider: AIProvider {
         self.configuration = configuration
         self.apiKey = apiKey
         self.session = session
-        // A local Ollama or LM Studio still runs on this Mac — the privacy
-        // badge should say so rather than lumping it in with the cloud.
         self.runsOnDevice = configuration.isLocalEndpoint
     }
 

@@ -6,9 +6,6 @@ import Foundation
 import Observation
 
 /// Everything the app owns, wired together once at launch.
-///
-/// This is the only place that knows the full list of tool bundles. Adding a
-/// bundle is one line here; nothing else in the shell changes.
 @MainActor
 @Observable
 public final class AppEnvironment {
@@ -90,8 +87,6 @@ public final class AppEnvironment {
         clipboard.syncWatching()
         isOnboardingOpen = !settings[.hasSeenOnboarding]
 
-        // A shot taken by shortcut, with the window closed, should be the
-        // thing on screen the next time the window opens.
         screenshots.onCaptured = { [weak self] _ in
             guard let self, self.registry.isActive(ScreenshotToolBundle.toolID) else { return }
             self.selectedToolID = ScreenshotToolBundle.toolID
@@ -99,9 +94,6 @@ public final class AppEnvironment {
     }
 
     /// The tool bundles the app ships with, in sidebar order.
-    ///
-    /// Welche das sind, weiß ``Toolbox`` — dort lässt sich der Werkzeugkasten
-    /// als Ganzes prüfen, ohne die App zu starten.
     private func registerBundles() {
         for bundle in Toolbox.bundles {
             registry.register(bundle: bundle)
@@ -109,10 +101,6 @@ public final class AppEnvironment {
     }
 
     /// Everything that can be triggered by a key combination.
-    ///
-    /// Declared here rather than by the tools themselves: a global shortcut has
-    /// to work while its tool is closed, so what it calls has to be owned by
-    /// the app.
     private func registerShortcutActions() {
         shortcuts.register([
             ShortcutAction(
@@ -159,10 +147,6 @@ public final class AppEnvironment {
     }
 
     /// Öffnet das Werkzeug, an das zuletzt etwas weitergereicht wurde.
-    ///
-    /// Das Weiterreichen selbst kennt die Shell nicht — ein Werkzeug legt
-    /// etwas bereit, und erst hier wird daraus ein Fensterwechsel. Sonst
-    /// müsste jedes Werkzeug wissen, wie man navigiert.
     public func followHandoff() {
         guard let target = handoff.lastTarget else { return }
         handoff.clearTarget()

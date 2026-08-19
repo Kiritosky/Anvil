@@ -2,15 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Mehrere `.env`-Dateien nebeneinander.
-///
-/// Die Frage, die man wirklich hat, lautet nie „was steht in dieser Datei",
-/// sondern „was steht in der einen und in der anderen nicht". Sie kostet sonst
-/// zwei offene Fenster und einen langen Blick — und beantwortet ist sie erst,
-/// wenn etwas in der Produktion fehlt.
-///
-/// Werte werden dabei nirgends angezeigt und nirgends abgelegt. Ob zwei Werte
-/// gleich sind, lässt sich sagen, ohne sie zu zeigen; und mehr will man von
-/// einem Zugangsschlüssel auch nicht wissen.
 public struct EnvComparison: Sendable {
     public let files: [EnvFile]
 
@@ -78,9 +69,6 @@ public struct EnvComparison: Sendable {
                 guard let value else { return .missing }
                 return value.isEmpty ? .empty : .set
             }
-            // Verglichen wird nur, wo etwas steht: Eine fehlende Zeile ist
-            // kein Unterschied im Wert, sondern ein fehlender Schlüssel —
-            // und das steht schon in der Spalte daneben.
             let present = values.compactMap { $0 }
             return Row(
                 key: key,
@@ -156,9 +144,6 @@ public struct EnvComparison: Sendable {
     }
 
     /// Der Vergleich als Text — ohne einen einzigen Wert darin.
-    ///
-    /// Genau das macht ihn brauchbar: Er lässt sich in ein Ticket kleben,
-    /// ohne dass jemand hinterher Zugangsdaten aus einem Ticket löschen muss.
     public func report(_ filter: Filter = .all) -> String {
         let header = reportColumns.joined(separator: "\t")
         return ([header] + rows(filter).map { $0.joined(separator: "\t") })
@@ -166,10 +151,6 @@ public struct EnvComparison: Sendable {
     }
 
     /// Die fehlenden Zeilen, fertig zum Einfügen — mit leerem Wert.
-    ///
-    /// Ohne Wert, weil Anvil ihn nicht kennen kann und raten hier der
-    /// schlechteste aller Wege wäre. Was fehlt, ist der Schlüssel; was
-    /// dahinter gehört, weiß nur der Mensch.
     public func missingLines(for index: Int) -> String {
         guard files.indices.contains(index) else { return "" }
         return rows

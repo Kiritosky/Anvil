@@ -1,9 +1,6 @@
 import Foundation
 
 /// Everything needed to reach a remote (or locally hosted) model endpoint.
-///
-/// Presets exist so the settings screen can be "pick Ollama, type a model name"
-/// instead of asking a user to remember a URL path.
 public struct RemoteConfiguration: Sendable, Codable, Equatable {
     public var presetID: String
     public var presetName: String

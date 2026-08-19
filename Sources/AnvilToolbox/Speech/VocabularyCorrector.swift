@@ -2,18 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Puts the user's own words back into a transcript, without a model.
-///
-/// Speech recognition has never heard of your product, your colleagues or your
-/// API. It writes "Anwil", "Swift UI", "tool registrierung" — and a language
-/// model asked to fix that will just as happily invent a fourth spelling. So
-/// the word list is enforced here, deterministically, before the model ever
-/// sees the text: a term on the list either appears exactly as written or not
-/// at all.
-///
-/// Three passes, in decreasing confidence:
-/// 1. an explicit variant from the list,
-/// 2. the same letters with different case or spacing ("swift ui" → "SwiftUI"),
-/// 3. a close-enough match by edit distance, gated by ``Sensitivity``.
 public struct VocabularyCorrector: Sendable {
     /// How far from the written term a word may be and still be corrected.
     public enum Sensitivity: String, Codable, CaseIterable, Sendable, Identifiable {
@@ -127,9 +115,6 @@ public struct VocabularyCorrector: Sendable {
         let candidates = Self.candidates(from: entries)
         self.sensitivity = sensitivity
         self.candidates = candidates
-        // Long enough for the listed phrases, and always at least three words
-        // so a run-together term like "SwiftUI" can be reassembled from
-        // "Swift U I".
         let longest = candidates.map(\.wordCount).max() ?? 1
         self.maximumWindow = min(6, max(3, longest))
     }
@@ -195,7 +180,6 @@ public struct VocabularyCorrector: Sendable {
         }
         guard !windows.isEmpty else { return nil }
 
-        // Longest window first: a listed phrase beats one of its own words.
         for window in windows.reversed() {
             let phrase = Phrase(tokens: window.map { tokens[$0] })
             if let match = strictMatch(for: phrase, window: window) { return match }
@@ -216,7 +200,6 @@ public struct VocabularyCorrector: Sendable {
             let matches = candidate.normalized == phrase.normalized
                 || candidate.compact == phrase.compact
             guard matches else { continue }
-            // Already written correctly — nothing to report.
             guard phrase.raw != candidate.term else { return nil }
             return Match(
                 candidate: candidate,
@@ -278,7 +261,6 @@ public struct VocabularyCorrector: Sendable {
                 guard !normalized.isEmpty else { continue }
 
                 let compact = normalized.replacingOccurrences(of: " ", with: "")
-                // The same written form must not resolve to two terms.
                 guard seen.insert(normalized).inserted else { continue }
 
                 result.append(
@@ -294,7 +276,6 @@ public struct VocabularyCorrector: Sendable {
             }
         }
 
-        // Longer forms first, so "Swift Concurrency" is tried before "Swift".
         return result.sorted { $0.compact.count > $1.compact.count }
     }
 
@@ -302,9 +283,6 @@ public struct VocabularyCorrector: Sendable {
     /// not a letter or digit. `"Tool-Registration."` and `"tool registration"`
     /// have to look alike here; the spaces stay so word counts survive.
     static func normalize(_ text: String) -> String {
-        // ß first and explicitly: Foundation's folding leaves it alone on some
-        // paths, and "Straße" has to compare equal to "Strasse" — recognisers
-        // pick between the two by mood.
         let folded = text
             .replacingOccurrences(of: "ß", with: "ss")
             .replacingOccurrences(of: "ẞ", with: "ss")

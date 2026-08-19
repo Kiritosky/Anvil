@@ -2,11 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Der Satz Bildgrößen, den Xcode für ein App-Symbol verlangt.
-///
-/// Von Hand ist das zwanzigmal exportieren, zwanzigmal richtig benennen und
-/// danach eine `Contents.json`, in der ein Tippfehler dazu führt, dass Xcode
-/// das ganze Symbol übergeht. Die Liste steht deshalb hier als Daten und nicht
-/// als Anleitung.
 public struct IconSet: Sendable {
     /// Wofür der Satz gedacht ist.
     public enum Platform: String, Sendable, Hashable, CaseIterable, Identifiable {
@@ -58,11 +53,6 @@ public struct IconSet: Sendable {
         public var scaleText: String { "\(scale)x" }
 
         /// `icon_32x32@2x.png` — die übliche Schreibweise.
-        ///
-        /// Auf iOS steht das Gerät mit im Namen: iPhone und iPad verlangen
-        /// dieselbe Größe in derselben Auflösung, und ohne das Gerät hießen
-        /// zwei Dateien im selben Ordner gleich — die zweite überschriebe die
-        /// erste beim Schreiben.
         public var fileName: String {
             let suffix = scale > 1 ? "@\(scale)x" : ""
             let prefix = idiom == "mac" ? "icon" : "icon_\(idiom)"
@@ -78,10 +68,6 @@ public struct IconSet: Sendable {
     }
 
     /// Die Größen für iOS.
-    ///
-    /// Der 1024er hat das Kürzel `ios-marketing` und ist der einzige, der
-    /// nicht aufs Gerät geht — er steht im App Store. Fehlt er, lässt sich die
-    /// App nicht hochladen; das merkt man erfahrungsgemäß freitagabends.
     public static let iOSItems: [Item] = [
         Item(idiom: "iphone", points: 20, scale: 2),
         Item(idiom: "iphone", points: 20, scale: 3),
@@ -110,10 +96,6 @@ public struct IconSet: Sendable {
     }
 
     /// Die Bildpunktgrößen, die wirklich gezeichnet werden müssen.
-    ///
-    /// Weniger als die Liste lang ist: `32x32@1x` und `16x16@2x` sind
-    /// dieselben zweiunddreißig Bildpunkte. Gezeichnet wird jede Größe einmal,
-    /// geschrieben so oft, wie sie gebraucht wird.
     public static func pixelSizes(for platform: Platform) -> [Int] {
         Array(Set(items(for: platform).map(\.pixels))).sorted()
     }
@@ -126,11 +108,6 @@ public struct IconSet: Sendable {
     public static let folderName = "AppIcon.appiconset"
 
     /// Die `Contents.json`, die Xcode neben den Bildern erwartet.
-    ///
-    /// Von Hand geschrieben statt über `JSONEncoder`: Die Datei hat eine feste
-    /// Reihenfolge, in der Xcode sie selbst schreibt, und eine Datei, die sich
-    /// beim ersten Öffnen in Xcode umsortiert, sieht im Diff aus wie eine
-    /// Änderung.
     public static func contentsJSON(for platform: Platform) -> String {
         let entries = items(for: platform).map { item in
             """

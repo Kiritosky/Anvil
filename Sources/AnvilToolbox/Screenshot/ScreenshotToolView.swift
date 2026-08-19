@@ -5,11 +5,6 @@ import Foundation
 import SwiftUI
 
 /// The screenshot workbench: take one, look at it, do something with it.
-///
-/// What separates this from pressing ⇧⌘4 is everything after the shutter — the
-/// shot stays here, with its text already read if you asked for that, and the
-/// four things you actually want to do with it are one click away instead of
-/// a trip through the Finder.
 public struct ScreenshotToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -120,10 +115,6 @@ public struct ScreenshotToolView: View {
     }
 
     /// The picture with a drawing surface over it.
-    ///
-    /// The drag is translated into image coordinates rather than view ones, so
-    /// a mark stays where it was put when the window is resized — and lands in
-    /// the right place when the export is rendered at full resolution.
     private func annotatableImage(_ shot: Screenshot) -> some View {
         GeometryReader { proxy in
             let imageSize = shot.pixelSize
@@ -262,9 +253,6 @@ public struct ScreenshotToolView: View {
         }
         .buttonStyle(.plain)
         .anvilHelp(.resolved(shot.target.title))
-        // Am Vorschaubild und nicht an der großen Ansicht: dort liegt schon
-        // die Geste zum Markieren, und zwei Gesten auf derselben Fläche
-        // heißt, dass keine von beiden zuverlässig auslöst.
         .anvilDragOut(name: Self.exportName(for: shot)) {
             .image(controller.flattened(shot))
         }
@@ -453,6 +441,5 @@ public struct ScreenshotToolView: View {
     /// Colours that stay visible on a screenshot: strong, saturated, and not
     /// something an interface is likely to already be full of.
     private static let markerColors = ["#FF3B30", "#FF9500", "#FFCC00", "#34C759", "#007AFF", "#000000"]
-
 
 }

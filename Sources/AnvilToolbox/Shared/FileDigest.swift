@@ -3,12 +3,6 @@ import CryptoKit
 import Foundation
 
 /// Prüfsummen von Dateien, ohne die Datei in den Arbeitsspeicher zu holen.
-///
-/// Der Grund, warum das nicht `Data(contentsOf:)` plus `SHA256.hash(data:)`
-/// ist: eine Prüfsumme rechnet man über das, was gerade heruntergeladen wurde,
-/// und das sind gerne mal vier Gigabyte. `Data(contentsOf:)` würde die
-/// vollständig laden — der Weg über Blöcke braucht so viel Speicher wie ein
-/// Block, egal wie groß die Datei ist.
 enum FileDigest {
     /// So viel wird auf einmal gelesen. Groß genug, dass der Systemaufruf nicht
     /// ins Gewicht fällt, klein genug, dass es niemandem auffällt.
@@ -25,19 +19,9 @@ enum FileDigest {
     }
 
     /// So weit reicht der schnelle Blick.
-    ///
-    /// Genug, dass zwei verschiedene Dateien sich fast immer schon hier
-    /// unterscheiden — Kopfdaten, Auflösung, erste Bilder eines Videos stehen
-    /// alle darin — und wenig genug, dass es einmal Kopfnicken kostet statt
-    /// einer Wartezeit.
     static let prefixSize = 64 * 1024
 
     /// Die Prüfsumme über den Anfang der Datei.
-    ///
-    /// Für den Vergleich vieler großer Dateien: Zwei Videos von vier Gigabyte
-    /// unterscheiden sich fast immer im ersten Block. Sie ganz zu lesen, um
-    /// das festzustellen, sind acht Gigabyte für eine Antwort, die nach
-    /// vierundsechzig Kilobyte feststand.
     static func prefixHex<Function: HashFunction>(
         _ function: Function.Type,
         of url: URL,
@@ -61,9 +45,6 @@ enum FileDigest {
     }
 
     /// Alle vier auf einmal — und dabei die Datei nur einmal lesen.
-    ///
-    /// Vier Durchläufe wären bei einem großen Image vier Mal dieselbe Wartezeit
-    /// für dasselbe Ergebnis.
     static func all(of url: URL) throws -> [(name: String, value: String)] {
         var md5 = Insecure.MD5()
         var sha1 = Insecure.SHA1()
@@ -86,10 +67,6 @@ enum FileDigest {
     }
 
     /// Was das Werkzeug anzeigt — je nachdem, wie viele Dateien da sind.
-    ///
-    /// Bei einer Datei nur die Prüfsumme: Man will sie neben die von der
-    /// Webseite halten, und ein Dateiname daneben stört dabei. Ab zwei die
-    /// shasum-Form mit Namen, weil eine Liste ohne Namen nutzlos ist.
     static func report<Function: HashFunction>(
         _ function: Function.Type,
         of urls: [URL]
@@ -99,15 +76,6 @@ enum FileDigest {
     }
 
     /// Mehrere Dateien, eine Zeile je Datei.
-    ///
-    /// Das Format ist nicht frei gewählt: `<prüfsumme>␣␣<name>` ist das, was
-    /// `shasum` ausgibt und `shasum -c` wieder liest. Wer die Liste einer
-    /// Veröffentlichung beilegt, gibt damit etwas heraus, das der Empfänger
-    /// ohne Abtippen prüfen kann.
-    ///
-    /// Eine Datei, die nicht gelesen werden kann, bekommt ihre Zeile mit dem
-    /// Fehler statt einer Prüfsumme — sie fällt nicht stillschweigend aus der
-    /// Liste, sonst prüft jemand fünf von sechs Dateien und hält das für alle.
     static func lines<Function: HashFunction>(
         _ function: Function.Type,
         of urls: [URL]

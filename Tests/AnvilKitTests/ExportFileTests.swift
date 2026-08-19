@@ -122,7 +122,6 @@ struct ExportFileTests {
         let third = ExportFile.uniqueURL(in: directory, named: "Foto", extension: "jpg")
         #expect(third.lastPathComponent == "Foto 3.jpg")
 
-        // Und das Original steht unangetastet da.
         let original = try String(contentsOf: first, encoding: .utf8)
         #expect(original == "eins")
     }

@@ -6,9 +6,6 @@ import AppKit
 import SwiftUI
 
 /// The app.
-///
-/// Three scenes: the main window, the settings window, and a menu-bar item for
-/// the things you want without bringing a window forward.
 @main
 struct AnvilApp: App {
     /// Die Kennung der Fenstergruppe für einzelne Werkzeuge.
@@ -36,9 +33,6 @@ struct AnvilApp: App {
         .defaultSize(width: 1_180, height: 760)
         .commands { AnvilCommands(environment: environment) }
 
-        // Ein Werkzeug für sich. Beliebig viele davon, jedes mit eigenem
-        // Zustand — die Kennung im Wert macht sie unterscheidbar, sodass
-        // dasselbe Werkzeug auch zweimal offen sein kann.
         WindowGroup(id: Self.toolWindowID, for: ToolIdentifier.self) { $toolID in
             ToolWindow(toolID: toolID)
                 .environment(environment)
@@ -109,10 +103,6 @@ struct AnvilCommands: Commands {
     }
 
     /// Translates a recorded combination into the one SwiftUI understands.
-    ///
-    /// Only in-app scope gets a key here. A globally registered hot key never
-    /// reaches the menu — the system swallows it first — and giving it to both
-    /// would show a shortcut that then fires twice.
     private func menuShortcut(for setting: ShortcutSetting) -> KeyboardShortcut? {
         guard setting.scope == .app,
               let shortcut = setting.shortcut,
@@ -122,23 +112,15 @@ struct AnvilCommands: Commands {
     }
 
     /// Die Zifferntasten für den Schnellzugriff.
-    ///
-    /// Als Literale und nicht aus der Zahl gerechnet: `Character("\(n)")`
-    /// stürzt ab, sobald die Zeichenkette einmal nicht genau ein Zeichen lang
-    /// ist, und diese Liste sagt zugleich, wo Schluss ist.
     private static let digitKeys: [KeyEquivalent] = [
         "1", "2", "3", "4", "5", "6", "7", "8", "9"
     ]
 
     private var quickAccessTools: [ToolMetadata] {
-        // Nie mehr Werkzeuge als Tasten, egal was die Registry sagt.
         Array(environment.registry.quickAccessTools.prefix(Self.digitKeys.count))
     }
 
     var body: some Commands {
-        // Every action the user set to "only in Anvil" becomes a menu item —
-        // which is also how SwiftUI is told about the key combination, since a
-        // shortcut without a menu entry is not a thing macOS has.
         CommandMenu("Aktionen") {
             ForEach(environment.shortcuts.all) { action in
                 let setting = environment.shortcuts.setting(for: action.id)
@@ -149,9 +131,6 @@ struct AnvilCommands: Commands {
             }
         }
 
-        // Ein Werkzeug ohne Umweg über Suche oder Seitenleiste. Das Menü ist
-        // dabei nicht die Zierde, sondern die Voraussetzung: Ein Kürzel, das
-        // an keinem Menüpunkt hängt, gibt es unter macOS nicht.
         CommandMenu("Gehe zu") {
             let tools = quickAccessTools
             ForEach(Array(tools.enumerated()), id: \.element.id) { pair in
@@ -162,8 +141,6 @@ struct AnvilCommands: Commands {
             }
 
             if tools.isEmpty {
-                // Ein leeres Menü sieht kaputt aus. Diese Zeile erklärt, wie
-                // es sich füllt.
                 Button("Favoriten landen hier auf ⌘1 bis ⌘9") {}
                     .disabled(true)
             }
@@ -190,9 +167,6 @@ struct AnvilCommands: Commands {
             .keyboardShortcut("r", modifiers: [.command, .option])
         }
 
-        // The standard About panel, filled in rather than replaced: it is the
-        // one window every Mac app has, and rebuilding it would only make it
-        // less familiar.
         CommandGroup(replacing: .appInfo) {
             Button("Über Anvil") { showAboutPanel() }
         }

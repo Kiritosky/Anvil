@@ -20,11 +20,6 @@ struct TextToolCatalogTests {
 
     /// Die Werkzeuge, deren Eingabe ihrem Wesen nach ein Geheimnis sein kann,
     /// dürfen nichts merken.
-    ///
-    /// Das ist eine Regel, die still kaputtgeht: Wer einen Eintrag im Katalog
-    /// umsortiert oder ein Werkzeug neu aufsetzt, sieht dem fehlenden
-    /// Kennzeichen nichts an — bis Monate später ein Token auf der Platte
-    /// liegt. Also steht sie hier.
     @Test
     func toolsThatTouchSecretsNeverRemember() {
         let mustNotRemember: Set<String> = ["text.jwt", "text.hash", "text.base64", "text.hex"]
@@ -33,7 +28,6 @@ struct TextToolCatalogTests {
             #expect(tool.handlesSecrets, "\(tool.title) merkt sich Eingaben, obwohl es das nicht darf")
         }
 
-        // Und die Gegenprobe: Wäre alles gesperrt, wäre das Merken wertlos.
         let remembering = TextToolCatalog.all.filter { !$0.handlesSecrets }
         #expect(remembering.count >= 8)
     }
@@ -115,7 +109,6 @@ struct TextToolCatalogTests {
 
     @Test
     func slugsKeepUmlautsApartFromPlainVowels() throws {
-        // The two words differ in German, so their slugs have to differ too.
         let umlaut = try run(TextToolCatalog.slug, "kebab", "Größe")
         let plain = try run(TextToolCatalog.slug, "kebab", "Grosse")
         #expect(umlaut != plain)
@@ -123,8 +116,6 @@ struct TextToolCatalogTests {
 
     @Test
     func slugsFoldAccentsFromOtherLanguages() throws {
-        // Only German umlauts get the two-letter treatment; a French accent
-        // just wants the plain letter.
         #expect(try run(TextToolCatalog.slug, "kebab", "Café crème") == "cafe-creme")
     }
 
@@ -136,7 +127,6 @@ struct TextToolCatalogTests {
 
     @Test
     func decodesJWTPayload() throws {
-        // {"alg":"HS256"} . {"sub":"1234","name":"Anvil"} . signature
         let token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0IiwibmFtZSI6IkFudmlsIn0.sig"
         let decoded = try run(TextToolCatalog.jwt, "decode", token)
         #expect(decoded.contains("HS256"))

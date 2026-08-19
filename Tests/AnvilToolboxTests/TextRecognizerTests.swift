@@ -18,7 +18,6 @@ struct TextRecognizerTests {
 
     @Test
     func readsTopToBottom() {
-        // Vision's origin is bottom-left, so the larger y comes first.
         let sorted = TextRecognizer.sortIntoReadingOrder([
             line("unten", x: 0.1, y: 0.2),
             line("oben", x: 0.1, y: 0.8)
@@ -37,7 +36,6 @@ struct TextRecognizerTests {
 
     @Test
     func keepsColumnsApart() {
-        // Two columns, three rows: the reading order is row by row.
         let sorted = TextRecognizer.sortIntoReadingOrder([
             line("B1", x: 0.6, y: 0.9),
             line("A2", x: 0.1, y: 0.6),
@@ -49,7 +47,6 @@ struct TextRecognizerTests {
 
     @Test
     func aSlightlyOffBaselineStillCountsAsOneLine() {
-        // Real observations never share an exact midpoint.
         let sorted = TextRecognizer.sortIntoReadingOrder([
             line("zwei", x: 0.5, y: 0.503),
             line("eins", x: 0.1, y: 0.5)

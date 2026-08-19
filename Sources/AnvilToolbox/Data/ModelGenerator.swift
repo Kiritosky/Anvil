@@ -2,12 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Aus einer Beispielantwort werden Typen.
-///
-/// Das ist die Handarbeit, die jeder einmal pro API macht: Man bekommt einen
-/// JSON-Schnipsel, tippt ihn als `struct` ab, vergisst ein Feld, schreibt
-/// `Int` wo `Double` steht, und merkt beides erst, wenn das Dekodieren
-/// fehlschlägt. Die Antwort steht schon da — abgeschrieben werden muss sie
-/// nicht.
 public struct ModelGenerator: Sendable {
     /// Wofür Typen erzeugt werden.
     public enum Language: String, Sendable, Hashable, CaseIterable, Identifiable {
@@ -96,9 +90,6 @@ public struct ModelGenerator: Sendable {
     }
 
     /// Der Zustand während des Ableitens.
-    ///
-    /// Eigener Typ, weil zwei Dinge über den ganzen Baum mitlaufen: die schon
-    /// vergebenen Typnamen und die Reihenfolge, in der die Typen entstehen.
     private struct Builder {
         var types: [ObjectType] = []
         var used: Set<String> = []
@@ -120,10 +111,6 @@ public struct ModelGenerator: Sendable {
         ) -> FieldType {
             guard !elements.isEmpty else { return .array(.unknown) }
 
-            // Objekte in einer Liste beschreiben dasselbe Ding — aber selten
-            // vollständig. Das erste Element hat manchmal ein Feld, das dem
-            // zweiten fehlt, und genau das ist die Auskunft, die man will:
-            // Das Feld ist optional.
             if elements.allSatisfy({ $0.pairs != nil }) {
                 return .array(buildObject(merged(elements), named: singular(name)))
             }
@@ -132,8 +119,6 @@ public struct ModelGenerator: Sendable {
             for element in elements {
                 found.append(build(element, named: singular(name)))
             }
-            // Eine Liste, in der Zahlen und Text durcheinanderstehen, ist
-            // nichts, worüber sich raten lässt.
             guard let first = found.first, found.allSatisfy({ $0 == first }) else {
                 return .array(.unknown)
             }
@@ -145,14 +130,9 @@ public struct ModelGenerator: Sendable {
             named name: String
         ) -> FieldType {
             let typeName = unique(Self.typeName(name))
-            // Der Platz wird vorher belegt, damit der Wurzeltyp oben steht:
-            // Sonst entstünden die inneren Typen zuerst und die Datei begänne
-            // mit dem Kleingedruckten.
             let index = types.count
             types.append(ObjectType(name: typeName, fields: []))
 
-            // Eine Schleife statt `map`: Jeder Schritt legt weitere Typen an,
-            // und ein Abschluss darf `self` einer Struktur nicht verändern.
             var fields: [Field] = []
             for pair in pairs {
                 fields.append(
@@ -199,8 +179,6 @@ public struct ModelGenerator: Sendable {
                     if values[pair.key] == nil {
                         order.append(pair.key)
                     }
-                    // Der erste Wert, der nicht `null` ist, sagt am meisten:
-                    // `null` verrät den Typ nicht, das nächste Element schon.
                     if values[pair.key] == nil || values[pair.key] == StructuredValue.null {
                         values[pair.key] = pair.value
                     }
@@ -213,8 +191,6 @@ public struct ModelGenerator: Sendable {
                 Entry(
                     key: key,
                     value: values[key] ?? .null,
-                    // Fehlt das Feld irgendwo oder stand dort `null`, ist es
-                    // optional — beides heißt beim Dekodieren dasselbe.
                     isOptional: seen[key, default: 0] < elements.count || nulled.contains(key)
                 )
             }
@@ -236,10 +212,6 @@ public struct ModelGenerator: Sendable {
         }
 
         /// „adressen" → „Adresse", „entries" → „Entry".
-        ///
-        /// Eine Faustregel und keine Grammatik: Sie trifft die Fälle, die in
-        /// JSON vorkommen, und wo sie danebenliegt, steht ein Name da, den man
-        /// in einem Zug umbenennt.
         private func singular(_ name: String) -> String {
             if name.hasSuffix("ies"), name.count > 3 {
                 return String(name.dropLast(3)) + "y"
@@ -256,10 +228,6 @@ public struct ModelGenerator: Sendable {
     }
 
     /// Der Name, unter dem ein Typ im Quelltext steht.
-    ///
-    /// `created_at` wird `CreatedAt`, `adress-buch` wird `AdressBuch`. Was
-    /// übrig bleibt, wenn nichts davon greift, heißt `Wert` — ein Name, den
-    /// man sofort ändert, statt einen leeren zu suchen.
     public static func typeName(_ key: String) -> String {
         let parts = key
             .components(separatedBy: CharacterSet(charactersIn: "_- ."))
@@ -271,10 +239,6 @@ public struct ModelGenerator: Sendable {
     // MARK: - Namen
 
     /// Der Name, unter dem ein Feld im Quelltext steht.
-    ///
-    /// `created_at` heißt in Swift `createdAt`; in JSON heißt es weiter
-    /// `created_at`. Beides gleichzeitig geht nur über `CodingKeys` — deshalb
-    /// entsteht der Block, sobald sich ein Name unterwegs ändert.
     public static func propertyName(_ key: String) -> String {
         let parts = key
             .components(separatedBy: CharacterSet(charactersIn: "_- ."))
@@ -285,8 +249,6 @@ public struct ModelGenerator: Sendable {
         let tail = parts.dropFirst().map { $0.prefix(1).uppercased() + $0.dropFirst() }
         let name = ([head] + tail).joined()
 
-        // Ein Name, der mit einer Ziffer anfängt, ist in keiner der beiden
-        // Sprachen ein Bezeichner.
         if let character = name.first, character.isNumber { return "_" + name }
         return swiftKeywords.contains(name) ? "`\(name)`" : name
     }
@@ -340,8 +302,6 @@ public struct ModelGenerator: Sendable {
         types.map { type in
             var lines = ["export interface \(type.name) {"]
             for field in type.fields {
-                // In TypeScript bleibt der Schlüssel, wie er ist — dafür muss
-                // er in Anführungszeichen, wenn er kein Bezeichner ist.
                 let key = Self.isPlainIdentifier(field.key) ? field.key : "\"\(field.key)\""
                 lines.append("  \(key)\(field.isOptional ? "?" : ""): \(Self.typeScriptType(field.type));")
             }
@@ -362,8 +322,6 @@ public struct ModelGenerator: Sendable {
         case .integer: "Int"
         case .double: "Double"
         case .boolean: "Bool"
-        // Ein Feld, das im Beispiel nur `null` war, wird `String?`: Das ist
-        // die Annahme, die am wenigsten kaputtmacht, wenn sie falsch ist.
         case .unknown: "String"
         case let .array(element): "[\(swiftType(element))]"
         case let .object(name): name

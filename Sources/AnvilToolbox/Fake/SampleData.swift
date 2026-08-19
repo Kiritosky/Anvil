@@ -2,12 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Testdaten, die jedes Mal dieselben sind.
-///
-/// Der Punkt ist der Startwert. Zufällige Testdaten sind für einen Screenshot
-/// gut und für alles andere schlecht: Ein Fehler, der bei „Müller" auftritt und
-/// bei „Schmidt" nicht, ist nicht wiederfindbar, wenn beim nächsten Lauf ganz
-/// andere Namen herauskommen. Hier ergibt derselbe Startwert dieselbe Tabelle
-/// — auf einem anderen Rechner, in einem Jahr, in jeder Reihenfolge.
 public struct SampleData: Sendable {
     // MARK: - Was erzeugt wird
 
@@ -77,14 +71,10 @@ public struct SampleData: Sendable {
     // MARK: - Der Zufall, der keiner ist
 
     /// SplitMix64 — klein, schnell, und bei gleichem Startwert überall gleich.
-    ///
-    /// `SystemRandomNumberGenerator` wäre einfacher und genau das Falsche: es
-    /// gibt keinen Startwert, also auch keine Wiederholbarkeit.
     struct Generator: RandomNumberGenerator {
         private var state: UInt64
 
         init(seed: UInt64) {
-            // Ein Startwert von 0 ist erlaubt und ergibt trotzdem eine Folge.
             state = seed &+ 0x9E37_79B9_7F4A_7C15
         }
 
@@ -121,11 +111,6 @@ public struct SampleData: Sendable {
     }
 
     /// Eine Zeile.
-    ///
-    /// Die Felder hängen voneinander ab: Die E-Mail-Adresse gehört zum Namen,
-    /// und die Postleitzahl zum Ort. Testdaten, bei denen „Anna Müller" die
-    /// Adresse `heinz.schulz@…` hat, fallen beim ersten Blick auf und taugen
-    /// für keine Vorführung.
     private static func row(
         index: Int,
         fields: [Field],
@@ -196,26 +181,14 @@ public struct SampleData: Sendable {
     }
 
     /// Eine deutsche IBAN mit richtiger Prüfziffer.
-    ///
-    /// Eine Prüfziffer zu erfinden wäre einfacher und wertlos: Testdaten
-    /// braucht man gerade dort, wo eine Prüfung läuft — sonst prüft der Test
-    /// nur, dass die Prüfung ablehnt.
     public static func germanIBAN(bank: Int, account: Int) -> String {
-        // `%ld`, nicht `%d`: `%d` nimmt einen 32-Bit-Wert, und eine
-        // zehnstellige Kontonummer passt da nicht hinein. Sie käme
-        // abgeschnitten und mitunter negativ wieder heraus — die IBAN wäre
-        // dann 23 Zeichen lang statt 22.
         let bban = String(format: "%08ld%010ld", bank, account)
-        // DE00 ans Ende, D → 13, E → 14, dann Rest 98 − (Zahl mod 97).
         let rearranged = bban + "131400"
         let check = 98 - mod97(rearranged)
         return String(format: "DE%02d", check) + bban
     }
 
     /// `mod 97` für eine Zahl, die in keine Ganzzahl passt.
-    ///
-    /// Ziffernweise: Der Rest bleibt immer klein genug, egal wie lang die Zahl
-    /// ist. Eine IBAN hat bis zu 34 Stellen — kein `UInt64` fasst das.
     static func mod97(_ digits: String) -> Int {
         var remainder = 0
         for character in digits {
@@ -226,9 +199,6 @@ public struct SampleData: Sendable {
     }
 
     /// Eine UUID aus demselben Startwert.
-    ///
-    /// `UUID()` wäre echt zufällig und damit bei jedem Lauf anders — genau
-    /// das, was hier nicht sein soll.
     static func uuid(using generator: inout Generator) -> String {
         var bytes: [UInt8] = []
         for _ in 0..<2 {
@@ -237,7 +207,6 @@ public struct SampleData: Sendable {
                 bytes.append(UInt8(truncatingIfNeeded: value >> UInt64(shift)))
             }
         }
-        // Fassung 4, Variante 1 — sonst ist es keine UUID, sondern nur hübsch.
         bytes[6] = (bytes[6] & 0x0F) | 0x40
         bytes[8] = (bytes[8] & 0x3F) | 0x80
 

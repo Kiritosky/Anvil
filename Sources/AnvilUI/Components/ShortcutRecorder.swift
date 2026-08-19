@@ -3,10 +3,6 @@ import AppKit
 import SwiftUI
 
 /// A field that captures the next key combination you press.
-///
-/// Click it, press the keys, done. While recording it swallows every key event
-/// including ⌘Q and ⌘W — otherwise you could never assign those, and the app
-/// would quit while you tried.
 public struct ShortcutRecorder: View {
     @Binding private var shortcut: GlobalShortcut?
     private let placeholder: LocalizedStringKey
@@ -40,8 +36,6 @@ public struct ShortcutRecorder: View {
             }
         }
         .background {
-            // Only present while recording, so the monitor is torn down the
-            // moment the field loses interest in key events.
             if isRecording {
                 KeyCaptureView { event in
                     handle(event)
@@ -51,8 +45,6 @@ public struct ShortcutRecorder: View {
         }
         .onChange(of: isRecording) { _, recording in
             guard recording else { return }
-            // Recording two fields at once would be ambiguous; there is only
-            // ever one, so this is just belt and braces.
             NSApp.keyWindow?.makeFirstResponder(nil)
         }
     }
@@ -95,8 +87,6 @@ public struct ShortcutRecorder: View {
     }
 
     private func handle(_ event: NSEvent) {
-        // Escape cancels rather than being assigned — otherwise there is no way
-        // to back out once the field has the keyboard.
         if event.keyCode == 53, event.modifierFlags.intersection(.deviceIndependentFlagsMask).isEmpty {
             isRecording = false
             return
@@ -142,7 +132,6 @@ private struct KeyCaptureView: NSViewRepresentable {
         }
 
         override func flagsChanged(with event: NSEvent) {
-            // Modifiers alone are not a shortcut; ignored on purpose.
         }
     }
 }

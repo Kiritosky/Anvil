@@ -2,12 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Eine Tabelle aus Text: CSV, TSV, mit Semikolon, mit Strichen.
-///
-/// Der Grund, warum das ein eigener Typ ist und kein `split(separator:)`:
-/// Anführungszeichen. Ein Feld darf das Trennzeichen enthalten, einen
-/// Zeilenumbruch und Anführungszeichen selbst — und genau daran zerbricht
-/// jede Abkürzung. Wer eine Tabelle aus einem Export einwirft, merkt den
-/// Unterschied sofort, weil bei der Abkürzung eine Zeile in drei zerfällt.
 public struct CSVTable: Sendable {
     /// Womit die Spalten getrennt sind.
     public enum Delimiter: String, Hashable, Sendable, CaseIterable, Identifiable {
@@ -62,8 +56,6 @@ public struct CSVTable: Sendable {
         self.delimiter = delimiter
         var records = Self.records(in: text, separatedBy: delimiter.character)
 
-        // Kurze Zeilen werden aufgefüllt statt verworfen. Ein Export mit einer
-        // fehlenden Spalte ist kaputt, aber die anderen Spalten sind es nicht.
         let width = records.map(\.count).max() ?? 0
         for index in records.indices where records[index].count < width {
             records[index] += Array(repeating: "", count: width - records[index].count)
@@ -79,8 +71,6 @@ public struct CSVTable: Sendable {
         if hasHeader {
             header = records[0].enumerated().map { index, name in
                 let trimmed = name.trimmingCharacters(in: .whitespaces)
-                // Eine namenlose Spalte bekommt eine Nummer: eine leere
-                // Überschrift macht jede Ausgabe darunter unlesbar.
                 return trimmed.isEmpty ? Self.columnName(index) : trimmed
             }
             rows = Array(records.dropFirst())
@@ -113,16 +103,7 @@ public struct CSVTable: Sendable {
     }
 
     /// Zerlegt den Text nach RFC 4180.
-    ///
-    /// Ein Zustandsautomat über die Zeichen, weil es keinen anderen ehrlichen
-    /// Weg gibt: ob ein Trennzeichen trennt, hängt davon ab, ob man gerade in
-    /// Anführungszeichen steht, und das weiß man erst, wenn man alles davor
-    /// gelesen hat.
     static func records(in text: String, separatedBy separator: Character) -> [[String]] {
-        // Erst vereinheitlichen, und zwar bevor irgendein Zeichen angesehen
-        // wird: „\r\n" ist in Swift **ein** `Character`, keine zwei. Ein
-        // Vergleich gegen "\n" trifft ihn nie, und eine Datei mit
-        // Windows-Zeilenenden käme als ein einziges Feld heraus.
         let text = TextLines.normalized(text)
 
         var records: [[String]] = []
@@ -140,8 +121,6 @@ public struct CSVTable: Sendable {
 
         func endRecord() {
             endField()
-            // Eine Zeile, die nur aus einem leeren Feld besteht, ist eine
-            // Leerzeile und keine Zeile mit einer leeren Spalte.
             if record.count > 1 || !(record.first ?? "").isEmpty {
                 records.append(record)
             }
@@ -154,7 +133,6 @@ public struct CSVTable: Sendable {
 
             if isQuoted {
                 if character == "\"" {
-                    // Zwei Anführungszeichen hintereinander sind eins im Feld.
                     if let next = iterator.next() {
                         if next == "\"" {
                             field.append("\"")
@@ -188,10 +166,6 @@ public struct CSVTable: Sendable {
     }
 
     /// Rät das Trennzeichen.
-    ///
-    /// Nicht „welches kommt am häufigsten vor" — ein Fließtext mit Kommas
-    /// schlüge damit jedes Semikolon. Gewinnen soll das Zeichen, das in jeder
-    /// Zeile **gleich oft** vorkommt, denn genau das macht eine Tabelle aus.
     public static func detectDelimiter(in text: String) -> Delimiter {
         let lines = TextLines.split(text, keepingEmpty: false).prefix(20)
         guard !lines.isEmpty else { return .comma }
@@ -205,8 +179,6 @@ public struct CSVTable: Sendable {
             }
             guard let columns = counts.first, columns > 1 else { continue }
             let isConsistent = counts.allSatisfy { $0 == columns }
-            // Gleichmäßigkeit zählt mehr als Spaltenzahl; bei Gleichstand
-            // gewinnt die breitere Tabelle.
             let score = (isConsistent ? 1000 : 0) + columns
             if score > bestScore {
                 bestScore = score
@@ -219,9 +191,6 @@ public struct CSVTable: Sendable {
     // MARK: - Umformen
 
     /// Sortiert nach einer Spalte — numerisch, wenn die Spalte Zahlen enthält.
-    ///
-    /// Sonst stünde 10 vor 9, und eine Tabelle, die falsch sortiert, ist
-    /// schlimmer als eine, die es gar nicht kann.
     public func sorted(by column: Int, ascending: Bool = true) -> CSVTable {
         guard header.indices.contains(column) else { return self }
         let numeric = summary(of: column).isNumeric
@@ -276,9 +245,6 @@ public struct CSVTable: Sendable {
     // MARK: - Ausgeben
 
     /// Wieder als Text, mit dem gewünschten Trennzeichen.
-    ///
-    /// Angeführt wird nur, was es braucht — ein Export, in dem jedes Feld in
-    /// Anführungszeichen steht, ist zwar richtig, aber unlesbar.
     public func text(delimiter target: Delimiter, includingHeader: Bool = true) -> String {
         let separator = target.character
         func quoted(_ field: String) -> String {
@@ -296,11 +262,6 @@ public struct CSVTable: Sendable {
     }
 
     /// Als JSON: ein Objekt je Zeile, Spaltenreihenfolge erhalten.
-    ///
-    /// Von Hand geschrieben und nicht über `JSONSerialization`, weil die
-    /// Schlüsselreihenfolge dort verlorenginge — und eine Tabelle, deren
-    /// Spalten nach dem Umwandeln in anderer Reihenfolge stehen, ist genau
-    /// das, was man nicht will.
     public var json: String {
         guard !rows.isEmpty else { return "[]" }
         let objects = rows.map { row -> String in
@@ -331,9 +292,6 @@ public struct CSVTable: Sendable {
     }
 
     /// Als `INSERT`-Anweisungen.
-    ///
-    /// Zahlen bleiben Zahlen, leere Felder werden `NULL`, alles andere wird
-    /// angeführt — mit verdoppelten Hochkommas, wie SQL es verlangt.
     public func sql(table name: String) -> String {
         guard !rows.isEmpty else { return "" }
         let tableName = Self.sqlIdentifier(name.isEmpty ? "daten" : name)
@@ -368,8 +326,6 @@ public struct CSVTable: Sendable {
         let values = rows.map { $0.indices.contains(column) ? $0[column] : "" }
         let filled = values.filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
         let numbers = filled.compactMap(Self.number)
-        // Erst ab einer vollen Spalte aus Zahlen ist die Spalte numerisch —
-        // eine Postleitzahl neben einem „k. A." wäre es sonst auch.
         let isNumeric = !numbers.isEmpty && numbers.count == filled.count
 
         return ColumnSummary(
@@ -393,10 +349,6 @@ public struct CSVTable: Sendable {
     // MARK: - Kleinkram
 
     /// Liest eine Zahl, wie sie in Tabellen steht.
-    ///
-    /// Deutsche Exporte schreiben `1.234,56`, englische `1,234.56`, und beide
-    /// landen im selben Werkzeug. Entschieden wird nach dem, was zuletzt
-    /// kommt: das ist das Dezimaltrennzeichen.
     static func number(_ text: String) -> Double? {
         var work = text.trimmingCharacters(in: .whitespaces)
         guard !work.isEmpty else { return nil }
@@ -416,8 +368,6 @@ public struct CSVTable: Sendable {
                 work = work.replacingOccurrences(of: ",", with: "")
             }
         case (.some, nil):
-            // Ein einzelnes Komma ist ein Dezimalkomma, keine Tausenderstelle:
-            // „1,5" ist häufiger als „1,500".
             work = work.replacingOccurrences(of: ",", with: ".")
         default:
             break
@@ -458,20 +408,12 @@ public struct CSVTable: Sendable {
     }
 
     /// Genau die Zahlenschreibweise, die JSON kennt.
-    ///
-    /// Nicht die, die `Double` akzeptiert: `0x1p3`, `inf`, `nan` und `.5` sind
-    /// für `Double` Zahlen und für JSON Syntaxfehler. Ein Werkzeug, das
-    /// ungültiges JSON ausgibt, ist schlimmer als eines, das im Zweifel
-    /// anführt.
     static func isJSONNumber(_ text: String) -> Bool {
         let body = text.hasPrefix("-") ? text.dropFirst() : Substring(text)
         guard let first = body.first, first.isASCII, first.isNumber else { return false }
         guard body.allSatisfy({ $0.isASCII && ($0.isNumber || ".eE+-".contains($0)) }) else {
             return false
         }
-        // Führende Nullen sind in JSON verboten. Eine Artikelnummer wie 00123
-        // ist ohnehin keine Zahl, sondern eine Kennung — sie gehört in
-        // Anführungszeichen, sonst kommt sie als 123 wieder heraus.
         if body.count > 1, first == "0" {
             let second = body[body.index(after: body.startIndex)]
             guard second == "." || second == "e" || second == "E" else { return false }
@@ -484,7 +426,6 @@ public struct CSVTable: Sendable {
             character.isLetter || character.isNumber ? character : "_"
         }
         let joined = String(cleaned)
-        // Ein Bezeichner, der mit einer Ziffer anfängt, ist in SQL keiner.
         return joined.first?.isNumber == true ? "_" + joined : joined
     }
 

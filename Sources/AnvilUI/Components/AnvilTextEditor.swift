@@ -1,9 +1,6 @@
 import SwiftUI
 
 /// The app's editable text area.
-///
-/// A plain `TextEditor` has no placeholder, no border that matches the rest of
-/// the app, and no focus treatment. This adds all three and nothing else.
 public struct AnvilTextEditor: View {
     @Binding private var text: String
     private let placeholder: LocalizedStringKey?
@@ -50,9 +47,6 @@ public struct AnvilTextEditor: View {
 }
 
 /// Read-only, selectable, scrollable text.
-///
-/// Used for results — including ones still streaming in — where an editor would
-/// wrongly suggest the text is meant to be typed into.
 public struct AnvilTextView: View {
     private let text: String
     private let isMonospaced: Bool

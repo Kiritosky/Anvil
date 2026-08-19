@@ -151,6 +151,6 @@ struct GitHubDeviceLoginTests {
     @Test
     func thereIsAClientIDToBeginWith() {
         #expect(!GitHubDeviceLogin.anvilClientID.isEmpty)
-        #expect(SettingKey.githubClientID.defaultValue == GitHubDeviceLogin.anvilClientID)
+        #expect(SettingKey<String>.githubClientID.defaultValue == GitHubDeviceLogin.anvilClientID)
     }
 }

@@ -2,10 +2,6 @@ import AnvilKit
 import SwiftUI
 
 /// Werkzeuge fürs Netz.
-///
-/// Bislang eines. Das Bündel steht trotzdem für sich, weil hier alles
-/// hingehört, was mit Adressen und Erreichbarkeit zu tun hat — und weil ein
-/// Werkzeug in einer fremden Schublade nie wiedergefunden wird.
 public enum NetToolBundle: ToolBundle {
     public static let bundleIdentifier = "dev.anvil.net"
     public static let displayName = "Netz"

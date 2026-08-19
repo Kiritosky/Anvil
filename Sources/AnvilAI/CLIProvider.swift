@@ -2,15 +2,6 @@ import AnvilKit
 import Foundation
 
 /// A coding agent that is already installed and already signed in.
-///
-/// Claude Code, Codex and Gemini all ship a command that answers a single
-/// prompt and prints the result. That is exactly the shape every tool in this
-/// app needs — and it means no API key: the agent uses the subscription the
-/// user already pays for, with its own credentials, in its own config.
-///
-/// The catch is finding the binary. A GUI app inherits `launchd`'s `PATH`,
-/// which has none of the places these things install to, so the executable is
-/// looked up through a login shell once and remembered.
 public struct CLIAgentProvider: AIProvider, Sendable {
     /// The agents worth offering by name, and how each is called.
     public enum Agent: String, Codable, CaseIterable, Sendable, Identifiable {
@@ -133,9 +124,6 @@ public struct CLIAgentProvider: AIProvider, Sendable {
             )
         }
 
-        // Instructions and prompt in one argument: these commands take a single
-        // prompt, and a separate system prompt is not something all of them
-        // have. The blank line keeps the two apart for the model.
         let prompt = request.instructions.isEmpty
             ? request.prompt
             : request.instructions + "\n\n" + request.prompt
@@ -166,10 +154,6 @@ public struct CLIAgentProvider: AIProvider, Sendable {
     }
 
     /// Passes the command's output through as it appears.
-    ///
-    /// Some of these agents print while they think and some hold everything
-    /// until they exit; this makes the first kind feel live without pretending
-    /// anything about the second.
     public func stream(_ request: AIRequest) -> AsyncThrowingStream<String, any Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
@@ -210,7 +194,6 @@ public struct CLIAgentProvider: AIProvider, Sendable {
     private static var environment: [String: String] {
         var environment = ProcessInfo.processInfo.environment
         environment["PATH"] = CLIAgentLocator.searchPath
-        // These print progress and colour codes into stdout otherwise.
         environment["NO_COLOR"] = "1"
         environment["TERM"] = "dumb"
         return environment
@@ -226,10 +209,6 @@ public struct CLIAgentProvider: AIProvider, Sendable {
 }
 
 /// Finds command-line agents once and remembers where they were.
-///
-/// A GUI app's `PATH` comes from `launchd` and contains none of the places npm,
-/// Homebrew or pipx install to. Asking a login shell is the only way to see
-/// what the user sees in Terminal — and it is slow enough to be worth caching.
 public actor CLIAgentLocator {
     public static let shared = CLIAgentLocator()
 
@@ -261,7 +240,6 @@ public actor CLIAgentLocator {
         guard !name.isEmpty else { return nil }
         if let known = known[name] { return known }
 
-        // An absolute path the user typed themselves needs no searching.
         if name.hasPrefix("/") {
             guard FileManager.default.isExecutableFile(atPath: name) else { return nil }
             known[name] = name
@@ -276,8 +254,6 @@ public actor CLIAgentLocator {
             }
         }
 
-        // Last resort: ask a login shell, which knows about version managers
-        // that rewrite PATH in a profile.
         if let found = await askLoginShell(for: name) {
             known[name] = found
             return found

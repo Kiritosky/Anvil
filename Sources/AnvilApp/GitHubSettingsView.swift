@@ -5,10 +5,6 @@ import AppKit
 import SwiftUI
 
 /// Die Anmeldung bei GitHub, in den Einstellungen.
-///
-/// Zwei Wege, und beide führen an dieselbe Stelle im Schlüsselbund: die
-/// Anmeldung über GitHub selbst, und ein Token von Hand für alle, die keine
-/// eigene OAuth-App anlegen wollen.
 struct GitHubSettingsView: View {
     let settings: SettingsStore
     /// Mit Modulnamen: `ApplicationServices` bringt über AppKit einen
@@ -120,9 +116,6 @@ struct GitHubSettingsView: View {
                 let started = try await login.start()
                 verification = started
 
-                // Beides sofort: Der Code liegt bereit, und die Seite ist
-                // offen. Wer sich anmeldet, soll nichts abtippen müssen, was
-                // schon auf dem Bildschirm steht.
                 pasteboard.copy(started.userCode)
                 _ = NSWorkspace.shared.open(started.verificationURL)
                 status = localized("Warte auf die Bestätigung bei GitHub …")
@@ -138,9 +131,6 @@ struct GitHubSettingsView: View {
     }
 
     /// Fragt im vorgegebenen Takt nach, bis der Code abgelaufen ist.
-    ///
-    /// Der Takt kommt von GitHub, und GitHub meint ihn ernst: Wer schneller
-    /// fragt, bekommt „slow_down" und danach gar nichts mehr.
     private func wait(
         for verification: GitHubDeviceLogin.Verification,
         with login: GitHubDeviceLogin

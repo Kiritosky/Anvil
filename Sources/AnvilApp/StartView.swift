@@ -5,11 +5,6 @@ import AnvilUI
 import SwiftUI
 
 /// What you see before opening a tool.
-///
-/// Not a placeholder but the overview: favourites and recents as cards, every
-/// category with its count underneath, and one line for the things nobody finds
-/// by clicking around — the global shortcuts, dropping a file onto the window,
-/// a tool in a window of its own.
 struct StartView: View {
     @Environment(AppEnvironment.self) private var environment
     @Environment(AIRouter.self) private var router: AIRouter?
@@ -172,8 +167,6 @@ struct StartView: View {
                 systemImage: "macwindow.on.rectangle",
                 keys: "⇧⌘N"
             ),
-            // Solange nichts im Schnellzugriff liegt, steht hier „nicht
-            // belegt" — und das stimmt dann auch.
             Capability(
                 id: "quickAccess",
                 title: "Favoriten auf Zifferntasten",
@@ -220,8 +213,6 @@ struct StartView: View {
     }
 
     private func cardGrid(_ tools: [ToolMetadata]) -> some View {
-        // Einmal nachschlagen statt einmal je Karte: die Belegung ist für die
-        // ganze Seite dieselbe.
         let shortcuts = registry.quickAccessShortcuts
         return LazyVGrid(columns: cardColumns, alignment: .leading, spacing: AnvilSpacing.md) {
             ForEach(tools) { tool in

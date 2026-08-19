@@ -4,11 +4,6 @@ import Foundation
 import Observation
 
 /// Der Stapel, an dem das Bildwerkzeug gerade arbeitet.
-///
-/// Eigener Typ statt `@State` in der Ansicht, weil hier mehr passiert, als
-/// eine View wissen sollte: rechnen abseits des Hauptthreads, mitzählen,
-/// Fehler je Datei behalten und beim nächsten Durchlauf verwerfen, was zum
-/// vorherigen gehörte.
 @MainActor
 @Observable
 public final class ImageBatch {
@@ -47,8 +42,6 @@ public final class ImageBatch {
     // MARK: - Befüllen
 
     public func load(_ urls: [URL]) {
-        // Dieselbe Datei zweimal im Stapel wäre zweimal dieselbe Arbeit und
-        // zweimal dieselbe Zieldatei.
         let known = Set(entries.map(\.url))
         let fresh = urls.filter { !known.contains($0) }
 
@@ -69,9 +62,6 @@ public final class ImageBatch {
     // MARK: - Rechnen
 
     /// Rechnet den ganzen Stapel durch.
-    ///
-    /// Läuft abseits des Hauptthreads: dreißig Fotos sind Sekunden, und ein
-    /// Fenster, das dabei steht, sieht aus wie ein Absturz.
     public func convert(
         to format: ImageConversion.Format,
         scale: ImageConversion.Scale,
@@ -88,12 +78,6 @@ public final class ImageBatch {
 
         let urls = entries.map(\.url)
 
-        // Schwungweise statt Datei für Datei: Ein Bild umzurechnen ist reine
-        // Rechenarbeit, und die liegt auf einem Kern, während sieben andere
-        // zusehen. Der Fortschritt entsteht trotzdem hier, wo er hingehört —
-        // nach jedem Schwung statt über einen Rückruf aus einer abgesetzten
-        // Aufgabe zurück auf den Hauptaktor. Das war der Weg, den Swift 6 zu
-        // Recht verbietet.
         for start in stride(from: 0, to: urls.count, by: Self.batchSize) {
             let end = min(start + Self.batchSize, urls.count)
             let slice = Array(urls[start..<end])
@@ -122,10 +106,6 @@ public final class ImageBatch {
 
             progress = Double(end) / Double(urls.count)
 
-            // Zugeordnet wird über die URL, nicht über den Index: während
-            // gerechnet wurde, kann etwas aus der Liste geflogen sein — und
-            // die Gruppe liefert ohnehin in der Reihenfolge, in der sie fertig
-            // wird.
             for outcome in results {
                 guard let position = entries.firstIndex(where: { $0.url == outcome.url }) else {
                     continue
@@ -137,19 +117,11 @@ public final class ImageBatch {
     }
 
     /// Wie viele Bilder gleichzeitig gerechnet werden.
-    ///
-    /// Nicht „so viele wie Kerne": Jedes offene Bild liegt entpackt im
-    /// Speicher, und acht Fotos aus einer Kamera sind schon ein knappes
-    /// Gigabyte. Vier ist der Punkt, an dem die Zeit spürbar sinkt, ohne dass
-    /// der Speicher es merkt.
     static let batchSize = 4
 
     // MARK: - Sichern
 
     /// Schreibt alles, was geklappt hat, in einen Ordner.
-    ///
-    /// Gibt zurück, wie viele Dateien geschrieben wurden — und wirft nur,
-    /// wenn gar nichts ging.
     @discardableResult
     public func write(into directory: URL) throws -> Int {
         var written = 0

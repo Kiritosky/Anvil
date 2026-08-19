@@ -89,7 +89,6 @@ struct DataInventoryTests {
         let item = StoredData(kind: .recordings, byteCount: 2_000_000, fileCount: 3)
         #expect(!item.isEmpty)
         #expect(item.summary.contains("3"))
-        // Zwei Millionen Byte sind in jeder Sprache ein „MB".
         #expect(item.summary.contains("MB"))
     }
 

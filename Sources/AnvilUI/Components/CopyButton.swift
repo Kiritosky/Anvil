@@ -2,9 +2,6 @@ import AppKit
 import SwiftUI
 
 /// Copies text and confirms it in place.
-///
-/// The confirmation matters: a copy button that gives no feedback makes people
-/// press it twice. The checkmark holds for a beat, then reverts.
 public struct CopyButton: View {
     private let text: () -> String
     private let label: LocalizedStringKey?

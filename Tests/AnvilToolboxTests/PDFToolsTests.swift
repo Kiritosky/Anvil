@@ -83,9 +83,6 @@ struct PageRangeTests {
 @Suite("PDF bearbeiten")
 struct PDFToolsTests {
     /// Ein PDF mit so vielen Seiten, auf jeder ihre Nummer.
-    ///
-    /// Selbst gebaut statt aus einer Datei geladen: ein Test, der eine
-    /// Beispieldatei braucht, prüft irgendwann die Beispieldatei.
     private func makeDocument(pages: Int, text: (Int) -> String = { "Seite \($0)" }) throws -> PDFDocument {
         let document = PDFDocument()
         for index in 0..<pages {
@@ -111,7 +108,6 @@ struct PDFToolsTests {
         let second = try makeDocument(pages: 3)
         let merged = try PDFTools.merge([first, second])
         #expect(merged.pageCount == 5)
-        // Die Vorlagen bleiben, wie sie sind.
         #expect(first.pageCount == 2)
         #expect(second.pageCount == 3)
     }
@@ -154,7 +150,6 @@ struct PDFToolsTests {
         let single = try PDFTools.split(document, every: 1)
         #expect(single.count == 5)
 
-        // Größer als das Dokument: ein Teil, alles darin.
         #expect(try PDFTools.split(document, every: 99).map(\.pageCount) == [5])
     }
 
@@ -174,7 +169,6 @@ struct PDFToolsTests {
 
         let twice = try PDFTools.rotated(once, by: 90, pages: range)
         #expect(twice.page(at: 1)?.rotation == 180)
-        // Und die Vorlage ist unverändert.
         #expect(once.page(at: 1)?.rotation == 90)
     }
 

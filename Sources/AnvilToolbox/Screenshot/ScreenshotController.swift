@@ -4,10 +4,6 @@ import Foundation
 import Observation
 
 /// Taking screenshots, and what happens to them afterwards.
-///
-/// An app-level service rather than view state, for the same reason quick
-/// dictation is one: the shortcut has to work while the tool is closed, and
-/// what it produces has to still be there when the tool is opened.
 @MainActor
 @Observable
 public final class ScreenshotController {
@@ -117,8 +113,6 @@ public final class ScreenshotController {
         shots.insert(shot, at: 0)
         selectedID = shot.id
 
-        // The session list is a working set, not an archive — what is worth
-        // keeping is already on disk.
         let limit = max(5, settings[.screenshotSessionLimit])
         if shots.count > limit { shots.removeLast(shots.count - limit) }
     }
@@ -131,14 +125,10 @@ public final class ScreenshotController {
               let index = shots.firstIndex(where: { $0.id == shot.id })
         else { return }
         shots[index].annotations.append(annotation)
-        // The kept file is now out of date with what is on screen.
         shots[index].fileURL = nil
     }
 
     /// Takes back the last mark.
-    ///
-    /// Marks are only ever appended, so undo is exactly this — no stack to
-    /// keep in step with anything.
     public func undoAnnotation(on shot: Screenshot) {
         guard let index = shots.firstIndex(where: { $0.id == shot.id }),
               !shots[index].annotations.isEmpty

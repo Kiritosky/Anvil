@@ -36,7 +36,6 @@ struct AnnotationTests {
 
     @Test
     func aShortArrowIsJudgedByItsLengthNotItsBox() {
-        // A perfectly diagonal arrow has a box, a horizontal one has none.
         let horizontal = mark(.arrow, from: CGPoint(x: 0.1, y: 0.5), to: CGPoint(x: 0.9, y: 0.5))
         #expect(!horizontal.isDegenerate)
 
@@ -73,7 +72,6 @@ struct AnnotationTests {
 struct AnnotationRendererTests {
     @Test
     func anImageFitsItsContainerAndStaysCentred() {
-        // A wide image in a square pane: letterboxed top and bottom.
         let frame = AnnotationRenderer.fittedRect(
             for: CGSize(width: 200, height: 100),
             in: CGSize(width: 100, height: 100)
@@ -114,7 +112,6 @@ struct AnnotationRendererTests {
 
     @Test
     func aPointInTheLetterboxIsNotOnTheImage() {
-        // The top 25 points of that pane are empty space, not picture.
         let normalized = AnnotationRenderer.normalize(
             CGPoint(x: 50, y: 5),
             imageSize: CGSize(width: 200, height: 100),
@@ -229,7 +226,6 @@ struct ScreenshotAnnotationTests {
 
     @Test
     func markingInvalidatesTheSavedFile() {
-        // What is on disk no longer matches what is on screen.
         let controller = makeController()
         var shot = shot
         shot.fileURL = URL(filePath: "/tmp/alt.png")

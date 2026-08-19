@@ -4,9 +4,6 @@ import AnvilUI
 import SwiftUI
 
 /// The tool list.
-///
-/// Favourites first, then recents, then everything by category — the order in
-/// which people actually reach for things.
 struct SidebarView: View {
     @Environment(AppEnvironment.self) private var environment
     @Environment(AIRouter.self) private var router: AIRouter?
@@ -93,7 +90,6 @@ struct SidebarView: View {
     }
 
     private func section(_ title: String, systemImage: String, tools: [ToolMetadata]) -> some View {
-        // Die Belegung gilt für die ganze Liste; einmal nachschlagen reicht.
         let shortcuts = registry.quickAccessShortcuts
         return VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
             HStack(spacing: AnvilSpacing.xs) {
@@ -119,9 +115,6 @@ struct SidebarView: View {
                     )
                 }
                 .buttonStyle(.plain)
-                // Der zweite Weg zum eigenen Fenster. Der Menübefehl öffnet
-                // das ausgewählte Werkzeug; hier geht auch eines, das man
-                // gerade gar nicht offen hat.
                 .contextMenu {
                     Button("In neuem Fenster öffnen") {
                         openWindow(id: AnvilApp.toolWindowID, value: tool.id)

@@ -67,9 +67,7 @@ struct GitStatusTests {
     func everyKindOfChangeLandsInItsOwnDrawer() {
         let status = GitStatus(porcelain: mixed)
         #expect(status.count(.untracked) == 1)
-        // „A " ist vorgemerkt, „MM" ist beides — macht zwei vorgemerkte.
         #expect(status.count(.staged) == 2)
-        // „ M" und die zweite Hälfte von „MM".
         #expect(status.count(.unstaged) == 2)
         #expect(!status.isClean)
     }
@@ -128,7 +126,6 @@ struct GitStatusTests {
         #expect(GitStatus(porcelain: "## main...origin/main").hasUnsavedWork == false)
         #expect(GitStatus(porcelain: "## main...origin/main [ahead 1]").hasUnsavedWork)
         #expect(GitStatus(porcelain: "## main\n M a.txt").hasUnsavedWork)
-        // Nur hinterher zu sein kostet nichts — das holt ein Pull.
         #expect(GitStatus(porcelain: "## main...origin/main [behind 9]").hasUnsavedWork == false)
     }
 
@@ -303,8 +300,6 @@ struct GitOverviewTests {
             repository("b", porcelain: "## main...origin/main", branches: [stale, stale])
         ])
         #expect(overview.staleBranchCount == 3)
-        // Ein alter Zweig ist ein Grund hinzusehen, auch wenn sonst alles
-        // sauber ist.
         #expect(overview.needingAttention.count == 2)
     }
 

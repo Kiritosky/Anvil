@@ -121,11 +121,6 @@ public struct IconSetToolView: View {
     }
 
     /// Schreibt einen `.appiconset`-Ordner.
-    ///
-    /// Jede Bildpunktgröße wird einmal gezeichnet, auch wenn zwei Einträge sie
-    /// verlangen: `32x32@1x` und `16x16@2x` sind dieselben zweiunddreißig
-    /// Bildpunkte, und ein zweiter Durchlauf durch die Skalierung ergäbe
-    /// dieselben Bytes.
     private func write(_ source: Source, into folder: URL) throws -> URL {
         let name = sources.count == 1
             ? IconSet.folderName

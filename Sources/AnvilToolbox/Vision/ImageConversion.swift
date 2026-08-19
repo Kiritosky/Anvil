@@ -5,12 +5,6 @@ import ImageIO
 import UniformTypeIdentifiers
 
 /// Bilder umwandeln, verkleinern und dabei loswerden, was niemanden angeht.
-///
-/// Der Anlass ist alltäglich: ein Foto soll in ein Formular, das nur JPEG
-/// nimmt und bei zwei Megabyte abbricht. Der zweite Anlass ist weniger
-/// sichtbar und wichtiger — ein Bild aus einer Kamera trägt Aufnahmezeit,
-/// Gerät und oft die Koordinaten des Ortes mit sich. Wer es weitergibt, gibt
-/// das mit, ohne es zu sehen.
 public enum ImageConversion {
     /// Die Formate, die zur Auswahl stehen.
     public enum Format: String, CaseIterable, Codable, Sendable, Identifiable {
@@ -100,13 +94,6 @@ public enum ImageConversion {
     // MARK: - Rechnen
 
     /// Die Zielgröße für ein Bild.
-    ///
-    /// Eigene Funktion, weil hier die einzige Rechnung steckt, die falsch sein
-    /// kann — und weil sie sich ohne Bild prüfen lässt.
-    ///
-    /// Vergrößert wird nie: Ein Bild auf 4000 Pixel zu ziehen, das 800 hat,
-    /// macht es größer, ohne einen einzigen Bildpunkt hinzuzufügen, den es
-    /// vorher nicht gab.
     public static func targetSize(
         for size: CGSize,
         scale: Scale,
@@ -142,11 +129,6 @@ public enum ImageConversion {
     // MARK: - Umwandeln
 
     /// Wandelt ein Bild um und gibt die fertigen Bytes zurück.
-    ///
-    /// Neu gezeichnet und neu kodiert wird immer, auch wenn Format und Größe
-    /// gleich bleiben — das ist genau der Schritt, bei dem EXIF, GPS und
-    /// Gerätename verlorengehen. Ein „Metadaten entfernen"-Schalter wäre eine
-    /// Behauptung; hier ist es eine Folge dessen, was ohnehin passiert.
     public static func convert(
         _ image: NSImage,
         to format: Format,
@@ -202,10 +184,6 @@ public enum ImageConversion {
     }
 
     /// Dasselbe für eine Datei auf der Platte.
-    ///
-    /// Der Weg über die URL statt über ein `NSImage` ist bei einem Stapel der
-    /// entscheidende: dreißig Fotos als `NSImage` sind dreißig entpackte
-    /// Bitmaps im Speicher, hier ist immer nur eines offen.
     public static func convert(
         contentsOf url: URL,
         to format: Format,
@@ -224,10 +202,6 @@ public enum ImageConversion {
     }
 
     /// Ein ganzer Stapel.
-    ///
-    /// Ein Bild, das nicht gelesen werden kann, beendet den Stapel nicht — es
-    /// bekommt seinen Fehler und die anderen laufen weiter. Alles andere wäre
-    /// bei dreißig Dateien eine Zumutung: einmal scheitern, alles noch einmal.
     public struct BatchResult: Sendable {
         public let url: URL
         public let output: Output?

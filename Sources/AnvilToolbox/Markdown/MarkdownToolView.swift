@@ -3,11 +3,6 @@ import AnvilUI
 import SwiftUI
 
 /// Markdown ansehen, prüfen und mitnehmen.
-///
-/// Drei Fragen an ein Markdown-Dokument, die man ohne Werkzeug schlecht
-/// beantwortet: Wie ist es gegliedert? Wohin zeigt es? Und was stimmt daran
-/// nicht — doppelte Überschriften, übersprungene Stufen, Sprungmarken ins
-/// Leere. Die Vorschau ist der Nebeneffekt, nicht der Zweck.
 public struct MarkdownToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -73,8 +68,6 @@ public struct MarkdownToolView: View {
             }
             guard !files.isEmpty else { return }
 
-            // Eine Datei bleibt eine Eingabe — der Stapel lohnt erst ab zwei,
-            // und die Einzelansicht kann mehr.
             if files.count == 1 {
                 batch = MarkdownBatch([])
                 input = files[0].text
@@ -91,7 +84,6 @@ public struct MarkdownToolView: View {
     }
 
     private func restore() {
-        // Hereingereichtes sticht den eigenen Entwurf.
         if let handed = context.handoff.take(for: metadata.id) {
             input = handed
             return
@@ -111,8 +103,6 @@ public struct MarkdownToolView: View {
     // MARK: - Das Dokument
 
     private var outputText: String {
-        // Im Stapel gibt der Kopieren-Knopf den Bericht heraus — die Ansicht
-        // zeigt ja auch keine einzelne Datei.
         if !batch.isEmpty {
             return batch.problemCount > 0
                 ? batch.report + "\n\n" + batch.problemReport
@@ -296,9 +286,6 @@ public struct MarkdownToolView: View {
                                 .lineLimit(1)
                                 .textSelection(.enabled)
                         }
-                        // Eingerückt nach der relativen Tiefe: ein Dokument,
-                        // das bei H2 anfängt, soll nicht schon beim ersten
-                        // Eintrag eingerückt sein.
                         .padding(.leading, CGFloat(heading.level - top) * AnvilSpacing.lg)
                         .padding(.vertical, AnvilSpacing.xs)
                         .padding(.horizontal, AnvilSpacing.sm)
@@ -468,9 +455,6 @@ public struct MarkdownToolView: View {
     }
 
     /// Setzt das Inhaltsverzeichnis vor den ersten Abschnitt.
-    ///
-    /// Hinter die erste Überschrift, nicht davor: über dem Titel steht ein
-    /// Inhaltsverzeichnis in keinem Dokument.
     private func insertTableOfContents() {
         let contents = document.tableOfContents
         guard !contents.isEmpty else { return }

@@ -69,8 +69,6 @@ public struct DuplicateToolView: View {
             isWorking = true
             defer { isWorking = false }
 
-            // Sowohl das Einsammeln als auch das Rechnen geht über die Platte.
-            // Auf dem Hauptthread stünde so lange das Fenster.
             scan = await Task.detached {
                 let files = FileWalk.files(in: root, minimumBytes: minimum)
                     .map { DuplicateScan.File(url: $0.url, size: $0.size) }

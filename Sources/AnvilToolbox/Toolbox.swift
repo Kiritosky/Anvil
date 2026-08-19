@@ -1,12 +1,6 @@
 import AnvilKit
 
 /// Was Anvil mitbringt.
-///
-/// Die Liste steht hier und nicht in der App-Shell, obwohl die Reihenfolge die
-/// der Seitenleiste ist: Sonst wüsste nur die Shell, welche Sammlungen es
-/// überhaupt gibt — und damit ließe sich der Werkzeugkasten als Ganzes nirgends
-/// prüfen. Genau das ist aber die einzige Stelle, an der doppelte Kennungen und
-/// leere Titel auffallen, ohne dass jemand die App startet.
 public enum Toolbox {
     public static let bundles: [any ToolBundle.Type] = [
         SpeechToolBundle.self,

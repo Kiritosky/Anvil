@@ -66,8 +66,6 @@ public struct StructuredToolView: View {
     // MARK: - Hereingezogenes
 
     private func open(_ dropped: [DroppedFile]) {
-        // Eine Datei bleibt eine Eingabe — der Stapel lohnt erst ab zwei, und
-        // die Einzelansicht kann mehr.
         if dropped.count == 1, case let .text(text, _) = dropped[0] {
             batch = .empty
             created = []
@@ -77,8 +75,6 @@ public struct StructuredToolView: View {
             return
         }
 
-        // Für den Stapel braucht es Pfade: Geschrieben wird neben die Quelle,
-        // und ein Text ohne Herkunft hat keine.
         let urls = dropped.compactMap(\.url)
         guard urls.count > 1 else { return }
         created = []
@@ -117,8 +113,6 @@ public struct StructuredToolView: View {
     private func restore() {
         if let handed = context.handoff.take(for: metadata.id) {
             input = handed
-            // Ein hereingereichter Text bringt sein eigenes Format mit; eine
-            // Wahl von vorhin wäre jetzt die falsche.
             chosenInput = nil
             return
         }

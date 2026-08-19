@@ -2,14 +2,6 @@ import AnvilKit
 import Foundation
 
 /// Ein Wert, wie ihn JSON, YAML und TOML alle drei kennen.
-///
-/// Die gemeinsame Mitte zwischen den drei Formaten. Jedes wird in diesen Typ
-/// gelesen und aus ihm geschrieben — sonst bräuchte es für n Formate n²
-/// Umwandlungen statt 2n.
-///
-/// Objekte sind eine **Liste** von Paaren und kein Wörterbuch. Ein Wörterbuch
-/// verliert die Reihenfolge, und eine Konfigurationsdatei, deren Schlüssel
-/// nach dem Umwandeln durcheinandergeraten, ist im Diff nicht mehr zu lesen.
 public indirect enum StructuredValue: Sendable, Hashable {
     case string(String)
     case number(Double)
@@ -38,9 +30,6 @@ public indirect enum StructuredValue: Sendable, Hashable {
     }
 
     /// Ein Behälter, in dem etwas steht.
-    ///
-    /// Der Unterschied zu ``isContainer`` entscheidet beim Schreiben, ob ein
-    /// Wert in dieselbe Zeile passt oder einen Block darunter braucht.
     public var hasChildren: Bool {
         switch self {
         case let .array(values): !values.isEmpty
@@ -80,10 +69,6 @@ public indirect enum StructuredValue: Sendable, Hashable {
     // MARK: - Skalare lesen
 
     /// Was ein unangeführter Skalar bedeutet.
-    ///
-    /// In YAML wie in TOML steht der Typ nicht dabei — `true`, `42` und `null`
-    /// sind Wörter wie jedes andere, und erst diese Tabelle macht Werte
-    /// daraus. Alles, was hier nicht steht, bleibt Text.
     public static func scalar(_ text: String) -> StructuredValue {
         let trimmed = text.trimmingCharacters(in: .whitespaces)
         switch trimmed.lowercased() {
@@ -97,10 +82,6 @@ public indirect enum StructuredValue: Sendable, Hashable {
     }
 
     /// Eine Zahl — aber nur, wenn sie wirklich eine ist.
-    ///
-    /// `Double("1e")` scheitert, `Double("infinity")` nicht. Eine
-    /// Versionsnummer wie `1.2.3` ist ebenfalls keine Zahl, auch wenn sie so
-    /// aussieht.
     static func strictNumber(_ text: String) -> Double? {
         guard !text.isEmpty else { return nil }
         let body = text.hasPrefix("-") || text.hasPrefix("+") ? String(text.dropFirst()) : text
@@ -108,7 +89,6 @@ public indirect enum StructuredValue: Sendable, Hashable {
         guard body.allSatisfy({ $0.isASCII && ($0.isNumber || ".eE+-_".contains($0)) }) else {
             return nil
         }
-        // TOML erlaubt Unterstriche als Tausendertrenner: 1_000_000.
         return Double(text.replacingOccurrences(of: "_", with: ""))
     }
 }
@@ -118,10 +98,6 @@ public indirect enum StructuredValue: Sendable, Hashable {
 extension StructuredValue {
     /// Liest JSON — von Hand, damit die Reihenfolge der Schlüssel erhalten
     /// bleibt.
-    ///
-    /// `JSONSerialization` wäre kürzer und gäbe ein `Dictionary` zurück, also
-    /// eine Reihenfolge nach Zufall. Für ein Werkzeug, dessen ganzer Zweck das
-    /// Umwandeln ist, wäre das der falsche Kompromiss.
     public static func json(parsing text: String) throws -> StructuredValue {
         var parser = JSONReader(text: Array(text))
         let value = try parser.value()

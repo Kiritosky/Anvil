@@ -2,10 +2,6 @@ import AnvilKit
 import SwiftUI
 
 /// An inline message with an optional action.
-///
-/// The app has exactly one way to say "something is off": this. Errors, missing
-/// permissions and model-unavailable states all render through it, which is why
-/// it takes a ``AnvilError`` directly as well as free-form text.
 public struct AnvilBanner: View {
     private let title: LocalizedStringKey
     private let message: LocalizedStringKey?
@@ -37,8 +33,6 @@ public struct AnvilBanner: View {
         action: (() -> Void)? = nil,
         onDismiss: (() -> Void)? = nil
     ) {
-        // The error's own text is already localised, so it goes in resolved
-        // rather than being looked up a second time.
         let hint = error.recoverySuggestion
         self.init(
             title: .resolved(error.title),

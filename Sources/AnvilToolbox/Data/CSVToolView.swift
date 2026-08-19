@@ -3,10 +3,6 @@ import AnvilUI
 import SwiftUI
 
 /// Eine Tabelle ansehen, sortieren, filtern und woanders hin mitnehmen.
-///
-/// Der Fall, für den es das gibt: Man bekommt einen Export und will ihn
-/// *anschauen*, bevor man ihn irgendwo hineinlädt. Eine Tabellenkalkulation
-/// dafür zu starten dauert länger als die Frage, die man hat.
 public struct CSVToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
@@ -55,10 +51,6 @@ public struct CSVToolView: View {
     @State private var orientation: WorkbenchOrientation = .horizontal
 
     /// Die Tabelle wird einmal gelesen und liegt dann herum.
-    ///
-    /// Als berechnete Eigenschaft sähe das kürzer aus und würde bei jedem
-    /// Zugriff neu zerlegen — bei einem Export mit zehntausend Zeilen wären
-    /// das mehrere Durchläufe je gezeichnetem Bild.
     @State private var table = CSVTable.empty
     @State private var shown = CSVTable.empty
     @State private var delimiter = CSVTable.Delimiter.comma
@@ -80,8 +72,6 @@ public struct CSVToolView: View {
         .anvilFileDrop(.text, error: $dropError) { dropped in
             guard case let .text(text, _) = dropped else { return }
             input = text
-            // Eine abgelegte Datei bringt ihr eigenes Trennzeichen mit; eine
-            // Wahl von vorhin wäre jetzt die falsche.
             chosenDelimiter = nil
             sortColumn = nil
         }
@@ -103,8 +93,6 @@ public struct CSVToolView: View {
     private func restore() {
         if let handed = context.handoff.take(for: metadata.id) {
             input = handed
-            // Eine hereingereichte Tabelle bringt ihr eigenes Trennzeichen
-            // mit.
             chosenDelimiter = nil
             return
         }
@@ -128,8 +116,6 @@ public struct CSVToolView: View {
     private func reread() {
         delimiter = chosenDelimiter ?? CSVTable.detectDelimiter(in: input)
         table = CSVTable(parsing: input, delimiter: delimiter, hasHeader: hasHeader)
-        // Eine Sortierung nach Spalte 7 ergibt in einer Tabelle mit drei
-        // Spalten nichts mehr.
         if let column = sortColumn, !table.header.indices.contains(column) {
             sortColumn = nil
         }
@@ -221,8 +207,6 @@ public struct CSVToolView: View {
 
     private func sort(by column: Int) {
         if sortColumn == column {
-            // Dritter Klick hebt die Sortierung wieder auf — sonst käme man
-            // nie zur ursprünglichen Reihenfolge zurück.
             if isAscending {
                 isAscending = false
             } else {
@@ -325,10 +309,6 @@ public struct CSVToolView: View {
     }
 
     /// Was eine Spalte auf einen Blick verrät.
-    ///
-    /// Bei Zahlen der Bereich — danach fragt man bei Zahlen zuerst. Sonst wie
-    /// viele verschiedene Werte darin stehen, denn genau daran erkennt man
-    /// eine Kategorie-Spalte.
     private func columnDescription(_ summary: CSVTable.ColumnSummary) -> String {
         if summary.isNumeric, let minimum = summary.minimum, let maximum = summary.maximum {
             return "\(Self.number(minimum)) – \(Self.number(maximum))"

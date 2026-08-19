@@ -6,10 +6,6 @@ import AppKit
 import SwiftUI
 
 /// The settings window.
-///
-/// A sidebar rather than the usual toolbar tabs, because the number of pages
-/// grows with the number of installed tools — every tool that registers a
-/// settings view shows up here automatically.
 struct SettingsWindow: View {
     @Environment(AppEnvironment.self) private var environment
     @State private var selection: SettingsSection = .general
@@ -117,8 +113,6 @@ struct GeneralSettingsView: View {
 
     private func remove(_ kind: StoredData.Kind) {
         try? DataInventory.empty(kind)
-        // Der Verlauf hat außerdem einen Zwischenspeicher, der sonst
-        // weiterzeigt, was es nicht mehr gibt.
         if kind == .history { environment.context.history.forgetEverything() }
         if kind == .drafts { environment.context.drafts.forgetEverything() }
         rescan()
@@ -254,8 +248,6 @@ struct GeneralSettingsView: View {
             }
         }
         .onAppear(perform: rescan)
-        // Gefragt wird beim Löschen, nicht beim Einschalten: Ein Knopf, der
-        // ohne Rückfrage Aufnahmen wegwirft, ist einer zu viel.
         .confirmationDialog(
             "Wirklich löschen?",
             isPresented: Binding(get: { pending != nil }, set: { if !$0 { pending = nil } }),
@@ -454,8 +446,6 @@ struct IntelligenceSettingsView: View {
             get: { router.remoteConfiguration.presetID },
             set: { id in
                 guard let preset = RemoteConfiguration.presets.first(where: { $0.presetID == id }) else { return }
-                // Carry the model name over when switching between endpoints
-                // that are likely to serve the same model.
                 var configuration = preset
                 if preset.model.isEmpty { configuration.model = router.remoteConfiguration.model }
                 router.remoteConfiguration = configuration
