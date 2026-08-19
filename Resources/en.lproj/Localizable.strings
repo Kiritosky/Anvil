@@ -104,6 +104,7 @@
 "Anteil" = "Share";
 "Anteil am Code, nicht an allen Zeilen: Leerzeilen gehören niemandem." = "Share of the code, not of all lines: blank lines belong to nobody.";
 "Anteil an den geschriebenen Zeilen — Leerzeilen zählen hier nicht mit." = "Share of the written lines — blank lines do not count here.";
+"Anvil bringt eine eigene mit — hier steht nur, wer unter eigenem Namen anfragen will. Dann braucht es eine OAuth-App unter github.com/settings/developers mit eingeschaltetem Device Flow; das Client-Geheimnis daneben bleibt ungenutzt." = "Anvil ships one of its own — this is only for asking under your own name. That needs an OAuth app at github.com/settings/developers with Device Flow switched on; the client secret next to it stays unused.";
 "Anvil löscht nichts. Der Befehl behält je Gruppe die erste Datei und geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command keeps the first file of each group and goes to the clipboard — you run it where you can see what happens.";
 "Anvil löscht nichts. Der Befehl geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command goes to the clipboard — you run it where you can see what happens.";
 "Anvil sucht nur nach Repositories und öffnet keines. Gelesen wird, was git ohnehin verrät." = "Anvil only looks for repositories, it never opens one. It reads what git tells anyone who asks.";
@@ -484,7 +485,6 @@
 "Aus der Zwischenablage lesen" = "Read from the clipboard";
 "Aus diesem Bild lässt sich nichts lesen." = "There is nothing readable in this image.";
 "Aus einer Beispielantwort werden Modelle" = "A sample response becomes models";
-"Aus einer eigenen OAuth-App unter github.com/settings/developers — mit eingeschaltetem Device Flow. Das Client-Geheimnis daneben braucht Anvil nicht; die Client-ID ist öffentlich und steht deshalb hier und nicht im Schlüsselbund." = "From your own OAuth app at github.com/settings/developers — with Device Flow switched on. Anvil does not need the client secret next to it; the client ID is public, which is why it lives here and not in the keychain.";
 "Aus einer Liste von Objekten entsteht ein Typ, in dem jedes Feld steht, das in irgendeinem Element vorkam — was nicht überall vorkam, wird optional. Das ist genau die Auskunft, die ein einzelnes Beispiel nicht hergibt." = "A list of objects becomes one type holding every field that appeared in any element — whatever did not appear everywhere becomes optional. That is exactly what a single example cannot tell you.";
 "Aus Favoriten entfernen" = "Remove from favourites";
 "Aus Stichworten eine Nachricht" = "A message from a few notes";
@@ -1362,7 +1362,6 @@
 "Normalform" = "Normal form";
 "Nur dieses Netzsegment" = "This link only";
 "Oder ein Token" = "Or a token";
-"Ohne Client-ID geht die Anmeldung nicht — sie steht in den Einstellungen." = "Without a client ID there is no sign-in — it goes into settings.";
 "So bliebe keine Seite übrig." = "That would leave no page at all.";
 "Tabellenname" = "Table name";
 "nicht belegt" = "not assigned";

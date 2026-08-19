@@ -49,7 +49,7 @@ struct GitHubSettingsView: View {
                         ) {
                             signIn()
                         }
-                        .disabled(isSigningIn || settings[.githubClientID].isEmpty)
+                        .disabled(isSigningIn)
                     }
                 }
             }
@@ -78,7 +78,7 @@ struct GitHubSettingsView: View {
 
             SettingsWideRow(
                 "Client-ID",
-                help: "Aus einer eigenen OAuth-App unter github.com/settings/developers — mit eingeschaltetem Device Flow. Das Client-Geheimnis daneben braucht Anvil nicht; die Client-ID ist öffentlich und steht deshalb hier und nicht im Schlüsselbund."
+                help: "Anvil bringt eine eigene mit — hier steht nur, wer unter eigenem Namen anfragen will. Dann braucht es eine OAuth-App unter github.com/settings/developers mit eingeschaltetem Device Flow; das Client-Geheimnis daneben bleibt ungenutzt."
             ) {
                 AnvilTextField(text: clientID, placeholder: "Ov23li…", isMonospaced: true)
             }

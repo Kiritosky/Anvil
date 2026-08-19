@@ -43,6 +43,11 @@ Ein Fenster, viele Werkzeuge, eine gemeinsame Basis:
   Prüfsummen, Base64 und Hex. Ergebnisse werden nie gespeichert. Was
   trotzdem liegen bleibt, steht in den Einstellungen unter „Datenablage": mit
   Größe, einzeln löschbar und auf einen Schlag.
+- **GitHub mit einem Klick.** Werkzeuge, die ein Repository holen, melden
+  sich über GitHubs Device Flow an — Code erscheint, Browser geht auf,
+  bestätigen, fertig. Anvil fragt nur nach dem Recht `repo` und legt das
+  Token in den Schlüsselbund. Wer lieber unter eigenem Namen anfragt, trägt
+  eine eigene Client-ID ein; wer gar keine Anmeldung will, ein Token von Hand.
 - **Erweiterbar von Anfang an.** Tools sind Registrierungen, keine
   Sonderfälle. Reine Prompt-Tools kommen ohne Neukompilieren als JSON-Datei
   dazu — anzulegen in der App selbst, unter „Eigenes Werkzeug", mit der Datei

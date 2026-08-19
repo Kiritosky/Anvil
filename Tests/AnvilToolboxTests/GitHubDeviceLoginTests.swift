@@ -145,4 +145,12 @@ struct GitHubDeviceLoginTests {
     func onlyOneScopeIsAskedFor() {
         #expect(GitHubDeviceLogin.scope == "repo")
     }
+
+    /// Anvil bringt eine Client-ID mit, damit die Anmeldung ohne
+    /// Vorbereitung funktioniert.
+    @Test
+    func thereIsAClientIDToBeginWith() {
+        #expect(!GitHubDeviceLogin.anvilClientID.isEmpty)
+        #expect(SettingKey.githubClientID.defaultValue == GitHubDeviceLogin.anvilClientID)
+    }
 }

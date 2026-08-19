@@ -16,10 +16,28 @@ public struct GitHubDeviceLogin: Sendable {
     private let clientID: String
     private let session: URLSession
 
-    public init(clientID: String, session: URLSession = .shared) {
-        self.clientID = clientID.trimmingCharacters(in: .whitespacesAndNewlines)
+    /// - Parameter clientID: Leer heißt: die mitgelieferte. Wer das Feld in
+    ///   den Einstellungen leert, will keine kaputte Anmeldung, sondern die
+    ///   Voreinstellung zurück.
+    public init(clientID: String = anvilClientID, session: URLSession = .shared) {
+        let trimmed = clientID.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.clientID = trimmed.isEmpty ? Self.anvilClientID : trimmed
         self.session = session
     }
+
+    /// Die OAuth-App, mit der Anvil selbst anfragt.
+    ///
+    /// Eine Client-ID gehört nicht zu den Dingen, die man versteckt: Sie
+    /// steht in jedem Anmeldelink, den die App öffnet, und ohne das
+    /// Client-Geheimnis — das der Device Flow nicht braucht und Anvil nicht
+    /// hat — lässt sich mit ihr nichts tun, dem der Mensch bei GitHub nicht
+    /// vorher zugestimmt hat. Deshalb bringt Anvil eine mit, statt jedem
+    /// zuzumuten, sich erst eine eigene anzulegen.
+    ///
+    /// Wer lieber unter eigenem Namen anfragt, trägt in den Einstellungen
+    /// eine andere ein; dann steht auch der eigene Name auf der Seite, auf
+    /// der bestätigt wird.
+    public static let anvilClientID = "Ov23lihIKGGg0dCIJViw"
 
     /// Wofür Anvil um Erlaubnis bittet.
     ///
@@ -70,12 +88,6 @@ public struct GitHubDeviceLogin: Sendable {
 
     /// Holt einen Code und die Seite, auf der er eingegeben wird.
     public func start() async throws -> Verification {
-        guard !clientID.isEmpty else {
-            throw AnvilError.invalidInput(
-                localized("Ohne Client-ID geht die Anmeldung nicht — sie steht in den Einstellungen.")
-            )
-        }
-
         let data = try await post(
             "https://github.com/login/device/code",
             fields: ["client_id": clientID, "scope": Self.scope]
@@ -225,6 +237,6 @@ extension SettingKey {
     /// Client-ID ist öffentlich — sie steht in jedem Anmeldelink, den die App
     /// je öffnet. Geheim ist nur, was danach zurückkommt.
     public static var githubClientID: SettingKey<String> {
-        SettingKey<String>("github.clientID", default: "")
+        SettingKey<String>("github.clientID", default: GitHubDeviceLogin.anvilClientID)
     }
 }
