@@ -78,9 +78,9 @@ struct GitHubSettingsView: View {
 
             SettingsWideRow(
                 "Client-ID",
-                help: "Aus einer eigenen OAuth-App unter github.com/settings/developers — mit eingeschaltetem Device Flow. Die Client-ID ist öffentlich und steht deshalb hier und nicht im Schlüsselbund."
+                help: "Aus einer eigenen OAuth-App unter github.com/settings/developers — mit eingeschaltetem Device Flow. Das Client-Geheimnis daneben braucht Anvil nicht; die Client-ID ist öffentlich und steht deshalb hier und nicht im Schlüsselbund."
             ) {
-                AnvilTextField(text: clientID, placeholder: "Iv1.…", isMonospaced: true)
+                AnvilTextField(text: clientID, placeholder: "Ov23li…", isMonospaced: true)
             }
 
             SettingsWideRow(

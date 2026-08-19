@@ -484,7 +484,7 @@
 "Aus der Zwischenablage lesen" = "Read from the clipboard";
 "Aus diesem Bild lässt sich nichts lesen." = "There is nothing readable in this image.";
 "Aus einer Beispielantwort werden Modelle" = "A sample response becomes models";
-"Aus einer eigenen OAuth-App unter github.com/settings/developers — mit eingeschaltetem Device Flow. Die Client-ID ist öffentlich und steht deshalb hier und nicht im Schlüsselbund." = "From your own OAuth app at github.com/settings/developers — with Device Flow switched on. The client ID is public, which is why it lives here and not in the keychain.";
+"Aus einer eigenen OAuth-App unter github.com/settings/developers — mit eingeschaltetem Device Flow. Das Client-Geheimnis daneben braucht Anvil nicht; die Client-ID ist öffentlich und steht deshalb hier und nicht im Schlüsselbund." = "From your own OAuth app at github.com/settings/developers — with Device Flow switched on. Anvil does not need the client secret next to it; the client ID is public, which is why it lives here and not in the keychain.";
 "Aus einer Liste von Objekten entsteht ein Typ, in dem jedes Feld steht, das in irgendeinem Element vorkam — was nicht überall vorkam, wird optional. Das ist genau die Auskunft, die ein einzelnes Beispiel nicht hergibt." = "A list of objects becomes one type holding every field that appeared in any element — whatever did not appear everywhere becomes optional. That is exactly what a single example cannot tell you.";
 "Aus Favoriten entfernen" = "Remove from favourites";
 "Aus Stichworten eine Nachricht" = "A message from a few notes";
