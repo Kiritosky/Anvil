@@ -48,6 +48,25 @@ durchgehend **Anvil**. Nichts davon je wieder auf „Nook" zurückdrehen; wo noc
 Abhängigkeiten zeigen immer nach unten. `AnvilKit` kennt weder KI noch Sprache
 noch die App-Shell — dadurch bleibt der Kern austauschbar.
 
+Testziele: `AnvilKitTests`, `AnvilUITests`, `AnvilToolboxTests`.
+
+## Massenaktionen
+
+Kein Werkzeug hört bei einem Element auf. Was für eine Datei geht, geht auch
+für dreißig: Ziehen nimmt alle, der Dialog erlaubt Mehrfachauswahl, und die
+Statuszeile sagt, wie viele es waren. Teure Schritte laufen schwungweise
+nebenläufig statt einer nach dem anderen.
+
+## Fremde Programme und Netz
+
+- Alles, was ein Programm startet, geht über `ProcessRunner` — nie über eine
+  Shell, immer mit Zeitgrenze.
+- Geheimnisse (API-Schlüssel, GitHub-Token) liegen im Schlüsselbund, nie in
+  Einstellungen oder Dateien. An `git` gehen sie über die Umgebung, nicht als
+  Argument: Argumente stehen in der Prozessliste.
+- Was Anvil klont oder herunterlädt, liegt im temporären Verzeichnis und wird
+  wieder weggeräumt.
+
 ## UI-Regeln
 
 - **Kein Tool baut eigenes Chrome.** Jede Tool-View sitzt in `ToolScaffold`
@@ -82,7 +101,11 @@ noch die App-Shell — dadurch bleibt der Kern austauschbar.
 ./Scripts/run.sh                  # bauen + starten
 swift test                        # Unit-Tests
 ./Scripts/check-translations.py   # fehlende Übersetzungen
+./Scripts/tool-list.py            # docs/TOOLS.md neu schreiben
 ```
+
+Nach einem neuen Werkzeug gehört `./Scripts/tool-list.py` dazu — die Liste in
+`docs/TOOLS.md` wird nicht von Hand gepflegt.
 
 ## Neue Tools
 
