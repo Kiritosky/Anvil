@@ -55,7 +55,9 @@ public struct DuplicateToolView: View {
 
     private func open(_ urls: [URL]) {
         guard !urls.isEmpty else { return }
-        roots = urls.map { FileWalk.isDirectory($0) ? $0 : $0.deletingLastPathComponent() }
+        roots = FileWalk.distinctRoots(
+            urls.map { FileWalk.isDirectory($0) ? $0 : $0.deletingLastPathComponent() }
+        )
         search()
     }
 

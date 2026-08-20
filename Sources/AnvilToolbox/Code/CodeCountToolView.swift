@@ -63,7 +63,9 @@ public struct CodeCountToolView: View {
     private func open(_ urls: [URL]) {
         guard !urls.isEmpty else { return }
         discardClone()
-        roots = urls.map { FileWalk.isDirectory($0) ? $0 : $0.deletingLastPathComponent() }
+        roots = FileWalk.distinctRoots(
+            urls.map { FileWalk.isDirectory($0) ? $0 : $0.deletingLastPathComponent() }
+        )
         name = roots.count == 1
             ? (roots.first?.lastPathComponent ?? "")
             : localized("\(roots.count) Projekte")

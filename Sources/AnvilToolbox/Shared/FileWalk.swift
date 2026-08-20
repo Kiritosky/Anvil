@@ -46,6 +46,26 @@ enum FileWalk {
         return exists && isDirectory.boolValue
     }
 
+    /// Wirft Ordner weg, die schon unter einem anderen der Liste liegen —
+    /// sonst zählt dieselbe Datei zweimal und gilt am Ende als ihre eigene
+    /// Dublette.
+    static func distinctRoots(_ folders: [URL]) -> [URL] {
+        var kept: [URL] = []
+        for folder in folders.map(\.standardizedFileURL) {
+            guard !kept.contains(where: { contains($0, folder) }) else { continue }
+            kept.removeAll { contains(folder, $0) }
+            kept.append(folder)
+        }
+        return kept
+    }
+
+    /// Ob `other` derselbe Ordner ist oder darunter liegt.
+    static func contains(_ folder: URL, _ other: URL) -> Bool {
+        let base = folder.standardizedFileURL.path
+        let full = other.standardizedFileURL.path
+        return full == base || full.hasPrefix(base.hasSuffix("/") ? base : base + "/")
+    }
+
     /// Der Pfad einer Datei relativ zu einem Ordner darüber.
     static func relativePath(of url: URL, under folder: URL) -> String {
         let base = folder.standardizedFileURL.path
