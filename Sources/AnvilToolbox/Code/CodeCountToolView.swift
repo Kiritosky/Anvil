@@ -14,6 +14,7 @@ public struct CodeCountToolView: View {
     @State private var name = ""
     @State private var count = CodeCount.empty
     @State private var isWorking = false
+    @State private var progress: Double?
     @State private var error: AnvilError?
     @State private var orientation: WorkbenchOrientation = .horizontal
 
@@ -147,23 +148,73 @@ public struct CodeCountToolView: View {
 
         Task {
             isWorking = true
-            defer { isWorking = false }
+            progress = 0
+            defer {
+                isWorking = false
+                progress = nil
+            }
 
-            count = await Task.detached {
-                let files = folders.flatMap { folder in
-                    FileWalk.files(in: folder).compactMap { file -> CodeCount.SourceFile? in
-                        let path = FileWalk.relativePath(of: file.url, under: folder)
-                        guard !CodeLanguage.isIgnored(path),
-                              CodeLanguage.of(path: path) != nil,
-                              let text = try? TextFile.read(at: file.url)
-                        else { return nil }
-                        return CodeCount.SourceFile(path: path, text: text)
-                    }
-                }
-                return CodeCount.count(files)
+            let wanted = await Task.detached(priority: .userInitiated) {
+                Self.sources(in: folders)
             }.value
+
+            var files: [CodeCount.SourceFile] = []
+            files.reserveCapacity(wanted.count)
+
+            for start in stride(from: 0, to: wanted.count, by: Self.sliceSize) {
+                let end = min(start + Self.sliceSize, wanted.count)
+                files += await Self.read(Array(wanted[start..<end]))
+                progress = Double(end) / Double(wanted.count)
+            }
+
+            let all = files
+            count = await Task.detached(priority: .userInitiated) { CodeCount.count(all) }.value
         }
     }
+
+    /// Welche Datei unter welchem Namen zählt — ohne sie schon zu lesen.
+    private static func sources(in folders: [URL]) -> [Source] {
+        folders.flatMap { folder in
+            FileWalk.files(in: folder).compactMap { file -> Source? in
+                let path = FileWalk.relativePath(of: file.url, under: folder)
+                guard !CodeLanguage.isIgnored(path), CodeLanguage.of(path: path) != nil else {
+                    return nil
+                }
+                return Source(url: file.url, path: path)
+            }
+        }
+    }
+
+    /// Ein Schwung Dateien gleichzeitig — die Platte wartet sonst auf sich
+    /// selbst.
+    private static func read(_ slice: [Source]) async -> [CodeCount.SourceFile] {
+        await Task.detached(priority: .userInitiated) {
+            await withTaskGroup(of: (Int, CodeCount.SourceFile?).self) { group in
+                for (index, source) in slice.enumerated() {
+                    group.addTask {
+                        guard let text = try? TextFile.read(at: source.url) else {
+                            return (index, nil)
+                        }
+                        return (index, CodeCount.SourceFile(path: source.path, text: text))
+                    }
+                }
+
+                var collected: [(Int, CodeCount.SourceFile)] = []
+                for await (index, file) in group {
+                    if let file { collected.append((index, file)) }
+                }
+                return collected.sorted { $0.0 < $1.0 }.map { $0.1 }
+            }
+        }.value
+    }
+
+    private struct Source: Sendable {
+        let url: URL
+        let path: String
+    }
+
+    /// Wie viele Dateien gleichzeitig gelesen werden.
+    private static let sliceSize = 64
 
     // MARK: - Content
 
@@ -213,7 +264,9 @@ public struct CodeCountToolView: View {
                 }
             }
         } accessory: {
-            if !count.isEmpty {
+            if isWorking {
+                ProgressStrip("Wird gelesen", progress: progress, tone: .accent)
+            } else if !count.isEmpty {
                 CopyButton(text: count.report)
             }
         }
