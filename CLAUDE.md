@@ -78,6 +78,8 @@ nebenläufig statt einer nach dem anderen.
   nicht verstreut in den Content.
 - Fehler werden über `AnvilBanner` bzw. `.anvilErrorBanner(...)` gezeigt,
   niemals über Alerts oder `print`.
+- `DataGrid` sortiert selbst. `onSort` gibt nur mit, wer die Reihenfolge auch
+  außerhalb der Tabelle braucht — etwa fürs Ausgeben.
 - Neue Komponenten kommen nach `AnvilUI`, sobald sie ein zweites Tool braucht.
 
 ## Sprache
@@ -102,6 +104,7 @@ nebenläufig statt einer nach dem anderen.
 swift test                        # Unit-Tests
 ./Scripts/check-translations.py   # fehlende Übersetzungen
 ./Scripts/tool-list.py            # docs/TOOLS.md neu schreiben
+./Scripts/tool-list.py --check    # nur vergleichen, so wie die CI
 ```
 
 Nach einem neuen Werkzeug gehört `./Scripts/tool-list.py` dazu — die Liste in
