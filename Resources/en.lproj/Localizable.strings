@@ -319,6 +319,7 @@
 "Sobald etwas doppelt liegt, steht es hier als Tabelle." = "As soon as something is duplicated, it appears here as a table.";
 "Suchtiefe" = "Search depth";
 "Symbol" = "Symbol";
+"Tabelle kopieren" = "Copy table";
 "Temperatur" = "Temperature";
 "Trag rechts ein, wonach gesucht wird. Bis dahin wird keine Datei angefasst." = "Enter what to search for on the right. Until then no file is touched.";
 "Transkribieren" = "Transcribe";
@@ -478,6 +479,7 @@
 "Aufschlüsseln" = "Break down";
 "August" = "August";
 "Aus" = "Off";
+"Zeile kopieren" = "Copy row";
 "aus" = "off";
 "Aus bedeutet: nur die deterministische Füllwort-Bereinigung, kein Sprachmodell." = "Off means: deterministic filler-word cleanup only, no language model.";
 "Aus dem Diff eine saubere Message" = "A clean message from the diff";

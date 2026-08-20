@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 /// Eine Tabelle aus Zeichenketten. Sortieren kann sie von sich aus; nur wer
@@ -139,5 +140,27 @@ public struct DataGrid: View {
         }
         .frame(height: AnvilSize.tableRowHeight)
         .background(number.isMultiple(of: 2) ? AnvilColor.surface : Color.clear)
+        .contextMenu {
+            Button("Zeile kopieren") { copy(line(row)) }
+            Button("Tabelle kopieren") { copy(tableText) }
+        }
+    }
+
+    // MARK: - Mitnehmen
+
+    /// Mit Tabulatoren getrennt: So landet die Zeile in Numbers und Excel als
+    /// Zeile und nicht als ein Klumpen Text.
+    private func line(_ row: [String]) -> String {
+        header.indices.map { row.indices.contains($0) ? row[$0] : "" }
+            .joined(separator: "\t")
+    }
+
+    private var tableText: String {
+        ([header.joined(separator: "\t")] + shownRows.map(line)).joined(separator: "\n")
+    }
+
+    private func copy(_ text: String) {
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(text, forType: .string)
     }
 }
