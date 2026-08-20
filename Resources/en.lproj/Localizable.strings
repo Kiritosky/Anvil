@@ -236,7 +236,6 @@
 "In den Bildern ist nichts, was sich als Text lesen ließe." = "There is nothing in these images that reads as text.";
 "In den gewählten Bildern steckt nichts Auffälliges." = "There is nothing notable in the chosen images.";
 "In diesem Bild steckt nichts Auffälliges." = "There is nothing notable in this image.";
-"In diesem Ordner liegt keine Datei zweimal." = "No file in this folder is here twice.";
 "In diesem Ordner liegt nichts, was zum Filter passt." = "Nothing in this folder matches the filter.";
 "In keiner der Dateien steht, wonach du suchst." = "None of the files contain what you are looking for.";
 "In neuem Fenster öffnen" = "Open in a new window";
@@ -245,6 +244,7 @@
 "Jedes Bild wird neu gezeichnet und neu kodiert. EXIF, Aufnahmeort und Gerätename bleiben dabei zurück — nicht als Schalter, sondern als Folge." = "Every image is redrawn and re-encoded. EXIF, location and device name are left behind in the process — not as a switch, but as a consequence.";
 "JSON, YAML oder TOML einwerfen — das Format erkennt Anvil selbst. Mehrere Dateien auf einmal werden zum Stapel." = "Drop in JSON, YAML or TOML — Anvil detects the format itself. Several files at once become a batch.";
 "Kamera" = "Camera";
+"Keine Datei liegt hier zweimal." = "No file here exists twice.";
 "kann weg" = "can go";
 "Kein git gefunden" = "No git found";
 "kein Treffer" = "no match";
@@ -366,7 +366,6 @@
 "Zieh Bilder ins Fenster — auch einen ganzen Schwung auf einmal." = "Drag images into the window — a whole batch at once is fine.";
 "Zieh den Ordner hinein, in dem deine Projekte liegen. Anvil sucht darin nach Repositories." = "Drag in the folder your projects live in. Anvil looks for repositories inside it.";
 "Zieh ein Bild ins Fenster oder hol eines aus der Zwischenablage." = "Drag an image into the window or take one from the clipboard.";
-"Zieh einen Ordner hinein. Anvil sieht sich alles darunter an — erst die Größe, dann den Inhalt." = "Drag a folder in. Anvil looks at everything below it — first the size, then the content.";
 "Zieh zwei Ordner ins Fenster — der erste ist links, der zweite rechts." = "Drag two folders into the window — the first is on the left, the second on the right.";
 "Zu dieser Auswahl gibt es keine Datei." = "There is no file for this selection.";
 "zu groß" = "too large";
@@ -480,6 +479,7 @@
 "August" = "August";
 "Aus" = "Off";
 "Zeile kopieren" = "Copy row";
+"Zieh einen Ordner hinein — oder gleich mehrere. Anvil sieht sich alles darunter an, erst die Größe, dann den Inhalt." = "Drop in a folder — or several at once. Anvil looks at everything beneath, first the size, then the contents.";
 "aus" = "off";
 "Aus bedeutet: nur die deterministische Füllwort-Bereinigung, kein Sprachmodell." = "Off means: deterministic filler-word cleanup only, no language model.";
 "Aus dem Diff eine saubere Message" = "A clean message from the diff";

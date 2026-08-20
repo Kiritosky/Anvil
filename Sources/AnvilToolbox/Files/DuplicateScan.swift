@@ -82,10 +82,10 @@ public struct DuplicateScan: Sendable {
         var hashed = 0
         var peeked = 0
 
-        for candidate in candidates(files) {
+        for candidate in candidates(files) where !Task.isCancelled {
             for narrowed in narrow(candidate, peek: peek, counter: &peeked) {
                 var byDigest: [String: [File]] = [:]
-                for file in narrowed {
+                for file in narrowed where !Task.isCancelled {
                     guard let value = try? digest(file.url) else { continue }
                     hashed += 1
                     byDigest[value, default: []].append(file)

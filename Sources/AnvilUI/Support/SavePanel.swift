@@ -46,6 +46,19 @@ public enum SavePanel {
         return panel.runModal() == .OK ? panel.url : nil
     }
 
+    /// Dasselbe für mehrere Ordner auf einmal.
+    public static func directories(prompt: String) -> [URL] {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = true
+        panel.canCreateDirectories = true
+        panel.prompt = prompt
+        panel.level = .modalPanel
+
+        return panel.runModal() == .OK ? panel.urls : []
+    }
+
     /// Fragt nach Dateien zum Öffnen.
     public static func files(
         prompt: String,

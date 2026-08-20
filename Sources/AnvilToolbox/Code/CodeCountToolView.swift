@@ -138,8 +138,7 @@ public struct CodeCountToolView: View {
     }
 
     private func chooseFolder() {
-        guard let folder = SavePanel.directory(prompt: localized("Ordner wählen")) else { return }
-        open([folder])
+        open(SavePanel.directories(prompt: localized("Ordner wählen")))
     }
 
     private func measure() {

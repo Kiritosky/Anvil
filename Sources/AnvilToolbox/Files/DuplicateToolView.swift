@@ -9,9 +9,11 @@ public struct DuplicateToolView: View {
     private let context: ToolContext
     private let metadata: ToolMetadata
 
-    @State private var root: URL?
+    /// Mehrere Ordner auf einmal: Dubletten liegen selten im selben.
+    @State private var roots: [URL] = []
     @State private var scan = DuplicateScan.empty
     @State private var isWorking = false
+    @State private var work: Task<Void, Never>?
     @State private var minimumKilobytes = 1
     @State private var error: AnvilError?
     @State private var orientation: WorkbenchOrientation = .horizontal
@@ -29,7 +31,7 @@ public struct DuplicateToolView: View {
         } actions: {
             WorkbenchOrientationPicker(orientation: $orientation)
 
-            if root != nil {
+            if !roots.isEmpty {
                 AnvilButton(
                     "Neu suchen",
                     systemImage: "arrow.clockwise",
@@ -43,41 +45,56 @@ public struct DuplicateToolView: View {
         }
         .anvilErrorBanner($error)
         .anvilFilesDrop(.file, error: $error) { dropped in
-            guard let folder = dropped.compactMap(\.url).first else { return }
-            open(folder)
+            open(dropped.compactMap(\.url))
         }
         .onChange(of: minimumKilobytes) { search() }
+        .onDisappear { work?.cancel() }
     }
 
     // MARK: - Suchen
 
-    private func open(_ folder: URL) {
-        root = FileWalk.isDirectory(folder) ? folder : folder.deletingLastPathComponent()
+    private func open(_ urls: [URL]) {
+        guard !urls.isEmpty else { return }
+        roots = urls.map { FileWalk.isDirectory($0) ? $0 : $0.deletingLastPathComponent() }
         search()
     }
 
     private func chooseFolder() {
-        guard let folder = SavePanel.directory(prompt: localized("Ordner wählen")) else { return }
-        open(folder)
+        open(SavePanel.directories(prompt: localized("Ordner wählen")))
     }
 
+    /// Ein neuer Lauf löst den alten ab — sonst bliebe eine geänderte
+    /// Mindestgröße folgenlos, solange noch gesucht wird.
     private func search() {
-        guard let root, !isWorking else { return }
+        let folders = roots
+        guard !folders.isEmpty else { return }
         let minimum = minimumKilobytes * 1024
 
-        Task {
+        work?.cancel()
+        work = Task {
             isWorking = true
-            defer { isWorking = false }
 
-            scan = await Task.detached {
-                let files = FileWalk.files(in: root, minimumBytes: minimum)
-                    .map { DuplicateScan.File(url: $0.url, size: $0.size) }
+            let job = Task.detached(priority: .userInitiated) {
+                let files = folders.flatMap { folder in
+                    FileWalk.files(in: folder, minimumBytes: minimum)
+                        .map { DuplicateScan.File(url: $0.url, size: $0.size) }
+                }
                 return DuplicateScan.scan(
                     files,
                     peek: { try FileDigest.prefixHex(SHA256.self, of: $0) },
                     digest: { try FileDigest.hex(SHA256.self, of: $0) }
                 )
-            }.value
+            }
+
+            let found = await withTaskCancellationHandler {
+                await job.value
+            } onCancel: {
+                job.cancel()
+            }
+
+            guard !Task.isCancelled else { return }
+            scan = found
+            isWorking = false
         }
     }
 
@@ -100,10 +117,10 @@ public struct DuplicateToolView: View {
     @ViewBuilder
     private var groupPane: some View {
         AnvilPane("Gruppen", systemImage: "square.on.square") {
-            if root == nil {
+            if roots.isEmpty {
                 EmptyStateView(
                     title: "Noch kein Ordner",
-                    message: "Zieh einen Ordner hinein. Anvil sieht sich alles darunter an — erst die Größe, dann den Inhalt.",
+                    message: "Zieh einen Ordner hinein — oder gleich mehrere. Anvil sieht sich alles darunter an, erst die Größe, dann den Inhalt.",
                     systemImage: "folder",
                     actions: {
                         AnvilButton("Ordner wählen", systemImage: "folder") { chooseFolder() }
@@ -118,7 +135,7 @@ public struct DuplicateToolView: View {
             } else if scan.isEmpty {
                 EmptyStateView(
                     title: "Nichts doppelt",
-                    message: "In diesem Ordner liegt keine Datei zweimal.",
+                    message: "Keine Datei liegt hier zweimal.",
                     systemImage: "checkmark.circle"
                 )
             } else {
@@ -203,6 +220,9 @@ public struct DuplicateToolView: View {
     private var statusBar: some View {
         ToolStatusBar {
             StatusMetric("\(scan.examined)", label: "Dateien", systemImage: "doc.on.doc")
+            if roots.count > 1 {
+                StatusMetric("\(roots.count)", label: "Ordner", systemImage: "folder")
+            }
             StatusMetric(
                 "\(scan.groups.count)",
                 label: "Gruppen",
@@ -234,8 +254,10 @@ public struct DuplicateToolView: View {
             systemImage: "folder",
             footnote: "Versteckte Ordner bleiben draußen. Was in .git oder .build doppelt liegt, gehört einem Programm und nicht dir."
         ) {
-            if let root {
-                KeyValueList([KeyValueList.Item(localized("Gewählt"), root.path)])
+            if !roots.isEmpty {
+                KeyValueList(roots.map { folder in
+                    KeyValueList.Item(folder.lastPathComponent, folder.deletingLastPathComponent().path)
+                })
             }
             AnvilButton("Ordner wählen", systemImage: "folder") { chooseFolder() }
         }
