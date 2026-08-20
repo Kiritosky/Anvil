@@ -193,4 +193,64 @@ struct FileWalkTests {
         #expect(FileWalk.files(in: URL(fileURLWithPath: "/gibt/es/nicht")).isEmpty)
         #expect(FileWalk.isDirectory(URL(fileURLWithPath: "/gibt/es/nicht")) == false)
     }
+
+    // MARK: - Enthalten
+
+    @Test
+    func aFolderContainsItselfAndWhatIsBelow() {
+        #expect(FileWalk.contains(path("/a/b"), path("/a/b")))
+        #expect(FileWalk.contains(path("/a/b"), path("/a/b/c/datei.txt")))
+        #expect(!FileWalk.contains(path("/a/b"), path("/a")))
+    }
+
+    /// Der Fallstrick beim Vergleich über den Präfix: „/a/bc" fängt mit
+    /// „/a/b" an, liegt aber nicht darin.
+    @Test
+    func aSimilarNameIsNoContainment() {
+        #expect(!FileWalk.contains(path("/a/b"), path("/a/bc")))
+    }
+
+    // MARK: - Doppelte Wurzeln
+
+    /// Zwei Wurzeln, von denen eine unter der anderen liegt, hätten jede
+    /// Datei darunter zweimal gezählt — im Dublettenfinder wäre sie damit
+    /// ihre eigene Dublette.
+    @Test
+    func aFolderBelowAnotherFallsAway() {
+        #expect(kept([path("/a"), path("/a/b")]) == ["/a"])
+    }
+
+    /// Auch andersherum, wenn der engere zuerst kommt.
+    @Test
+    func theWiderFolderWins() {
+        #expect(kept([path("/a/b"), path("/a")]) == ["/a"])
+    }
+
+    @Test
+    func theSameFolderTwiceStaysOnce() {
+        #expect(kept([path("/a"), path("/a")]) == ["/a"])
+    }
+
+    @Test
+    func separateFoldersAllStay() {
+        #expect(kept([path("/a"), path("/b"), path("/c")]) == ["/a", "/b", "/c"])
+    }
+
+    @Test
+    func theOrderOfWhatStaysIsKept() {
+        #expect(kept([path("/b"), path("/a"), path("/b/tief")]) == ["/b", "/a"])
+    }
+
+    @Test
+    func nothingInIsNothingOut() {
+        #expect(FileWalk.distinctRoots([]).isEmpty)
+    }
+
+    private func path(_ path: String) -> URL {
+        URL(fileURLWithPath: path)
+    }
+
+    private func kept(_ folders: [URL]) -> [String] {
+        FileWalk.distinctRoots(folders).map(\.path)
+    }
 }
