@@ -19,6 +19,8 @@ mit KI auf dem Gerät statt in der Cloud.**
 [Werkzeuge](docs/TOOLS.md) · [Aufbau](docs/ARCHITECTURE.md) ·
 [Neues Werkzeug](docs/ADDING_A_TOOL.md) · [Mitmachen](CONTRIBUTING.md)
 
+In English: **[README.en.md](README.en.md)**
+
 </div>
 
 ---
