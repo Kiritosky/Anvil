@@ -10,7 +10,11 @@ Frage: *Wer darf das kennen?*
 ./Scripts/run.sh                  # bauen und starten
 swift test                        # Tests
 ./Scripts/check-translations.py   # fehlende Übersetzungen
+./Scripts/tool-list.py            # docs/TOOLS.md neu schreiben
 ```
+
+Die CI prüft die letzten beiden mit; wer ein Werkzeug hinzufügt, lässt
+`tool-list.py` einmal laufen und legt die geänderte `docs/TOOLS.md` dazu.
 
 Voraussetzung ist macOS 26 mit Xcode 26 bzw. einer passenden Swift-Toolchain.
 `FoundationModels` und `SpeechAnalyzer` gibt es darunter nicht.

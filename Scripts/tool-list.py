@@ -83,7 +83,17 @@ def main() -> int:
         lines += [f"| {title} | {subtitle} | `{identifier}` |" for identifier, title, subtitle, _ in rows]
         lines.append("")
 
-    (ROOT / "docs" / "TOOLS.md").write_text("\n".join(lines))
+    target = ROOT / "docs" / "TOOLS.md"
+    text = "\n".join(lines)
+
+    if "--check" in sys.argv:
+        if target.exists() and target.read_text() == text:
+            print(f"docs/TOOLS.md ist aktuell: {len(found)} Werkzeuge")
+            return 0
+        print("docs/TOOLS.md ist veraltet — ./Scripts/tool-list.py laufen lassen.")
+        return 1
+
+    target.write_text(text)
     print(f"docs/TOOLS.md: {len(found)} Werkzeuge")
     return 0
 
