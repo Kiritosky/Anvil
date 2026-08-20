@@ -348,32 +348,8 @@ public struct CSVTable: Sendable {
 
     // MARK: - Kleinkram
 
-    /// Liest eine Zahl, wie sie in Tabellen steht.
     static func number(_ text: String) -> Double? {
-        var work = text.trimmingCharacters(in: .whitespaces)
-        guard !work.isEmpty else { return nil }
-        work = work.replacingOccurrences(of: "\u{202F}", with: "")
-            .replacingOccurrences(of: "\u{00A0}", with: "")
-            .replacingOccurrences(of: " ", with: "")
-
-        let lastComma = work.lastIndex(of: ",")
-        let lastDot = work.lastIndex(of: ".")
-
-        switch (lastComma, lastDot) {
-        case let (comma?, dot?):
-            if comma > dot {
-                work = work.replacingOccurrences(of: ".", with: "")
-                work = work.replacingOccurrences(of: ",", with: ".")
-            } else {
-                work = work.replacingOccurrences(of: ",", with: "")
-            }
-        case (.some, nil):
-            work = work.replacingOccurrences(of: ",", with: ".")
-        default:
-            break
-        }
-
-        return Double(work)
+        NumericText.value(in: text)
     }
 
     static func quotedJSON(_ text: String) -> String {

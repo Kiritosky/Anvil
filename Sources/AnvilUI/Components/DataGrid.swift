@@ -1,16 +1,23 @@
 import SwiftUI
 
-/// Eine Tabelle aus Zeichenketten.
+/// Eine Tabelle aus Zeichenketten. Sortieren kann sie von sich aus; nur wer
+/// die Reihenfolge auch außerhalb der Tabelle braucht, gibt `onSort` mit.
 public struct DataGrid: View {
     private let header: [String]
     private let rows: [[String]]
-    private let sortedColumn: Int?
-    private let isAscending: Bool
+    private let givenColumn: Int?
+    private let givenAscending: Bool
     private let onSort: ((Int) -> Void)?
 
-    /// - Parameter onSort: Fehlt es, sind die Spaltenköpfe keine Knöpfe. Eine
-    ///   Tabelle, die aussieht, als ließe sie sich sortieren, und es dann nicht
-    ///   tut, ist schlimmer als eine, die es gar nicht anbietet.
+    @State private var own: Sort?
+
+    private struct Sort: Equatable {
+        var column: Int
+        var ascending: Bool
+    }
+
+    /// - Parameter onSort: Übernimmt das Sortieren vollständig — dann bestimmen
+    ///   `sortedColumn` und `isAscending`, was der Kopf anzeigt.
     public init(
         header: [String],
         rows: [[String]],
@@ -20,8 +27,8 @@ public struct DataGrid: View {
     ) {
         self.header = header
         self.rows = rows
-        self.sortedColumn = sortedColumn
-        self.isAscending = isAscending
+        self.givenColumn = sortedColumn
+        self.givenAscending = isAscending
         self.onSort = onSort
     }
 
@@ -29,13 +36,41 @@ public struct DataGrid: View {
         ScrollView([.horizontal, .vertical]) {
             LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                 Section {
-                    ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
+                    ForEach(Array(shownRows.enumerated()), id: \.offset) { index, row in
                         dataRow(number: index + 1, row: row)
                     }
                 } header: {
                     headerRow
                 }
             }
+        }
+    }
+
+    // MARK: - Sortieren
+
+    private var sortsItself: Bool { onSort == nil }
+
+    private var sortedColumn: Int? { sortsItself ? own?.column : givenColumn }
+
+    private var isAscending: Bool { sortsItself ? own?.ascending ?? true : givenAscending }
+
+    private var shownRows: [[String]] {
+        guard sortsItself, let own, header.indices.contains(own.column) else { return rows }
+        return TableSort.rows(rows, by: own.column, ascending: own.ascending)
+    }
+
+    /// Dreimal auf denselben Kopf führt zurück zur ursprünglichen Reihenfolge.
+    private func sort(by column: Int) {
+        guard sortsItself else {
+            onSort?(column)
+            return
+        }
+        if own?.column != column {
+            own = Sort(column: column, ascending: true)
+        } else if own?.ascending == true {
+            own?.ascending = false
+        } else {
+            own = nil
         }
     }
 
@@ -48,17 +83,13 @@ public struct DataGrid: View {
                 .padding(.trailing, AnvilSpacing.sm)
 
             ForEach(Array(header.enumerated()), id: \.offset) { index, name in
-                if let onSort {
-                    Button {
-                        withAnimation(AnvilMotion.quick) { onSort(index) }
-                    } label: {
-                        headerCell(index: index, name: name)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                } else {
+                Button {
+                    withAnimation(AnvilMotion.quick) { sort(by: index) }
+                } label: {
                     headerCell(index: index, name: name)
+                        .contentShape(Rectangle())
                 }
+                .buttonStyle(.plain)
             }
         }
         .padding(.vertical, AnvilSpacing.xs)
