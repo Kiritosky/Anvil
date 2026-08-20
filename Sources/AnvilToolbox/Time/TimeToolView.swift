@@ -267,7 +267,7 @@ public struct TimeToolView: View {
                 HStack(spacing: AnvilSpacing.sm) {
                     AnvilTextField(text: $startInput, placeholder: "Von — 2026-08-09", isMonospaced: true)
                     Image(systemName: "arrow.right")
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(AnvilFont.label)
                         .foregroundStyle(AnvilColor.textTertiary)
                     AnvilTextField(text: $endInput, placeholder: "Bis — 2026-12-24", isMonospaced: true)
                 }

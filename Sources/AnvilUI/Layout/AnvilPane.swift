@@ -49,7 +49,7 @@ public struct AnvilPane<Content: View, Accessory: View>: View {
         HStack(spacing: AnvilSpacing.xs) {
             if let systemImage {
                 Image(systemName: systemImage)
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(AnvilFont.label)
                     .foregroundStyle(tone == .neutral ? AnvilColor.textTertiary : tone.color)
             }
             Text(title)

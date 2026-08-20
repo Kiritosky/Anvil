@@ -67,7 +67,7 @@ public struct Chip: View {
             HStack(spacing: AnvilSpacing.xs) {
                 if let systemImage {
                     Image(systemName: systemImage)
-                        .font(.system(size: 9, weight: .semibold))
+                        .font(AnvilFont.micro)
                 }
                 Text(.resolved(title))
                     .font(AnvilFont.caption.weight(isSelected ? .semibold : .regular))

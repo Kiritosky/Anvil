@@ -64,7 +64,7 @@ struct SidebarView: View {
     private var searchField: some View {
         HStack(spacing: AnvilSpacing.xs) {
             Image(systemName: "magnifyingglass")
-                .font(.system(size: 11))
+                .font(AnvilFont.caption)
                 .foregroundStyle(AnvilColor.textTertiary)
 
             TextField("Suchen", text: $query)
@@ -94,7 +94,7 @@ struct SidebarView: View {
         return VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
             HStack(spacing: AnvilSpacing.xs) {
                 Image(systemName: systemImage)
-                    .font(.system(size: 9, weight: .bold))
+                    .font(AnvilFont.micro)
                 Text(title.uppercased())
                     .font(AnvilFont.label)
                     .tracking(0.6)

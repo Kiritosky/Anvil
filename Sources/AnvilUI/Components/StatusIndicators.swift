@@ -23,7 +23,7 @@ public struct StatusPill: View {
         HStack(spacing: AnvilSpacing.xxs + 2) {
             if let systemImage {
                 Image(systemName: systemImage)
-                    .font(.system(size: 9, weight: .bold))
+                    .font(AnvilFont.micro)
             }
             Text(text)
                 .font(AnvilFont.caption.weight(.medium))
@@ -87,7 +87,7 @@ public struct ProgressStrip: View {
         VStack(alignment: .leading, spacing: AnvilSpacing.xs) {
             HStack(spacing: AnvilSpacing.xs) {
                 Image(systemName: tone.systemImage)
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(AnvilFont.label)
                     .foregroundStyle(tone.color)
                 Text(title)
                     .font(AnvilFont.caption)

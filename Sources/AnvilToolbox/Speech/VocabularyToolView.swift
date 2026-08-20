@@ -167,7 +167,7 @@ public struct VocabularyToolView: View {
                             .foregroundStyle(AnvilColor.textTertiary)
                             .strikethrough()
                         Image(systemName: "arrow.right")
-                            .font(.system(size: 9, weight: .bold))
+                            .font(AnvilFont.micro)
                             .foregroundStyle(AnvilColor.textTertiary)
                         Text(verbatim: correction.replacement)
                             .font(AnvilFont.monoSmall)

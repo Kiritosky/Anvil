@@ -26,7 +26,7 @@ struct QuickDictationView: View {
                     Task { await controller.cancel() }
                 } label: {
                     Image(systemName: "xmark")
-                        .font(.system(size: 9, weight: .bold))
+                        .font(AnvilFont.micro)
                 }
                 .buttonStyle(AnvilIconButtonStyle())
                 .anvilHelp("Verwerfen (⎋)")
@@ -58,11 +58,11 @@ struct QuickDictationView: View {
                 .frame(width: AnvilSize.dot, height: AnvilSize.dot)
         case .delivered:
             Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 11))
+                .font(AnvilFont.caption)
                 .foregroundStyle(AnvilColor.success)
         case .failed:
             Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 11))
+                .font(AnvilFont.caption)
                 .foregroundStyle(AnvilColor.warning)
         case .recording, .idle:
             ActivityDot(tone: .danger, isActive: controller.phase == .recording)

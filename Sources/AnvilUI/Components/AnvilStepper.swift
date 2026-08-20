@@ -57,7 +57,7 @@ public struct AnvilStepper: View {
             change(sign: sign)
         } label: {
             Image(systemName: systemImage)
-                .font(.system(size: 9, weight: .bold))
+                .font(AnvilFont.micro)
                 .frame(width: AnvilSize.controlHeight, height: AnvilSize.controlHeight)
                 .contentShape(Rectangle())
         }

@@ -48,7 +48,7 @@ public struct InspectorSection<Content: View>: View {
             HStack(spacing: AnvilSpacing.xs) {
                 if let systemImage {
                     Image(systemName: systemImage)
-                        .font(.system(size: 9, weight: .bold))
+                        .font(AnvilFont.micro)
                 }
                 Text(title)
                     .textCase(.uppercase)

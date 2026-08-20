@@ -155,6 +155,9 @@ public enum AnvilFont {
     public static let caption = Font.system(size: 11)
     /// All-caps label above a group of controls.
     public static let label = Font.system(size: 10, weight: .semibold)
+    /// The smallest glyph that still reads: the chevron in a table head, the
+    /// number on a badge.
+    public static let micro = Font.system(size: 9, weight: .semibold)
     /// Monospaced text: code, transcripts, JSON, hashes.
     public static let mono = Font.system(size: 12.5, design: .monospaced)
     /// Smaller monospaced text for inline values.

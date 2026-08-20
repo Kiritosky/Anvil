@@ -313,7 +313,7 @@ public struct MarkdownToolView: View {
                     ForEach(links) { link in
                         HStack(spacing: AnvilSpacing.sm) {
                             Image(systemName: link.isImage ? "photo" : "link")
-                                .font(.system(size: 10, weight: .semibold))
+                                .font(AnvilFont.label)
                                 .foregroundStyle(AnvilColor.textTertiary)
 
                             VStack(alignment: .leading, spacing: 0) {

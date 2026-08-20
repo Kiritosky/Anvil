@@ -204,7 +204,7 @@ public struct ToolStoreView: View {
                         .foregroundStyle(AnvilColor.textPrimary)
                     if tool.hasSettings {
                         Image(systemName: "gearshape")
-                            .font(.system(size: 9))
+                            .font(AnvilFont.micro)
                             .foregroundStyle(AnvilColor.textTertiary)
                             .anvilHelp("Hat eigene Einstellungen")
                     }

@@ -109,7 +109,7 @@ public struct DataGrid: View {
                 .lineLimit(1)
             if sortedColumn == index {
                 Image(systemName: isAscending ? "chevron.up" : "chevron.down")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(AnvilFont.micro)
             }
             Spacer(minLength: 0)
         }

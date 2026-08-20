@@ -116,7 +116,7 @@ public struct SettingsRow<Control: View>: View {
         HStack(alignment: .center, spacing: AnvilSpacing.md) {
             if let systemImage {
                 Image(systemName: systemImage)
-                    .font(.system(size: 13))
+                    .font(AnvilFont.body)
                     .foregroundStyle(AnvilColor.textSecondary)
                     .frame(width: 18)
             }
