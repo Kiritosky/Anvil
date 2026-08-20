@@ -73,8 +73,12 @@ public struct DuplicateScan: Sendable {
     }
 
     /// Die zweite Stufe: der schnelle Blick auf den Anfang der Datei.
+    ///
+    /// - Parameter roots: Bestimmt, welche Kopie je Gruppe zuerst steht und
+    ///   damit stehen bleibt — die aus dem zuerst gewählten Ordner.
     public static func scan(
         _ files: [File],
+        preferring roots: [URL] = [],
         peek: ((URL) throws -> String)? = nil,
         digest: (URL) throws -> String
     ) -> DuplicateScan {
@@ -92,9 +96,8 @@ public struct DuplicateScan: Sendable {
                 }
 
                 for (value, same) in byDigest where same.count > 1 {
-                    groups.append(
-                        Group(digest: value, files: same.sorted { $0.url.path < $1.url.path })
-                    )
+                    let ordered = same.sorted { order($0, in: roots) < order($1, in: roots) }
+                    groups.append(Group(digest: value, files: ordered))
                 }
             }
         }
@@ -106,6 +109,13 @@ public struct DuplicateScan: Sendable {
             hashed: hashed,
             peeked: peeked
         )
+    }
+
+    /// Aus welchem der gewählten Ordner eine Datei stammt — und danach der
+    /// Pfad, damit die Reihenfolge auch ohne Ordner feststeht.
+    static func order(_ file: File, in roots: [URL]) -> (Int, String) {
+        let index = roots.firstIndex { FileWalk.contains($0, file.url) } ?? roots.count
+        return (index, file.url.path)
     }
 
     /// Teilt eine Größengruppe nach dem Anfang der Dateien auf.

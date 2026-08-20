@@ -92,6 +92,7 @@
 "Alles davon liegt unverschlüsselt in deinem Benutzerordner und geht nie ins Netz. „Alles löschen\" lässt die eigenen Werkzeuge stehen — die sind keine Ablage, sondern Arbeit." = "All of it sits unencrypted in your user folder and never goes online. \"Delete everything\" leaves your own tools alone — those are work, not storage.";
 "Alles Gespeicherte löschen?" = "Delete everything stored?";
 "Alles löschen" = "Delete everything";
+"Anvil löscht nichts. Der Befehl behält je Gruppe die Kopie aus dem zuerst gewählten Ordner und geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command keeps the copy from the folder you chose first and goes to the clipboard — you run it where you can see what happens.";
 "alles sauber" = "all clean";
 "Alles, was hier stehen könnte, ist in Ordnung." = "Everything that could show up here is in order.";
 "Alte Zweige" = "Stale branches";
@@ -105,7 +106,6 @@
 "Anteil am Code, nicht an allen Zeilen: Leerzeilen gehören niemandem." = "Share of the code, not of all lines: blank lines belong to nobody.";
 "Anteil an den geschriebenen Zeilen — Leerzeilen zählen hier nicht mit." = "Share of the written lines — blank lines do not count here.";
 "Anvil bringt eine eigene mit — hier steht nur, wer unter eigenem Namen anfragen will. Dann braucht es eine OAuth-App unter github.com/settings/developers mit eingeschaltetem Device Flow; das Client-Geheimnis daneben bleibt ungenutzt." = "Anvil ships one of its own — this is only for asking under your own name. That needs an OAuth app at github.com/settings/developers with Device Flow switched on; the client secret next to it stays unused.";
-"Anvil löscht nichts. Der Befehl behält je Gruppe die erste Datei und geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command keeps the first file of each group and goes to the clipboard — you run it where you can see what happens.";
 "Anvil löscht nichts. Der Befehl geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert." = "Anvil deletes nothing. The command goes to the clipboard — you run it where you can see what happens.";
 "Anvil sucht nur nach Repositories und öffnet keines. Gelesen wird, was git ohnehin verrät." = "Anvil only looks for repositories, it never opens one. It reads what git tells anyone who asks.";
 "Anvil vergrößert nie. Eine Vorlage unter der größten verlangten Kante ergibt einen Satz, in dem die oberen Größen fehlen — besser eine größere Vorlage." = "Anvil never scales up. A template below the largest required edge produces a set with the top sizes missing — better to use a larger template.";

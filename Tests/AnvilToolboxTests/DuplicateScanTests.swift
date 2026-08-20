@@ -219,6 +219,27 @@ struct DuplicateScanTests {
         #expect(result.removalCommands.contains("'/b/x.txt'"))
     }
 
+    /// Wer zwei Ordner wählt, meint mit dem ersten das Original — der Befehl
+    /// darf ihn nicht löschen.
+    @Test
+    func theCopyFromTheFirstFolderStays() {
+        let result = DuplicateScan.scan(
+            [file("/backup/x.txt", 100), file("/original/x.txt", 100)],
+            preferring: [URL(fileURLWithPath: "/original"), URL(fileURLWithPath: "/backup")],
+            digest: { digest($0) }
+        )
+        #expect(result.groups.first?.files.first?.folder == "/original")
+        #expect(result.removalCommands.contains("'/backup/x.txt'"))
+        #expect(!result.removalCommands.contains("'/original/x.txt'"))
+    }
+
+    /// Ohne gewählte Ordner bleibt es beim Pfad.
+    @Test
+    func withoutFoldersThePathDecides() {
+        let result = scan([file("/b/x.txt", 100), file("/a/x.txt", 100)])
+        #expect(result.groups.first?.files.first?.folder == "/a")
+    }
+
     @Test
     func thePathsInTheCommandAreQuoted() {
         let result = scan([

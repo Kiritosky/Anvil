@@ -83,6 +83,7 @@ public struct DuplicateToolView: View {
                 }
                 return DuplicateScan.scan(
                     files,
+                    preferring: folders,
                     peek: { try FileDigest.prefixHex(SHA256.self, of: $0) },
                     digest: { try FileDigest.hex(SHA256.self, of: $0) }
                 )
@@ -278,7 +279,7 @@ public struct DuplicateToolView: View {
             InspectorSection(
                 "Aufräumen",
                 systemImage: "trash",
-                footnote: "Anvil löscht nichts. Der Befehl behält je Gruppe die erste Datei und geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert."
+                footnote: "Anvil löscht nichts. Der Befehl behält je Gruppe die Kopie aus dem zuerst gewählten Ordner und geht in die Zwischenablage — ausgeführt wird er dort, wo du siehst, was passiert."
             ) {
                 AnvilButton("Lösch-Befehle kopieren", systemImage: "doc.on.clipboard") {
                     context.pasteboard.copy(scan.removalCommands)
