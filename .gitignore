@@ -17,6 +17,10 @@ xcuserdata/
 *.xcuserstate
 *.hmap
 
+# Python-Zwischenstand der Skripte
+__pycache__/
+*.pyc
+
 # macOS
 .DS_Store
 
