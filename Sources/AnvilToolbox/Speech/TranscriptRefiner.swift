@@ -32,6 +32,7 @@ public final class TranscriptRefiner {
         languageName: String,
         customInstruction: String = "",
         vocabulary: [String] = [],
+        target: AITarget = .standard,
         onProgress: (@MainActor (Progress) -> Void)? = nil,
         onPartial: (@MainActor (String) -> Void)? = nil
     ) async throws -> String {
@@ -69,7 +70,7 @@ public final class TranscriptRefiner {
             )
 
             var latest = ""
-            for try await snapshot in router.stream(request) {
+            for try await snapshot in router.stream(request, target: target) {
                 try Task.checkCancellation()
                 latest = snapshot
                 onPartial?(join(completed + [latest], style: style))

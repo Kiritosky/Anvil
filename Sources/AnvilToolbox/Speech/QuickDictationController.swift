@@ -170,7 +170,10 @@ public final class QuickDictationController {
                 style: settings[.quickDictationStyle],
                 languageName: session.catalog.displayName(for: locale),
                 customInstruction: settings[.customRefinementInstruction],
-                vocabulary: settings[.vocabularyInPrompt] ? vocabulary.promptTerms() : []
+                vocabulary: settings[.vocabularyInPrompt] ? vocabulary.promptTerms() : [],
+                target: settings[
+                    SettingKey<AITarget>.aiTarget(for: SpeechToolBundle.studioToolID.rawValue)
+                ]
             )
         } catch {
             return cleaned

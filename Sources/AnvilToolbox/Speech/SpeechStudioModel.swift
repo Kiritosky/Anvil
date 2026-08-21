@@ -256,6 +256,9 @@ public final class SpeechStudioModel {
                     languageName: self.languageName,
                     customInstruction: self.customInstruction,
                     vocabulary: self.promptVocabulary,
+                    target: self.context.settings[
+                        SettingKey<AITarget>.aiTarget(for: SpeechToolBundle.studioToolID.rawValue)
+                    ],
                     onProgress: { [weak self] progress in
                         self?.refinementProgress = progress
                     },

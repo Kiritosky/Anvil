@@ -13,9 +13,11 @@ public struct SpeechStudioView: View {
     @State private var isShowingHistory = false
     @State private var exportedURL: URL?
 
+    private let context: ToolContext
     private let metadata: ToolMetadata
 
     public init(context: ToolContext, metadata: ToolMetadata) {
+        self.context = context
         self.metadata = metadata
         _model = State(initialValue: SpeechStudioModel(context: context, toolID: metadata.id))
     }
@@ -243,6 +245,10 @@ public struct SpeechStudioView: View {
             .anvilHelp("Als Markdown sichern")
             .disabled(!model.hasResult)
 
+            if model.hasResult {
+                HandoffMenu(context: context, from: metadata.id, text: model.resultText)
+            }
+
             CopyButton(text: model.resultText)
         }
     }
@@ -323,6 +329,8 @@ public struct SpeechStudioView: View {
     @ViewBuilder
     private var inspector: some View {
         @Bindable var model = model
+
+        AITargetPicker(context: context, tool: metadata.id)
 
         InspectorSection("Sprache", systemImage: "globe") {
             Picker("Sprache", selection: $model.localeIdentifier) {
