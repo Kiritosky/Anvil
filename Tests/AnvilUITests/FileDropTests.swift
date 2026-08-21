@@ -22,13 +22,30 @@ struct FileDropTests {
         let folder = try temporaryFolder()
         defer { try? FileManager.default.removeItem(at: folder) }
 
-        switch FileDropReader.load(folder, kinds: .any) {
+        switch FileDropReader.load(folder, kinds: .file) {
         case let .success(.file(url)):
             #expect(url.lastPathComponent == folder.lastPathComponent)
         case let .success(other):
             Issue.record("Ein Ordner kam als \(other) durch.")
         case let .failure(failure):
             Issue.record("Ein Ordner wurde abgewiesen: \(failure.message)")
+        }
+    }
+
+    /// Ein Werkzeug, das nur Text nimmt, muss den Ordner abweisen — und
+    /// sagen warum. Stillschweigend nichts zu tun ist das Schlimmste von
+    /// allem.
+    @Test
+    func aFolderOnATextToolIsRejectedOutLoud() throws {
+        let folder = try temporaryFolder()
+        defer { try? FileManager.default.removeItem(at: folder) }
+
+        switch FileDropReader.load(folder, kinds: .text) {
+        case let .failure(failure):
+            #expect(failure.message.contains(folder.lastPathComponent))
+            #expect(failure.message.contains("Ordner"))
+        case let .success(file):
+            Issue.record("Ein Ordner kam als \(file) durch.")
         }
     }
 
@@ -42,7 +59,7 @@ struct FileDropTests {
         let bundle = folder.appending(path: "Beispiel.app")
         try FileManager.default.createDirectory(at: bundle, withIntermediateDirectories: true)
 
-        switch FileDropReader.load(bundle, kinds: .any) {
+        switch FileDropReader.load(bundle, kinds: .file) {
         case .success(.file): break
         default: Issue.record("Ein Paket kam nicht als Datei durch.")
         }

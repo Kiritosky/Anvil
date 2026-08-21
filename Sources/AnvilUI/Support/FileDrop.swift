@@ -181,11 +181,17 @@ enum FileDropReader {
     static func load(_ url: URL, kinds: FileDropKind) -> Result<DroppedFile, AnvilError> {
         let type = UTType(filenameExtension: url.pathExtension)
 
-        if kinds == .file {
+        if isDirectory(url) {
+            guard kinds.contains(.file) else {
+                let reason = rejection(for: kinds)
+                return .failure(.invalidInput(
+                    localized("„\(url.lastPathComponent)\" ist ein Ordner. \(reason)")
+                ))
+            }
             return .success(.file(url))
         }
 
-        if isDirectory(url) {
+        if kinds == .file {
             return .success(.file(url))
         }
 

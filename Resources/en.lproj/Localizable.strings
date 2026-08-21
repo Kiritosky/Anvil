@@ -1884,6 +1884,7 @@
 "„%@\" ergibt im Feld %@ keinen Sinn." = "“%@” makes no sense in the %@ field.";
 "„%@\" gibt es für Dateien nicht." = "“%@” does not exist for files.";
 "„%@\" ist auf diesem Mac nicht installiert — oder liegt nicht im Pfad." = "“%@” is not installed on this Mac — or is not on the PATH.";
+"„%@\" ist ein Ordner. %@" = "“%@” is a folder. %@";
 "„%@\" ist kein gültiger Bereich für %@." = "“%@” is not a valid range for %@.";
 "„%@\" ist kein Hex-Byte." = "“%@” is not a hex byte.";
 "„%@\" ist kein Repository-Name." = "\"%@\" is not a repository name.";

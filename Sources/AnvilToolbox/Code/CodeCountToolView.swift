@@ -56,6 +56,7 @@ public struct CodeCountToolView: View {
         .anvilFilesDrop(.file, error: $error) { dropped in
             open(dropped.compactMap(\.url))
         }
+        .onDisappear(perform: discardClone)
     }
 
     // MARK: - Zählen
