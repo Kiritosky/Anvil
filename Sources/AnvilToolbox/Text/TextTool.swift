@@ -65,7 +65,7 @@ public struct TextTool: Sendable {
         self.category = category
         self.keywords = keywords
         self.isMonospaced = isMonospaced
-        self.placeholder = placeholder
+        self.placeholder = localized(runtime: placeholder)
         self.generatesWithoutInput = generatesWithoutInput
         self.modes = modes
     }

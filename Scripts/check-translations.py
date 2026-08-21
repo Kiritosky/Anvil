@@ -59,6 +59,7 @@ PATTERNS = [
     rf"\bactionTitle:\s*{STR}",
     rf"\bdescription:\s*{STR}",
     rf"\binputPlaceholder:\s*{STR}",
+    rf"\bpresetName:\s*{STR}",
     rf"\bdefaultValue:\s*{STR}",
     # Ein Literal am Zeilenende hinter einem Doppelpunkt: der Zweig eines
     # mehrzeiligen `?:` und alles, was als Argument so umbrochen wurde.
@@ -116,6 +117,7 @@ SKIP = {
     "A → Z", "Z → A", "Slug", "Speech Studio",
     "Apple Foundation Models",
     "Claude Code", "Codex", "Gemini CLI",   # Produktnamen
+    "Anthropic", "OpenAI", "OpenRouter",    # Anbieternamen
     "-p",                                    # Beispielargument
     # Namen, die aus Teilen zusammengesetzt werden: Dateinamen im
     # Symbolsatz, die Schreibweise einer Kantenlänge, der Ordnername.

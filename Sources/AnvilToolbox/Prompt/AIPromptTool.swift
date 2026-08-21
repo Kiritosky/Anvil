@@ -49,7 +49,7 @@ public struct AIPromptTool: Codable, Sendable, Identifiable {
         self.promptTemplate = promptTemplate
         self.options = options
         self.temperature = temperature
-        self.inputPlaceholder = inputPlaceholder
+        self.inputPlaceholder = localized(runtime: inputPlaceholder)
         self.isMonospacedInput = isMonospacedInput
         self.inputSource = inputSource
     }

@@ -403,7 +403,8 @@ struct IntelligenceSettingsView: View {
                 SettingsWideRow("Voreinstellung") {
                     Picker("", selection: presetBinding) {
                         ForEach(RemoteConfiguration.presets, id: \.presetID) { preset in
-                            Text(preset.presetName).tag(preset.presetID)
+                            Text(.resolved(localized(runtime: preset.presetName)))
+                                .tag(preset.presetID)
                         }
                     }
                 }
