@@ -14,6 +14,7 @@ public struct FolderCompareToolView: View {
     @State private var comparison = FolderComparison.empty
     @State private var filter: FolderComparison.Difference?
     @State private var isWorking = false
+    @State private var work: Task<Void, Never>?
     @State private var error: AnvilError?
     @State private var orientation: WorkbenchOrientation = .horizontal
 
@@ -46,6 +47,7 @@ public struct FolderCompareToolView: View {
         .anvilFilesDrop(.file, error: $error) { dropped in
             accept(dropped.compactMap(\.url))
         }
+        .onDisappear { work?.cancel() }
     }
 
     // MARK: - Ordner wählen
@@ -73,14 +75,16 @@ public struct FolderCompareToolView: View {
         compare()
     }
 
+    /// Ein neu gewählter Ordner löst den laufenden Vergleich ab — sonst
+    /// stünden die alten Unterschiede unter den neuen Namen.
     private func compare() {
-        guard let left, let right, !isWorking else { return }
+        guard let left, let right else { return }
 
-        Task {
+        work?.cancel()
+        work = Task {
             isWorking = true
-            defer { isWorking = false }
 
-            comparison = await Task.detached {
+            let job = Task.detached(priority: .userInitiated) {
                 let leftFiles = FileWalk.files(in: left).map {
                     (path: FileWalk.relativePath(of: $0.url, under: left), size: $0.size)
                 }
@@ -102,7 +106,17 @@ public struct FolderCompareToolView: View {
                     else { return false }
                     return first == second
                 }
-            }.value
+            }
+
+            let found = await withTaskCancellationHandler {
+                await job.value
+            } onCancel: {
+                job.cancel()
+            }
+
+            guard !Task.isCancelled else { return }
+            comparison = found
+            isWorking = false
         }
     }
 

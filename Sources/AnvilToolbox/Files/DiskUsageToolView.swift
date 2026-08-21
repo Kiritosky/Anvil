@@ -12,6 +12,7 @@ public struct DiskUsageToolView: View {
     @State private var trail: [URL] = []
     @State private var usage = DiskUsage.empty
     @State private var isWorking = false
+    @State private var work: Task<Void, Never>?
     @State private var error: AnvilError?
     @State private var orientation: WorkbenchOrientation = .horizontal
 
@@ -50,6 +51,7 @@ public struct DiskUsageToolView: View {
             guard let url = dropped.compactMap(\.url).first else { return }
             open(url)
         }
+        .onDisappear { work?.cancel() }
     }
 
     // MARK: - Messen
@@ -79,16 +81,27 @@ public struct DiskUsageToolView: View {
         open(folder)
     }
 
+    /// Ein neuer Ordner löst den laufenden Durchgang ab — sonst zeigte die
+    /// Ansicht den neuen Pfad und die alten Zahlen.
     private func measure() {
-        guard let root, !isWorking else { return }
+        guard let root else { return }
 
-        Task {
+        work?.cancel()
+        work = Task {
             isWorking = true
-            defer { isWorking = false }
 
-            usage = await Task.detached {
+            let job = Task.detached(priority: .userInitiated) {
                 DiskUsage.make(root: root, files: FileWalk.files(in: root))
-            }.value
+            }
+            let found = await withTaskCancellationHandler {
+                await job.value
+            } onCancel: {
+                job.cancel()
+            }
+
+            guard !Task.isCancelled else { return }
+            usage = found
+            isWorking = false
         }
     }
 

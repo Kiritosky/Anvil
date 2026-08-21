@@ -15,6 +15,7 @@ public struct CodeCountToolView: View {
     @State private var count = CodeCount.empty
     @State private var isWorking = false
     @State private var progress: Double?
+    @State private var work: Task<Void, Never>?
     @State private var error: AnvilError?
     @State private var orientation: WorkbenchOrientation = .horizontal
 
@@ -56,7 +57,10 @@ public struct CodeCountToolView: View {
         .anvilFilesDrop(.file, error: $error) { dropped in
             open(dropped.compactMap(\.url))
         }
-        .onDisappear(perform: discardClone)
+        .onDisappear {
+            work?.cancel()
+            discardClone()
+        }
     }
 
     // MARK: - Zählen
@@ -145,17 +149,16 @@ public struct CodeCountToolView: View {
         open(SavePanel.directories(prompt: localized("Ordner wählen")))
     }
 
+    /// Ein neu hineingezogenes Projekt löst den laufenden Durchgang ab —
+    /// sonst stünde der neue Name über den alten Zahlen.
     private func measure() {
         let folders = roots
-        guard !folders.isEmpty, !isWorking else { return }
+        guard !folders.isEmpty else { return }
 
-        Task {
+        work?.cancel()
+        work = Task {
             isWorking = true
             progress = 0
-            defer {
-                isWorking = false
-                progress = nil
-            }
 
             let wanted = await Task.detached(priority: .userInitiated) {
                 Self.sources(in: folders)
@@ -165,13 +168,17 @@ public struct CodeCountToolView: View {
             files.reserveCapacity(wanted.count)
 
             for start in stride(from: 0, to: wanted.count, by: Self.sliceSize) {
+                guard !Task.isCancelled else { return }
                 let end = min(start + Self.sliceSize, wanted.count)
                 files += await Self.read(Array(wanted[start..<end]))
                 progress = Double(end) / Double(wanted.count)
             }
 
+            guard !Task.isCancelled else { return }
             let all = files
             count = await Task.detached(priority: .userInitiated) { CodeCount.count(all) }.value
+            isWorking = false
+            progress = nil
         }
     }
 
