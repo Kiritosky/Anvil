@@ -43,7 +43,8 @@ Intelligence** by default.
   is in. The main window stays closed.
 - **On-device first.** External providers are possible, never required. If you
   have Claude Code, Codex or the Gemini CLI installed, Anvil uses them through
-  their existing sign-in, without an API key.
+  their existing sign-in, without an API key — and every tool can pick who
+  answers it.
 - **Bulk actions everywhere.** Thirty images, a hundred files, every repository
   at once — no tool stops at a single item.
 - **Nothing confidential on disk.** Tools remember your last input — unless it

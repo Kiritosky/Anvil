@@ -372,7 +372,7 @@ struct IntelligenceSettingsView: View {
 
                     SettingsWideRow(
                         "Argumente",
-                        help: "Stehen vor dem Prompt. Leer lassen für die Vorgabe des Werkzeugs."
+                        help: "Kommen zu den Argumenten des Werkzeugs dazu, etwa --model opus. Der Prompt bleibt das letzte Argument."
                     ) {
                         AnvilTextField(
                             text: binding(.cliAgentArguments),

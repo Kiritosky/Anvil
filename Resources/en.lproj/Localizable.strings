@@ -81,6 +81,7 @@
 "Absätze" = "Paragraphs";
 "Adresse suchen" = "Find address";
 "Adressen" = "Addresses";
+"Agent" = "Agent";
 "Alle %lld Repositories geholt." = "Fetched all %lld repositories.";
 "Alle Dubletten" = "All duplicates";
 "Alle holen" = "Fetch all";
@@ -100,6 +101,7 @@
 "Alles, was hier stehen könnte, ist in Ordnung." = "Everything that could show up here is in order.";
 "Alte Zweige" = "Stale branches";
 "Amtsdeutsch und Fachtext in Klartext" = "Officialese and jargon in plain words";
+"Anbieter" = "Provider";
 "alte Zweige" = "stale branches";
 "Angelegt als %@. Es steht jetzt unter „Eigene Tools\" — %lld eigene insgesamt." = "Created as %@. It now sits under \"Your own tools\" — %lld of your own in total.";
 "Angelesen" = "Peeked at";
@@ -945,6 +947,8 @@
 "Gemessen werden Satz- und Wortlängen, sonst nichts. Ein Text aus lauter kurzen Sätzen kann unverständlich sein und trotzdem gut abschneiden — der Wert taugt zum Vergleichen zweier Fassungen, nicht als Urteil." = "Only sentence and word lengths are measured, nothing else. A text made of nothing but short sentences can be incomprehensible and still score well — the number is good for comparing two drafts, not for passing judgement.";
 "Genau eine Adresse — ein einzelner Host, kein Netz mit Hostbereich." = "Exactly one address — a single host, not a network with a host range.";
 "Geschrieben wird immer eine neue Datei. Die Vorlage bleibt, wie sie ist — auch dann, wenn beim Schreiben etwas schiefgeht." = "A new file is always written. The original stays as it is — even if the writing goes wrong.";
+"Kommen zu den Argumenten des Werkzeugs dazu, etwa --model opus. Der Prompt bleibt das letzte Argument." = "Added to the tool's own arguments, --model opus for instance. The prompt stays the last argument.";
+"auf diesem Mac" = "on this Mac";
 "freundlich" = "friendly";
 "freundlich-knapp" = "friendly and brief";
 "Funktioniert auch, während eine andere App vorne ist." = "Works while another app is in front, too.";
@@ -986,6 +990,7 @@
 "Gilt für jede Aufnahme, auch die per Tastenkürzel." = "Applies to every shot, including the ones taken by shortcut.";
 "Gilt für neue Sitzungen. Im Tool selbst lässt sich das jederzeit umstellen." = "Applies to new sessions. You can change it inside the tool at any time.";
 "Gilt in jeder App. Kann mit anderen Programmen kollidieren." = "Works in every app. May collide with other programs.";
+"Gilt nur für dieses Werkzeug. „Nur on-device\" in den Einstellungen überstimmt die Wahl hier — was den Mac nicht verlassen soll, verlässt ihn auch für ein einzelnes Werkzeug nicht." = "Applies to this tool alone. “On-device only” in Settings overrides the choice here — what must not leave the Mac does not leave it for a single tool either.";
 "Gilt, während Anvil vorne ist, und steht im Menü." = "Works while Anvil is in front, and appears in the menu.";
 "Ging nicht" = "Didn’t work";
 "GitHub" = "GitHub";
@@ -1900,6 +1905,7 @@
 "von 100" = "out of 100";
 "Zwischenablage-Verlauf, Farben, Einheiten, JSON, Cron, QR-Codes, Git-Repositories — und KI-Werkzeuge fürs Schreiben und für Code." = "Clipboard history, colours, units, JSON, cron, QR codes, Git repositories — and AI tools for writing and for code.";
 "verschieben" = "postpone";
+"wie eingestellt" = "as configured";
 "zusagen" = "accept";
 "Ähnlich" = "Similar";
 "Ältere Durchläufe werden verworfen, sobald die Grenze erreicht ist." = "Older runs are dropped once the limit is reached.";

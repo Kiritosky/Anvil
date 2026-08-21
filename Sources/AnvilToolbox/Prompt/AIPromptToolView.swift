@@ -209,8 +209,38 @@ public struct AIPromptToolView: View {
 
     // MARK: - Inspector
 
+    /// Wen dieses Werkzeug fragt.
+    private var target: AITarget {
+        context.settings[SettingKey<AITarget>.aiTarget(for: metadata.id.rawValue)]
+    }
+
+    /// Die Namen, wie sie gerade eingestellt sind — „Agent" allein sagt
+    /// niemandem, dass Claude Code gemeint ist.
+    private var targetTitles: [AITarget: String] {
+        [
+            .standard: AITarget.standard.title,
+            .onDevice: AITarget.onDevice.title,
+            .agent: context.settings[.cliAgent].title,
+            .remote: context.settings[.remoteConfiguration].presetName
+        ]
+    }
+
     @ViewBuilder
     private var inspector: some View {
+        InspectorSection(
+            "Modell",
+            systemImage: "sparkles",
+            footnote: "Gilt nur für dieses Werkzeug. „Nur on-device\" in den Einstellungen überstimmt die Wahl hier — was den Mac nicht verlassen soll, verlässt ihn auch für ein einzelnes Werkzeug nicht."
+        ) {
+            let titles = targetTitles
+            ChipPicker(
+                selection: context.settings.bind(SettingKey<AITarget>.aiTarget(for: metadata.id.rawValue)),
+                options: AITarget.allCases,
+                tone: .ai,
+                title: { titles[$0] ?? $0.title }
+            )
+        }
+
         if !tool.options.isEmpty {
             InspectorSection("Optionen", systemImage: "slider.horizontal.3") {
                 ForEach(tool.options) { option in
@@ -312,7 +342,7 @@ public struct AIPromptToolView: View {
 
         runTask = Task { @MainActor in
             do {
-                for try await snapshot in context.ai.stream(request) {
+                for try await snapshot in context.ai.stream(request, target: target) {
                     output = snapshot
                 }
                 lastDuration = Date.now.timeIntervalSince(startedAt)

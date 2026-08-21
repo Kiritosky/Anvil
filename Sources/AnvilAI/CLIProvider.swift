@@ -44,6 +44,15 @@ public struct CLIAgentProvider: AIProvider, Sendable {
             }
         }
 
+        /// Wie die Anweisung an den Agenten geht. Claude Code nimmt sie als
+        /// Systemprompt entgegen — dort wirkt sie stärker als vorne im Text.
+        public var systemPromptArgument: String? {
+            switch self {
+            case .claudeCode: "--append-system-prompt"
+            case .codex, .gemini, .custom: nil
+            }
+        }
+
         public var explanation: String {
             switch self {
             case .claudeCode:
@@ -97,8 +106,22 @@ public struct CLIAgentProvider: AIProvider, Sendable {
         return custom.isEmpty ? agent.executable : custom
     }
 
-    private var arguments: [String] {
-        customArguments.isEmpty ? agent.arguments : customArguments
+    /// Eigene Argumente kommen zu denen des Werkzeugs dazu, statt sie zu
+    /// ersetzen — sonst verlöre `--model opus` das `-p`, ohne das der Agent
+    /// gar nicht antwortet.
+    var arguments: [String] {
+        agent == .custom ? customArguments : agent.arguments + customArguments
+    }
+
+    /// Der vollständige Aufruf: Argumente, Anweisung und Prompt.
+    func call(for request: AIRequest) -> [String] {
+        let instructions = request.instructions.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !instructions.isEmpty else { return arguments + [request.prompt] }
+
+        if let flag = agent.systemPromptArgument {
+            return arguments + [flag, instructions, request.prompt]
+        }
+        return arguments + [instructions + "\n\n" + request.prompt]
     }
 
     // MARK: - Availability
@@ -124,14 +147,10 @@ public struct CLIAgentProvider: AIProvider, Sendable {
             )
         }
 
-        let prompt = request.instructions.isEmpty
-            ? request.prompt
-            : request.instructions + "\n\n" + request.prompt
-
         let runner = ProcessRunner()
         let result = try await runner.run(
             path,
-            arguments: arguments + [prompt],
+            arguments: call(for: request),
             environment: Self.environment,
             timeout: timeout
         )
@@ -164,14 +183,10 @@ public struct CLIAgentProvider: AIProvider, Sendable {
                     return
                 }
 
-                let prompt = request.instructions.isEmpty
-                    ? request.prompt
-                    : request.instructions + "\n\n" + request.prompt
-
                 do {
                     let output = ProcessRunner().stream(
                         path,
-                        arguments: arguments + [prompt],
+                        arguments: call(for: request),
                         environment: Self.environment,
                         timeout: timeout
                     )

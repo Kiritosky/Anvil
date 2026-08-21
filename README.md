@@ -43,7 +43,8 @@ standardmäßig das lokale von **Apple Intelligence**.
   dem der Cursor steht. Das Hauptfenster bleibt zu.
 - **On-Device zuerst.** Externe Anbieter sind möglich, nie Voraussetzung. Wer
   Claude Code, Codex oder die Gemini CLI installiert hat, nutzt sie ohne
-  API-Schlüssel über die vorhandene Anmeldung.
+  API-Schlüssel über die vorhandene Anmeldung — und legt je Werkzeug fest,
+  wer gefragt wird.
 - **Massenaktionen überall.** Dreißig Bilder, hundert Dateien, alle
   Repositories auf einmal — kein Werkzeug hört bei einem Element auf.
 - **Nichts Vertrauliches auf der Platte.** Werkzeuge merken sich die letzte

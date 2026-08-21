@@ -44,6 +44,31 @@ public enum AIPolicy: String, Codable, CaseIterable, Sendable, Identifiable {
     public var allowsRemote: Bool { self != .onDeviceOnly }
 }
 
+/// Wen ein einzelnes Werkzeug fragen soll. Die Regel in den Einstellungen
+/// gilt für alles; hier weicht ein Werkzeug davon ab.
+public enum AITarget: String, Codable, CaseIterable, Sendable, Identifiable {
+    /// Was in den Einstellungen steht.
+    case standard
+    case onDevice
+    /// Der installierte Agent — Claude Code, Codex oder die Gemini CLI.
+    case agent
+    /// Der Anbieter mit Schlüssel.
+    case remote
+
+    public var id: String { rawValue }
+
+    /// Der Name ohne den, der gerade eingestellt ist. Wer den echten Namen
+    /// zeigen will, fragt ``AIRouter/title(for:)``.
+    public var title: String {
+        switch self {
+        case .standard: localized("wie eingestellt")
+        case .onDevice: localized("auf diesem Mac")
+        case .agent: localized("Agent")
+        case .remote: localized("Anbieter")
+        }
+    }
+}
+
 /// Picks a provider and runs requests against it.
 @MainActor
 @Observable
@@ -95,14 +120,21 @@ public final class AIRouter {
     public var onDeviceProvider: any AIProvider { FoundationModelsProvider() }
 
     public var remoteProvider: (any AIProvider)? {
-        if settings[.usesCLIAgent] {
-            return CLIAgentProvider(
-                agent: settings[.cliAgent],
-                customExecutable: settings[.cliAgentExecutable],
-                customArguments: Self.splitArguments(settings[.cliAgentArguments])
-            )
-        }
+        settings[.usesCLIAgent] ? agentProvider : endpointProvider
+    }
 
+    /// Der Agent auf der Kommandozeile — auch dann, wenn er nicht die
+    /// eingestellte Wahl ist. Ein einzelnes Werkzeug darf ihn trotzdem fragen.
+    public var agentProvider: any AIProvider {
+        CLIAgentProvider(
+            agent: settings[.cliAgent],
+            customExecutable: settings[.cliAgentExecutable],
+            customArguments: Self.splitArguments(settings[.cliAgentArguments])
+        )
+    }
+
+    /// Der Anbieter mit Schlüssel, ebenfalls unabhängig von der Einstellung.
+    public var endpointProvider: (any AIProvider)? {
         let configuration = remoteConfiguration
         guard !configuration.baseURL.isEmpty else { return nil }
         let key = apiKey(for: configuration)
@@ -110,6 +142,15 @@ public final class AIRouter {
         return configuration.usesAnthropicProtocol
             ? AnthropicProvider(configuration: configuration, apiKey: key)
             : OpenAICompatibleProvider(configuration: configuration, apiKey: key)
+    }
+
+    /// Wie ein Ziel gerade heißt — „Agent" allein sagt niemandem etwas.
+    public func title(for target: AITarget) -> String {
+        switch target {
+        case .standard, .onDevice: target.title
+        case .agent: settings[.cliAgent].title
+        case .remote: remoteConfiguration.presetName
+        }
     }
 
     /// Splits a typed argument line on spaces, keeping quoted runs together.
@@ -134,7 +175,37 @@ public final class AIRouter {
     }
 
     /// Resolves the provider to use for the next call.
-    public func resolveProvider(inputLength: Int = 0) async throws -> any AIProvider {
+    ///
+    /// - Parameter target: Die Wahl eines einzelnen Werkzeugs. „Nur on-device"
+    ///   überstimmt sie: Wer nichts herausgeben will, meint das auch hier.
+    public func resolveProvider(
+        inputLength: Int = 0,
+        target: AITarget = .standard
+    ) async throws -> any AIProvider {
+        guard policy != .onDeviceOnly, let chosen = provider(for: target) else {
+            return try await providerByPolicy(inputLength: inputLength)
+        }
+
+        let availability = await chosen.availability()
+        guard availability.isAvailable else {
+            record(provider: chosen, availability: availability)
+            throw AnvilError.modelUnavailable((availability.reason ?? .notConfigured).message)
+        }
+
+        record(provider: chosen, availability: .available)
+        return chosen
+    }
+
+    private func provider(for target: AITarget) -> (any AIProvider)? {
+        switch target {
+        case .standard: return nil
+        case .onDevice: return onDeviceProvider
+        case .agent: return agentProvider
+        case .remote: return endpointProvider
+        }
+    }
+
+    private func providerByPolicy(inputLength: Int) async throws -> any AIProvider {
         let onDevice = onDeviceProvider
         let remote = policy.allowsRemote ? remoteProvider : nil
 
@@ -175,17 +246,23 @@ public final class AIRouter {
 
     // MARK: - Running
 
-    public func run(_ request: AIRequest) async throws -> String {
-        let provider = try await resolveProvider(inputLength: request.prompt.count)
+    public func run(_ request: AIRequest, target: AITarget = .standard) async throws -> String {
+        let provider = try await resolveProvider(inputLength: request.prompt.count, target: target)
         return try await provider.complete(request)
     }
 
     /// Streams a response, yielding the cumulative text so far.
-    public func stream(_ request: AIRequest) -> AsyncThrowingStream<String, any Error> {
+    public func stream(
+        _ request: AIRequest,
+        target: AITarget = .standard
+    ) -> AsyncThrowingStream<String, any Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
-                    let provider = try await resolveProvider(inputLength: request.prompt.count)
+                    let provider = try await resolveProvider(
+                        inputLength: request.prompt.count,
+                        target: target
+                    )
                     for try await snapshot in provider.stream(request) {
                         continuation.yield(snapshot)
                     }
@@ -257,6 +334,13 @@ extension SettingKey {
 
     public static var remoteConfiguration: SettingKey<RemoteConfiguration> {
         SettingKey<RemoteConfiguration>("remoteConfiguration", default: .ollama)
+    }
+}
+
+extension SettingKey where Value == AITarget {
+    /// Wen dieses eine Werkzeug fragt.
+    public static func aiTarget(for tool: String) -> SettingKey<AITarget> {
+        SettingKey<AITarget>("ai.target.\(tool)", default: .standard)
     }
 }
 
