@@ -75,6 +75,10 @@ PATTERNS = [
     rf"^\s*case \.\w+: {STR}$",
     # Rückgaben aus berechneten LocalizedStringKey-Eigenschaften
     rf"^\s*return {STR}$",
+    # Einzeilige Rückfälle: guard … else { return "Kein Modell" }
+    rf"else \{{ return {STR} \}}",
+    # Vorgaben, die ihren Typ mitschreiben: placeholder: LocalizedStringKey = "…"
+    rf":\s*LocalizedStringKey\s*=\s*{STR}",
 ]
 
 # Interpolationen, die eine Zahl einsetzen — Foundation erzeugt dafür %lld.
@@ -169,6 +173,9 @@ SKIP = {
     # Namen, die ein Werkzeug erzeugt: Kennungen, Dateinamen, CSS-Variablen.
     # Übersetzt wären es andere Namen — und damit andere Dinge.
     "wahl", "werkzeug", "farbe%@", "farbe-%@",
+    # JSON-Literal und der Rückfallname einer Eigenschaft im erzeugten
+    # Quelltext — übersetzt wäre beides kaputt.
+    "null", "wert",
 }
 SKIP_PATTERNS = [
     # SF-Symbol-Namen. Mit Punkt, sonst wäre die Regel zu weit: „heute" und
