@@ -49,7 +49,7 @@ public struct AIPromptTool: Codable, Sendable, Identifiable {
         self.promptTemplate = promptTemplate
         self.options = options
         self.temperature = temperature
-        self.inputPlaceholder = localized(runtime: inputPlaceholder)
+        self.inputPlaceholder = inputPlaceholder
         self.isMonospacedInput = isMonospacedInput
         self.inputSource = inputSource
     }
@@ -126,11 +126,10 @@ public struct AIPromptOption: Codable, Sendable, Identifiable {
         help: String? = nil
     ) {
         self.id = id
-        self.label = localized(runtime: label)
+        self.label = label
         self.kind = kind
-        self.choices = choices.map { localized(runtime: $0) }
-        let fallback = self.choices.first ?? ""
-        self.defaultValue = defaultValue.isEmpty ? fallback : localized(runtime: defaultValue)
-        self.help = help.map { localized(runtime: $0) }
+        self.choices = choices
+        self.defaultValue = defaultValue.isEmpty ? (choices.first ?? "") : defaultValue
+        self.help = help
     }
 }
