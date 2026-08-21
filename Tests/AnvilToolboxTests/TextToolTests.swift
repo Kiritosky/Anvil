@@ -196,6 +196,56 @@ struct AIPromptToolTests {
             #expect(tool.promptTemplate.contains("{{input}}"), "\(tool.title) verwendet die Eingabe nicht")
         }
     }
+
+    /// Ein Platzhalter ohne Option bleibt als `{{option:…}}` in der Anweisung
+    /// stehen und geht so an das Modell.
+    @Test
+    func everyPlaceholderNamesAnOption() {
+        for tool in AIPromptCatalog.all {
+            let declared = Set(tool.options.map(\.id))
+            let used = Self.placeholders(in: tool.instructions)
+                .union(Self.placeholders(in: tool.promptTemplate))
+            let unknown = used.subtracting(declared).sorted()
+            #expect(unknown.isEmpty, "\(tool.title) füllt \(unknown.joined(separator: ", ")) nie")
+        }
+    }
+
+    /// Andersherum: Ein Regler, den keine Anweisung liest, dreht an nichts.
+    @Test
+    func everyOptionReachesTheModel() {
+        for tool in AIPromptCatalog.all {
+            let used = Self.placeholders(in: tool.instructions)
+                .union(Self.placeholders(in: tool.promptTemplate))
+            let idle = Set(tool.options.map(\.id)).subtracting(used).sorted()
+            #expect(idle.isEmpty, "\(tool.title) zeigt \(idle.joined(separator: ", ")) ohne Wirkung")
+        }
+    }
+
+    /// Ein Vorgabewert, den es nicht zur Auswahl gibt, lässt die Auswahl leer
+    /// aussehen — ausgewählt ist trotzdem etwas.
+    @Test
+    func everyDefaultIsAmongTheChoices() {
+        for tool in AIPromptCatalog.all {
+            for option in tool.options where option.kind == .choice {
+                #expect(
+                    option.choices.contains(option.defaultValue),
+                    "\(tool.title): \(option.defaultValue) steht nicht zur Auswahl"
+                )
+            }
+        }
+    }
+
+    private static func placeholders(in text: String) -> Set<String> {
+        var found: Set<String> = []
+        var rest = text[...]
+        while let start = rest.range(of: "{{option:") {
+            let after = rest[start.upperBound...]
+            guard let end = after.range(of: "}}") else { break }
+            found.insert(String(after[..<end.lowerBound]))
+            rest = after[end.upperBound...]
+        }
+        return found
+    }
 }
 
 @Suite("TextChunker")

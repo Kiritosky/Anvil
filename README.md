@@ -14,7 +14,7 @@ mit KI auf dem Gerät statt in der Cloud.**
 [![Sterne](https://img.shields.io/github/stars/Kiritosky/Anvil?style=flat&logo=github)](https://github.com/Kiritosky/Anvil/stargazers)
 [![Lizenz](https://img.shields.io/github/license/Kiritosky/Anvil?color=blue)](LICENSE)
 
-**72 Werkzeuge** · **on-device** · **ohne Netz nutzbar** · Deutsch & Englisch
+**82 Werkzeuge** · **on-device** · **ohne Netz nutzbar** · Deutsch & Englisch
 
 [Werkzeuge](docs/TOOLS.md) · [Aufbau](docs/ARCHITECTURE.md) ·
 [Neues Werkzeug](docs/ADDING_A_TOOL.md) · [Mitmachen](CONTRIBUTING.md)
@@ -58,13 +58,13 @@ standardmäßig das lokale von **Apple Intelligence**.
 
 | Bereich | Anzahl | Beispiele |
 | --- | ---: | --- |
-| Coding | 37 | Repositories, Patch, Netzrechner, JSON zu Typen, Codezeilen, Umgebungsdateien, App-Symbole, Commit-Message, Code-Review |
-| Alltag | 24 | Bildschirmfoto, Text aus Bild, PDF, QR-Code, Dubletten, Speicherplatz, Archive, Übersetzen |
-| Text & Daten | 7 | Markdown, Textvergleich, Lesbarkeit, Zeilen, Slug, Textstatistik |
+| Coding | 41 | Repositories, Patch, Netzrechner, JSON zu Typen, Codezeilen, Commit-Message, Pull-Request-Beschreibung, Code-Review, Umbauen, Portieren |
+| Alltag | 27 | Bildschirmfoto, Text aus Bild, PDF, QR-Code, Dubletten, Speicherplatz, Archive, Übersetzen, Antwort entwerfen, Protokoll |
+| Text & Daten | 10 | Markdown, Textvergleich, Lesbarkeit, Slug, Korrekturlesen, Einfach erklären, Tabelle bauen |
 | Sprache & Audio | 2 | Speech Studio, Diktat-Vokabular |
 | System & Eigene | 2 | Tool-Store, Eigenes Werkzeug |
 
-Fünfzehn davon fragen ein Sprachmodell — die übrigen 57 rechnen selbst.
+Fünfundzwanzig davon fragen ein Sprachmodell — die übrigen 57 rechnen selbst.
 
 Die vollständige Liste steht in **[docs/TOOLS.md](docs/TOOLS.md)** — erzeugt
 aus dem Quelltext, nicht von Hand gepflegt.

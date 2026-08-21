@@ -14,7 +14,7 @@ with AI that runs on the device instead of in the cloud.**
 [![Stars](https://img.shields.io/github/stars/Kiritosky/Anvil?style=flat&logo=github)](https://github.com/Kiritosky/Anvil/stargazers)
 [![License](https://img.shields.io/github/license/Kiritosky/Anvil?color=blue)](LICENSE)
 
-**72 tools** · **on-device** · **works offline** · German & English
+**82 tools** · **on-device** · **works offline** · German & English
 
 [Tools](docs/TOOLS.md) · [Architecture](docs/ARCHITECTURE.md) ·
 [Add a tool](docs/ADDING_A_TOOL.md) · [Contributing](CONTRIBUTING.md)
@@ -58,13 +58,13 @@ Intelligence** by default.
 
 | Area | Count | Examples |
 | --- | ---: | --- |
-| Coding | 37 | Repositories, patch, subnet calculator, JSON to types, lines of code, env files, app icons, commit message, code review |
-| Everyday | 24 | Screenshot, text from image, PDF, QR code, duplicates, disk space, archives, translate |
-| Text & data | 7 | Markdown, text compare, readability, lines, slug, text statistics |
+| Coding | 41 | Repositories, patch, subnet calculator, JSON to types, lines of code, commit message, pull request description, code review, refactor, port |
+| Everyday | 27 | Screenshot, text from image, PDF, QR code, duplicates, disk space, archives, translate, draft a reply, minutes |
+| Text & data | 10 | Markdown, text compare, readability, slug, proofread, explain simply, build a table |
 | Speech & audio | 2 | Speech Studio, dictation vocabulary |
 | System & custom | 2 | Tool store, custom tool |
 
-Fifteen of them ask a language model — the other 57 compute the answer
+Twenty-five of them ask a language model — the other 57 compute the answer
 themselves.
 
 The full list lives in **[docs/TOOLS.md](docs/TOOLS.md)** — generated from the

@@ -2,7 +2,7 @@
 
 Erzeugt aus dem Quelltext — `./Scripts/tool-list.py` schreibt diese Datei neu.
 
-**72 Werkzeuge**, davon 15 mit Sprachmodell.
+**82 Werkzeuge**, davon 25 mit Sprachmodell.
 
 ## Sprache & Audio
 
@@ -15,11 +15,15 @@ Erzeugt aus dem Quelltext — `./Scripts/tool-list.py` schreibt diese Datei neu.
 
 | Werkzeug | Was es tut | Kennung |
 | --- | --- | --- |
+| Änderungsprotokoll | Aus Commits wird, was sich für andere ändert | `ai.changelog` |
 | Commit-Message | Aus dem Diff eine saubere Message | `ai.commit` |
 | Doku-Kommentar | Dokumentation zu einer Funktion | `ai.doccomment` |
 | Fehler verstehen | Stacktrace oder Compiler-Meldung deuten | `ai.error` |
 | Code erklären | Was macht dieser Code — und warum | `ai.explain` |
 | Benennung | Bessere Namen für Dinge im Code | `ai.naming` |
+| Portieren | Dieselbe Logik in einer anderen Sprache | `ai.port` |
+| Pull-Request-Beschreibung | Aus dem Diff eine Beschreibung, die man liest | `ai.pr` |
+| Umbauen | Derselbe Code, besser geschrieben | `ai.refactor` |
 | Regex bauen | Beschreibung rein, Ausdruck raus | `ai.regex` |
 | Code-Review | Fehler, Risiken, Verbesserungen | `ai.review` |
 | Shell-Befehl | Beschreibung in ein Kommando | `ai.shell` |
@@ -58,6 +62,9 @@ Erzeugt aus dem Quelltext — `./Scripts/tool-list.py` schreibt diese Datei neu.
 | Werkzeug | Was es tut | Kennung |
 | --- | --- | --- |
 | Diktat starten und beenden | Kürzel drücken, sprechen, noch einmal drücken | `Self.actionID` |
+| Einfach erklären | Amtsdeutsch und Fachtext in Klartext | `ai.plain` |
+| Korrekturlesen | Fehler weg, Stimme bleibt | `ai.proofread` |
+| Tabelle bauen | Aus Fließtext werden Spalten | `ai.table` |
 | Markdown | Gliedern, prüfen, nach HTML | `markdown.document` |
 | Textvergleich | Zwei Fassungen gegenüberstellen | `text.compare` |
 | Zeilen | Sortieren, entdoppeln, nummerieren | `text.lines` |
@@ -69,8 +76,11 @@ Erzeugt aus dem Quelltext — `./Scripts/tool-list.py` schreibt diese Datei neu.
 
 | Werkzeug | Was es tut | Kennung |
 | --- | --- | --- |
+| Checkliste | Aus einem Vorhaben werden Schritte | `ai.checklist` |
 | E-Mail | Aus Stichworten eine Nachricht | `ai.email` |
 | Ideen sammeln | Varianten zu einer Frage | `ai.ideas` |
+| Protokoll | Aus Notizen wird, was beschlossen wurde | `ai.minutes` |
+| Antwort entwerfen | Nachricht rein, Antwort raus | `ai.reply` |
 | Umschreiben | Gleicher Inhalt, anderer Ton | `ai.rewrite` |
 | Zusammenfassen | Das Wesentliche aus langem Text | `ai.summarize` |
 | Übersetzen | Natürlich, nicht wörtlich | `ai.translate` |

@@ -114,6 +114,7 @@ SKIP = {
     # und Doku-Formate heißen überall gleich.
     "JavaScript", "Python", "PCRE", "MySQL", "SQLite", "SQL Server",
     "JSDoc", "Javadoc", "Python Docstring", "Swift Testing", "XCTest",
+    "Go", "Rust",
     "A → Z", "Z → A", "Slug", "Speech Studio",
     "Apple Foundation Models",
     "Claude Code", "Codex", "Gemini CLI",   # Produktnamen
