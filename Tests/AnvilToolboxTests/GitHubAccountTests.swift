@@ -151,4 +151,13 @@ struct GitHubAccountTests {
         try account.connect("   ")
         #expect(!account.isConnected)
     }
+
+    /// Ohne Token darf `git` trotzdem nicht nach einem Passwort fragen.
+    @Test
+    func withoutATokenTheQuestionStaysShut() {
+        let environment = GitHubAccount.environment(for: nil)
+        #expect(environment["GIT_CONFIG_COUNT"] == nil)
+        #expect(environment["GIT_CONFIG_VALUE_0"] == nil)
+        #expect(environment["GIT_TERMINAL_PROMPT"] == "0")
+    }
 }

@@ -37,7 +37,7 @@ public enum PasteService {
             &focused
         ) == .success else { return false }
 
-        guard CFGetTypeID(focused) == AXUIElementGetTypeID() else { return false }
+        guard let focused, CFGetTypeID(focused) == AXUIElementGetTypeID() else { return false }
         let element = focused as! AXUIElement
 
         var role: CFTypeRef?

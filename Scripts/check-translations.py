@@ -105,6 +105,10 @@ SKIP = {
     "PNG", "JPEG", "HEIC", "TIFF",
     "camelCase", "PascalCase", "snake_case", "kebab-case", "CONSTANT_CASE",
     "ICU (Swift/NSRegularExpression)", "Swift DocC (///)",
+    # Auswahlwerte von Prompt-Werkzeugen: Sprachen, Datenbanken, Testrahmen
+    # und Doku-Formate heißen überall gleich.
+    "JavaScript", "Python", "PCRE", "MySQL", "SQLite", "SQL Server",
+    "JSDoc", "Javadoc", "Python Docstring", "Swift Testing", "XCTest",
     "A → Z", "Z → A", "Slug", "Speech Studio",
     "Apple Foundation Models",
     "Claude Code", "Codex", "Gemini CLI",   # Produktnamen
@@ -243,25 +247,37 @@ def to_key(text: str) -> str:
     return "".join(result)
 
 
+# Die Auswahlwerte eines Prompt-Werkzeugs stehen als Liste in einer Zeile.
+# Ein Muster über einzelne Literale fände hier auch jedes Kommandozeilen-
+# Argument; deshalb wird zuerst die Liste gesucht und dann darin.
+CHOICES = re.compile(r"\bchoices:\s*\[([^\]]*)\]", re.S)
+
+
+def literals(text: str) -> list[str]:
+    """Jedes Anzeigetext-Literal einer Datei, ohne Rücksicht auf Dopplungen."""
+    found = [match.group(1) for pattern in PATTERNS for match in re.finditer(pattern, text, re.M)]
+    for list_match in CHOICES.finditer(text):
+        found += re.findall(STR, list_match.group(1))
+    return found
+
+
 def collect_keys() -> dict[str, set[str]]:
     keys: dict[str, set[str]] = {}
     for path in sorted((ROOT / "Sources").rglob("*.swift")):
         text = path.read_text()
-        for pattern in PATTERNS:
-            for match in re.finditer(pattern, text, re.M):
-                literal = match.group(1)
-                key = to_key(literal)
-                # Geprüft wird der fertige Schlüssel, nicht das Literal davor:
-                # In „\(Int(progress * 100)) %" stecken Buchstaben, im
-                # Schlüssel „%lld %" keine mehr — und was aus Platzhaltern und
-                # Zeichen besteht, ist Format und kein Anzeigetext.
-                #
-                # Die Platzhalter selbst müssen dafür weg: In „%lld" und „\n"
-                # stecken Buchstaben, die niemand liest.
-                naked = re.sub(r"%(?:@|lld)|\\.", "", key)
-                if len(literal) < 2 or not re.search(r"[A-Za-zÄÖÜäöü]", naked):
-                    continue
-                keys.setdefault(key, set()).add(path.name)
+        for literal in literals(text):
+            key = to_key(literal)
+            # Geprüft wird der fertige Schlüssel, nicht das Literal davor:
+            # In „\(Int(progress * 100)) %" stecken Buchstaben, im
+            # Schlüssel „%lld %" keine mehr — und was aus Platzhaltern und
+            # Zeichen besteht, ist Format und kein Anzeigetext.
+            #
+            # Die Platzhalter selbst müssen dafür weg: In „%lld" und „\n"
+            # stecken Buchstaben, die niemand liest.
+            naked = re.sub(r"%(?:@|lld)|\\.", "", key)
+            if len(literal) < 2 or not re.search(r"[A-Za-zÄÖÜäöü]", naked):
+                continue
+            keys.setdefault(key, set()).add(path.name)
     return keys
 
 

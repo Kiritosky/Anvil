@@ -25,13 +25,17 @@ public struct GitHubAccount: Sendable {
     }
 
     /// Die Umgebung, mit der `git` das Token benutzt, ohne es preiszugeben.
-    public static func environment(for token: String) -> [String: String] {
+    /// Ohne Token bleibt nur der Riegel gegen die Passwortfrage — sonst
+    /// stünde `git` bei einem privaten Repository bis zur Zeitgrenze da.
+    public static func environment(for token: String?) -> [String: String] {
         var environment = ProcessInfo.processInfo.environment
-        let value = "Basic " + Data("x-access-token:\(token)".utf8).base64EncodedString()
 
-        environment["GIT_CONFIG_COUNT"] = "1"
-        environment["GIT_CONFIG_KEY_0"] = "http.https://github.com/.extraheader"
-        environment["GIT_CONFIG_VALUE_0"] = "Authorization: \(value)"
+        if let token, !token.isEmpty {
+            let value = "Basic " + Data("x-access-token:\(token)".utf8).base64EncodedString()
+            environment["GIT_CONFIG_COUNT"] = "1"
+            environment["GIT_CONFIG_KEY_0"] = "http.https://github.com/.extraheader"
+            environment["GIT_CONFIG_VALUE_0"] = "Authorization: \(value)"
+        }
 
         environment["GIT_TERMINAL_PROMPT"] = "0"
         environment["GIT_ASKPASS"] = "/usr/bin/true"

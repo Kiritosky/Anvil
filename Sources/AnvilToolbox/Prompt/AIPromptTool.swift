@@ -126,10 +126,11 @@ public struct AIPromptOption: Codable, Sendable, Identifiable {
         help: String? = nil
     ) {
         self.id = id
-        self.label = label
+        self.label = localized(runtime: label)
         self.kind = kind
-        self.choices = choices
-        self.defaultValue = defaultValue.isEmpty ? (choices.first ?? "") : defaultValue
-        self.help = help
+        self.choices = choices.map { localized(runtime: $0) }
+        let fallback = self.choices.first ?? ""
+        self.defaultValue = defaultValue.isEmpty ? fallback : localized(runtime: defaultValue)
+        self.help = help.map { localized(runtime: $0) }
     }
 }

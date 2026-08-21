@@ -96,7 +96,7 @@ public struct GitHubClient: Sendable {
                 "clone", "--depth", "\(Self.cloneDepth)", "--single-branch",
                 "--no-tags", address, destination.path
             ],
-            environment: account.token.map { GitHubAccount.environment(for: $0) },
+            environment: GitHubAccount.environment(for: account.token),
             timeout: 600
         )
 
