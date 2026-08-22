@@ -301,6 +301,20 @@ struct IntelligenceSettingsView: View {
 
     /// Anything on this page changes what the router will do next, so every
     /// write is followed by a fresh look at whether the model is reachable.
+    /// Die Werkzeuge, die nicht der Regel folgen. Eine eigene Wahl je Werkzeug
+    /// ist nützlich und unsichtbar — deshalb steht sie hier gesammelt.
+    private var deviatingTools: [ToolMetadata] {
+        environment.registry.metadata.filter { target(of: $0.id) != .standard }
+    }
+
+    private func target(of tool: ToolIdentifier) -> AITarget {
+        environment.settings[SettingKey<AITarget>.aiTarget(for: tool.rawValue)]
+    }
+
+    private func reset(_ tool: ToolIdentifier) {
+        environment.settings[SettingKey<AITarget>.aiTarget(for: tool.rawValue)] = .standard
+    }
+
     private func binding<Value>(_ key: SettingKey<Value>) -> Binding<Value> {
         environment.settings.bind(key) { _ in
             Task { await router.refreshAvailability() }
@@ -391,6 +405,34 @@ struct IntelligenceSettingsView: View {
                         Task {
                             await CLIAgentLocator.shared.forget()
                             await router.refreshAvailability()
+                        }
+                    }
+                }
+            }
+
+            SettingsGroup(
+                "Werkzeuge mit eigener Wahl",
+                footnote: "Gesetzt wird das im Werkzeug selbst, oben im Inspektor. Hier steht nur, wo es von der Regel abweicht — sonst müsste man jedes Werkzeug einzeln aufmachen."
+            ) {
+                let own = deviatingTools
+                if own.isEmpty {
+                    SettingsRow(
+                        "Keines",
+                        help: "Alle Werkzeuge folgen der Regel oben.",
+                        systemImage: "checkmark"
+                    ) {
+                        EmptyView()
+                    }
+                } else {
+                    ForEach(own, id: \.id) { tool in
+                        SettingsRow(
+                            .resolved(tool.title),
+                            help: .resolved(router.title(for: target(of: tool.id))),
+                            systemImage: tool.systemImage
+                        ) {
+                            AnvilButton("Zurücksetzen", role: .secondary) {
+                                reset(tool.id)
+                            }
                         }
                     }
                 }

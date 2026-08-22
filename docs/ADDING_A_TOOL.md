@@ -52,8 +52,19 @@ anderen nicht mit — der Fehler steht im Store.
 
 ## 2. Eingebautes Prompt-Tool
 
-Einen Eintrag in `AIPromptCatalog.coding` oder `.everyday` ergänzen. Gleicher
-Typ wie oben, nur in Swift geschrieben und mitkompiliert.
+Einen Eintrag in `AIPromptCatalog.coding`, `.text` oder `.everyday` ergänzen.
+Gleicher Typ wie oben, nur in Swift geschrieben und mitkompiliert.
+
+Drei Dinge prüfen die Tests, nicht der Compiler:
+
+- Jedes `{{option:…}}` in Anweisung oder Vorlage muss eine Option dieses
+  Namens haben — sonst geht die geschweifte Klammer wörtlich an das Modell.
+- Jede Option muss irgendwo als Platzhalter vorkommen, sonst dreht der Regler
+  an nichts.
+- Der Vorgabewert einer Auswahl muss unter ihren Werten stehen.
+
+Danach `./Scripts/tool-list.py` — `docs/TOOLS.md` wird nicht von Hand gepflegt,
+und die CI vergleicht.
 
 ## 3. Deterministisches Tool
 
@@ -191,6 +202,11 @@ struct MeinToolView: View {
 - **Fehler über `AnvilBanner`** bzw. `.anvilErrorBanner(...)`, nie über Alerts.
 - **Modelle über `context.ai`**, nie einen Provider direkt bauen — sonst gilt
   die Datenschutz-Richtlinie des Nutzers für dieses eine Tool nicht.
+- **Die Wahl je Werkzeug weiterreichen.** `AITargetPicker(context:tool:)` in den
+  Inspector, und den Wert aus
+  `settings[SettingKey<AITarget>.aiTarget(for: id.rawValue)]` an
+  `router.run(_:target:)` bzw. `router.stream(_:target:)` mitgeben. Ohne das
+  ignoriert das Tool still, was im Inspector steht.
 - **Lange Eingaben chunken** über `TextChunker.split(_:budget:)` mit dem Budget
   aus `router.inputBudget()`.
 - **Neue Komponente?** Sobald ein zweites Tool sie braucht, gehört sie nach
