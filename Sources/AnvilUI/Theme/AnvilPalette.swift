@@ -1,26 +1,56 @@
 import AppKit
 import SwiftUI
 
+/// A colour that resolves per appearance without the call site knowing about it.
+private func dynamic(light: NSColor, dark: NSColor) -> Color {
+    Color(nsColor: NSColor(name: nil) { appearance in
+        appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua ? dark : light
+    })
+}
+
+private func grey(_ value: CGFloat) -> NSColor {
+    NSColor(srgbRed: value, green: value, blue: value, alpha: 1)
+}
+
 /// Semantic colours.
+///
+/// Surfaces form a stack: `canvas` at the back, `surface` for a card on it,
+/// `elevated` for a row inside that card, `field` for anything editable. Each
+/// step is a small brightness change plus a hairline, never a shadow — depth
+/// that survives being screenshotted and scaled.
 public enum AnvilColor {
     // MARK: Surfaces
 
-    /// The window background behind everything.
-    public static let canvas = Color(nsColor: .windowBackgroundColor)
+    /// The window background behind everything, sidebar included.
+    public static let canvas = dynamic(light: grey(0.961), dark: grey(0.106))
     /// A card or pane sitting on the canvas.
-    public static let surface = Color(nsColor: .controlBackgroundColor)
-    /// Editable areas: text editors, code panes.
-    public static let field = Color(nsColor: .textBackgroundColor)
+    public static let surface = dynamic(light: grey(1.0), dark: grey(0.149))
+    /// A row or control sitting inside a card.
+    public static let elevated = dynamic(light: grey(0.976), dark: grey(0.188))
+    /// Editable areas: text editors, code panes. Recessed, not raised.
+    public static let field = dynamic(light: grey(1.0), dark: grey(0.082))
     /// A row that is hovered but not selected.
-    public static let hover = Color(nsColor: .quaternaryLabelColor).opacity(0.35)
-    /// The selected row in a list or sidebar.
-    public static let selection = Color.accentColor.opacity(0.18)
+    public static let hover = dynamic(
+        light: NSColor(white: 0, alpha: 0.045),
+        dark: NSColor(white: 1, alpha: 0.06)
+    )
+    /// A selected row that keeps its normal label colour.
+    public static let selection = Color.accentColor.opacity(0.16)
+    /// A selected row that carries the accent outright — the sidebar pill.
+    /// Its label must switch to ``textOnAccent``.
+    public static let selectionStrong = Color.accentColor
 
     // MARK: Lines
 
-    public static let separator = Color(nsColor: .separatorColor)
-    /// Border around an inactive input.
-    public static let border = Color(nsColor: .separatorColor).opacity(0.9)
+    public static let separator = dynamic(
+        light: NSColor(white: 0, alpha: 0.09),
+        dark: NSColor(white: 1, alpha: 0.10)
+    )
+    /// Border around a card or an inactive input.
+    public static let border = dynamic(
+        light: NSColor(white: 0, alpha: 0.10),
+        dark: NSColor(white: 1, alpha: 0.11)
+    )
     /// Border around the focused input.
     public static let borderFocused = Color.accentColor.opacity(0.7)
 
@@ -34,15 +64,35 @@ public enum AnvilColor {
 
     // MARK: Status
 
+    /// Status colours are darkened for the light scheme: the system greens and
+    /// yellows are tuned for dark backgrounds and turn illegible on white.
     public static let accent = Color.accentColor
-    public static let success = Color(nsColor: .systemGreen)
-    public static let warning = Color(nsColor: .systemOrange)
-    public static let danger = Color(nsColor: .systemRed)
-    public static let info = Color(nsColor: .systemBlue)
+    public static let success = dynamic(
+        light: NSColor(srgbRed: 0.00, green: 0.44, blue: 0.18, alpha: 1),
+        dark: .systemGreen
+    )
+    public static let warning = dynamic(
+        light: NSColor(srgbRed: 0.68, green: 0.42, blue: 0.00, alpha: 1),
+        dark: .systemOrange
+    )
+    public static let danger = dynamic(
+        light: NSColor(srgbRed: 0.68, green: 0.08, blue: 0.10, alpha: 1),
+        dark: .systemRed
+    )
+    public static let info = dynamic(
+        light: NSColor(srgbRed: 0.00, green: 0.35, blue: 0.66, alpha: 1),
+        dark: .systemBlue
+    )
     /// Marks output produced by a model, as opposed to deterministic output.
-    public static let ai = Color(nsColor: .systemPurple)
+    public static let ai = dynamic(
+        light: NSColor(srgbRed: 0.44, green: 0.19, blue: 0.66, alpha: 1),
+        dark: .systemPurple
+    )
     /// Marks work that happens on-device only.
-    public static let onDevice = Color(nsColor: .systemTeal)
+    public static let onDevice = dynamic(
+        light: NSColor(srgbRed: 0.00, green: 0.44, blue: 0.40, alpha: 1),
+        dark: .systemTeal
+    )
 }
 
 /// The tone of a status surface — pills, banners, buttons.

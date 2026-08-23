@@ -19,7 +19,7 @@ public struct InspectorPane<Content: View>: View {
         }
         .scrollBounceBehavior(.basedOnSize)
         .frame(width: AnvilSize.inspectorWidth)
-        .background(AnvilColor.surface)
+        .background(AnvilColor.canvas)
         .anvilFlatSurfaces()
     }
 }
@@ -53,9 +53,9 @@ public struct InspectorSection<Content: View>: View {
                 Text(title)
                     .textCase(.uppercase)
                     .font(AnvilFont.label)
-                    .tracking(0.6)
+                    .tracking(0.5)
             }
-            .foregroundStyle(AnvilColor.textTertiary)
+            .foregroundStyle(AnvilColor.textSecondary)
 
             VStack(alignment: .leading, spacing: AnvilSpacing.sm) {
                 content

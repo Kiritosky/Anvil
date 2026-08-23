@@ -2,6 +2,9 @@ import AnvilKit
 import SwiftUI
 
 /// A tool in a list: sidebar, command palette, search results.
+///
+/// Selected means the accent outright, not a tint — the sidebar is the one
+/// place in the app where the current position has to be unmissable.
 public struct ToolListRow: View {
     private let metadata: ToolMetadata
     private let isSelected: Bool
@@ -28,30 +31,39 @@ public struct ToolListRow: View {
         self.onToggleFavourite = onToggleFavourite
     }
 
+    private var tone: AnvilTone { metadata.usesAI ? .ai : .accent }
+
+    private var titleColor: Color {
+        isSelected ? AnvilColor.textOnAccent : AnvilColor.textPrimary
+    }
+
+    private var subtitleColor: Color {
+        isSelected ? AnvilColor.textOnAccent.opacity(0.75) : AnvilColor.textSecondary
+    }
+
     public var body: some View {
         HStack(spacing: AnvilSpacing.sm) {
-            ToolIconBadge(
-                systemImage: metadata.systemImage,
-                tone: metadata.usesAI ? .ai : .accent,
-                size: AnvilSize.toolIcon
-            )
+            Image(systemName: metadata.systemImage)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(isSelected ? AnvilColor.textOnAccent : tone.color)
+                .frame(width: AnvilSize.toolIcon, alignment: .center)
 
             VStack(alignment: .leading, spacing: 0) {
                 HStack(spacing: AnvilSpacing.xs) {
                     Text(metadata.title)
                         .font(AnvilFont.rowTitle)
-                        .foregroundStyle(AnvilColor.textPrimary)
+                        .foregroundStyle(titleColor)
                         .lineLimit(1)
 
                     if let badge = metadata.badge {
-                        StatusPill(.resolved(badge), tone: .accent)
+                        StatusPill(.resolved(badge), tone: isSelected ? .neutral : .accent)
                     }
                 }
 
                 if showsSubtitle, !metadata.subtitle.isEmpty {
                     Text(metadata.subtitle)
                         .font(AnvilFont.caption)
-                        .foregroundStyle(AnvilColor.textTertiary)
+                        .foregroundStyle(subtitleColor)
                         .lineLimit(1)
                 }
             }
@@ -71,10 +83,14 @@ public struct ToolListRow: View {
             }
         }
         .padding(.horizontal, AnvilSpacing.sm)
-        .padding(.vertical, AnvilSpacing.xs + 1)
+        .padding(.vertical, AnvilSpacing.sm - 1)
         .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                .fill(isSelected ? AnvilColor.selection : (isHovering ? AnvilColor.hover : .clear))
+            RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
+                .fill(
+                    isSelected
+                        ? AnvilColor.selectionStrong
+                        : (isHovering ? AnvilColor.hover : .clear)
+                )
         }
         .contentShape(Rectangle())
         .onHover { isHovering = $0 }
@@ -128,10 +144,10 @@ public struct ToolCard: View {
     private var card: some View {
         VStack(alignment: .leading, spacing: AnvilSpacing.sm) {
             HStack(spacing: AnvilSpacing.sm) {
-                ToolIconBadge(
-                    systemImage: metadata.systemImage,
+                AnvilIconBadge(
+                    metadata.systemImage,
                     tone: metadata.usesAI ? .ai : .accent,
-                    size: AnvilSize.toolIconLarge
+                    size: AnvilSize.iconBadgeLarge
                 )
                 Spacer(minLength: 0)
                 if let shortcutHint {
@@ -161,13 +177,13 @@ public struct ToolCard: View {
         .padding(AnvilSpacing.md)
         .frame(height: AnvilSize.toolCardHeight, alignment: .top)
         .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous)
-                .fill(isHovering ? AnvilColor.field : AnvilColor.surface)
+            RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
+                .fill(isHovering ? AnvilColor.elevated : AnvilColor.surface)
         }
         .overlay {
-            RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous)
+            RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
                 .strokeBorder(
-                    isHovering ? AnvilColor.borderFocused : AnvilColor.border,
+                    isHovering ? AnvilColor.accent.opacity(0.5) : AnvilColor.border,
                     lineWidth: AnvilSize.hairline
                 )
         }

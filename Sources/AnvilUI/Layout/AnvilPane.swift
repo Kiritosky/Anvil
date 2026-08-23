@@ -55,8 +55,8 @@ public struct AnvilPane<Content: View, Accessory: View>: View {
             Text(title)
                 .textCase(.uppercase)
                 .font(AnvilFont.label)
-                .tracking(0.6)
-                .foregroundStyle(AnvilColor.textTertiary)
+                .tracking(0.5)
+                .foregroundStyle(AnvilColor.textSecondary)
 
             Spacer(minLength: AnvilSpacing.sm)
 
@@ -66,7 +66,7 @@ public struct AnvilPane<Content: View, Accessory: View>: View {
         }
         .padding(.horizontal, AnvilSpacing.md)
         .frame(height: 30)
-        .background(AnvilColor.surface)
+        .background(AnvilColor.elevated)
     }
 }
 
@@ -105,7 +105,7 @@ public struct AnvilCard<Content: View>: View {
             .background {
                 if theme.prefersFlatSurfaces {
                     RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                        .fill(AnvilColor.field)
+                        .fill(AnvilColor.elevated)
                 } else {
                     RoundedRectangle(cornerRadius: theme.cardRadius, style: .continuous)
                         .fill(AnvilColor.surface)

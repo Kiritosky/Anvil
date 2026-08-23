@@ -49,7 +49,7 @@ public struct ToolHeaderBar<Actions: View>: View {
         .padding(.horizontal, AnvilSpacing.lg)
         .frame(height: AnvilSize.headerHeight)
         .frame(maxWidth: .infinity)
-        .background(.bar)
+        .background(AnvilColor.canvas)
     }
 }
 
@@ -83,13 +83,6 @@ public struct ToolIconBadge: View {
     }
 
     public var body: some View {
-        RoundedRectangle(cornerRadius: size / 3.4, style: .continuous)
-            .fill(tone.fill)
-            .overlay {
-                Image(systemName: systemImage)
-                    .font(.system(size: size * 0.48, weight: .medium))
-                    .foregroundStyle(tone.color)
-            }
-            .frame(width: size, height: size)
+        AnvilIconBadge(systemImage, tone: tone, size: size)
     }
 }

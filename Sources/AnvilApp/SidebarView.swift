@@ -3,7 +3,8 @@ import AnvilKit
 import AnvilUI
 import SwiftUI
 
-/// The tool list.
+/// The tool list: a search field, groups under small capitals, and a footer
+/// that says whether a model is reachable.
 struct SidebarView: View {
     @Environment(AppEnvironment.self) private var environment
     @Environment(AIRouter.self) private var router: AIRouter?
@@ -22,38 +23,39 @@ struct SidebarView: View {
                     if query.isEmpty {
                         if !registry.favouriteTools.isEmpty {
                             section(
-                                localized("Favoriten"),
+                                "Favoriten",
                                 systemImage: "star.fill",
                                 tools: registry.favouriteTools
                             )
                         }
                         if !registry.recentTools.isEmpty {
                             section(
-                                localized("Zuletzt"),
+                                "Zuletzt",
                                 systemImage: "clock",
                                 tools: registry.recentTools
                             )
                         }
                         ForEach(registry.categories) { category in
                             section(
-                                category.title,
+                                .resolved(category.title),
                                 systemImage: category.systemImage,
                                 tools: registry.tools(in: category)
                             )
                         }
                     } else {
-                        section(
-                            localized("Treffer"),
-                            systemImage: "magnifyingglass",
-                            tools: registry.search(query)
-                        )
+                        let hits = registry.search(query)
+                        if hits.isEmpty {
+                            noHits
+                        } else {
+                            section("Treffer", systemImage: "magnifyingglass", tools: hits)
+                        }
                     }
                 }
                 .padding(.horizontal, AnvilSpacing.sm)
                 .padding(.bottom, AnvilSpacing.lg)
             }
+            .scrollBounceBehavior(.basedOnSize)
 
-            Divider()
             footer
         }
         .background(AnvilColor.canvas)
@@ -62,12 +64,12 @@ struct SidebarView: View {
     // MARK: - Pieces
 
     private var searchField: some View {
-        HStack(spacing: AnvilSpacing.xs) {
+        HStack(spacing: AnvilSpacing.sm) {
             Image(systemName: "magnifyingglass")
-                .font(AnvilFont.caption)
+                .font(AnvilFont.body)
                 .foregroundStyle(AnvilColor.textTertiary)
 
-            TextField("Suchen", text: $query)
+            TextField("Werkzeug suchen", text: $query)
                 .textFieldStyle(.plain)
                 .font(AnvilFont.body)
 
@@ -80,28 +82,37 @@ struct SidebarView: View {
             }
         }
         .padding(.horizontal, AnvilSpacing.sm)
-        .frame(height: 28)
+        .frame(height: AnvilSize.controlHeight + 4)
         .background {
-            RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                .fill(AnvilColor.field)
+            RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
+                .fill(AnvilColor.elevated)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
+                .strokeBorder(AnvilColor.border, lineWidth: AnvilSize.hairline)
         }
         .padding(.horizontal, AnvilSpacing.sm)
-        .padding(.vertical, AnvilSpacing.sm)
+        .padding(.vertical, AnvilSpacing.md)
     }
 
-    private func section(_ title: String, systemImage: String, tools: [ToolMetadata]) -> some View {
-        let shortcuts = registry.quickAccessShortcuts
-        return VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
-            HStack(spacing: AnvilSpacing.xs) {
-                Image(systemName: systemImage)
-                    .font(AnvilFont.micro)
-                Text(title.uppercased())
-                    .font(AnvilFont.label)
-                    .tracking(0.6)
-            }
+    private var noHits: some View {
+        Text("Nichts gefunden")
+            .font(AnvilFont.body)
             .foregroundStyle(AnvilColor.textTertiary)
             .padding(.horizontal, AnvilSpacing.sm)
-            .padding(.bottom, 2)
+            .padding(.top, AnvilSpacing.sm)
+    }
+
+    private func section(
+        _ title: LocalizedStringKey,
+        systemImage: String,
+        tools: [ToolMetadata]
+    ) -> some View {
+        let shortcuts = registry.quickAccessShortcuts
+        return VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
+            AnvilSectionHeader(title, systemImage: systemImage)
+                .padding(.horizontal, AnvilSpacing.sm)
+                .padding(.bottom, AnvilSpacing.xxs)
 
             ForEach(tools) { tool in
                 Button { environment.open(tool.id) } label: {
@@ -129,29 +140,33 @@ struct SidebarView: View {
     }
 
     private var footer: some View {
-        HStack(spacing: AnvilSpacing.sm) {
-            if let router {
-                Circle()
-                    .fill(router.availability.isAvailable ? AnvilColor.success : AnvilColor.warning)
-                    .frame(width: AnvilSize.dot, height: AnvilSize.dot)
+        VStack(spacing: 0) {
+            Divider()
 
-                Text(router.statusSummary)
-                    .font(AnvilFont.caption)
-                    .foregroundStyle(AnvilColor.textSecondary)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
+            HStack(spacing: AnvilSpacing.sm) {
+                if let router {
+                    Circle()
+                        .fill(router.availability.isAvailable ? AnvilColor.success : AnvilColor.warning)
+                        .frame(width: AnvilSize.dot, height: AnvilSize.dot)
+
+                    Text(.resolved(router.statusSummary))
+                        .font(AnvilFont.caption)
+                        .foregroundStyle(AnvilColor.textSecondary)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                }
+
+                Spacer(minLength: 0)
+
+                Button { environment.isCommandPaletteOpen = true } label: {
+                    Image(systemName: "command")
+                }
+                .buttonStyle(AnvilIconButtonStyle())
+                .anvilHelp("Alles finden (⌘K)")
             }
-
-            Spacer(minLength: 0)
-
-            Button { environment.isCommandPaletteOpen = true } label: {
-                Image(systemName: "command")
-            }
-            .buttonStyle(AnvilIconButtonStyle())
-            .anvilHelp("Alles finden (⌘K)")
+            .padding(.horizontal, AnvilSpacing.md)
+            .frame(height: AnvilSize.statusBarHeight + 4)
         }
-        .padding(.horizontal, AnvilSpacing.sm)
-        .frame(height: 34)
-        .background(AnvilColor.surface)
+        .background(AnvilColor.canvas)
     }
 }

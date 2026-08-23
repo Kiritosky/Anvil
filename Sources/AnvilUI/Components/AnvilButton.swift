@@ -109,7 +109,7 @@ public struct AnvilButtonStyle: ButtonStyle {
         case .primary:
             AnvilColor.accent.opacity(pressed ? 0.75 : (isHovering ? 0.92 : 1))
         case .secondary:
-            AnvilColor.field.opacity(pressed ? 0.6 : (isHovering ? 1 : 0.85))
+            AnvilColor.elevated.opacity(pressed ? 0.6 : (isHovering ? 1 : 0.85))
         case .ghost:
             (pressed || isHovering) ? AnvilColor.hover : Color.clear
         case .destructive:

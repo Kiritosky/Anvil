@@ -19,9 +19,15 @@ public enum AnvilCardSize: Sendable {
 extension View {
     /// Die Fläche, auf der eine Zeile in einer Liste sitzt.
     public func anvilCard(_ size: AnvilCardSize = .regular, isSelected: Bool = false) -> some View {
-        background {
-            RoundedRectangle(cornerRadius: size.radius, style: .continuous)
-                .fill(isSelected ? AnvilColor.selection : AnvilColor.surface)
+        let shape = RoundedRectangle(cornerRadius: size.radius, style: .continuous)
+        return background {
+            shape.fill(isSelected ? AnvilColor.selection : AnvilColor.elevated)
+        }
+        .overlay {
+            shape.strokeBorder(
+                isSelected ? AnvilColor.accent.opacity(0.45) : AnvilColor.border,
+                lineWidth: AnvilSize.hairline
+            )
         }
     }
 }

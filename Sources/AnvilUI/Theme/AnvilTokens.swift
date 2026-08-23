@@ -85,7 +85,13 @@ public enum AnvilSize {
     /// Die Zahl neben einem Regler. Breit genug für „100 %".
     public static let sliderValueWidth: CGFloat = 44
 
-    public static let hairline: CGFloat = 1
+    /// A hairline. Under a point on purpose: at 1pt a border on a card reads
+    /// as a frame, at 0.7 it reads as an edge.
+    public static let hairline: CGFloat = 0.7
+    /// The rounded square an icon sits in, in a list row.
+    public static let iconBadge: CGFloat = 30
+    /// The same badge on a card, where the icon leads.
+    public static let iconBadgeLarge: CGFloat = 36
     /// A separator standing between two controls in a row — shorter than the
     /// row so it reads as a divider and not as a frame.
     public static let dividerHeight: CGFloat = 18
@@ -145,6 +151,8 @@ public enum AnvilFont {
     public static let display = Font.system(size: 26, weight: .semibold, design: .rounded)
     /// Tool title in the header.
     public static let title = Font.system(size: 19, weight: .semibold)
+    /// The heading above a group of cards on a page.
+    public static let heading = Font.system(size: 15, weight: .semibold)
     /// Section heading inside a tool.
     public static let sectionTitle = Font.system(size: 13, weight: .semibold)
     /// Sidebar and list row label.

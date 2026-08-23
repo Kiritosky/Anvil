@@ -4,19 +4,24 @@ import AnvilToolbox
 import AnvilUI
 import SwiftUI
 
-/// What you see before opening a tool.
+/// What you see before opening a tool: the whole toolbox on one page, plus
+/// what the app does without a tool being open at all.
 struct StartView: View {
+    private enum Page: Hashable {
+        case tools
+        case shortcuts
+    }
+
     @Environment(AppEnvironment.self) private var environment
     @Environment(AIRouter.self) private var router: AIRouter?
     @Environment(\.openWindow) private var openWindow
+
+    @State private var page: Page = .tools
 
     private var registry: ToolRegistry { environment.registry }
 
     private let cardColumns = [
         GridItem(.adaptive(minimum: AnvilSize.toolCardMinWidth), spacing: AnvilSpacing.md)
-    ]
-    private let rowColumns = [
-        GridItem(.adaptive(minimum: AnvilSize.toolRowMinWidth), spacing: AnvilSpacing.xs)
     ]
 
     var body: some View {
@@ -37,54 +42,51 @@ struct StartView: View {
                 if registry.tools.isEmpty {
                     emptyState
                 } else {
-                    capabilities
-
-                    if !registry.favouriteTools.isEmpty {
-                        section("Favoriten", systemImage: "star.fill") {
-                            cardGrid(registry.favouriteTools)
-                        }
-                    }
-
-                    if !registry.recentTools.isEmpty {
-                        section("Zuletzt benutzt", systemImage: "clock") {
-                            cardGrid(registry.recentTools)
-                        }
-                    }
-
-                    ForEach(registry.categories) { category in
-                        let tools = registry.tools(in: category)
-                        section(
-                            .resolved(category.title),
-                            systemImage: category.systemImage,
-                            count: tools.count
-                        ) {
-                            rowGrid(tools)
-                        }
+                    switch page {
+                    case .tools: toolsPage
+                    case .shortcuts: shortcutsPage
                     }
                 }
             }
             .padding(AnvilSpacing.xxl)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .scrollBounceBehavior(.basedOnSize)
         .background(AnvilColor.canvas)
+        .animation(AnvilMotion.standard, value: page)
     }
 
-    // MARK: - Header
+    // MARK: - Kopf
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: AnvilSpacing.xs) {
-            HStack(spacing: AnvilSpacing.sm) {
-                Image(systemName: "hammer.fill")
-                    .font(AnvilFont.display)
-                    .foregroundStyle(AnvilColor.accent)
-                Text("Anvil")
-                    .font(AnvilFont.display)
-                    .foregroundStyle(AnvilColor.textPrimary)
+        VStack(alignment: .leading, spacing: AnvilSpacing.lg) {
+            HStack(spacing: AnvilSpacing.md) {
+                AnvilIconBadge("hammer.fill", size: 44)
+
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("Anvil")
+                        .font(AnvilFont.display)
+                        .foregroundStyle(AnvilColor.textPrimary)
+
+                    Text("\(registry.tools.count) Werkzeuge · ⌘K öffnet die Suche")
+                        .font(AnvilFont.body)
+                        .foregroundStyle(AnvilColor.textSecondary)
+                }
+
+                Spacer(minLength: AnvilSpacing.lg)
+
+                AnvilButton("Tool-Store", systemImage: "square.grid.2x2") {
+                    environment.open(SystemToolBundle.storeToolID)
+                }
             }
 
-            Text("\(registry.tools.count) Werkzeuge · ⌘K öffnet die Suche")
-                .font(AnvilFont.body)
-                .foregroundStyle(AnvilColor.textSecondary)
+            AnvilSegmentedControl(
+                selection: $page,
+                segments: [
+                    .init(.tools, title: "Werkzeuge", systemImage: "wrench.and.screwdriver"),
+                    .init(.shortcuts, title: "Kürzel", systemImage: "command")
+                ]
+            )
         }
     }
 
@@ -100,115 +102,27 @@ struct StartView: View {
         }
     }
 
-    // MARK: - Was die App kann
+    // MARK: - Werkzeuge
 
-    /// Etwas, das die App kann, ohne dass es irgendwo in der Seitenleiste steht.
-    private struct Capability: Identifiable {
-        let id: String
-        let title: LocalizedStringKey
-        let systemImage: String
-        /// Die Tastenkombination, sofern es eine gibt und sie scharf ist.
-        let keys: String?
-    }
-
-    private var capabilities: some View {
-        AnvilCard {
-            VStack(alignment: .leading, spacing: AnvilSpacing.md) {
-                Text("Das kann Anvil")
-                    .font(AnvilFont.sectionTitle)
-                    .foregroundStyle(AnvilColor.textPrimary)
-
-                FlowLayout(spacing: AnvilSpacing.xl, lineSpacing: AnvilSpacing.md) {
-                    ForEach(capabilityList) { capability in
-                        HStack(spacing: AnvilSpacing.sm) {
-                            Image(systemName: capability.systemImage)
-                                .font(AnvilFont.body)
-                                .foregroundStyle(AnvilColor.textTertiary)
-                            Text(capability.title)
-                                .font(AnvilFont.body)
-                                .foregroundStyle(AnvilColor.textSecondary)
-                            if let keys = capability.keys {
-                                KeycapLabel(keys)
-                            } else {
-                                Text("nicht belegt")
-                                    .font(AnvilFont.caption)
-                                    .foregroundStyle(AnvilColor.textTertiary)
-                            }
-                        }
-                    }
-                }
+    @ViewBuilder
+    private var toolsPage: some View {
+        if !registry.favouriteTools.isEmpty {
+            group("Favoriten") {
+                cardGrid(registry.favouriteTools)
             }
         }
-    }
 
-    private var capabilityList: [Capability] {
-        [
-            Capability(
-                id: "dictation",
-                title: "Diktieren, überall",
-                systemImage: "mic",
-                keys: keys(for: QuickDictationController.actionID)
-            ),
-            Capability(
-                id: "screenshot",
-                title: "Ausschnitt aufnehmen",
-                systemImage: "rectangle.dashed",
-                keys: keys(for: ScreenshotToolBundle.regionActionID)
-            ),
-            Capability(
-                id: "drop",
-                title: "Dateien ins Fenster ziehen",
-                systemImage: "arrow.down.doc",
-                keys: nil
-            ),
-            Capability(
-                id: "window",
-                title: "Werkzeug in eigenem Fenster",
-                systemImage: "macwindow.on.rectangle",
-                keys: "⇧⌘N"
-            ),
-            Capability(
-                id: "quickAccess",
-                title: "Favoriten auf Zifferntasten",
-                systemImage: "number",
-                keys: registry.quickAccessTools.isEmpty ? nil : "⌘1…9"
-            )
-        ]
-    }
-
-    /// Zeigt nur, worauf auch wirklich gehört wird: ein abgeschaltetes Kürzel
-    /// anzuschreiben wäre ein Versprechen, das die App nicht hält.
-    private func keys(for id: ShortcutActionID) -> String? {
-        let setting = environment.shortcuts.setting(for: id)
-        guard setting.scope != .off, let shortcut = setting.shortcut else { return nil }
-        return shortcut.displayString
-    }
-
-    // MARK: - Abschnitte
-
-    private func section<Content: View>(
-        _ title: LocalizedStringKey,
-        systemImage: String,
-        count: Int? = nil,
-        @ViewBuilder content: () -> Content
-    ) -> some View {
-        VStack(alignment: .leading, spacing: AnvilSpacing.sm) {
-            HStack(spacing: AnvilSpacing.sm) {
-                Image(systemName: systemImage)
-                    .font(AnvilFont.label)
-                    .foregroundStyle(AnvilColor.textTertiary)
-                Text(title)
-                    .font(AnvilFont.sectionTitle)
-                    .foregroundStyle(AnvilColor.textPrimary)
-                if let count {
-                    Text("\(count) Werkzeuge")
-                        .font(AnvilFont.caption)
-                        .foregroundStyle(AnvilColor.textTertiary)
-                }
-                Spacer(minLength: 0)
+        if !registry.recentTools.isEmpty {
+            group("Zuletzt benutzt") {
+                cardGrid(registry.recentTools)
             }
+        }
 
-            content()
+        ForEach(registry.categories) { category in
+            let tools = registry.tools(in: category)
+            group(.resolved(category.title), count: tools.count) {
+                rowGroup(tools)
+            }
         }
     }
 
@@ -229,21 +143,154 @@ struct StartView: View {
         }
     }
 
-    private func rowGrid(_ tools: [ToolMetadata]) -> some View {
+    private func rowGroup(_ tools: [ToolMetadata]) -> some View {
         let shortcuts = registry.quickAccessShortcuts
-        return LazyVGrid(columns: rowColumns, alignment: .leading, spacing: AnvilSpacing.xxs) {
-            ForEach(tools) { tool in
+        return AnvilRowGroup {
+            ForEach(Array(tools.enumerated()), id: \.element.id) { index, tool in
+                if index > 0 {
+                    Divider().padding(.leading, AnvilSize.iconBadge + AnvilSpacing.xl)
+                }
+
                 Button { environment.open(tool.id) } label: {
-                    ToolListRow(
-                        metadata: tool,
-                        isFavourite: registry.isFavourite(tool.id),
-                        shortcutHint: shortcuts[tool.id],
-                        onToggleFavourite: { registry.toggleFavourite(tool.id) }
-                    )
+                    AnvilRow(
+                        .resolved(tool.title),
+                        subtitle: .resolvedIfPresent(tool.subtitle.isEmpty ? nil : tool.subtitle),
+                        systemImage: tool.systemImage,
+                        tone: tool.usesAI ? .ai : .accent,
+                        pills: pills(for: tool)
+                    ) {
+                        HStack(spacing: AnvilSpacing.sm) {
+                            if let keys = shortcuts[tool.id] {
+                                KeycapLabel(keys)
+                            }
+                            Image(systemName: "chevron.right")
+                                .font(AnvilFont.caption)
+                                .foregroundStyle(AnvilColor.textTertiary)
+                        }
+                    }
                 }
                 .buttonStyle(.plain)
                 .contextMenu { toolMenu(tool) }
             }
+        }
+    }
+
+    private func pills(for tool: ToolMetadata) -> [AnvilRowPill] {
+        var pills: [AnvilRowPill] = []
+        if tool.usesAI {
+            pills.append(AnvilRowPill("KI", tone: .ai, systemImage: "sparkles"))
+        }
+        if let badge = tool.badge {
+            pills.append(AnvilRowPill(.resolved(badge), tone: .accent))
+        }
+        if registry.isFavourite(tool.id) {
+            pills.append(AnvilRowPill("Favorit", tone: .warning, systemImage: "star.fill"))
+        }
+        return pills
+    }
+
+    // MARK: - Kürzel
+
+    /// Etwas, das die App kann, ohne dass es irgendwo in der Seitenleiste steht.
+    private struct Capability: Identifiable {
+        let id: String
+        let title: LocalizedStringKey
+        let subtitle: LocalizedStringKey
+        let systemImage: String
+        /// Die Tastenkombination, sofern es eine gibt und sie scharf ist.
+        let keys: String?
+    }
+
+    private var shortcutsPage: some View {
+        group("Das kann Anvil, ohne dass ein Werkzeug offen ist") {
+            AnvilRowGroup {
+                ForEach(Array(capabilityList.enumerated()), id: \.element.id) { index, capability in
+                    if index > 0 {
+                        Divider().padding(.leading, AnvilSize.iconBadge + AnvilSpacing.xl)
+                    }
+
+                    AnvilRow(
+                        capability.title,
+                        subtitle: capability.subtitle,
+                        systemImage: capability.systemImage,
+                        tone: capability.keys == nil ? .neutral : .accent
+                    ) {
+                        if let keys = capability.keys {
+                            KeycapLabel(keys)
+                        } else {
+                            AnvilPill("nicht belegt")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private var capabilityList: [Capability] {
+        [
+            Capability(
+                id: "dictation",
+                title: "Diktieren, überall",
+                subtitle: "Sprechen statt tippen, in jedem Programm.",
+                systemImage: "mic",
+                keys: keys(for: QuickDictationController.actionID)
+            ),
+            Capability(
+                id: "screenshot",
+                title: "Ausschnitt aufnehmen",
+                subtitle: "Bereich wählen, annotieren, weitergeben.",
+                systemImage: "rectangle.dashed",
+                keys: keys(for: ScreenshotToolBundle.regionActionID)
+            ),
+            Capability(
+                id: "drop",
+                title: "Dateien ins Fenster ziehen",
+                subtitle: "Jedes Werkzeug nimmt auch dreißig auf einmal.",
+                systemImage: "arrow.down.doc",
+                keys: nil
+            ),
+            Capability(
+                id: "window",
+                title: "Werkzeug in eigenem Fenster",
+                subtitle: "Zwei Werkzeuge nebeneinander statt hintereinander.",
+                systemImage: "macwindow.on.rectangle",
+                keys: "⇧⌘N"
+            ),
+            Capability(
+                id: "quickAccess",
+                title: "Favoriten auf Zifferntasten",
+                subtitle: "Die ersten neun Favoriten liegen auf ⌘1 bis ⌘9.",
+                systemImage: "number",
+                keys: registry.quickAccessTools.isEmpty ? nil : "⌘1…9"
+            )
+        ]
+    }
+
+    /// Zeigt nur, worauf auch wirklich gehört wird: ein abgeschaltetes Kürzel
+    /// anzuschreiben wäre ein Versprechen, das die App nicht hält.
+    private func keys(for id: ShortcutActionID) -> String? {
+        let setting = environment.shortcuts.setting(for: id)
+        guard setting.scope != .off, let shortcut = setting.shortcut else { return nil }
+        return shortcut.displayString
+    }
+
+    // MARK: - Bausteine
+
+    private func group<Content: View>(
+        _ title: LocalizedStringKey,
+        count: Int? = nil,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading, spacing: AnvilSpacing.md) {
+            AnvilSectionHeader(title) {
+                if let count {
+                    Text("\(count)")
+                        .font(AnvilFont.label)
+                        .foregroundStyle(AnvilColor.textTertiary)
+                }
+            }
+
+            content()
         }
     }
 
