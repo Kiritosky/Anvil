@@ -1,0 +1,337 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A1B2C3D4E5F6000000000017 /* AnvilKit in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D4E5F6000000000012 /* AnvilKit */; };
+		A1B2C3D4E5F6000000000018 /* AnvilUI in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D4E5F6000000000013 /* AnvilUI */; };
+		A1B2C3D4E5F6000000000019 /* AnvilAI in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D4E5F6000000000014 /* AnvilAI */; };
+		A1B2C3D4E5F600000000001A /* AnvilSpeech in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D4E5F6000000000015 /* AnvilSpeech */; };
+		A1B2C3D4E5F600000000001B /* AnvilToolbox in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D4E5F6000000000016 /* AnvilToolbox */; };
+		A1B2C3D4E5F600000000001E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F600000000001C /* Localizable.strings */; };
+		A1B2C3D4E5F6000000000022 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000021 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A1B2C3D4E5F600000000000D /* Anvil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Anvil.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D4E5F600000000001D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A1B2C3D4E5F600000000001F /* Anvil.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Anvil.entitlements; sourceTree = "<group>"; };
+		A1B2C3D4E5F6000000000020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1B2C3D4E5F6000000000021 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A1B2C3D4E5F600000000000C /* AnvilApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Sources/AnvilApp;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A1B2C3D4E5F600000000000F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D4E5F6000000000017 /* AnvilKit in Frameworks */,
+				A1B2C3D4E5F6000000000018 /* AnvilUI in Frameworks */,
+				A1B2C3D4E5F6000000000019 /* AnvilAI in Frameworks */,
+				A1B2C3D4E5F600000000001A /* AnvilSpeech in Frameworks */,
+				A1B2C3D4E5F600000000001B /* AnvilToolbox in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A1B2C3D4E5F6000000000009 = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F600000000000C /* AnvilApp */,
+				A1B2C3D4E5F600000000000B /* Resources */,
+				A1B2C3D4E5F600000000000A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A1B2C3D4E5F600000000000A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F600000000000D /* Anvil.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4E5F600000000000B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F6000000000021 /* Assets.xcassets */,
+				A1B2C3D4E5F600000000001C /* Localizable.strings */,
+				A1B2C3D4E5F6000000000020 /* Info.plist */,
+				A1B2C3D4E5F600000000001F /* Anvil.entitlements */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A1B2C3D4E5F6000000000002 /* Anvil */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C3D4E5F6000000000004 /* Build configuration list for PBXNativeTarget "Anvil" */;
+			buildPhases = (
+				A1B2C3D4E5F600000000000E /* Sources */,
+				A1B2C3D4E5F600000000000F /* Frameworks */,
+				A1B2C3D4E5F6000000000010 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A1B2C3D4E5F600000000000C /* AnvilApp */,
+			);
+			name = Anvil;
+			packageProductDependencies = (
+				A1B2C3D4E5F6000000000012 /* AnvilKit */,
+				A1B2C3D4E5F6000000000013 /* AnvilUI */,
+				A1B2C3D4E5F6000000000014 /* AnvilAI */,
+				A1B2C3D4E5F6000000000015 /* AnvilSpeech */,
+				A1B2C3D4E5F6000000000016 /* AnvilToolbox */,
+			);
+			productName = Anvil;
+			productReference = A1B2C3D4E5F600000000000D /* Anvil.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A1B2C3D4E5F6000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					A1B2C3D4E5F6000000000002 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+				};
+			};
+			buildConfigurationList = A1B2C3D4E5F6000000000003 /* Build configuration list for PBXProject "Anvil" */;
+			developmentRegion = de;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				de,
+				en,
+				Base,
+			);
+			mainGroup = A1B2C3D4E5F6000000000009;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A1B2C3D4E5F6000000000011 /* XCLocalSwiftPackageReference "." */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A1B2C3D4E5F600000000000A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A1B2C3D4E5F6000000000002 /* Anvil */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A1B2C3D4E5F6000000000010 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D4E5F6000000000022 /* Assets.xcassets in Resources */,
+				A1B2C3D4E5F600000000001E /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A1B2C3D4E5F600000000000E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A1B2C3D4E5F600000000001C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1B2C3D4E5F600000000001D /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A1B2C3D4E5F6000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A1B2C3D4E5F6000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A1B2C3D4E5F6000000000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Resources/Anvil.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.anvil.Anvil;
+				PRODUCT_NAME = Anvil;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Debug;
+		};
+		A1B2C3D4E5F6000000000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Resources/Anvil.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.anvil.Anvil;
+				PRODUCT_NAME = Anvil;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A1B2C3D4E5F6000000000003 /* Build configuration list for PBXProject "Anvil" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D4E5F6000000000005 /* Debug */,
+				A1B2C3D4E5F6000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C3D4E5F6000000000004 /* Build configuration list for PBXNativeTarget "Anvil" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D4E5F6000000000007 /* Debug */,
+				A1B2C3D4E5F6000000000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A1B2C3D4E5F6000000000011 /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A1B2C3D4E5F6000000000012 /* AnvilKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AnvilKit;
+		};
+		A1B2C3D4E5F6000000000013 /* AnvilUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AnvilUI;
+		};
+		A1B2C3D4E5F6000000000014 /* AnvilAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AnvilAI;
+		};
+		A1B2C3D4E5F6000000000015 /* AnvilSpeech */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AnvilSpeech;
+		};
+		A1B2C3D4E5F6000000000016 /* AnvilToolbox */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AnvilToolbox;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A1B2C3D4E5F6000000000001 /* Project object */;
+}

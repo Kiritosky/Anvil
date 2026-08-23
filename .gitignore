@@ -1,21 +1,25 @@
-# Anvil ist ein reines SwiftPM-Paket ohne Xcode-Projekt. Was hier steht, ist
-# das, was hier tatsächlich entsteht — keine Vorlage für Projekte, die es nicht
-# gibt.
+# Was hier steht, ist das, was hier tatsächlich entsteht — keine Vorlage für
+# Projekte, die es nicht gibt.
 
 # Build
 .build/
 .swiftpm/
+DerivedData/
+*.xcarchive
 *.dSYM
 *.dSYM.zip
 
 # Erzeugte Artefakte
 Anvil.app/
+*.dmg
 *.zip
 
-# Xcode, falls jemand das Paket dort öffnet
+# Xcode-Nutzerkram; das Projekt und das geteilte Schema gehören ins Repo.
 xcuserdata/
 *.xcuserstate
 *.hmap
+Anvil.xcodeproj/project.xcworkspace/
+Anvil.xcodeproj/xcshareddata/swiftpm/
 
 # Python-Zwischenstand der Skripte
 __pycache__/

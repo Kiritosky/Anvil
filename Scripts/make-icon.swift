@@ -1,13 +1,13 @@
 #!/usr/bin/env swift
 
-// Draws Anvil's app icon and writes AppIcon.icns.
+// Draws Anvil's app icon into Resources/Assets.xcassets/AppIcon.appiconset.
 //
 // Code rather than a design file on purpose: the icon is a handful of shapes,
-// it has to exist in seven sizes, and a checked-in binary nobody can diff is
-// how icons quietly drift out of date. Run through Scripts/build-app.sh, or
-// on its own:
+// it has to exist in ten sizes, and a design file nobody can diff is how icons
+// quietly drift out of date. The rendered PNGs are checked in because Xcode
+// needs them at build time; this script is what regenerates them.
 //
-//     swift Scripts/make-icon.swift .build/AppIcon.icns
+//     swift Scripts/make-icon.swift [ziel.appiconset]
 
 import AppKit
 import Foundation
@@ -66,12 +66,31 @@ func backgroundPath(in size: CGFloat) -> NSBezierPath {
 
 // MARK: - Rendering
 
-func renderIcon(size: CGFloat) -> NSImage {
-    let image = NSImage(size: NSSize(width: size, height: size))
-    image.lockFocus()
-    defer { image.unlockFocus() }
+/// Draws at exact pixel dimensions. Going through `NSImage.lockFocus` would
+/// pick up the display's backing scale and silently double every icon.
+func renderIcon(size: CGFloat) -> NSBitmapImageRep {
+    let pixels = Int(size)
+    let rep = NSBitmapImageRep(
+        bitmapDataPlanes: nil,
+        pixelsWide: pixels,
+        pixelsHigh: pixels,
+        bitsPerSample: 8,
+        samplesPerPixel: 4,
+        hasAlpha: true,
+        isPlanar: false,
+        colorSpaceName: .calibratedRGB,
+        bytesPerRow: 0,
+        bitsPerPixel: 0
+    )!
+    rep.size = NSSize(width: size, height: size)
 
-    NSGraphicsContext.current?.imageInterpolation = .high
+    let context = NSGraphicsContext(bitmapImageRep: rep)!
+    NSGraphicsContext.saveGraphicsState()
+    defer {
+        NSGraphicsContext.restoreGraphicsState()
+    }
+    NSGraphicsContext.current = context
+    context.imageInterpolation = .high
 
     let background = backgroundPath(in: size)
     background.addClip()
@@ -106,14 +125,11 @@ func renderIcon(size: CGFloat) -> NSImage {
         angle: 90
     )
 
-    return image
+    return rep
 }
 
-func writePNG(_ image: NSImage, to url: URL) throws {
-    guard let tiff = image.tiffRepresentation,
-          let bitmap = NSBitmapImageRep(data: tiff),
-          let data = bitmap.representation(using: .png, properties: [:])
-    else {
+func writePNG(_ rep: NSBitmapImageRep, to url: URL) throws {
+    guard let data = rep.representation(using: .png, properties: [:]) else {
         throw NSError(domain: "make-icon", code: 1)
     }
     try data.write(to: url)
@@ -121,37 +137,33 @@ func writePNG(_ image: NSImage, to url: URL) throws {
 
 // MARK: - Main
 
-let destination = URL(filePath: CommandLine.arguments.count > 1
+let iconset = URL(filePath: CommandLine.arguments.count > 1
     ? CommandLine.arguments[1]
-    : ".build/AppIcon.icns")
+    : "Resources/Assets.xcassets/AppIcon.appiconset")
 
-let iconset = destination.deletingLastPathComponent().appending(path: "AppIcon.iconset")
 try? FileManager.default.removeItem(at: iconset)
 try FileManager.default.createDirectory(at: iconset, withIntermediateDirectories: true)
 
-// The sizes iconutil expects, each in single and double resolution.
+var images: [[String: String]] = []
 for base in [16, 32, 128, 256, 512] {
-    try writePNG(
-        renderIcon(size: CGFloat(base)),
-        to: iconset.appending(path: "icon_\(base)x\(base).png")
-    )
-    try writePNG(
-        renderIcon(size: CGFloat(base * 2)),
-        to: iconset.appending(path: "icon_\(base)x\(base)@2x.png")
-    )
+    for scale in [1, 2] {
+        let name = "icon_\(base)x\(base)\(scale == 2 ? "@2x" : "").png"
+        try writePNG(renderIcon(size: CGFloat(base * scale)), to: iconset.appending(path: name))
+        images.append([
+            "idiom": "mac",
+            "size": "\(base)x\(base)",
+            "scale": "\(scale)x",
+            "filename": name
+        ])
+    }
 }
 
-let process = Process()
-process.executableURL = URL(filePath: "/usr/bin/iconutil")
-process.arguments = ["-c", "icns", iconset.path(percentEncoded: false),
-                     "-o", destination.path(percentEncoded: false)]
-try process.run()
-process.waitUntilExit()
+let contents: [String: Any] = [
+    "images": images,
+    "info": ["version": 1, "author": "xcode"]
+]
+try JSONSerialization
+    .data(withJSONObject: contents, options: [.prettyPrinted, .sortedKeys])
+    .write(to: iconset.appending(path: "Contents.json"))
 
-guard process.terminationStatus == 0 else {
-    FileHandle.standardError.write(Data("iconutil ist fehlgeschlagen\n".utf8))
-    exit(1)
-}
-
-try? FileManager.default.removeItem(at: iconset)
-print("Icon geschrieben: \(destination.path(percentEncoded: false))")
+print("Icon geschrieben: \(iconset.path(percentEncoded: false))")

@@ -4,11 +4,13 @@ import PackageDescription
 // Anvil is a modular macOS toolbox. The package is split so that the
 // extensibility core (AnvilKit) knows nothing about AI, speech or the app shell,
 // and every layer above it can be replaced or extended independently.
+//
+// The app itself lives in Anvil.xcodeproj and consumes this package locally;
+// Sources/AnvilApp therefore has no target here.
 let package = Package(
     name: "Anvil",
     platforms: [.macOS("26.0")],
     products: [
-        .executable(name: "Anvil", targets: ["AnvilApp"]),
         .library(name: "AnvilKit", targets: ["AnvilKit"]),
         .library(name: "AnvilUI", targets: ["AnvilUI"]),
         .library(name: "AnvilAI", targets: ["AnvilAI"]),
@@ -44,13 +46,6 @@ let package = Package(
         .target(
             name: "AnvilToolbox",
             dependencies: ["AnvilKit", "AnvilUI", "AnvilAI", "AnvilSpeech"],
-            swiftSettings: [.swiftLanguageMode(.v5)]
-        ),
-        // Thin app shell: window, sidebar, command palette, settings, menu bar.
-        .executableTarget(
-            name: "AnvilApp",
-            dependencies: ["AnvilKit", "AnvilUI", "AnvilAI", "AnvilSpeech", "AnvilToolbox"],
-            resources: [.process("Info.plist")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(

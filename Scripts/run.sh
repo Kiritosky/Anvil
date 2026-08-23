@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
-# Build and launch Anvil.app, streaming its log output to this terminal.
+# Baut Anvil und startet es; die Logausgabe läuft in dieses Terminal.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CONFIG="${1:-debug}"
+cd "$ROOT"
 
-"$ROOT/Scripts/build-app.sh" "$CONFIG"
+CONFIG="${1:-Debug}"
 
-APP="$(swift build --package-path "$ROOT" -c "$CONFIG" --show-bin-path)/Anvil.app"
-exec "$APP/Contents/MacOS/Anvil"
+xcodebuild \
+    -project Anvil.xcodeproj \
+    -scheme Anvil \
+    -configuration "$CONFIG" \
+    -destination 'platform=macOS' \
+    build \
+    | grep -E '^(\*\*|.*(error|warning):)' || true
+
+BUILT="$(xcodebuild -project Anvil.xcodeproj -scheme Anvil -configuration "$CONFIG" \
+    -showBuildSettings 2>/dev/null | awk -F' = ' '/ BUILT_PRODUCTS_DIR /{print $2; exit}')"
+
+exec "$BUILT/Anvil.app/Contents/MacOS/Anvil"

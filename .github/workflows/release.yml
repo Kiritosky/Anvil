@@ -1,9 +1,12 @@
 name: Release
 
-# Aus einem Tag wird ein fertiges Zip. Signiert wird hier nicht — dafür bräuchte
-# es ein Developer-ID-Zertifikat im Repository, und das gibt es bewusst nicht.
-# Die App ist ad-hoc signiert; wie man sie trotzdem öffnet, steht in der
-# Release-Beschreibung, die dieser Workflow mitschreibt.
+# Aus einem Tag wird ein fertiges DMG.
+#
+# Signiert wird mit dem, was da ist. Liegen die vier Secrets vor
+# (SIGNING_CERTIFICATE_P12, SIGNING_CERTIFICATE_PASSWORD, SIGNING_IDENTITY,
+# APPLE_TEAM_ID), wird mit Developer ID signiert; kommen zusätzlich die drei
+# NOTARY_*-Secrets dazu, wird auch beglaubigt. Fehlt etwas davon, wird ad-hoc
+# signiert und die Release-Beschreibung nennt den Gatekeeper-Umweg.
 
 on:
   push:
@@ -23,7 +26,7 @@ permissions:
 
 jobs:
   release:
-    name: Bundle bauen und veröffentlichen
+    name: DMG bauen und veröffentlichen
     runs-on: macos-26
     # Ein Workflow, den man erst beim ersten echten Release zum ersten Mal
     # laufen sieht, ist eine Wette. Der Probelauf macht alles außer dem
@@ -42,69 +45,119 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
 
-      - name: Tag gegen Info.plist prüfen
+      - name: Tag gegen MARKETING_VERSION prüfen
         run: |
-          PLIST="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Resources/Info.plist)"
-          if [ "$PLIST" != "${{ steps.version.outputs.version }}" ]; then
-            echo "Tag ${{ steps.version.outputs.tag }} passt nicht zu CFBundleShortVersionString $PLIST" >&2
+          SETTING="$(xcodebuild -project Anvil.xcodeproj -scheme Anvil -configuration Release \
+            -showBuildSettings 2>/dev/null | awk -F' = ' '/ MARKETING_VERSION /{print $2; exit}')"
+          if [ "$SETTING" != "${{ steps.version.outputs.version }}" ]; then
+            echo "Tag ${{ steps.version.outputs.tag }} passt nicht zu MARKETING_VERSION $SETTING" >&2
             exit 1
           fi
 
       - name: Tests
         run: swift test
 
-      - name: Release-Bundle bauen
-        run: ./Scripts/build-app.sh release
+      - name: Schlüsselbund vorbereiten
+        id: signing
+        env:
+          CERTIFICATE: ${{ secrets.SIGNING_CERTIFICATE_P12 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
+          IDENTITY: ${{ secrets.SIGNING_IDENTITY }}
+        run: |
+          if [ -z "$CERTIFICATE" ] || [ -z "$IDENTITY" ]; then
+            echo "Kein Zertifikat hinterlegt — es wird ad-hoc signiert."
+            echo "identity=-" >> "$GITHUB_OUTPUT"
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          KEYCHAIN="$RUNNER_TEMP/anvil-signing.keychain-db"
+          PASSWORD="$(uuidgen)"
+          security create-keychain -p "$PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 900 "$KEYCHAIN"
+          security unlock-keychain -p "$PASSWORD" "$KEYCHAIN"
+          echo "$CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          security import "$RUNNER_TEMP/cert.p12" -k "$KEYCHAIN" \
+            -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: \
+            -s -k "$PASSWORD" "$KEYCHAIN" > /dev/null
+          security list-keychain -d user -s "$KEYCHAIN" login.keychain-db
+          rm -f "$RUNNER_TEMP/cert.p12"
+          echo "identity=$IDENTITY" >> "$GITHUB_OUTPUT"
+          echo "signed=true" >> "$GITHUB_OUTPUT"
 
-      - name: Zippen
+      - name: App bauen
+        run: |
+          ./Scripts/archive.sh \
+            --identity "${{ steps.signing.outputs.identity }}" \
+            --team "${{ secrets.APPLE_TEAM_ID }}"
+
+      - name: DMG bauen
         id: package
         run: |
-          APP="$(swift build -c release --show-bin-path)/Anvil.app"
-          test -x "$APP/Contents/MacOS/Anvil"
-          NAME="Anvil-${{ steps.version.outputs.version }}.zip"
-          # ditto statt zip: erhält Symlinks und die Signatur im Bundle.
-          ditto -c -k --sequesterRsrc --keepParent "$APP" "$NAME"
-          echo "name=$NAME" >> "$GITHUB_OUTPUT"
-          shasum -a 256 "$NAME" | tee checksum.txt
+          ./Scripts/make-dmg.sh "${{ steps.version.outputs.version }}"
+          DMG=".build/Anvil-${{ steps.version.outputs.version }}.dmg"
+          echo "path=$DMG" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$DMG")" >> "$GITHUB_OUTPUT"
+          shasum -a 256 "$DMG" | tee checksum.txt
+
+      - name: Beglaubigen
+        id: notarize
+        if: steps.signing.outputs.signed == 'true'
+        continue-on-error: true
+        env:
+          NOTARY_APPLE_ID: ${{ secrets.NOTARY_APPLE_ID }}
+          NOTARY_TEAM_ID: ${{ secrets.NOTARY_TEAM_ID }}
+          NOTARY_PASSWORD: ${{ secrets.NOTARY_PASSWORD }}
+        run: |
+          ./Scripts/notarize.sh "${{ steps.package.outputs.path }}"
+          shasum -a 256 "${{ steps.package.outputs.path }}" | tee checksum.txt
+
+      - name: Beschreibung schreiben
+        id: notes
+        run: |
+          {
+            echo "## Installieren"
+            echo
+            echo "DMG öffnen, \`Anvil.app\` nach \`Programme\` ziehen."
+            echo
+            if [ "${{ steps.notarize.outcome }}" = "success" ]; then
+              echo "Die App ist von Apple beglaubigt und startet ohne Umweg."
+            else
+              echo "Diese Fassung ist **nicht beglaubigt**. Beim ersten Start meldet"
+              echo "sich Gatekeeper. Einmalig im Terminal:"
+              echo
+              echo '```sh'
+              echo 'xattr -dr com.apple.quarantine /Applications/Anvil.app'
+              echo '```'
+              echo
+              echo "Danach startet die App normal."
+            fi
+            echo
+            echo "## Voraussetzungen"
+            echo
+            echo "macOS 26 oder neuer. Darunter fehlen die Apple Foundation Models und"
+            echo "\`SpeechAnalyzer\`, auf denen Diktat und KI-Werkzeuge aufsetzen."
+            echo
+            echo "## Prüfsumme"
+            echo
+            echo '```'
+            cat checksum.txt
+            echo '```'
+          } > notes.md
+          cat notes.md
 
       - name: Veröffentlichen
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cat > notes.md <<'NOTES'
-          ## Installieren
-
-          Zip entpacken, `Anvil.app` nach `/Programme` ziehen.
-
-          Anvil ist **nicht notarisiert** — es gibt kein Developer-ID-Zertifikat
-          für dieses Projekt. Beim ersten Start meldet sich Gatekeeper deshalb.
-          Einmalig im Terminal:
-
-          ```sh
-          xattr -dr com.apple.quarantine /Applications/Anvil.app
-          ```
-
-          Danach startet die App normal.
-
-          ## Voraussetzungen
-
-          macOS 26 oder neuer. Darunter fehlen die Apple Foundation Models und
-          `SpeechAnalyzer`, auf denen Diktat und KI-Werkzeuge aufsetzen.
-
-          ## Prüfsumme
-          NOTES
-          printf '\n```\n%s\n```\n' "$(cat checksum.txt)" >> notes.md
-
           if [ "$DRY_RUN" = "true" ]; then
             echo "Probelauf — es wird nichts veröffentlicht."
             echo "Entstanden wäre: Release ${{ steps.version.outputs.tag }}"
-            echo "mit ${{ steps.package.outputs.name }} ($(du -h "${{ steps.package.outputs.name }}" | cut -f1))"
-            echo "--- Beschreibung ---"
-            cat notes.md
+            echo "mit ${{ steps.package.outputs.name }} ($(du -h "${{ steps.package.outputs.path }}" | cut -f1))"
             exit 0
           fi
 
           gh release create "${{ steps.version.outputs.tag }}" \
-            "${{ steps.package.outputs.name }}" \
+            "${{ steps.package.outputs.path }}" \
             --title "Anvil ${{ steps.version.outputs.version }}" \
             --notes-file notes.md

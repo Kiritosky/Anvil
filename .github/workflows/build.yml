@@ -29,25 +29,39 @@ jobs:
         run: |
           sw_vers
           swift --version
-          xcodebuild -version || true
+          xcodebuild -version
 
-      - name: Bauen
-        run: swift build --product Anvil
-
-      - name: Tests
+      - name: Bibliotheken testen
         run: swift test
 
-      - name: App-Bundle schnüren
-        run: ./Scripts/build-app.sh
+      - name: App bauen
+        run: |
+          xcodebuild build \
+            -project Anvil.xcodeproj \
+            -scheme Anvil \
+            -configuration Debug \
+            -destination 'platform=macOS' \
+            CODE_SIGN_IDENTITY=- \
+            | tee build.log | grep -E '^(\*\*|.*error:)' || true
+          grep -q '\*\* BUILD SUCCEEDED \*\*' build.log
 
       - name: Bundle prüfen
         run: |
-          APP="$(swift build --show-bin-path)/Anvil.app"
+          BUILT="$(xcodebuild -project Anvil.xcodeproj -scheme Anvil -configuration Debug \
+            -showBuildSettings 2>/dev/null | awk -F' = ' '/ BUILT_PRODUCTS_DIR /{print $2; exit}')"
+          APP="$BUILT/Anvil.app"
           test -x "$APP/Contents/MacOS/Anvil"
           test -f "$APP/Contents/Info.plist"
           test -f "$APP/Contents/Resources/en.lproj/Localizable.strings"
-          test -f "$APP/Contents/Resources/AppIcon.icns"
+          test -f "$APP/Contents/Resources/Assets.car"
           echo "Bundle vollständig: $APP"
+
+      - name: Icon ist aktuell
+        # Die PNGs im Asset-Katalog sind eingecheckt, gezeichnet werden sie vom
+        # Skript. Läuft beides auseinander, merkt es sonst niemand.
+        run: |
+          swift Scripts/make-icon.swift
+          git diff --exit-code -- Resources/Assets.xcassets
 
   translations:
     name: Übersetzungen prüfen
