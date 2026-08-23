@@ -71,7 +71,7 @@ public struct ShortcutRecorder: View {
         .frame(minWidth: 160, alignment: .leading)
         .background {
             RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                .fill(isRecording ? AnvilColor.danger.opacity(0.1) : AnvilColor.field)
+                .fill(isRecording ? AnvilColor.danger.opacity(0.1) : AnvilColor.elevated)
         }
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)

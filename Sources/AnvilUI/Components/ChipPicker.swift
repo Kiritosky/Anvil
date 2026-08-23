@@ -77,7 +77,7 @@ public struct Chip: View {
             .padding(.vertical, 5)
             .background {
                 Capsule().fill(
-                    isSelected ? tone.fill : (isHovering ? AnvilColor.hover : AnvilColor.field)
+                    isSelected ? tone.fill : (isHovering ? AnvilColor.hover : AnvilColor.elevated)
                 )
             }
             .overlay {

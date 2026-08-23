@@ -208,7 +208,7 @@ public struct ColorToolView: View {
 
     private func swatch(for color: ColorValue?, size: CGFloat) -> some View {
         RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-            .fill(color?.color ?? AnvilColor.field)
+            .fill(color?.color ?? AnvilColor.elevated)
             .frame(width: size, height: size)
             .overlay {
                 RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)

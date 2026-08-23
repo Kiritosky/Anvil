@@ -98,6 +98,12 @@ zusammen; das entfällt.
     Jede Fläche: Optionen in den Inspektor, Ergebnis in den Content,
     Massenauswahl prüfen, keine magischen Zahlen.
 
+> Nach Schritt 20 zeigte die Suche nach magischen Zahlen und rohen Farben in
+> den Werkzeugflächen **null Treffer** — die Flächen hängen ausnahmslos an
+> `ToolScaffold`, `AnvilPane` und `InspectorSection` und haben das neue
+> Aussehen mitbekommen, ohne einzeln angefasst zu werden. Schritt 21 ist
+> damit keine Umbauarbeit mehr, sondern eine Durchsicht Fläche für Fläche.
+
 ## Phase 4 — Abschluss
 
 22. `./Scripts/check-translations.py` und `Resources/en.lproj/Localizable.strings`.

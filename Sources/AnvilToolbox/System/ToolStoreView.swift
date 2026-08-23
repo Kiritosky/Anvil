@@ -140,7 +140,7 @@ public struct ToolStoreView: View {
         .frame(height: AnvilSize.filterBarHeight)
         .background {
             RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
-                .fill(AnvilColor.field)
+                .fill(AnvilColor.elevated)
         }
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)

@@ -19,7 +19,7 @@ public struct KeycapLabel: View {
             .padding(.vertical, AnvilSpacing.xxs)
             .background {
                 RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                    .fill(AnvilColor.field)
+                    .fill(AnvilColor.elevated)
             }
             .overlay {
                 RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)

@@ -61,9 +61,7 @@ struct OnboardingView: View {
 
     private var header: some View {
         HStack(spacing: AnvilSpacing.md) {
-            Image(systemName: "hammer.fill")
-                .font(.system(size: 22))
-                .foregroundStyle(AnvilColor.accent)
+            AnvilIconBadge("hammer.fill", size: AnvilSize.iconBadgeLarge)
 
             VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
                 Text(step.title)
@@ -79,8 +77,8 @@ struct OnboardingView: View {
             HStack(spacing: AnvilSpacing.xs) {
                 ForEach(Step.allCases) { candidate in
                     Circle()
-                        .fill(candidate == step ? AnvilColor.accent : AnvilColor.border)
-                        .frame(width: AnvilSpacing.sm, height: AnvilSpacing.sm)
+                        .fill(candidate == step ? AnvilColor.accent : AnvilColor.separator)
+                        .frame(width: AnvilSize.dot, height: AnvilSize.dot)
                 }
             }
         }

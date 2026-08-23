@@ -43,7 +43,7 @@ public struct AnvilStepper: View {
         .frame(height: AnvilSize.controlHeight)
         .background {
             RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
-                .fill(AnvilColor.field)
+                .fill(AnvilColor.elevated)
         }
         .overlay {
             RoundedRectangle(cornerRadius: AnvilRadius.sm, style: .continuous)
