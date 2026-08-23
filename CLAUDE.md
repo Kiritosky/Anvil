@@ -98,14 +98,17 @@ nebenläufig statt einer nach dem anderen.
 ## Build
 
 ```sh
-./Scripts/build-app.sh            # Debug-Bundle nach .build/debug/Anvil.app
-./Scripts/build-app.sh release    # Release-Bundle
 ./Scripts/run.sh                  # bauen + starten
+./Scripts/archive.sh              # Release-Bundle nach .build/export/Anvil.app
+./Scripts/make-dmg.sh             # DMG zum Ausliefern
 swift test                        # Unit-Tests
 ./Scripts/check-translations.py   # fehlende Übersetzungen
 ./Scripts/tool-list.py            # docs/TOOLS.md neu schreiben
 ./Scripts/tool-list.py --check    # nur vergleichen, so wie die CI
 ```
+
+Die App gehört `Anvil.xcodeproj`, die Module `Package.swift`. Einzelheiten
+zum Signieren und Veröffentlichen in `docs/DISTRIBUTION.md`.
 
 Nach einem neuen Werkzeug gehört `./Scripts/tool-list.py` dazu — die Liste in
 `docs/TOOLS.md` wird nicht von Hand gepflegt.

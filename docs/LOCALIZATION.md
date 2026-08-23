@@ -31,13 +31,10 @@ Resources/
 └── en.lproj/Localizable.strings  englische Übersetzungen
 ```
 
-`Scripts/build-app.sh` kopiert jedes `.lproj` nach
+Das App-Target in `Anvil.xcodeproj` kopiert jedes `.lproj` nach
 `Anvil.app/Contents/Resources/`. Alles schlägt gegen `Bundle.main` nach — also
 das App-Bundle. Bibliotheks-Targets brauchen deshalb **kein** `bundle: .module`
 und kein `Bundle.module`.
-
-> Wer die Binary direkt aus `.build/debug/Anvil` startet statt das Bundle zu
-> bauen, sieht immer Deutsch: dort gibt es keine `.lproj`-Ordner.
 > `Localization.hasLoadedTranslations` sagt, ob welche gefunden wurden.
 
 ## Welche Schreibweise wann
@@ -106,4 +103,7 @@ und Beispielwerte stehen in der `SKIP`-Liste im Skript.
 1. `Resources/en.lproj/Localizable.strings` nach `Resources/fr.lproj/` kopieren.
 2. Werte übersetzen, Schlüssel unverändert lassen.
 3. In `Resources/Info.plist` unter `CFBundleLocalizations` `fr` ergänzen.
-4. `./Scripts/check-translations.py --language fr`
+4. In Xcode die neue Datei zur Variantengruppe `Localizable.strings` legen und
+   `fr` unter „Localizations" im Projekt eintragen — ohne das landet der Ordner
+   nicht im Bundle.
+5. `./Scripts/check-translations.py --language fr`

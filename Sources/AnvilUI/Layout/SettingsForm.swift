@@ -62,15 +62,18 @@ public struct SettingsGroup<Content: View>: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: AnvilSpacing.sm) {
             if let title {
-                Text(title)
-                    .textCase(.uppercase)
-                    .font(AnvilFont.label)
-                    .tracking(0.6)
-                    .foregroundStyle(AnvilColor.textTertiary)
+                AnvilSectionHeader(title)
             }
 
             VStack(spacing: 0) {
                 content
+            }
+            // Jede Zeile zieht unter sich eine Linie; die der letzten läge auf
+            // dem Kartenrand. Sie wird überstrichen statt gezählt.
+            .overlay(alignment: .bottom) {
+                Rectangle()
+                    .fill(AnvilColor.surface)
+                    .frame(height: AnvilSize.hairline)
             }
             .background {
                 RoundedRectangle(cornerRadius: AnvilRadius.lg, style: .continuous)

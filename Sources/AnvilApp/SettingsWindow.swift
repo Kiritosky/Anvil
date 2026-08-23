@@ -19,35 +19,89 @@ struct SettingsWindow: View {
     }
 
     var body: some View {
-        NavigationSplitView {
-            List(selection: $selection) {
-                Section("Anvil") {
-                    Label("Allgemein", systemImage: "gearshape")
-                        .tag(SettingsSection.general)
-                    Label("Berechtigungen", systemImage: "hand.raised")
-                        .tag(SettingsSection.permissions)
-                    Label("Tastenkürzel", systemImage: "command")
-                        .tag(SettingsSection.shortcuts)
-                    Label("Sprachmodell", systemImage: "sparkles")
-                        .tag(SettingsSection.intelligence)
+        HStack(spacing: 0) {
+            sidebar
+            Divider()
+            detail
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(width: AnvilSize.settingsWidth, height: AnvilSize.settingsHeight)
+    }
+
+    // MARK: - Seitenleiste
+
+    private var sidebar: some View {
+        ScrollView(.vertical) {
+            VStack(alignment: .leading, spacing: AnvilSpacing.lg) {
+                group("Anvil") {
+                    row("Allgemein", systemImage: "gearshape", section: .general)
+                    row("Berechtigungen", systemImage: "hand.raised", section: .permissions)
+                    row("Tastenkürzel", systemImage: "command", section: .shortcuts)
+                    row("Sprachmodell", systemImage: "sparkles", section: .intelligence)
                 }
 
                 let toolsWithSettings = environment.registry.toolsWithSettings
                 if !toolsWithSettings.isEmpty {
-                    Section("Tools") {
+                    group("Werkzeuge") {
                         ForEach(toolsWithSettings) { tool in
-                            Label(tool.metadata.title, systemImage: tool.metadata.systemImage)
-                                .tag(SettingsSection.tool(tool.id))
+                            row(
+                                .resolved(tool.metadata.title),
+                                systemImage: tool.metadata.systemImage,
+                                section: .tool(tool.id)
+                            )
                         }
                     }
                 }
             }
-            .listStyle(.sidebar)
-            .navigationSplitViewColumnWidth(min: 190, ideal: 210, max: 260)
-        } detail: {
-            detail
+            .padding(.horizontal, AnvilSpacing.sm)
+            .padding(.vertical, AnvilSpacing.md)
         }
-        .frame(width: AnvilSize.settingsWidth, height: AnvilSize.settingsHeight)
+        .scrollBounceBehavior(.basedOnSize)
+        .frame(width: 220)
+        .background(AnvilColor.canvas)
+    }
+
+    private func group<Content: View>(
+        _ title: LocalizedStringKey,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading, spacing: AnvilSpacing.xxs) {
+            AnvilSectionHeader(title)
+                .padding(.horizontal, AnvilSpacing.sm)
+                .padding(.bottom, AnvilSpacing.xxs)
+            content()
+        }
+    }
+
+    private func row(
+        _ title: LocalizedStringKey,
+        systemImage: String,
+        section: SettingsSection
+    ) -> some View {
+        let isSelected = selection == section
+        return Button { selection = section } label: {
+            HStack(spacing: AnvilSpacing.sm) {
+                Image(systemName: systemImage)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(isSelected ? AnvilColor.textOnAccent : AnvilColor.accent)
+                    .frame(width: AnvilSize.toolIcon)
+
+                Text(title)
+                    .font(AnvilFont.rowTitle)
+                    .foregroundStyle(isSelected ? AnvilColor.textOnAccent : AnvilColor.textPrimary)
+                    .lineLimit(1)
+
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, AnvilSpacing.sm)
+            .padding(.vertical, AnvilSpacing.sm - 1)
+            .background {
+                RoundedRectangle(cornerRadius: AnvilRadius.md, style: .continuous)
+                    .fill(isSelected ? AnvilColor.selectionStrong : .clear)
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 
     @ViewBuilder

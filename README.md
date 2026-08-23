@@ -88,16 +88,19 @@ git clone https://github.com/Kiritosky/Anvil.git && cd Anvil
 Weitere Wege:
 
 ```sh
-./Scripts/build-app.sh release    # Release-Bundle nach .build/release/Anvil.app
-swift test                        # Unit-Tests
-./Scripts/check-translations.py   # fehlende Übersetzungen
-./Scripts/tool-list.py            # docs/TOOLS.md neu schreiben
+open Anvil.xcodeproj               # ganz normal in Xcode
+./Scripts/archive.sh               # Release-Bundle nach .build/export/Anvil.app
+./Scripts/make-dmg.sh              # DMG nach .build/Anvil-<version>.dmg
+swift test                         # Unit-Tests
+./Scripts/check-translations.py    # fehlende Übersetzungen
+./Scripts/tool-list.py             # docs/TOOLS.md neu schreiben
 ```
 
-Mit eigenem Zertifikat signieren:
+Mit eigenem Zertifikat signieren und beglaubigen — Einzelheiten in
+[docs/DISTRIBUTION.md](docs/DISTRIBUTION.md):
 
 ```sh
-./Scripts/build-app.sh release --sign "Developer ID Application: …"
+./Scripts/archive.sh --identity "Developer ID Application: …" --team TEAMID
 ```
 
 Die App läuft **ohne App Sandbox** — Werkzeuge greifen frei aufs Dateisystem,
