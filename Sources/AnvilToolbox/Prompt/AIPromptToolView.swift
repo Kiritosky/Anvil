@@ -214,32 +214,9 @@ public struct AIPromptToolView: View {
         context.settings[SettingKey<AITarget>.aiTarget(for: metadata.id.rawValue)]
     }
 
-    /// Die Namen, wie sie gerade eingestellt sind — „Agent" allein sagt
-    /// niemandem, dass Claude Code gemeint ist.
-    private var targetTitles: [AITarget: String] {
-        [
-            .standard: AITarget.standard.title,
-            .onDevice: AITarget.onDevice.title,
-            .agent: context.settings[.cliAgent].title,
-            .remote: context.settings[.remoteConfiguration].presetName
-        ]
-    }
-
     @ViewBuilder
     private var inspector: some View {
-        InspectorSection(
-            "Modell",
-            systemImage: "sparkles",
-            footnote: "Gilt nur für dieses Werkzeug. „Nur on-device\" in den Einstellungen überstimmt die Wahl hier — was den Mac nicht verlassen soll, verlässt ihn auch für ein einzelnes Werkzeug nicht."
-        ) {
-            let titles = targetTitles
-            ChipPicker(
-                selection: context.settings.bind(SettingKey<AITarget>.aiTarget(for: metadata.id.rawValue)),
-                options: AITarget.allCases,
-                tone: .ai,
-                title: { titles[$0] ?? $0.title }
-            )
-        }
+        AITargetPicker(context: context, tool: metadata.id)
 
         if !tool.options.isEmpty {
             InspectorSection("Optionen", systemImage: "slider.horizontal.3") {

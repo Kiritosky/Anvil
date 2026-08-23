@@ -117,6 +117,7 @@
 "Alle Systeme" = "All bases";
 "Alle verwerfen" = "Discard all";
 "Alle Werkzeuge" = "All tools";
+"Alle Werkzeuge folgen der Regel oben." = "Every tool follows the rule above.";
 "Alles" = "Everything";
 "alles" = "everything";
 "Alles aktivieren" = "Enable everything";
@@ -818,6 +819,7 @@
 "Geschrieben wird immer eine neue Datei. Die Vorlage bleibt, wie sie ist — auch dann, wenn beim Schreiben etwas schiefgeht." = "A new file is always written. The original stays as it is — even if the writing goes wrong.";
 "Geschrieben wird neben die Quelle, mit neuer Endung. Die Quelldateien bleiben, wie sie sind — und was am Ziel schon liegt, wird nicht überschrieben." = "Files are written next to the source with a new extension. The sources stay as they are — and whatever is already at the target is never overwritten.";
 "gesetzt" = "set";
+"Gesetzt wird das im Werkzeug selbst, oben im Inspektor. Hier steht nur, wo es von der Regel abweicht — sonst müsste man jedes Werkzeug einzeln aufmachen." = "You set this inside the tool itself, at the top of the inspector. This lists only where it differs from the rule — otherwise you would have to open every tool to find out.";
 "Gesichert" = "Saved";
 "Gesicherte Aufnahmen liegen unter Anvil › Screenshots." = "Saved shots live under Anvil › Screenshots.";
 "gestern" = "yesterday";
@@ -1032,6 +1034,7 @@
 "Keine Zeilen" = "No rows";
 "Keine Zuweisung" = "No assignment";
 "Keine Überschriften" = "No headings";
+"Keines" = "None";
 "keins" = "none";
 "Kennt der Server nicht." = "The server does not know it.";
 "Kennung" = "Identifier";
@@ -1742,7 +1745,7 @@
 "Weiter hinten hat niemand rechtzeitig geantwortet." = "Nobody further back answered in time.";
 "Weitergeben an ein anderes Werkzeug" = "Pass on to another tool";
 "Welches Modell antwortet — und ob dafür etwas diesen Mac verlässt." = "Which model answers — and whether anything leaves this Mac to get there.";
-"Wer will, kann in den Einstellungen einen externen Anbieter hinterlegen — nötig ist das nie. Werkzeuge ohne KI arbeiten ohnehin vollständig lokal." = "You can add an external provider in Settings if you want — it is never required. Tools without AI work entirely locally anyway.";
+"Wer Claude Code, Codex oder die Gemini CLI installiert hat, kann sie in den Einstellungen einschalten — über die vorhandene Anmeldung, ohne Schlüssel. Jedes Werkzeug wählt danach selbst, wen es fragt. Nötig ist beides nie: Werkzeuge ohne KI arbeiten ohnehin vollständig lokal." = "If you have Claude Code, Codex or the Gemini CLI installed, you can switch them on in Settings — through their existing sign-in, no key needed. Every tool then picks who answers it. Neither is ever required: tools without AI work entirely locally anyway.";
 "werden geschrieben" = "will be written";
 "Werkzeug" = "Tool";
 "Werkzeug anlegen" = "Create tool";
@@ -1752,6 +1755,7 @@
 "Werkzeuge" = "Tools";
 "Werkzeuge ein- und ausschalten" = "Switch tools on and off";
 "Werkzeuge für den Rest" = "Tools for everything else";
+"Werkzeuge mit eigener Wahl" = "Tools that choose for themselves";
 "Werkzeugkasten für den Alltag und fürs Entwickeln.\n\nSprache, Text und Bild laufen auf diesem Mac. Externe Anbieter sind möglich, aber nie Voraussetzung.\n\nGNU GPL v3" = "A toolbox for everyday work and for building things.\n\nSpeech, text and images run on this Mac. External providers are possible, but never required.\n\nGNU GPL v3";
 "Wert" = "Value";
 "Werte" = "Values";

@@ -272,7 +272,7 @@ struct OnboardingView: View {
                 }
             }
 
-            Text("Wer will, kann in den Einstellungen einen externen Anbieter hinterlegen — nötig ist das nie. Werkzeuge ohne KI arbeiten ohnehin vollständig lokal.")
+            Text("Wer Claude Code, Codex oder die Gemini CLI installiert hat, kann sie in den Einstellungen einschalten — über die vorhandene Anmeldung, ohne Schlüssel. Jedes Werkzeug wählt danach selbst, wen es fragt. Nötig ist beides nie: Werkzeuge ohne KI arbeiten ohnehin vollständig lokal.")
                 .font(AnvilFont.caption)
                 .foregroundStyle(AnvilColor.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
