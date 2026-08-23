@@ -34,6 +34,15 @@ APP="$OUT/Anvil.app"
 rm -rf "$ARCHIVE" "$OUT"
 mkdir -p "$OUT"
 
+# Ein sicherer Zeitstempel ist Voraussetzung fürs Beglaubigen, aber er kostet
+# einen Gang zu Apples Zeitserver. Eine Ad-hoc-Signatur lässt sich ohnehin
+# nicht stempeln, also wird nur bei echter Identität danach gefragt.
+if [ "$IDENTITY" = "-" ]; then
+    SIGN_FLAGS="--timestamp=none"
+else
+    SIGN_FLAGS="--timestamp"
+fi
+
 echo "==> xcodebuild archive ($CONFIG, Identität: $IDENTITY)"
 xcodebuild archive \
     -project Anvil.xcodeproj \
@@ -44,7 +53,7 @@ xcodebuild archive \
     CODE_SIGN_IDENTITY="$IDENTITY" \
     CODE_SIGN_STYLE=Manual \
     DEVELOPMENT_TEAM="$TEAM_ID" \
-    OTHER_CODE_SIGN_FLAGS="--timestamp${IDENTITY:+}" \
+    OTHER_CODE_SIGN_FLAGS="$SIGN_FLAGS" \
     | grep -E '^(\*\*|.*error:)' || true
 
 if [ ! -d "$ARCHIVE/Products/Applications/Anvil.app" ]; then
