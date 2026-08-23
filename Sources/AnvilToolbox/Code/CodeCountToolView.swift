@@ -183,7 +183,7 @@ public struct CodeCountToolView: View {
     }
 
     /// Welche Datei unter welchem Namen zählt — ohne sie schon zu lesen.
-    private static func sources(in folders: [URL]) -> [Source] {
+    private nonisolated static func sources(in folders: [URL]) -> [Source] {
         folders.flatMap { folder in
             FileWalk.files(in: folder).compactMap { file -> Source? in
                 let path = FileWalk.relativePath(of: file.url, under: folder)

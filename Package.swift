@@ -50,6 +50,7 @@ let package = Package(
         .executableTarget(
             name: "AnvilApp",
             dependencies: ["AnvilKit", "AnvilUI", "AnvilAI", "AnvilSpeech", "AnvilToolbox"],
+            resources: [.process("Info.plist")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(

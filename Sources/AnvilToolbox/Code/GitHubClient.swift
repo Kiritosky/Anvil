@@ -32,7 +32,8 @@ public struct GitHubClient: Sendable {
             throw AnvilError.unexpected(localized("Die Adresse ließ sich nicht bilden."))
         }
 
-        return try await GitHubRepository.list(try await get(url, token: token))
+        let data = try await get(url, token: token)
+        return try GitHubRepository.list(data)
     }
 
     /// Ein einzelnes Repository — auch eines, das dem Konto nicht gehört.
